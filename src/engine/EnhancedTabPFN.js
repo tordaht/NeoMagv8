@@ -1,7 +1,10 @@
 /**
  * 🧠 Enhanced TabPFN - Multi-Layer Prediction Engine
  * NeoMag v8.9.1 - Advanced AI Conversation System
+ * Training data tabanlı consciousness learning sistemi
  */
+
+import AITrainingAdapter from './AITrainingAdapter.js';
 
 export class EnhancedTabPFN {
     constructor(wordSuccessTracker) {
@@ -16,7 +19,13 @@ export class EnhancedTabPFN {
         this.predictionHistory = [];
         this.accuracyScore = 0.75; // Starting accuracy
         
-        console.log('🧠 Enhanced TabPFN initializing...');
+        // 🧠 AI Training Integration
+        this.trainingAdapter = new AITrainingAdapter();
+        this.consciousnessLevel = 0.5; // Global consciousness level
+        this.trainingWeights = new Map(); // Training-based weights
+        this.fewShotCache = new Map(); // Cache for few-shot prompts
+        
+        console.log('🧠 Enhanced TabPFN initializing with training data...');
     }
 
     async init() {
@@ -127,10 +136,21 @@ export class EnhancedTabPFN {
         return filteredPredictions.slice(0, 5);
     }
 
-    // Layer 3: Personality-based prediction
+    // Layer 3: Personality-based prediction (Enhanced with Training Data)
     _predictFromTraits(bacteria, context) {
         const predictions = [];
         const personality = bacteria.personality || {};
+        
+        // 🧠 Training-based consciousness suggestions
+        if (this.trainingAdapter.isLoaded) {
+            const consciousnessLevel = bacteria.consciousness_level || this.consciousnessLevel;
+            const trainingSuggestion = this.trainingAdapter.suggestWordForContext(context, consciousnessLevel);
+            
+            if (trainingSuggestion) {
+                predictions.push(trainingSuggestion.word);
+                console.log(`🎯 Training suggestion: "${trainingSuggestion.word}" (confidence: ${trainingSuggestion.confidence.toFixed(2)})`);
+            }
+        }
         
         // High consciousness → philosophical words
         if (bacteria.consciousness_level > 0.7) {
@@ -208,7 +228,7 @@ export class EnhancedTabPFN {
         return [...new Set(predictions)].slice(0, 3);
     }
 
-    // Weighted selection from all layers
+    // Weighted selection from all layers (Enhanced with Training Data)
     _weightedSelection(predictions, bacteria, context) {
         const allWords = new Map(); // word -> total weight
         
@@ -222,7 +242,15 @@ export class EnhancedTabPFN {
                 const currentWeight = allWords.get(word) || 0;
                 const successWeight = this.wordTracker ? this.wordTracker.getWeight(word, context) : 1.0;
                 
-                allWords.set(word, currentWeight + (weight * successWeight));
+                // 🧠 Apply training-based weight boost
+                let trainingBoost = 1.0;
+                if (this.trainingAdapter.isLoaded) {
+                    const emotionalTone = this._detectEmotionalTone(bacteria);
+                    const trainingPrediction = this.trainingAdapter.predictWordSuccess(word, context, emotionalTone);
+                    trainingBoost = 1.0 + (trainingPrediction * 0.5); // Up to 50% boost
+                }
+                
+                allWords.set(word, currentWeight + (weight * successWeight * trainingBoost));
             }
         }
         
@@ -249,7 +277,8 @@ export class EnhancedTabPFN {
                 bacteriaId: bacteria.id,
                 context,
                 timestamp: Date.now(),
-                consciousnessLevel: bacteria.consciousness_level
+                consciousnessLevel: bacteria.consciousness_level,
+                trainingBoosted: this.trainingAdapter.isLoaded
             }
         };
     }
@@ -355,6 +384,53 @@ export class EnhancedTabPFN {
         return Math.min(0.95, avgConfidence + (predictions.length * 0.05));
     }
 
+    // 🧠 Training Integration Helper Methods
+    _detectEmotionalTone(bacteria) {
+        const personality = bacteria.personality || {};
+        const energy = bacteria.energy_level || 0.5;
+        const consciousness = bacteria.consciousness_level || 0.5;
+        
+        if (energy < 0.3) return 'urgent';
+        if (consciousness > 0.8) return 'contemplative';
+        if (personality.optimism > 0.7) return 'positive';
+        if (personality.creativity > 0.6) return 'playful';
+        if (personality.sociability > 0.6) return 'friendly';
+        
+        return 'neutral';
+    }
+
+    // Generate few-shot prompt for context
+    generateFewShotPrompt(context, bacteria = null) {
+        if (!this.trainingAdapter.isLoaded) return null;
+        
+        const cacheKey = `${context}_${bacteria?.id || 'default'}`;
+        if (this.fewShotCache.has(cacheKey)) {
+            return this.fewShotCache.get(cacheKey);
+        }
+        
+        const emotionalTone = bacteria ? this._detectEmotionalTone(bacteria) : null;
+        const prompt = this.trainingAdapter.generateFewShotPrompt(context, emotionalTone);
+        
+        this.fewShotCache.set(cacheKey, prompt);
+        return prompt;
+    }
+
+    // Get training insights for debugging
+    getTrainingInsights(context) {
+        if (!this.trainingAdapter.isLoaded) return null;
+        return this.trainingAdapter.getLearningInsights(context);
+    }
+
+    // Update consciousness level based on learning
+    updateConsciousnessLevel(bacteria, learningSuccess) {
+        if (learningSuccess > 0.7) {
+            this.consciousnessLevel = Math.min(1.0, this.consciousnessLevel + 0.01);
+            if (bacteria.consciousness_level !== undefined) {
+                bacteria.consciousness_level = Math.min(1.0, bacteria.consciousness_level + 0.02);
+            }
+        }
+    }
+
     _trackPrediction(prediction, bacteria, context) {
         this.predictionHistory.push({
             timestamp: Date.now(),
@@ -407,15 +483,32 @@ export class EnhancedTabPFN {
         console.log(`🔄 Knowledge shared: ${fromBacteriaId} → ${toBacteriaId} (${context}): ${successfulWords.join(', ')}`);
     }
 
-    // Get system status
+    // Get system status (Enhanced with Training Data)
     getStatus() {
+        const trainingStatus = this.trainingAdapter.getSystemStatus();
+        
         return {
             isReady: this.isReady,
             accuracyScore: this.accuracyScore,
             predictionCount: this.predictionHistory.length,
             contexts: Object.keys(this.contextMatrix),
             sharedKnowledge: this.crossBacteriaKnowledge.size,
-            culturalMemory: this.culturalMemory.size
+            culturalMemory: this.culturalMemory.size,
+            
+            // 🧠 Training System Status
+            trainingSystem: trainingStatus,
+            consciousnessLevel: this.consciousnessLevel.toFixed(2),
+            fewShotCacheSize: this.fewShotCache.size,
+            
+            // Enhanced metrics
+            totalLayers: 5,
+            enhancedFeatures: [
+                'Multi-layer prediction',
+                'Cross-bacteria learning',
+                'Training data integration',
+                'Few-shot prompting',
+                'Consciousness evolution'
+            ]
         };
     }
 } 
