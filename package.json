@@ -1,0 +1,28 @@
+{
+  "name": "neomag-ai-bacteria-comedy",
+  "version": "8.9.1",
+  "type": "module",
+  "description": "NeoMag - AI Bacteria Comedy Show with Turkish Morphological Synthesis",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .js --fix",
+    "format": "prettier --write src/**/*.{js,css,html}"
+  },
+  "keywords": ["ai", "bacteria", "comedy", "turkish", "morphology", "simulation", "tabpfn"],
+  "author": "NeoMag Team",
+  "license": "MIT",
+  "dependencies": {
+    "@tensorflow/tfjs": "^4.15.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+} 
