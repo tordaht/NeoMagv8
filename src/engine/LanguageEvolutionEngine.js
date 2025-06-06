@@ -2,6 +2,7 @@
 import { tabPFNAdapter } from './TabPFNAdapter.js';
 import { wordSuccessTracker } from './WordSuccessTracker.js';
 import { turkceDialogueGenerator } from './TurkceDialogueGenerator.js';
+import { EnhancedTabPFN } from './EnhancedTabPFN.js';
 
 export class LanguageEvolutionEngine {
     constructor() {
@@ -11,6 +12,10 @@ export class LanguageEvolutionEngine {
         this.contextOverrides = new Map();
         this.initialized = false;
         this.mutationPatterns = this._initMutationPatterns();
+        
+        // 🧠 Enhanced AI Systems
+        this.enhancedTabPFN = new EnhancedTabPFN(wordSuccessTracker);
+        this.conversationHistory = new Map(); // bacteriaId -> conversation history
     }
 
     async init() {
@@ -23,8 +28,11 @@ export class LanguageEvolutionEngine {
             // TabPFN adapter'ı başlat
             await tabPFNAdapter.init();
             
+            // 🚀 Enhanced TabPFN'i başlat
+            await this.enhancedTabPFN.init();
+            
             this.initialized = true;
-            console.log('✅ LanguageEvolutionEngine hazır!');
+            console.log('✅ LanguageEvolutionEngine hazır! (Enhanced AI aktif)');
             
         } catch (error) {
             console.error('❌ LanguageEvolutionEngine başlatılamadı:', error);
@@ -203,23 +211,45 @@ export class LanguageEvolutionEngine {
         return response || this._getFallbackResponse(bacteria);
     }
 
-    // Çekirdek kelime seçimi
+    // Çekirdek kelime seçimi - Enhanced Multi-Layer AI
     async _selectCoreWord(bacteria, context, style) {
-        // Öncelik 1: TabPFN önerisi
-        if (Math.random() < style.tabPFNUsage) {
+        // 🧠 Öncelik 1: Enhanced TabPFN Multi-Layer Prediction
+        if (Math.random() < style.tabPFNUsage && this.enhancedTabPFN.isReady) {
+            try {
+                const conversationHistory = this.conversationHistory.get(bacteria.id) || [];
+                const enhancedPrediction = await this.enhancedTabPFN.generateNextWord(bacteria, context, conversationHistory);
+                
+                if (enhancedPrediction && enhancedPrediction.selectedWord) {
+                    console.log(`🧠 ${bacteria.name} Enhanced TabPFN kullandı: ${enhancedPrediction.selectedWord} (confidence: ${enhancedPrediction.confidence.toFixed(2)})`);
+                    
+                    // Update conversation history
+                    const history = this.conversationHistory.get(bacteria.id) || [];
+                    history.push(enhancedPrediction.selectedWord);
+                    if (history.length > 10) history.shift(); // Keep last 10 words
+                    this.conversationHistory.set(bacteria.id, history);
+                    
+                    return enhancedPrediction.selectedWord;
+                }
+            } catch (error) {
+                console.warn(`⚠️ Enhanced TabPFN hatası, fallback kullanılıyor:`, error);
+            }
+        }
+
+        // Öncelik 2: Original TabPFN önerisi  
+        if (Math.random() < style.tabPFNUsage * 0.5) {
             const suggestions = await tabPFNAdapter.analyzeVocabulary(bacteria);
             if (suggestions && suggestions.suggested_next_words?.length > 0) {
                 return suggestions.suggested_next_words[0];
             }
         }
 
-        // Öncelik 2: Semantic field
+        // Öncelik 3: Semantic field
         const semanticWord = this.getSemanticWord(context);
         if (semanticWord && !bacteria.vocabulary.has(semanticWord)) {
             return semanticWord;
         }
 
-        // Öncelik 3: Weighted success-based
+        // Öncelik 4: Weighted success-based
         const vocab = Array.from(bacteria.vocabulary);
         const weightedWord = wordSuccessTracker.getWeightedRandomWord(context, vocab);
         if (weightedWord) {
@@ -348,8 +378,8 @@ export class LanguageEvolutionEngine {
         return fallbacks[Math.floor(Math.random() * fallbacks.length)];
     }
 
-    // Dil stilini adapt et
-    adaptLanguageStyle(bacteria, wasSuccessful, context) {
+    // Dil stilini adapt et - Enhanced with Cross-Bacteria Learning
+    adaptLanguageStyle(bacteria, wasSuccessful, context, responseWords = []) {
         const style = this.personalityMap.get(bacteria.id);
         if (!style) return;
 
@@ -366,6 +396,11 @@ export class LanguageEvolutionEngine {
             style.markovChainUsage = Math.min(1, style.markovChainUsage + adaptRate * 0.5);
             style.absurdTolerance = Math.min(1, style.absurdTolerance + adaptRate * 0.3);
             style.patternBreaking = Math.min(1, style.patternBreaking + adaptRate * 0.2);
+            
+            // 🔄 Cross-bacteria knowledge sharing - başarılı kelimeler paylaşılıyor
+            if (responseWords.length > 0 && this.enhancedTabPFN.isReady) {
+                this._shareKnowledgeWithNearbyBacteria(bacteria, context, responseWords);
+            }
         } else {
             // Failed patterns -> decrease usage
             style.markovChainUsage = Math.max(0, style.markovChainUsage - adaptRate * 0.3);
@@ -383,6 +418,42 @@ export class LanguageEvolutionEngine {
         style.lastUpdate = Date.now();
         
         console.log(`🎯 ${bacteria.name} stil adapte edildi - başarı: ${(successRate * 100).toFixed(1)}%`);
+    }
+
+    // 🔄 Cross-Bacteria Knowledge Sharing
+    _shareKnowledgeWithNearbyBacteria(sourceBacteria, context, successfulWords) {
+        // Sadece başarılı kelimeleri paylaş
+        if (!successfulWords || successfulWords.length === 0) return;
+        
+        // Sosyal bakteriler daha fazla paylaşır
+        const sociability = sourceBacteria.personality?.sociability || 0.5;
+        if (Math.random() > sociability) return;
+        
+        // Simulated "nearby" bacteria - gerçek uygulamada position-based olabilir
+        const nearbyBacteriaIds = this._findNearbyBacteria(sourceBacteria);
+        
+        for (const targetId of nearbyBacteriaIds) {
+            if (targetId !== sourceBacteria.id) {
+                this.enhancedTabPFN.shareKnowledge(
+                    sourceBacteria.id, 
+                    targetId, 
+                    context, 
+                    successfulWords.slice(0, 2) // Max 2 kelime paylaş
+                );
+            }
+        }
+    }
+
+    // Find nearby bacteria for knowledge sharing
+    _findNearbyBacteria(bacteria) {
+        // Basit implementation - gerçek simülasyonda position-based olabilir
+        const allBacteriaIds = Array.from(this.personalityMap.keys());
+        const nearbyCount = Math.min(3, allBacteriaIds.length - 1);
+        
+        return allBacteriaIds
+            .filter(id => id !== bacteria.id)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, nearbyCount);
     }
 
     // Bigram güncelle
@@ -429,15 +500,27 @@ export class LanguageEvolutionEngine {
         return pattern.split(' ').slice(0, 2).map(w => this.mutateWord(bacteria, w));
     }
 
-    // Sistem durumu
+    // Sistem durumu - Enhanced AI included
     getStatus() {
         return {
             initialized: this.initialized,
             personalityCount: this.personalityMap.size,
             bigramCount: this.bacteriaBigrams.size,
             semanticFieldCount: Object.keys(this.semanticFields).length,
+            conversationHistories: this.conversationHistory.size,
+            
+            // AI Systems Status
             tabPFNStatus: tabPFNAdapter.getStatus(),
-            trackerStatus: wordSuccessTracker.getStatus()
+            enhancedTabPFNStatus: this.enhancedTabPFN.getStatus(),
+            trackerStatus: wordSuccessTracker.getStatus(),
+            
+            // Advanced Features
+            aiEnhancements: {
+                multiLayerPrediction: this.enhancedTabPFN.isReady,
+                crossBacteriaLearning: true,
+                conversationMemory: true,
+                reinforcementLearning: true
+            }
         };
     }
 }
