@@ -484,35 +484,71 @@
         // 🎭 Chat System Functions
         function switchToGroupChat() {
             currentChatMode = 'group';
-            groupChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-green-600 text-white';
-            individualChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-gray-600 text-gray-300 hover:bg-gray-500';
-            groupChatPanel.classList.remove('hidden');
-            individualChatPanel.classList.add('hidden');
+            if (groupChatTab) {
+                groupChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-green-600 text-white';
+            }
+            if (individualChatTab) {
+                individualChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-gray-600 text-gray-300 hover:bg-gray-500';
+            }
+            if (groupChatPanel) {
+                groupChatPanel.classList.remove('hidden');
+            }
+            if (individualChatPanel) {
+                individualChatPanel.classList.add('hidden');
+            }
             console.log('🎯 Switched to group chat mode');
         }
         
         function switchToIndividualChat(bacteria = null) {
             currentChatMode = 'individual';
-            individualChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-blue-600 text-white';
-            groupChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-gray-600 text-gray-300 hover:bg-gray-500';
-            individualChatPanel.classList.remove('hidden');
-            groupChatPanel.classList.add('hidden');
+            if (individualChatTab) {
+                individualChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-blue-600 text-white';
+            }
+            if (groupChatTab) {
+                groupChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-gray-600 text-gray-300 hover:bg-gray-500';
+            }
+            if (individualChatPanel) {
+                individualChatPanel.classList.remove('hidden');
+            }
+            if (groupChatPanel) {
+                groupChatPanel.classList.add('hidden');
+            }
             
             if (bacteria) {
                 selectedBacteria = bacteria;
-                selectedBacteriaCard.classList.remove('hidden');
-                selectedBacteriaName.textContent = bacteria.name;
-                selectedBacteriaStatus.textContent = `Bilinç: ${bacteria.consciousness_level.toFixed(1)} | Enerji: ${(bacteria.energy * 100).toFixed(0)}%`;
-                individualChatInput.disabled = false;
-                individualSendBtn.disabled = false;
-                individualChatInput.placeholder = `${bacteria.name} ile konuş...`;
-                individualChatInfo.textContent = `${bacteria.name} ile özel sohbet`;
+                if (selectedBacteriaCard) {
+                    selectedBacteriaCard.classList.remove('hidden');
+                }
+                if (selectedBacteriaName) {
+                    selectedBacteriaName.textContent = bacteria.name;
+                }
+                if (selectedBacteriaStatus) {
+                    selectedBacteriaStatus.textContent = `Bilinç: ${bacteria.consciousness_level.toFixed(1)} | Enerji: ${(bacteria.energy * 100).toFixed(0)}%`;
+                }
+                if (individualChatInput) {
+                    individualChatInput.disabled = false;
+                    individualChatInput.placeholder = `${bacteria.name} ile konuş...`;
+                }
+                if (individualSendBtn) {
+                    individualSendBtn.disabled = false;
+                }
+                if (individualChatInfo) {
+                    individualChatInfo.textContent = `${bacteria.name} ile özel sohbet`;
+                }
             } else {
-                selectedBacteriaCard.classList.add('hidden');
-                individualChatInput.disabled = true;
-                individualSendBtn.disabled = true;
-                individualChatInput.placeholder = 'Bakteriye tıklayarak seçin...';
-                individualChatInfo.textContent = 'Bakteriye tıklayarak seçin';
+                if (selectedBacteriaCard) {
+                    selectedBacteriaCard.classList.add('hidden');
+                }
+                if (individualChatInput) {
+                    individualChatInput.disabled = true;
+                    individualChatInput.placeholder = 'Bakteriye tıklayarak seçin...';
+                }
+                if (individualSendBtn) {
+                    individualSendBtn.disabled = true;
+                }
+                if (individualChatInfo) {
+                    individualChatInfo.textContent = 'Bakteriye tıklayarak seçin';
+                }
             }
             
             console.log(`🎯 Switched to individual chat mode${bacteria ? ` with ${bacteria.name}` : ''}`);
@@ -8348,57 +8384,97 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
         function initializeChatSystem() {
             console.log('🎭 Initializing enhanced chat system...');
             
-            // Chat tab event listeners
-            groupChatTab.addEventListener('click', () => {
+            try {
+                // Chat tab event listeners with null checks
+                if (groupChatTab) {
+                    groupChatTab.addEventListener('click', () => {
+                        switchToGroupChat();
+                    });
+                } else {
+                    console.warn('⚠️ groupChatTab element not found');
+                }
+                
+                if (individualChatTab) {
+                    individualChatTab.addEventListener('click', () => {
+                        switchToIndividualChat();
+                    });
+                } else {
+                    console.warn('⚠️ individualChatTab element not found');
+                }
+                
+                // Speech bubble toggle
+                if (showSpeechBubblesBtn) {
+                    showSpeechBubblesBtn.addEventListener('click', () => {
+                        toggleSpeechBubbles();
+                    });
+                } else {
+                    console.warn('⚠️ showSpeechBubblesBtn element not found');
+                }
+                
+                // Group chat input handlers
+                if (groupChatInput) {
+                    groupChatInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            sendGroupMessage();
+                        }
+                    });
+                } else {
+                    console.warn('⚠️ groupChatInput element not found');
+                }
+                
+                if (groupSendBtn) {
+                    groupSendBtn.addEventListener('click', () => {
+                        sendGroupMessage();
+                    });
+                } else {
+                    console.warn('⚠️ groupSendBtn element not found');
+                }
+                
+                // Individual chat input handlers
+                if (individualChatInput) {
+                    individualChatInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            sendIndividualMessage();
+                        }
+                    });
+                } else {
+                    console.warn('⚠️ individualChatInput element not found');
+                }
+                
+                if (individualSendBtn) {
+                    individualSendBtn.addEventListener('click', () => {
+                        sendIndividualMessage();
+                    });
+                } else {
+                    console.warn('⚠️ individualSendBtn element not found');
+                }
+                
+                // Initialize with group chat mode
                 switchToGroupChat();
-            });
-            
-            individualChatTab.addEventListener('click', () => {
-                switchToIndividualChat();
-            });
-            
-            // Speech bubble toggle
-            showSpeechBubblesBtn.addEventListener('click', () => {
-                toggleSpeechBubbles();
-            });
-            
-            // Group chat input handlers
-            groupChatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendGroupMessage();
-                }
-            });
-            
-            groupSendBtn.addEventListener('click', () => {
-                sendGroupMessage();
-            });
-            
-            // Individual chat input handlers
-            individualChatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendIndividualMessage();
-                }
-            });
-            
-            individualSendBtn.addEventListener('click', () => {
-                sendIndividualMessage();
-            });
-            
-            // Initialize with group chat mode
-            switchToGroupChat();
-            
-            console.log('✅ Chat system initialized');
+                
+                console.log('✅ Chat system initialized');
+                
+            } catch (error) {
+                console.error('❌ Chat system initialization failed:', error);
+            }
         }
         
         // 🎭 Chat Message Handlers
         function sendGroupMessage() {
+            if (!groupChatInput) {
+                console.warn('⚠️ groupChatInput not found');
+                return;
+            }
+            
             const message = groupChatInput.value.trim();
             if (!message) return;
             
             // Add user message to group chat
-            addChatMessageToPanel(message, 'user', null, groupChatMessages);
+            if (groupChatMessages) {
+                addChatMessageToPanel(message, 'user', null, groupChatMessages);
+            }
             groupChatInput.value = '';
             
             // Get responses from all bacteria
@@ -8406,7 +8482,9 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 if (bacteria && bacteria.generateResponse) {
                     setTimeout(() => {
                         const response = bacteria.generateResponse(message);
-                        addChatMessageToPanel(response, 'bacteria', bacteria.name, groupChatMessages);
+                        if (groupChatMessages) {
+                            addChatMessageToPanel(response, 'bacteria', bacteria.name, groupChatMessages);
+                        }
                     }, Math.random() * 2000 + 500); // Random delay 0.5-2.5s
                 }
             });
@@ -8420,18 +8498,27 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 return;
             }
             
+            if (!individualChatInput) {
+                console.warn('⚠️ individualChatInput not found');
+                return;
+            }
+            
             const message = individualChatInput.value.trim();
             if (!message) return;
             
             // Add user message to individual chat
-            addChatMessageToPanel(message, 'user', null, individualChatMessages);
+            if (individualChatMessages) {
+                addChatMessageToPanel(message, 'user', null, individualChatMessages);
+            }
             individualChatInput.value = '';
             
             // Get response from selected bacteria
             if (selectedBacteria.generateResponse) {
                 setTimeout(() => {
                     const response = selectedBacteria.generateResponse(message);
-                    addChatMessageToPanel(response, 'bacteria', selectedBacteria.name, individualChatMessages);
+                    if (individualChatMessages) {
+                        addChatMessageToPanel(response, 'bacteria', selectedBacteria.name, individualChatMessages);
+                    }
                 }, Math.random() * 1500 + 500); // Random delay 0.5-2s
             }
             
