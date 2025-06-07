@@ -1,6 +1,6 @@
 {
   "name": "mnbac-evolution-simulation",
-  "version": "9.6.3",
+  "version": "9.6.4",
   "description": "System Readiness & GitHub Pages Fix v9.6.3 - Progressive Loading + Status Checker",
   "type": "module",
   "main": "index.html",
@@ -17,13 +17,7 @@
     "dev": "npx serve . --live"
   },
   "jest": {
-    "preset": "default",
-    "extensionsToTreatAsEsm": [".js"],
-    "globals": {
-      "__DEV__": true
-    },
     "testEnvironment": "jsdom",
-    "transform": {},
     "collectCoverageFrom": [
       "src/**/*.js",
       "!src/**/*.test.js"

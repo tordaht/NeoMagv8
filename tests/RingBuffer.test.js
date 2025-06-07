@@ -10,7 +10,8 @@ import {
 
 // Mock console for clean tests
 const originalConsole = console.log;
-console.log = jest.fn();
+const mockConsoleLog = () => {};
+console.log = mockConsoleLog;
 
 describe('RingBuffer', () => {
     let buffer;
@@ -20,7 +21,7 @@ describe('RingBuffer', () => {
     });
 
     afterEach(() => {
-        console.log.mockClear();
+        // No need to clear mock
     });
 
     afterAll(() => {
