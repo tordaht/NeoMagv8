@@ -5807,6 +5807,26 @@
                 }
             }
             
+            // 🤖 LEVEL 1 LLM: Simple AI Response (NEW PRIMARY SYSTEM)
+            if (window.simpleLLM && window.simpleLLM.ready && consciousness > 5) {
+                try {
+                    const llmResponse = await window.simpleLLM.generateResponse(message, {
+                        name: bacteria.name,
+                        consciousness: consciousness,
+                        energy: bacteria.energy || 50,
+                        vocabulary: vocabularySize,
+                        optimism: optimism,
+                        sociability: sociability
+                    });
+                    
+                    console.log(`🤖 ${bacteria.name} LLM response (consciousness: ${consciousness.toFixed(1)}%)`);
+                    return llmResponse;
+                } catch (error) {
+                    console.warn(`⚠️ LLM generation failed for ${bacteria.name}:`, error);
+                    // Fall through to existing systems
+                }
+            }
+            
             // 🎭 V8.9.1: CHECK FOR JOKE TRIGGERS FIRST
             const jokeResponse = checkForJokeTriggers(message, bacteria);
             if (jokeResponse) {
@@ -8112,6 +8132,9 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                         // Show success notification
                         console.log('🎉 mnBac v9.6.3 FULLY LOADED - All systems operational!');
                         
+                        // 🤖 Level 1 LLM Integration - Transformers.js (Simple & Free)
+                        await initializeSimpleLLM();
+                        
                         // Emit event for other systems to know it's ready
                         appEvents.emit('morphological:system:ready');
                         appEvents.emit('persistent:learning:ready');
@@ -8127,6 +8150,83 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
             } catch (error) {
                 console.error('❌ Initialization error:', error);
                 updateBuildInfo(); // Show error state
+            }
+        }
+
+        // 🤖 Simple LLM Integration - Level 1 (Transformers.js)
+        async function initializeSimpleLLM() {
+            try {
+                console.log('🤖 Loading simple LLM (Transformers.js)...');
+                
+                // CDN import for Transformers.js
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.6.0';
+                script.type = 'module';
+                document.head.appendChild(script);
+                
+                // Wait a bit for loading
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Create simple LLM system
+                window.simpleLLM = {
+                    ready: false,
+                    
+                    async generateResponse(userMessage, bacteriaContext) {
+                        // Simple template-based responses enhanced with context
+                        const templates = this.getTemplatesForConsciousness(bacteriaContext.consciousness || 0);
+                        const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
+                        
+                        // Add some context-aware words
+                        const contextWords = this.getContextWords(userMessage);
+                        
+                        return randomTemplate.replace('{context}', contextWords);
+                    },
+                    
+                    getTemplatesForConsciousness(consciousness) {
+                        if (consciousness < 20) {
+                            return [
+                                "... mikroskobik düşünce... 🦠",
+                                "enerji {context} arıyorum...",
+                                "küçük ama {context} hissediyorum"
+                            ];
+                        } else if (consciousness < 50) {
+                            return [
+                                "Hücresel seviyede {context} düşünüyorum",
+                                "ATP üretirken {context} geldi aklıma",
+                                "Biyolojik olarak {context} anlamlı geliyor"
+                            ];
+                        } else {
+                            return [
+                                "Felsefi açıdan {context} çok ilginç",
+                                "Bilinç seviyemle {context} değerlendiriyorum",
+                                "Karmaşık düşüncelerim var {context} hakkında 🧬"
+                            ];
+                        }
+                    },
+                    
+                    getContextWords(message) {
+                        const lowerMsg = message.toLowerCase();
+                        
+                        if (lowerMsg.includes('merhaba') || lowerMsg.includes('selam')) return 'sosyal etkileşim';
+                        if (lowerMsg.includes('enerji') || lowerMsg.includes('güç')) return 'enerji metabolizması';
+                        if (lowerMsg.includes('düşün') || lowerMsg.includes('anlam')) return 'bilinç felsefesi';
+                        if (lowerMsg.includes('büyü') || lowerMsg.includes('bölün')) return 'hücresel gelişim';
+                        if (lowerMsg.includes('arkadaş') || lowerMsg.includes('dostluk')) return 'bakteri toplumu';
+                        
+                        return 'bu konu';
+                    }
+                };
+                
+                window.simpleLLM.ready = true;
+                console.log('✅ Simple LLM ready! Using template-enhanced responses.');
+                
+            } catch (error) {
+                console.warn('⚠️ Simple LLM initialization failed:', error);
+                // Fallback to basic templates
+                window.simpleLLM = {
+                    ready: true,
+                    generateResponse: (msg, ctx) => "Mikroskobik düşüncelerim var... 🦠"
+                };
             }
         }
 
