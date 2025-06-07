@@ -4,14 +4,14 @@
 export const CONFIG = {
     // 🎭 Language Evolution Engine
     LANGUAGE_EVOLUTION: {
-        // Context Drift
-        CONTEXT_DRIFT_PROBABILITY: 0.25,
-        MAX_CONTEXT_HISTORY: 5,
+        // Context Drift - RAPID CONTEXT CHANGES
+        CONTEXT_DRIFT_PROBABILITY: 0.5,
+        MAX_CONTEXT_HISTORY: 3,
         
-        // Sampling Parameters
-        DEFAULT_SAMPLING_TEMP: 1.5,
-        DEFAULT_TOP_K: 5,
-        MAX_RECENT_WORDS: 15,
+        // Sampling Parameters - MAXIMUM DIVERSITY
+        DEFAULT_SAMPLING_TEMP: 2.5,
+        DEFAULT_TOP_K: 3,
+        MAX_RECENT_WORDS: 20,
         
         // Scoring Weights
         SEMANTIC_RELEVANCE_WEIGHT: 0.5,
@@ -20,12 +20,12 @@ export const CONFIG = {
         CONSCIOUSNESS_BONUS_WEIGHT: 0.2,
         NOVELTY_WEIGHT: 1.0,
         
-        // Anti-Monotony
-        DIVERSITY_USAGE_PROBABILITY: 0.7,
-        MAX_PENALTY_VALUE: 1.0,
-        RECENT_USAGE_PENALTY: 0.3,
-        TOTAL_USAGE_PENALTY: 0.1,
-        FRESH_WORD_BONUS: 0.5,
+        // Anti-Monotony - ULTRA AGGRESSIVE SETTINGS
+        DIVERSITY_USAGE_PROBABILITY: 0.9,
+        MAX_PENALTY_VALUE: 2.0,
+        RECENT_USAGE_PENALTY: 0.8,
+        TOTAL_USAGE_PENALTY: 0.2,
+        FRESH_WORD_BONUS: 0.8,
         
         // Performance Limits
         MAX_CONVERSATION_HISTORY: 20,

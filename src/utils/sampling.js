@@ -61,7 +61,7 @@ export function sampleFrom(items, probabilities) {
  * @param {number} temperature - Softmax temperature
  * @returns {any} - Sampled item
  */
-export function topKSample(items, scores, K = 5, temperature = 1.2) {
+export function topKSample(items, scores, K = 4, temperature = 2.0) {
     if (!items || items.length === 0) return null;
     if (!scores || scores.length !== items.length) {
         return items[Math.floor(Math.random() * items.length)];
@@ -105,15 +105,15 @@ export function calculateNoveltyScore(word, recentWords = [], wordUsageCount = n
     const recentUsage = recentWords.filter(w => w === word).length;
     const totalUsage = wordUsageCount.get(word) || 0;
     
-    // Heavy penalty for recent repeated usage
+    // EXTREMELY AGGRESSIVE penalty for recent repeated usage
     let penalty = 0;
     if (recentUsage > 0) {
-        penalty = Math.min(recentUsage * 0.3, maxPenalty); // 0.3 penalty per recent usage
+        penalty = Math.min(recentUsage * 0.8, maxPenalty); // 0.8 penalty per recent usage (MUCH MORE AGGRESSIVE!)
     }
     
-    // Additional penalty for overall high usage
-    if (totalUsage > 5) {
-        penalty += Math.min((totalUsage - 5) * 0.1, maxPenalty * 0.5);
+    // Additional penalty for overall high usage  
+    if (totalUsage > 3) { // Lower threshold for penalty
+        penalty += Math.min((totalUsage - 3) * 0.2, maxPenalty * 0.7); // More aggressive global penalty
     }
     
     // Bonus for never used words
@@ -133,7 +133,7 @@ export function calculateNoveltyScore(word, recentWords = [], wordUsageCount = n
  * @param {number} driftProbability - Probability of context change
  * @returns {string} - New context (may be same as current)
  */
-export function calculateContextDrift(currentContext, availableContexts, recentWords = [], driftProbability = 0.2) {
+export function calculateContextDrift(currentContext, availableContexts, recentWords = [], driftProbability = 0.4) {
     if (!availableContexts || availableContexts.length === 0) return currentContext;
     
     // Force context change if current context not in available list

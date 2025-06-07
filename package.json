@@ -1,7 +1,7 @@
 {
   "name": "mnbac-evolution-simulation",
-  "version": "4.0.0",
-  "description": "Enterprise-Grade Bacterial Language Evolution Simulation",
+  "version": "9.5.0",
+  "description": "Ultra-Aggressive Anti-Monotony Language Evolution System v9.5.0 - Maximum Diversity Engine",
   "type": "module",
   "main": "index.html",
   "scripts": {

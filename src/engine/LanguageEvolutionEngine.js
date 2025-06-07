@@ -72,14 +72,69 @@ export class LanguageEvolutionEngine {
         }
     }
 
-    // Default semantic fields
+    // Default semantic fields - EXPANDED for diversity
     _loadDefaultSemanticFields() {
         this.semanticFields = {
-            biological: ['dna', 'protein', 'hücre', 'enerji', 'yaşam'],
-            emotional: ['mutlu', 'üzgün', 'heyecan', 'korku', 'sevgi'],
-            social: ['arkadaş', 'paylaşım', 'topluluk', 'yardım', 'birlik'],
-            absurd: ['uçan patates', 'dans eden mikroskop', 'ağlayan bilgisayar'],
-            neutral: ['selam', 'evet', 'hayır', 'belki', 'tamam']
+            biological: [
+                // Core biology
+                'dna', 'protein', 'hücre', 'enerji', 'yaşam', 'mitokondri', 'nükleus',
+                // Body parts  
+                'beyin', 'sinir', 'damar', 'kemik', 'kas', 'deri', 'göz', 'kulak',
+                // Nature
+                'ağaç', 'yaprak', 'çiçek', 'kök', 'dal', 'meyve', 'tohum', 'orman',
+                // Elements
+                'su', 'hava', 'toprak', 'ateş', 'güneş', 'ay', 'yıldız', 'bulut'
+            ],
+            emotional: [
+                // Basic emotions
+                'mutlu', 'üzgün', 'heyecan', 'korku', 'sevgi', 'nefret', 'öfke', 'kıskançlık',
+                // Complex emotions  
+                'nostalji', 'umut', 'hayal kırıklığı', 'gurur', 'utanç', 'pişmanlık',
+                // Feelings
+                'huzur', 'gerginlik', 'coşku', 'melankoli', 'özlem', 'şefkat', 'merhamet'
+            ],
+            social: [
+                // Relationships
+                'arkadaş', 'aile', 'sevgili', 'komşu', 'öğretmen', 'yabancı',
+                // Activities
+                'paylaşım', 'topluluk', 'yardım', 'birlik', 'konuşma', 'dans', 'oyun',
+                // Concepts
+                'güven', 'sadakat', 'ihanet', 'dostluk', 'rekabet', 'işbirliği'
+            ],
+            creative: [
+                // Arts
+                'müzik', 'resim', 'şiir', 'dans', 'tiyatro', 'sinema', 'heykel',
+                // Colors
+                'kırmızı', 'mavi', 'sarı', 'yeşil', 'mor', 'turuncu', 'pembe',
+                // Imagination  
+                'hayal', 'rüya', 'masal', 'fantezi', 'sihir', 'büyü', 'mucize'
+            ],
+            philosophical: [
+                // Concepts
+                'gerçek', 'yalan', 'adalet', 'özgürlük', 'kader', 'tesadüf',
+                // Existence
+                'varoluş', 'yokluk', 'sonsuzluk', 'zaman', 'mekan', 'anlam',
+                // Wisdom
+                'bilgi', 'bilgelik', 'cehalet', 'deneyim', 'öğrenme', 'keşif'
+            ],
+            absurd: [
+                // Surreal combinations
+                'uçan patates', 'dans eden mikroskop', 'ağlayan bilgisayar',
+                'konuşan çay bardağı', 'yürüyen sandalye', 'şarkı söyleyen kitap',
+                'koşan kalem', 'gülümseyen kapı', 'düşünen lamba', 'saklanan ayna'
+            ],
+            neutral: [
+                'selam', 'evet', 'hayır', 'belki', 'tamam', 'peki', 'tabii', 'nasıl',
+                'ne zaman', 'nerede', 'kim', 'ne', 'neden', 'şey', 'durum', 'hal'
+            ],
+            temporal: [
+                'şimdi', 'sonra', 'önce', 'daima', 'hiçbir zaman', 'bazen', 'sık sık',
+                'yavaşça', 'hızlıca', 'aniden', 'yavaş yavaş', 'derhal', 'yakında'
+            ],
+            spatial: [
+                'yukarı', 'aşağı', 'sağ', 'sol', 'ileri', 'geri', 'içeri', 'dışarı',
+                'yanında', 'karşısında', 'arkasında', 'önünde', 'üstünde', 'altında'
+            ]
         };
     }
 
@@ -672,6 +727,25 @@ export class LanguageEvolutionEngine {
 
         const pattern = patterns[Math.floor(Math.random() * patterns.length)];
         return pattern.split(' ').slice(0, 2).map(w => this.mutateWord(bacteria, w));
+    }
+
+    // 🎯 Main API: Generate Contextual Response (Called by UI)
+    async generateContextualResponse(bacteria, context, trigger = null) {
+        console.log(`🎯 LanguageEvolutionEngine.generateContextualResponse called for ${bacteria.name}`);
+        
+        if (!this.initialized) {
+            await this.init();
+        }
+        
+        // Use our enhanced creative expression system
+        const response = await this.generateCreativeExpression(bacteria, context);
+        
+        // Track this generation for learning
+        const words = response.split(' ').filter(w => w && w.length > 2);
+        this.adaptLanguageStyle(bacteria, true, context, words);
+        
+        console.log(`🎭 Generated: "${response}" (Context: ${context})`);
+        return response;
     }
 
     // 🗣️ NEW: Run Peer Dialogue - Enhanced Cross-Bacteria Communication
