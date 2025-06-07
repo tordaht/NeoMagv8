@@ -470,6 +470,14 @@
         let currentChatMode = 'group'; // 'group' or 'individual'
         let speechBubblesEnabled = true;
         
+        // Joke Configuration
+        const JOKE_CONFIG = {
+            PREDEFINED_JOKE_CHANCE: 0.3,
+            JOKE_COOLDOWN: 15000, // 15 seconds
+            JOKE_MORALE_BOOST: 0.1,
+            MAX_JOKE_DISTANCE: 100
+        };
+        
         // Initialize persistentDB early (null safety)
         var persistentDB = null;
         
@@ -8487,39 +8495,55 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                     console.log('🧬 Language Evolution Engine initialized - bacterial languages will now evolve!');
                 }, 4000); // Wait for other systems to be ready
                 
-                // 8. 🔤 Initialize Enhanced Morphological System (Phase 2.7)
+                // 8. 🔤 Initialize Enhanced Morphological System (Phase 2.7) - Optional
                 setTimeout(async () => {
                     try {
-                        // Load scripts dynamically
-                        await loadScript('./src/engine/AITrainingAdapter.js');
-                        await loadScript('./src/engine/EnhancedMorphologicalGenerator.js');
-                        await loadScript('./src/engine/MorphologicalDialogueGenerator.js');
-                        await loadScript('./src/engine/PersistentLearningEngine.js');
+                        console.log('🔤 Attempting to load Enhanced Morphological System...');
                         
-                        // Initialize Enhanced Morphological System
-                        window.aiTrainingAdapter = new AITrainingAdapter();
-                        window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
-                        
-                        // Initialize Persistent Learning Engine
-                        const { PersistentLearningEngine } = await import('./src/engine/PersistentLearningEngine.js');
-                        window.persistentLearning = new PersistentLearningEngine();
-                        
-                        // Wait for training data to load
-                        await new Promise(resolve => {
-                            const checkLoaded = () => {
-                                if (window.aiTrainingAdapter.isLoaded && window.persistentLearning.isReady) {
-                                    resolve();
-                                } else {
-                                    setTimeout(checkLoaded, 100);
-                                }
+                        // Try to load scripts dynamically (optional)
+                        try {
+                            await loadScript('./src/engine/AITrainingAdapter.js');
+                            await loadScript('./src/engine/EnhancedMorphologicalGenerator.js');
+                            await loadScript('./src/engine/MorphologicalDialogueGenerator.js');
+                            await loadScript('./src/engine/PersistentLearningEngine.js');
+                            
+                            // Initialize Enhanced Morphological System
+                            window.aiTrainingAdapter = new AITrainingAdapter();
+                            window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
+                            
+                            // Initialize Persistent Learning Engine
+                            const { PersistentLearningEngine } = await import('./src/engine/PersistentLearningEngine.js');
+                            window.persistentLearning = new PersistentLearningEngine();
+                            
+                            // Wait for training data to load
+                            await new Promise(resolve => {
+                                const checkLoaded = () => {
+                                    if (window.aiTrainingAdapter.isLoaded && window.persistentLearning.isReady) {
+                                        resolve();
+                                    } else {
+                                        setTimeout(checkLoaded, 100);
+                                    }
+                                };
+                                checkLoaded();
+                            });
+                            
+                            console.log('🔤 Enhanced Morphological System v2.7 initialized!');
+                            console.log(`📚 Training examples loaded: ${window.aiTrainingAdapter.getSystemStatus().trainingExamples}`);
+                            console.log('🧬 Persistent Learning Engine initialized!');
+                            console.log(`💾 Previous interactions: ${window.persistentLearning.metrics.totalInteractions}`);
+                            
+                        } catch (scriptError) {
+                            console.warn('⚠️ Enhanced Morphological System scripts not found, using fallback mode:', scriptError.message);
+                            // Create fallback objects to prevent errors
+                            window.aiTrainingAdapter = {
+                                isLoaded: true,
+                                getSystemStatus: () => ({ trainingExamples: 0 })
                             };
-                            checkLoaded();
-                        });
-                        
-                        console.log('🔤 Enhanced Morphological System v2.7 initialized!');
-                        console.log(`📚 Training examples loaded: ${window.aiTrainingAdapter.getSystemStatus().trainingExamples}`);
-                        console.log('🧬 Persistent Learning Engine initialized!');
-                        console.log(`💾 Previous interactions: ${window.persistentLearning.metrics.totalInteractions}`);
+                            window.persistentLearning = {
+                                isReady: true,
+                                metrics: { totalInteractions: 0 }
+                            };
+                        }
                         
                         // Mark system as fully ready
                         window.systemFullyReady = true;
@@ -8531,7 +8555,7 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                         });
                         
                         // Show success notification
-                        console.log('🎉 mnBac v9.6.3 FULLY LOADED - All systems operational!');
+                        console.log('🎉 mnBac v9.6.4 FULLY LOADED - All systems operational!');
                         
                         // 🤖 Level 1 LLM Integration - Transformers.js (Simple & Free)
                         await initializeSimpleLLM();
@@ -8542,7 +8566,11 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                         appEvents.emit('system:fully:ready');
                         
                     } catch (error) {
-                        console.error('❌ Enhanced Morphological System initialization failed:', error);
+                        console.warn('⚠️ Enhanced Morphological System initialization failed, continuing with basic mode:', error);
+                        // Ensure system still works without advanced features
+                        window.systemFullyReady = true;
+                        await initializeSimpleLLM();
+                        appEvents.emit('system:fully:ready');
                     }
                 }, 5000); // Wait for all other systems to be ready
                 
