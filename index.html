@@ -270,6 +270,9 @@
             <button data-action="show-learning-stats" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-sm">
                 🧠 AI Learning
             </button>
+            <button data-action="clear-learning-db" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">
+                🧬 Clear Learning
+            </button>
         </div>
         
         <div class="text-xs text-gray-300">
@@ -5355,6 +5358,24 @@
                         bacteria.vocabulary ? Array.from(bacteria.vocabulary) : []
                     );
                     
+                    // 🧬 Record interaction for persistent learning
+                    if (window.persistentLearning && context === 'user') {
+                        await window.persistentLearning.recordInteraction(
+                            message || '',
+                            morphResponse,
+                            conversationContext,
+                            bacteria.id
+                        );
+                        
+                        // Apply learned word success rates to enhance response
+                        const words = morphResponse.split(' ');
+                        const enhancedWords = words.map(word => {
+                            const successRate = window.persistentLearning.getWordSuccessRate(word);
+                            // Optionally modify word based on success rate
+                            return successRate > 0.7 ? word : word; // Keep for now, can be enhanced
+                        });
+                    }
+                    
                     console.log(`🔤 ${bacteria.name} Enhanced Morphological response (context: ${conversationContext})`);
                     return morphResponse;
                 } catch (error) {
@@ -6954,6 +6975,41 @@ Consciousness Levels:
         }
 
         function showLearningStats() {
+            let fullStats = '';
+            
+            // 🧬 Enhanced Persistent Learning Stats
+            if (window.persistentLearning && window.persistentLearning.isReady) {
+                const persistentStats = window.persistentLearning.getLearningStats();
+                
+                let topWordsText = '📚 Top Learned Words:\n';
+                persistentStats.topWords.slice(0, 8).forEach(({word, successRate}) => {
+                    const percentage = (successRate * 100).toFixed(0);
+                    const emoji = successRate > 0.8 ? '🌟' : successRate > 0.6 ? '✅' : '📖';
+                    topWordsText += `${emoji} ${word}: ${percentage}% success\n`;
+                });
+                
+                let topContextsText = '\n🎯 Top Context Patterns:\n';
+                persistentStats.topContexts.forEach(({context, effectiveness}) => {
+                    const percentage = (effectiveness * 100).toFixed(0);
+                    const emoji = effectiveness > 0.8 ? '🚀' : effectiveness > 0.6 ? '✅' : '📊';
+                    topContextsText += `${emoji} ${context}: ${percentage}% effective\n`;
+                });
+                
+                fullStats += `🧬 Persistent Learning Engine Stats:
+
+💾 Total Interactions: ${persistentStats.totalInteractions}
+📚 Vocabulary Size: ${persistentStats.vocabularySize} words
+📈 Average Success Rate: ${(persistentStats.averageSuccessRate * 100).toFixed(1)}%
+📊 Learning Trend: ${(persistentStats.learningTrend * 100).toFixed(0)}%
+
+${topWordsText}${topContextsText}
+
+───────────────────────────────
+
+`;
+            }
+            
+            // 🧠 Original AI Learning Stats
             const stats = learningEngine.getStats();
             const recentDecisions = learningEngine.decisionLog.slice(-10);
             
@@ -6961,7 +7017,7 @@ Consciousness Levels:
             recentDecisions.forEach((log, i) => {
                 const outcome = log.outcome || 'pending';
                 const emoji = outcome === 'success' ? '✅' : outcome === 'failure' ? '❌' : '⏳';
-                recentSummary += `${emoji} ${log.source}: ${log.output} (${(log.confidence * 100).toFixed(0)}%)\n`;
+                recentSummary += `${emoji} ${log.source}: ${log.output.substring(0, 30)}... (${(log.confidence * 100).toFixed(0)}%)\n`;
             });
             
             const errorPatterns = Array.from(learningEngine.errorPatterns.entries()).slice(0, 3);
@@ -6971,7 +7027,7 @@ Consciousness Levels:
                 errorSummary += `• ${p.source} confidence ${p.confidenceRange}: ${data.count} failures\n`;
             });
             
-            const fullStats = `🧠 AI Self-Learning Stats:
+            fullStats += `🧠 AI Self-Learning Stats:
 
 📈 Total Decisions: ${stats.totalDecisions}
 🎯 Recent Success Rate: ${(stats.recentSuccessRate * 100).toFixed(1)}%
@@ -6980,9 +7036,38 @@ Consciousness Levels:
 
 ${recentSummary}${errorSummary}
 
-🔬 The AI is continuously learning from decision outcomes to improve future predictions and avoid repeated mistakes.`;
+🔬 The AI is continuously learning from decision outcomes and user interactions to improve future predictions.`;
             
             alert(fullStats);
+        }
+
+        // 🧬 Clear Persistent Learning Database
+        async function clearLearningDatabase() {
+            if (!window.persistentLearning || !window.persistentLearning.isReady) {
+                alert('⚠️ Persistent Learning Engine is not ready yet.');
+                return;
+            }
+            
+            const confirmed = confirm(
+                '🚨 Are you sure you want to clear all learning data?\n\n' +
+                'This will delete:\n' +
+                '• All user interactions\n' +
+                '• Learned vocabulary with success rates\n' +
+                '• Context patterns\n' +
+                '• Learning metrics\n\n' +
+                'This action cannot be undone!'
+            );
+            
+            if (confirmed) {
+                try {
+                    await window.persistentLearning.clearDatabase();
+                    alert('✅ Learning database cleared successfully!\n\nThe system will start learning fresh from your next interactions.');
+                    console.log('🧬 Persistent Learning Database cleared by user');
+                } catch (error) {
+                    console.error('❌ Failed to clear learning database:', error);
+                    alert('❌ Failed to clear learning database. Please check the console for details.');
+                }
+            }
         }
 
         // v825: Auto-restore on page load
@@ -7107,6 +7192,7 @@ ${recentSummary}${errorSummary}
                 else if (action === 'clear-db') clearDatabase();
                 else if (action === 'show-db-stats') showDatabaseStats();
                 else if (action === 'show-learning-stats') showLearningStats();
+                else if (action === 'clear-learning-db') clearLearningDatabase();
             });
         }
 
@@ -7173,15 +7259,20 @@ ${recentSummary}${errorSummary}
                         await loadScript('./src/engine/AITrainingAdapter.js');
                         await loadScript('./src/engine/EnhancedMorphologicalGenerator.js');
                         await loadScript('./src/engine/MorphologicalDialogueGenerator.js');
+                        await loadScript('./src/engine/PersistentLearningEngine.js');
                         
                         // Initialize Enhanced Morphological System
                         window.aiTrainingAdapter = new AITrainingAdapter();
                         window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
                         
+                        // Initialize Persistent Learning Engine
+                        const { PersistentLearningEngine } = await import('./src/engine/PersistentLearningEngine.js');
+                        window.persistentLearning = new PersistentLearningEngine();
+                        
                         // Wait for training data to load
                         await new Promise(resolve => {
                             const checkLoaded = () => {
-                                if (window.aiTrainingAdapter.isLoaded) {
+                                if (window.aiTrainingAdapter.isLoaded && window.persistentLearning.isReady) {
                                     resolve();
                                 } else {
                                     setTimeout(checkLoaded, 100);
@@ -7192,9 +7283,12 @@ ${recentSummary}${errorSummary}
                         
                         console.log('🔤 Enhanced Morphological System v2.7 initialized!');
                         console.log(`📚 Training examples loaded: ${window.aiTrainingAdapter.getSystemStatus().trainingExamples}`);
+                        console.log('🧬 Persistent Learning Engine initialized!');
+                        console.log(`💾 Previous interactions: ${window.persistentLearning.metrics.totalInteractions}`);
                         
                         // Emit event for other systems to know it's ready
                         appEvents.emit('morphological:system:ready');
+                        appEvents.emit('persistent:learning:ready');
                         
                     } catch (error) {
                         console.error('❌ Enhanced Morphological System initialization failed:', error);
