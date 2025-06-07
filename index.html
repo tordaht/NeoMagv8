@@ -759,16 +759,26 @@
              }
             
             /**
-             * Peer mesajı üret (Enhanced Morphological System veya fallback)
+             * Peer mesajı üret (Enhanced Morphological System v2.7 veya fallback)
              */
             async generatePeerMessage(bacteria, context) {
-                // Enhanced Morphological System kullan
-                if (window.enhancedMorphGenerator && bacteria.consciousness_level >= 0.8) {
+                // Enhanced Morphological System v2.7 kullan
+                if (window.generateEnhancedMorphSentence && bacteria.consciousness_level >= 0.8) {
                     try {
-                        return await window.enhancedMorphGenerator.generateAdvancedMorphSentence(
-                            context,
-                            bacteria.consciousness_level,
-                            bacteria.vocabulary ? Array.from(bacteria.vocabulary) : []
+                        const mood = bacteria.personality_traits.mood || 0.5;
+                        const contextEmbed = { context: context };
+                        
+                        return await window.generateEnhancedMorphSentence(
+                            contextEmbed,
+                            'simple',
+                            {
+                                emotionalTone: mood > 0.7 ? 'mutlu' : mood < 0.3 ? 'hüzünlü' : 'normal',
+                                complexity: bacteria.consciousness_level > 1.5 ? 'complex' : 'simple',
+                                consciousness: bacteria.consciousness_level,
+                                enableStyle: mood > 0.4,
+                                enableComposition: mood > 0.6,
+                                mood: mood
+                            }
                         );
                     } catch (error) {
                         console.warn('⚠️ Enhanced morphology failed, using fallback');
@@ -925,7 +935,7 @@
             }
             
             /**
-             * Konuşma balonu render
+             * 🎯 ÖZELLİK 2: Konuşma balonu render (isim + mesaj)
              */
             renderSpeechBubble(bacteria, message, duration = 3000) {
                 // Previous bubble'ı temizle
@@ -941,33 +951,123 @@
                     bubble.className = 'speech-bubble';
                     bubble.style.cssText = `
                         position: absolute;
-                        background: rgba(255, 255, 255, 0.95);
-                        border: 1px solid #ccc;
-                        border-radius: 8px;
-                        padding: 4px 8px;
-                        font-size: 10px;
-                        max-width: 120px;
+                        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.9));
+                        border: 1px solid #3b82f6;
+                        border-radius: 12px;
+                        padding: 6px 10px;
+                        font-size: 11px;
+                        max-width: 140px;
                         word-wrap: break-word;
                         z-index: 1000;
-                        pointer-events: none;
-                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                        pointer-events: auto;
+                        box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+                        cursor: pointer;
+                        transition: all 0.3s ease, opacity 0.8s ease, transform 0.8s ease;
+                        opacity: 1;
+                        transform: scale(1) translateY(0);
                     `;
+                    
+                    // 🎯 Bubble'a tıklayınca bakteriyi seç
+                    bubble.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        selectedBacteria = bacteria;
+                        console.log(`🎯 Speech bubble'dan bakteri seçildi: ${bacteria.name}`);
+                        
+                        // UI'yi güncelle
+                        showBacteriaDetails(selectedBacteria);
+                        highlightSelectedBacteria(bacteria);
+                        
+                        // Chat modunu individual'a çevir
+                        if (chatMode !== 'individual') {
+                            chatMode = 'individual';
+                            updateChatModeButtons();
+                            updateChatUI();
+                        }
+                        
+                        // Görsel feedback
+                        bubble.style.transform = 'scale(1.1)';
+                        bubble.style.borderColor = '#22c55e';
+                        setTimeout(() => {
+                            bubble.style.transform = 'scale(1)';
+                            bubble.style.borderColor = '#3b82f6';
+                        }, 300);
+                    });
+                    
+                    // Hover efektleri
+                    bubble.addEventListener('mouseenter', () => {
+                        bubble.style.transform = 'scale(1.05)';
+                        bubble.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+                    });
+                    
+                    bubble.addEventListener('mouseleave', () => {
+                        bubble.style.transform = 'scale(1)';
+                        bubble.style.boxShadow = '0 3px 8px rgba(0,0,0,0.15)';
+                    });
+                    
                     simulationArea.appendChild(bubble);
                 }
                 
-                // Pozisyon güncelle
-                bubble.style.left = `${bacteria.x + 10}px`;
-                bubble.style.top = `${bacteria.y - 20}px`;
-                bubble.textContent = message.substring(0, 50) + (message.length > 50 ? '...' : '');
+                // 🎯 İsim + mesaj içeriğini oluştur
+                const nameDiv = document.createElement('div');
+                nameDiv.style.cssText = `
+                    font-weight: bold;
+                    color: #1e40af;
+                    font-size: 9px;
+                    margin-bottom: 2px;
+                    border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+                    padding-bottom: 1px;
+                `;
+                nameDiv.textContent = bacteria.name;
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.style.cssText = `
+                    color: #374151;
+                    line-height: 1.2;
+                `;
+                messageDiv.textContent = message.substring(0, 45) + (message.length > 45 ? '...' : '');
+                
+                // Bubble içeriğini temizle ve yeniden oluştur
+                bubble.innerHTML = '';
+                bubble.appendChild(nameDiv);
+                bubble.appendChild(messageDiv);
+                
+                // Pozisyon güncelle (bakterinin biraz üstünde)
+                bubble.style.left = `${bacteria.x - 20}px`;
+                bubble.style.top = `${bacteria.y - 35}px`;
                 bubble.style.display = 'block';
                 
-                // Auto-hide timeout
+                // 🎭 Entrance animasyonu
+                bubble.style.opacity = '0';
+                bubble.style.transform = 'scale(0.5) translateY(10px)';
+                
+                // Hemen entrance animasyonunu başlat
+                setTimeout(() => {
+                    bubble.style.opacity = '1';
+                    bubble.style.transform = 'scale(1) translateY(0)';
+                }, 10);
+                
+                // 🎭 Güzel fade out animasyonu
                 const timeout = setTimeout(() => {
-                    if (bubble) {
-                        bubble.style.display = 'none';
+                    if (bubble && bubble.parentNode) {
+                        // 1. Yukarı kaydırma ve fade out başlat
+                        bubble.style.opacity = '0';
+                        bubble.style.transform = 'scale(0.8) translateY(-10px)';
+                        bubble.style.pointerEvents = 'none';
+                        
+                        // 2. Animasyon tamamlandıktan sonra temizle
+                        setTimeout(() => {
+                            if (bubble && bubble.parentNode) {
+                                bubble.style.display = 'none';
+                                bubble.style.opacity = '1';
+                                bubble.style.transform = 'scale(1) translateY(0)';
+                                bubble.style.pointerEvents = 'auto';
+                            }
+                        }, 800); // Transition süresi kadar bekle
                     }
                     this.speechBubbles.delete(bacteria.id);
-                }, duration);
+                }, duration - 800); // Animasyon süresini duration'dan çıkar
                 
                 this.speechBubbles.set(bacteria.id, { bubble, timeout });
             }
@@ -5693,7 +5793,7 @@
             }
             
             // 🔤 V2.7: ENHANCED MORPHOLOGICAL SYSTEM INTEGRATION
-            if (window.aiTrainingAdapter && window.enhancedMorphGenerator && consciousness >= 0.8) {
+            if (window.generateEnhancedMorphSentence && consciousness >= 0.8) {
                 // Determine conversation context for morphological generation
                 let conversationContext = 'general';
                 if (message && message.toLowerCase().includes('merhaba')) conversationContext = 'social';
@@ -5704,11 +5804,24 @@
                 else if (message && (message.includes('niye') || message.includes('niçin'))) conversationContext = 'philosophical';
                 
                 try {
-                    // Generate morphologically-aware response
-                    const morphResponse = await window.enhancedMorphGenerator.generateAdvancedMorphSentence(
-                        conversationContext,
-                        consciousness,
-                        bacteria.vocabulary ? Array.from(bacteria.vocabulary) : []
+                    // Get bacteria mood for enhanced generation
+                    const mood = bacteria.personality_traits.mood || 0.5;
+                    
+                    // Create context embedding
+                    const contextEmbed = { context: conversationContext };
+                    
+                    // Generate morphologically-aware response with mood control
+                    const morphResponse = await window.generateEnhancedMorphSentence(
+                        contextEmbed,
+                        'simple',
+                        {
+                            emotionalTone: mood > 0.7 ? 'mutlu' : mood < 0.3 ? 'hüzünlü' : 'normal',
+                            complexity: consciousness > 1.5 ? 'complex' : 'simple',
+                            consciousness: consciousness,
+                            enableStyle: true,
+                            enableComposition: mood > 0.4,
+                            mood: mood
+                        }
                     );
                     
                     // 🧬 Record interaction for persistent learning
@@ -6011,8 +6124,46 @@
             
             if (sender === 'bacteria' && bacteriaName) {
                 const nameSpan = document.createElement('div');
-                nameSpan.className = 'text-xs font-semibold mb-1 opacity-75';
+                nameSpan.className = 'text-xs font-semibold mb-1 opacity-75 cursor-pointer hover:text-blue-400 hover:underline';
                 nameSpan.textContent = bacteriaName;
+                nameSpan.title = `${bacteriaName}'e tıklayarak seç`;
+                
+                // 🎯 ÖZELLİK 1: Chat'te bakterinin adını tıklayınca o bakteriyi seç
+                nameSpan.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Bakteriyi ismine göre bul
+                    const targetBacteria = bacteriaPopulation.find(b => b.name === bacteriaName);
+                    if (targetBacteria) {
+                        selectedBacteria = targetBacteria;
+                        console.log(`🎯 Chat'ten bakteri seçildi: ${bacteriaName}`);
+                        
+                        // UI'yi güncelle
+                        showBacteriaDetails(selectedBacteria);
+                        
+                        // Canvas'ta bakteriyi highlight et
+                        highlightSelectedBacteria(targetBacteria);
+                        
+                        // Chat modunu individual'a çevir
+                        if (chatMode !== 'individual') {
+                            chatMode = 'individual';
+                            updateChatModeButtons();
+                            updateChatUI();
+                        }
+                        
+                        // Görsel feedback
+                        nameSpan.style.color = '#22c55e';
+                        nameSpan.style.fontWeight = 'bold';
+                        setTimeout(() => {
+                            nameSpan.style.color = '';
+                            nameSpan.style.fontWeight = '';
+                        }, 1000);
+                    } else {
+                        console.warn(`⚠️ Bakteri bulunamadı: ${bacteriaName}`);
+                    }
+                });
+                
                 bubbleDiv.appendChild(nameSpan);
                 
                 const messageSpan = document.createElement('div');
@@ -6681,6 +6832,69 @@
             bacteriaDetailsDiv.classList.remove('hidden');
         }
 
+        // 🎯 ÖZELLİK 1 & 2: Eksik fonksiyonlar
+        function showBacteriaDetails(bacteria) {
+            selectedBacteria = bacteria;
+            updateBacteriaDetails(bacteria);
+            
+            // Chat sistemini güncelle
+            setupChat(bacteria);
+            
+            console.log(`🎯 Bacteria details shown for: ${bacteria.name}`);
+        }
+
+        function highlightSelectedBacteria(bacteria) {
+            // Canvas'ta tüm bakterileri çiz ve seçili olanı vurgula
+            if (canvas && ctx) {
+                // Redraw bacteria to remove old highlights
+                drawBacteria();
+                
+                // Draw highlight circle around selected bacteria
+                ctx.save();
+                ctx.strokeStyle = '#22c55e'; // Green highlight
+                ctx.lineWidth = 3;
+                ctx.setLineDash([5, 5]); // Dashed line
+                ctx.beginPath();
+                ctx.arc(bacteria.x, bacteria.y, bacteria.biological_state.size * 12 + 8, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.setLineDash([]); // Reset dash
+                ctx.restore();
+                
+                // Add pulsing selection indicator
+                let pulseOpacity = 0.7;
+                let pulseDirection = -0.02;
+                
+                const pulseInterval = setInterval(() => {
+                    pulseOpacity += pulseDirection;
+                    if (pulseOpacity <= 0.3) pulseDirection = 0.02;
+                    if (pulseOpacity >= 0.7) pulseDirection = -0.02;
+                    
+                    // Redraw bacteria
+                    drawBacteria();
+                    
+                    // Draw pulsing highlight
+                    ctx.save();
+                    ctx.globalAlpha = pulseOpacity;
+                    ctx.strokeStyle = '#22c55e';
+                    ctx.lineWidth = 3;
+                    ctx.setLineDash([5, 5]);
+                    ctx.beginPath();
+                    ctx.arc(bacteria.x, bacteria.y, bacteria.biological_state.size * 12 + 8, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.restore();
+                }, 50);
+                
+                // Clear pulse after 3 seconds
+                setTimeout(() => {
+                    clearInterval(pulseInterval);
+                    drawBacteria(); // Final redraw without highlight
+                }, 3000);
+            }
+            
+            console.log(`🎯 Bacteria highlighted: ${bacteria.name}`);
+        }
+
         function setupChat(bacteria) {
             chatMode = 'individual';
             selectedBacteria = bacteria;
@@ -7157,7 +7371,7 @@
             // Update version to show AI integration
             const versionDisplay = document.querySelector('h1');
             if (versionDisplay && aiSuccess) {
-                versionDisplay.innerHTML = '🧬 NeoMag v9.0.0 - Enhanced Persistent Learning';
+                versionDisplay.innerHTML = '🧬 NeoMag v9.2.0 - İnteraktif Chat & Konuşma Balonları';
             }
         }
 
@@ -7551,7 +7765,7 @@ ${recentSummary}${errorSummary}
 
         // 🚀 MAIN INITIALIZATION - EVENT DRIVEN
         async function mainInitialize() {
-            console.log('🚀 NeoMag v9.0.0 Enhanced Persistent Learning Initialization...');
+            console.log('🚀 NeoMag v9.2.0 İnteraktif Chat & Konuşma Balonları Initialization...');
             
             // 1. Setup event listeners first
             initializeEventListeners();

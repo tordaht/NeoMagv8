@@ -1,23 +1,23 @@
 /**
- * 🚀 Enhanced Morphological Dialogue Generator v2.0
+ * 🚀 Enhanced Morphological Dialogue Generator v2.7
  * 
- * Önerilerinizi implement eden gelişmiş sistem:
- * 1. Dinamik Lexicon & Öğrenme
- * 2. Gelişmiş Punktuasyon & Stil
- * 3. Kompozisyon & Bağlaçlar
- * 4. Performance Optimizasyonu
- * 5. Türkçeye Özgü İnce Ayarlar
- * 6. Context Embedding (stub)
+ * Sıkılaştırılmış sistem - Anlamsız kelime üretimi önlenir:
+ * 1. Kelime Sanitasyon & Filtreleme
+ * 2. Sıkılaştırılmış Morfoloji Kuralları
+ * 3. Artırılmış Coherence Ağırlığı
+ * 4. Mood Kontrollü Absürd Tolerans
+ * 5. Türkçe Kelime Doğrulama
+ * 6. Ünlü Uyumu Kontrolü
  */
 
 // ——————————————
-// 1. Gelişmiş Kelime Havuzları (Dinamik + Genişletilmiş)
+// 1. Gelişmiş Kelime Havuzları (Sanitized + Filtered)
 // ——————————————
 class DynamicLexicon {
     constructor() {
         this.baseWords = {
             subjects: ['bakteri', 'hücre', 'gezgin', 'dinozor', 'hayal', 'karınca', 'atom', 'kristal', 'çiçek', 'balık', 'ruh', 'zihin', 'kalp', 'nefes', 'yıldız'],
-            verbs: ['sentezliyor', 'keşfediyor', 'dans ediyor', 'paylaşıyor', 'yıldızı görüyor', 'müzik yapıyor', 'rüya kuruyor', 'titreşiyor', 'parıldıyor', 'evrimleşiyor', 'fısıldıyor', 'büyülüyor', 'uyanıyor', 'hissediyor', 'anlıyor'],
+            verbs: ['sentezliyor', 'keşfediyor', 'dans ediyor', 'paylaşıyor', 'görüyor', 'müzik yapıyor', 'rüya kuruyor', 'titreşiyor', 'parıldıyor', 'evrimleşiyor', 'fısıldıyor', 'büyülüyor', 'uyanıyor', 'hissediyor', 'anlıyor'],
             objects: ['enerji', 'dna', 'pizza', 'mikrofon', 'düşünce', 'vitamin', 'mineral', 'şarkı', 'renk', 'koku', 'anı', 'gizem', 'umut', 'korku', 'sevgi'],
             emotions: ['mutlu', 'meraklı', 'şaşkın', 'kararlı', 'hüzünlü', 'heyecanlı', 'sakin', 'endişeli', 'umutlu', 'korkmuş', 'şefkatli', 'gururlu', 'utangaç', 'cesur', 'nazik'],
             locations: ['laboratuvar', 'okyanús', 'gökyüzü', 'yaprak', 'toprak', 'hava', 'su', 'ışık', 'gölge', 'rüzgar', 'kalp', 'zihin', 'ev', 'yol', 'köprü'],
@@ -36,25 +36,122 @@ class DynamicLexicon {
         
         this.wordSuccessRates = new Map();
         this.contextFrequency = new Map();
+        
+        // Türkçe alfabe ve karakter setleri
+        this.turkishAlphabet = 'abcçdefgğhıijklmnoöprsştuüvyz';
+        this.validCharacters = new Set(this.turkishAlphabet.split(''));
+        this.minWordLength = 2;
+        this.maxWordLength = 15;
+    }
+    
+    // Kelime sanitasyon ve doğrulama
+    sanitizeWord(word) {
+        if (!word || typeof word !== 'string') return null;
+        
+        // Küçük harfe çevir ve temizle
+        let cleaned = word.toLowerCase().trim();
+        
+        // Sadece Türkçe karakterleri tut
+        cleaned = cleaned.split('').filter(char => this.validCharacters.has(char)).join('');
+        
+        // Uzunluk kontrolü
+        if (cleaned.length < this.minWordLength || cleaned.length > this.maxWordLength) {
+            return null;
+        }
+        
+        // Tekrar eden karakterleri kontrol et (3'ten fazla aynı karakter)
+        if (/(.)\1{3,}/.test(cleaned)) {
+            return null;
+        }
+        
+        // Sesli harf kontrolü (en az 1 sesli harf)
+        const vowels = 'aıoueiöü';
+        if (![...cleaned].some(char => vowels.includes(char))) {
+            return null;
+        }
+        
+        return cleaned;
+    }
+    
+    // Levenshtein mesafesi ile kelime düzeltme
+    findClosestWord(word, wordList, maxDistance = 2) {
+        let bestMatch = null;
+        let bestDistance = Infinity;
+        
+        for (const candidate of wordList) {
+            const distance = this.levenshteinDistance(word, candidate);
+            if (distance <= maxDistance && distance < bestDistance) {
+                bestDistance = distance;
+                bestMatch = candidate;
+            }
+        }
+        
+        return bestMatch;
+    }
+    
+    levenshteinDistance(a, b) {
+        if (a.length === 0) return b.length;
+        if (b.length === 0) return a.length;
+        
+        const matrix = Array(a.length + 1).fill(null).map(() => Array(b.length + 1).fill(null));
+        
+        for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
+        for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
+        
+        for (let i = 1; i <= a.length; i++) {
+            for (let j = 1; j <= b.length; j++) {
+                const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j] + 1,      // deletion
+                    matrix[i][j - 1] + 1,      // insertion
+                    matrix[i - 1][j - 1] + cost // substitution
+                );
+            }
+        }
+        
+        return matrix[a.length][b.length];
     }
     
     addDynamicWord(category, word, successRate = 0.5) {
-        if (this.dynamicWords[category]) {
-            this.dynamicWords[category].add(word);
-            this.wordSuccessRates.set(word, successRate);
+        const sanitized = this.sanitizeWord(word);
+        if (!sanitized) return false;
+        
+        // Mevcut kelime havuzunda ara
+        const allWords = this.getWords(category);
+        const corrected = this.findClosestWord(sanitized, allWords);
+        
+        if (corrected) {
+            // Mevcut kelimeyi güçlendir
+            this.updateWordSuccess(corrected, successRate);
+            return true;
         }
+        
+        // Başarı oranı eşiği (0.3'ten yüksek olmalı)
+        if (successRate < 0.3) return false;
+        
+        if (this.dynamicWords[category]) {
+            this.dynamicWords[category].add(sanitized);
+            this.wordSuccessRates.set(sanitized, successRate);
+            return true;
+        }
+        
+        return false;
     }
     
     getWords(category) {
         const base = this.baseWords[category] || [];
         const dynamic = Array.from(this.dynamicWords[category] || []);
-        return [...base, ...dynamic];
+        
+        // Başarı oranına göre filtrele
+        const filtered = dynamic.filter(word => this.getWordSuccess(word) > 0.3);
+        
+        return [...base, ...filtered];
     }
     
     updateWordSuccess(word, success) {
         const current = this.wordSuccessRates.get(word) || 0.5;
         const updated = (current * 0.8) + (success * 0.2);
-        this.wordSuccessRates.set(word, updated);
+        this.wordSuccessRates.set(word, Math.max(0.0, Math.min(1.0, updated)));
     }
     
     getWordSuccess(word) {
@@ -66,7 +163,7 @@ class DynamicLexicon {
 const dynamicLexicon = new DynamicLexicon();
 
 // ——————————————
-// 2. Gelişmiş Morfoloji Engine (Daha Kapsamlı Türkçe Kuralları)
+// 2. Sıkılaştırılmış Türkçe Morfoloji Engine
 // ——————————————
 class TurkishMorphologyEngine {
     constructor() {
@@ -83,10 +180,18 @@ class TurkishMorphologyEngine {
             'kalp': 'kalbi',
             'renk': 'rengi',
             'süt': 'sütü',
-            // Vowel insertions
             'burun': 'burnu',
-            'karın': 'karnı'
+            'karın': 'karnı',
+            'göz': 'gözü',
+            'kız': 'kızı'
         };
+        
+        this.invalidCombinations = [
+            /[çğışöü]{3,}/, // 3'ten fazla özel karakter
+            /[bcdfghjklmnpqrstvwxyz]{4,}/, // 4'ten fazla ünsüz
+            /^[çğışöü]/, // Özel karakterle başlama
+            /[çğışöü]$/ // Özel karakterle bitme (bazı istisnalar hariç)
+        ];
         
         this.caseEndingsAdvanced = {
             nom: '',
@@ -95,8 +200,24 @@ class TurkishMorphologyEngine {
             loc: this.getLocativeEnding.bind(this),
             abl: this.getAblativeEnding.bind(this),
             gen: this.getGenitiveEnding.bind(this),
-            ins: this.getInstrumentalEnding.bind(this) // Araç hali
+            ins: this.getInstrumentalEnding.bind(this)
         };
+    }
+    
+    // Kelime geçerliliği kontrolü
+    isValidWord(word) {
+        if (!word || word.length < 2) return false;
+        
+        // Geçersiz kombinasyonları kontrol et
+        for (const pattern of this.invalidCombinations) {
+            if (pattern.test(word)) return false;
+        }
+        
+        // En az bir ünlü olmalı
+        const vowels = [...this.vowelHarmony.back, ...this.vowelHarmony.front];
+        if (![...word].some(char => vowels.includes(char))) return false;
+        
+        return true;
     }
     
     getLastVowel(word) {
@@ -134,7 +255,14 @@ class TurkishMorphologyEngine {
     }
     
     getAccusativeEnding(word) {
-        // Check special cases first
+        // Geçerlilik kontrolü
+        if (!this.isValidWord(word)) {
+            const corrected = dynamicLexicon.findClosestWord(word, dynamicLexicon.getWords('objects'));
+            if (corrected) word = corrected;
+            else return word; // Düzeltilemezse olduğu gibi döndür
+        }
+        
+        // Özel durumları kontrol et
         if (this.specialCases[word]) {
             return this.specialCases[word];
         }
@@ -151,12 +279,24 @@ class TurkishMorphologyEngine {
     }
     
     getDativeEnding(word) {
+        if (!this.isValidWord(word)) {
+            const corrected = dynamicLexicon.findClosestWord(word, dynamicLexicon.getWords('objects'));
+            if (corrected) word = corrected;
+            else return word;
+        }
+        
         const lastVowel = this.getLastVowel(word);
         const isBack = this.isBackVowel(lastVowel);
         return word + (isBack ? 'a' : 'e');
     }
     
     getLocativeEnding(word) {
+        if (!this.isValidWord(word)) {
+            const corrected = dynamicLexicon.findClosestWord(word, dynamicLexicon.getWords('locations'));
+            if (corrected) word = corrected;
+            else return word;
+        }
+        
         const lastVowel = this.getLastVowel(word);
         const isBack = this.isBackVowel(lastVowel);
         const lastConsonant = this.getLastConsonant(word);
@@ -169,6 +309,12 @@ class TurkishMorphologyEngine {
     }
     
     getAblativeEnding(word) {
+        if (!this.isValidWord(word)) {
+            const corrected = dynamicLexicon.findClosestWord(word, dynamicLexicon.getWords('locations'));
+            if (corrected) word = corrected;
+            else return word;
+        }
+        
         const lastVowel = this.getLastVowel(word);
         const isBack = this.isBackVowel(lastVowel);
         const lastConsonant = this.getLastConsonant(word);
@@ -176,10 +322,16 @@ class TurkishMorphologyEngine {
         const voiceless = ['p', 't', 'k', 'ç', 'f', 's', 'ş', 'h'];
         const suffix = voiceless.includes(lastConsonant) ? 'tan' : 'dan';
         
-        return word + (isBack ? 'a' : 'e') + suffix.slice(1); // Remove 'a'/'e' if already added
+        return word + (isBack ? 'a' : 'e') + suffix.slice(1);
     }
     
     getGenitiveEnding(word) {
+        if (!this.isValidWord(word)) {
+            const corrected = dynamicLexicon.findClosestWord(word, dynamicLexicon.getWords('subjects'));
+            if (corrected) word = corrected;
+            else return word;
+        }
+        
         const lastVowel = this.getLastVowel(word);
         const isBack = this.isBackVowel(lastVowel);
         const isRounded = this.isRoundedVowel(lastVowel);
@@ -192,34 +344,52 @@ class TurkishMorphologyEngine {
     }
     
     getInstrumentalEnding(word) {
+        if (!this.isValidWord(word)) {
+            const corrected = dynamicLexicon.findClosestWord(word, dynamicLexicon.getWords('objects'));
+            if (corrected) word = corrected;
+            else return word;
+        }
+        
         const lastVowel = this.getLastVowel(word);
         const isBack = this.isBackVowel(lastVowel);
         return word + (isBack ? 'la' : 'le');
     }
     
     addCase(word, role = 'nom') {
-        if (role === 'nom') return word;
+        // Önce kelimeyi sanitize et
+        const sanitized = dynamicLexicon.sanitizeWord(word);
+        if (!sanitized) return word;
         
-        const endingFunc = this.caseEndingsAdvanced[role];
-        if (typeof endingFunc === 'function') {
-            return endingFunc(word);
+        if (role === 'nom' || !this.caseEndingsAdvanced[role]) {
+            return sanitized;
         }
         
-        return word; // fallback
+        try {
+            return this.caseEndingsAdvanced[role](sanitized);
+        } catch (error) {
+            console.warn(`Morfoloji hatası: ${word} -> ${role}`, error);
+            return sanitized;
+        }
     }
 }
 
 const morphologyEngine = new TurkishMorphologyEngine();
 
 // ——————————————
-// 3. Performance-Optimized Scoring System
+// 3. Gelişmiş Scoring Engine (Yüksek Coherence Ağırlığı)
 // ——————————————
 class OptimizedScoringEngine {
     constructor() {
-        this.scoreCache = new Map(); // Memoization
-        this.contextEmbedCache = new Map();
-        this.beamWidth = 5; // Beam search width
+        this.coherenceCache = new Map();
+        this.beamWidth = 3;
         this.dynamicLexicon = null;
+        
+        // Mood kontrollü ağırlıklar
+        this.moodWeights = {
+            high: { α: 2.5, β: 1.0, γ: 0.3, δ: 1.5 },    // Yüksek mood: Yüksek coherence
+            medium: { α: 2.0, β: 0.8, γ: 0.5, δ: 1.2 },  // Orta mood: Dengeli
+            low: { α: 3.0, β: 0.6, γ: 0.2, δ: 1.8 }      // Düşük mood: Çok yüksek coherence
+        };
     }
     
     setDynamicLexicon(lexicon) {
@@ -227,139 +397,168 @@ class OptimizedScoringEngine {
     }
     
     getCacheKey(word, context, role, position) {
-        return `${word}|${context}|${role}|${position}`;
+        return `${word}-${JSON.stringify(context)}-${role}-${position}`;
+    }
+    
+    // Mood kontrolü ile ağırlık seçimi
+    getMoodWeights(mood = 0.5) {
+        if (mood < 0.3) return this.moodWeights.low;
+        if (mood > 0.7) return this.moodWeights.high;
+        return this.moodWeights.medium;
     }
     
     coherenceScore(word, contextEmbed, previousContext = [], useCache = true) {
-        const cacheKey = this.getCacheKey(word, JSON.stringify(contextEmbed), 'coherence', '');
+        const cacheKey = this.getCacheKey(word, contextEmbed, 'coherence', previousContext.length);
         
-        if (useCache && this.scoreCache.has(cacheKey)) {
-            return this.scoreCache.get(cacheKey);
+        if (useCache && this.coherenceCache.has(cacheKey)) {
+            return this.coherenceCache.get(cacheKey);
         }
         
         let score = 1.0;
         
-        // Enhanced contextual scoring
-        if (contextEmbed && contextEmbed.topWords) {
-            const topWords = contextEmbed.topWords;
-            const wordInContext = topWords.find(w => w.word === word);
-            if (wordInContext) {
-                score += wordInContext.frequency * 0.5;
-            }
+        // Kelime geçerliliği bonusu
+        if (morphologyEngine.isValidWord(word)) {
+            score += 0.5;
+        } else {
+            score -= 1.0; // Geçersiz kelimeler için büyük ceza
         }
         
-        // Previous context coherence
+        // Başarı oranı bonusu
+        const successRate = this.dynamicLexicon ? this.dynamicLexicon.getWordSuccess(word) : 0.5;
+        score += successRate * 0.8;
+        
+        // Önceki kelimelerle semantik ilişki
         if (previousContext.length > 0) {
-            const lastWord = previousContext[previousContext.length - 1];
-            const wordCategory = this.getWordCategory(word);
-            const lastCategory = this.getWordCategory(lastWord);
-            
-            if (wordCategory === lastCategory) {
-                score += 0.3;
-            }
-            
-            if (this.hasSemanticRelation(word, lastWord)) {
-                score += 0.5;
-            }
+            const relatedWords = previousContext.filter(prevWord => 
+                this.hasSemanticRelation(word, prevWord)
+            );
+            score += relatedWords.length * 0.3;
         }
         
-        // Dynamic success rate bonus
-        const successRate = this.dynamicLexicon.getWordSuccess(word);
-        score += (successRate - 0.5) * 0.4; // Boost/penalize based on past success
+        // Context embedding ile uyum (basit simulasyon)
+        if (contextEmbed) {
+            const contextScore = this.calculateContextAlignment(word, contextEmbed);
+            score += contextScore * 0.4;
+        }
+        
+        // Kelime uzunluğu bonusu (çok kısa veya çok uzun kelimeler cezalı)
+        const idealLength = word.length >= 3 && word.length <= 10;
+        score += idealLength ? 0.2 : -0.3;
         
         if (useCache) {
-            this.scoreCache.set(cacheKey, score);
+            this.coherenceCache.set(cacheKey, score);
         }
         
-        return score;
+        return Math.max(0, score);
+    }
+    
+    calculateContextAlignment(word, contextEmbed) {
+        // Basit context alignment simulasyonu
+        if (!contextEmbed || !contextEmbed.context) return 0;
+        
+        const contextWords = {
+            'biological': ['bakteri', 'hücre', 'dna', 'enerji', 'protein', 'sentez'],
+            'social': ['arkadaş', 'grup', 'paylaş', 'konuş', 'birlik', 'toplum'],
+            'creative': ['hayal', 'sanat', 'yaratıcı', 'düşünce', 'fikir', 'özgün'],
+            'scientific': ['keşif', 'araştır', 'analiz', 'gözlem', 'deney', 'veri'],
+            'philosophical': ['anlam', 'varlık', 'düşünce', 'bilinç', 'ruh', 'zihin']
+        };
+        
+        const contextType = contextEmbed.context.toLowerCase();
+        const relevantWords = contextWords[contextType] || [];
+        
+        // Kelime ile context arasında benzerlik skoru
+        const similarity = relevantWords.some(cw => 
+            word.includes(cw) || cw.includes(word) || 
+            this.dynamicLexicon.levenshteinDistance(word, cw) <= 2
+        );
+        
+        return similarity ? 1.0 : 0.0;
     }
     
     infoScore(word) {
-        // Enhanced information scoring with dynamic learning
-        const allWords = Object.values(this.dynamicLexicon.baseWords).flat();
-        const dynamicWords = Object.values(this.dynamicLexicon.dynamicWords).flat();
-        const totalWords = [...allWords, ...dynamicWords];
+        if (!word || word.length < 2) return 0;
         
-        const frequency = totalWords.filter(w => w === word).length;
-        const totalCount = totalWords.length;
+        // Bilgi içeriği = -log(kelime_uzunluğu_normalleştirilmiş)
+        const normalizedLength = Math.min(word.length / 10, 1);
+        const infoContent = -Math.log(normalizedLength + 0.1);
         
-        // Shannon information with smoothing
-        const probability = (frequency + 1) / (totalCount + totalWords.length);
-        const infoValue = -Math.log(probability);
+        // Türkçe karakter zenginliği bonusu
+        const turkishChars = 'çğıöşü';
+        const turkishCharCount = [...word].filter(char => turkishChars.includes(char)).length;
+        const turkishBonus = turkishCharCount * 0.1;
         
-        // Bonus for successful dynamic words
-        const successBonus = this.dynamicLexicon.getWordSuccess(word) > 0.7 ? 0.3 : 0;
-        
-        return infoValue + successBonus;
+        return Math.max(0, infoContent + turkishBonus);
     }
     
     surprisalScore(word, previousWords = []) {
-        if (previousWords.length === 0) {
-            return Math.random() * 0.3;
-        }
+        if (!word) return 1.0;
         
-        const lastWord = previousWords[previousWords.length - 1];
-        const wordCategory = this.getWordCategory(word);
-        const lastCategory = this.getWordCategory(lastWord);
+        // Kelime tekrarı cezası
+        const repetitionCount = previousWords.filter(w => w === word).length;
+        const repetitionPenalty = repetitionCount * 0.5;
         
-        // Enhanced surprisal with context awareness
-        let surprisal = 0.2; // Base surprisal
+        // Yaygın kelimeler daha az sürpriz
+        const commonWords = ['bir', 'bu', 'şu', 'o', 'var', 'yok', 'çok', 'az'];
+        const commonnessPenalty = commonWords.includes(word) ? 0.3 : 0;
         
-        if (wordCategory !== lastCategory) {
-            surprisal += 0.4; // Category change surprisal
-        }
+        // Kelime uzunluğu ile sürpriz
+        const lengthSurprise = Math.min(word.length / 15, 1);
         
-        // Semantic distance surprisal
-        if (!this.hasSemanticRelation(word, lastWord)) {
-            surprisal += 0.3;
-        }
-        
-        // Add some randomness but controlled
-        surprisal += Math.random() * 0.2;
-        
-        return surprisal;
+        return Math.max(0, lengthSurprise - repetitionPenalty - commonnessPenalty);
     }
     
     morphCompatibilityScore(role, sentencePosition = 'middle', wordCategory = 'unknown') {
-        const roleScores = {
-            'nom': 1.0, 'acc': 1.2, 'dat': 0.9, 'loc': 0.8, 'abl': 0.7, 'gen': 0.6, 'ins': 0.7
+        let score = 1.0;
+        
+        // Rol uygunluğu
+        const roleCompatibility = {
+            'nom': { subjects: 1.5, verbs: 0.8, objects: 0.5 },
+            'acc': { objects: 1.5, subjects: 0.3, verbs: 0.2 },
+            'dat': { objects: 1.2, locations: 1.3, subjects: 0.4 },
+            'loc': { locations: 1.8, objects: 0.8, subjects: 0.3 },
+            'abl': { locations: 1.6, objects: 0.7, subjects: 0.3 },
+            'gen': { subjects: 1.4, objects: 1.0, verbs: 0.2 },
+            'ins': { objects: 1.3, subjects: 0.8, verbs: 0.5 }
         };
         
-        let score = roleScores[role] || 1.0;
-        
-        // Position-specific bonuses
-        const positionBonuses = {
-            'start': { 'nom': 0.3, 'gen': 0.2 },
-            'middle': { 'acc': 0.2, 'dat': 0.15, 'loc': 0.1 },
-            'end': { 'ins': 0.1, 'abl': 0.1 }
-        };
-        
-        if (positionBonuses[sentencePosition] && positionBonuses[sentencePosition][role]) {
-            score += positionBonuses[sentencePosition][role];
+        if (roleCompatibility[role] && roleCompatibility[role][wordCategory]) {
+            score *= roleCompatibility[role][wordCategory];
         }
         
-        // Category-specific bonuses
-        const categoryBonuses = {
-            'objects': { 'acc': 0.2, 'dat': 0.1 },
-            'locations': { 'loc': 0.3, 'abl': 0.2, 'dat': 0.1 },
-            'subjects': { 'nom': 0.2, 'gen': 0.1 }
+        // Cümle pozisyon uygunluğu
+        const positionBonus = {
+            'start': { subjects: 0.5, verbs: -0.3, objects: -0.2 },
+            'middle': { objects: 0.3, subjects: 0.1, verbs: -0.1 },
+            'end': { verbs: 0.8, objects: 0.2, subjects: -0.3 }
         };
         
-        if (categoryBonuses[wordCategory] && categoryBonuses[wordCategory][role]) {
-            score += categoryBonuses[wordCategory][role];
+        if (positionBonus[sentencePosition] && positionBonus[sentencePosition][wordCategory]) {
+            score += positionBonus[sentencePosition][wordCategory];
         }
         
-        return score;
+        return Math.max(0, score);
     }
     
-    // Beam search for optimal word selection
-    beamSearchBest(candidates, contextEmbed, prevWords = [], role = 'nom', position = 'middle') {
-        const α = 1.0, β = 0.8, γ = 0.6, δ = 1.2;
+    beamSearchBest(candidates, contextEmbed, prevWords = [], role = 'nom', position = 'middle', mood = 0.5) {
+        // Mood kontrollü ağırlıklar
+        const weights = this.getMoodWeights(mood);
+        const { α, β, γ, δ } = weights;
         
-        const scoredCandidates = candidates.map(word => {
+        // Önce adayları filtrele ve sanitize et
+        const validCandidates = candidates
+            .map(word => this.dynamicLexicon.sanitizeWord(word))
+            .filter(word => word && morphologyEngine.isValidWord(word))
+            .slice(0, 20); // Performans için sınırla
+        
+        if (validCandidates.length === 0) {
+            return candidates[0] || 'kelime';
+        }
+        
+        const scoredCandidates = validCandidates.map(word => {
             const wordCategory = this.getWordCategory(word);
             
-            const coherence = α * this.coherenceScore(word, contextEmbed, prevWords);
+            const coherence = α * this.coherenceScore(word, contextEmbed, prevWords, false);
             const info = β * this.infoScore(word);
             const surprisal = γ * this.surprisalScore(word, prevWords);
             const morphCompat = δ * this.morphCompatibilityScore(role, position, wordCategory);
@@ -369,7 +568,7 @@ class OptimizedScoringEngine {
             return { word, score: totalScore, details: { coherence, info, surprisal, morphCompat } };
         });
         
-        // Sort and return top beam width
+        // Sort and return top beam width  
         const topCandidates = scoredCandidates
             .sort((a, b) => b.score - a.score)
             .slice(0, this.beamWidth);
@@ -385,7 +584,7 @@ class OptimizedScoringEngine {
             }
         }
         
-        return topCandidates[0]?.word || candidates[0];
+        return topCandidates[0]?.word || validCandidates[0];
     }
     
     getWordCategory(word) {
@@ -415,11 +614,13 @@ class OptimizedScoringEngine {
             }
         }
         
-        return false;
+        // Levenshtein distance ile benzerlik kontrolü
+        return this.dynamicLexicon.levenshteinDistance(word1, word2) <= 2;
     }
 }
 
 const scoringEngine = new OptimizedScoringEngine();
+scoringEngine.setDynamicLexicon(dynamicLexicon);
 
 // ——————————————
 // 4. Advanced Sentence Composer with Punctuation & Style
@@ -518,7 +719,7 @@ class AdvancedSentenceComposer {
 const sentenceComposer = new AdvancedSentenceComposer();
 
 // ——————————————
-// 5. Enhanced Sentence Generation Engine
+// 5. Enhanced Sentence Generation Engine (Mood Kontrollü)
 // ——————————————
 async function generateEnhancedMorphSentence(contextEmbed = null, sentenceType = 'simple', options = {}) {
     const {
@@ -526,49 +727,50 @@ async function generateEnhancedMorphSentence(contextEmbed = null, sentenceType =
         complexity = 'medium',
         consciousness = 0.5,
         enableStyle = true,
-        enableComposition = true
+        enableComposition = true,
+        mood = 0.5
     } = options;
     
     const prevWords = [];
     let sentence = '';
     
+    // Mood kontrolü - düşük mood'da basit cümleler
+    if (mood < 0.3) {
+        sentenceType = 'simple';
+        enableComposition = false;
+    }
+    
     // Advanced sentence type selection
     const advancedTypes = ['compound', 'temporal', 'modal', 'intensive'];
-    if (enableComposition && Math.random() > 0.7 && complexity !== 'simple') {
+    if (enableComposition && Math.random() > 0.7 && complexity !== 'simple' && mood > 0.4) {
         sentenceType = sentenceComposer.randomChoice(advancedTypes);
     }
     
     switch (sentenceType) {
         case 'simple':
-            sentence = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone);
+            sentence = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone, mood);
             break;
         case 'complex':
-            sentence = await generateAdvancedComplexSentence(contextEmbed, prevWords, emotionalTone);
-            break;
-        case 'emotional':
-            sentence = await generateAdvancedEmotionalSentence(contextEmbed, prevWords, emotionalTone);
-            break;
-        case 'locative':
-            sentence = await generateAdvancedLocativeSentence(contextEmbed, prevWords, emotionalTone);
+            sentence = await generateAdvancedComplexSentence(contextEmbed, prevWords, emotionalTone, mood);
             break;
         case 'compound':
-            sentence = await generateCompoundSentence(contextEmbed, prevWords, emotionalTone);
+            sentence = await generateCompoundSentence(contextEmbed, prevWords, emotionalTone, mood);
             break;
         case 'temporal':
-            sentence = await generateTemporalSentence(contextEmbed, prevWords, emotionalTone);
+            sentence = await generateTemporalSentence(contextEmbed, prevWords, emotionalTone, mood);
             break;
         case 'modal':
-            sentence = await generateModalSentence(contextEmbed, prevWords, emotionalTone);
+            sentence = await generateModalSentence(contextEmbed, prevWords, emotionalTone, mood);
             break;
         case 'intensive':
-            sentence = await generateIntensiveSentence(contextEmbed, prevWords, emotionalTone);
+            sentence = await generateIntensiveSentence(contextEmbed, prevWords, emotionalTone, mood);
             break;
         default:
-            sentence = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone);
+            sentence = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone, mood);
     }
     
-    // Apply style modifications
-    if (enableStyle) {
+    // Apply style modifications (mood kontrollü)
+    if (enableStyle && mood > 0.3) {
         sentence = sentenceComposer.addStyleModifier(sentence, sentenceType);
     }
     
@@ -581,14 +783,15 @@ async function generateEnhancedMorphSentence(contextEmbed = null, sentenceType =
     return sentence;
 }
 
-// Enhanced sentence generation functions
-async function generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone) {
+// Enhanced sentence generation functions (Mood parametreli)
+async function generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone, mood = 0.5) {
     const subject = scoringEngine.beamSearchBest(
         dynamicLexicon.getWords('subjects'), 
         contextEmbed, 
         prevWords, 
         'nom', 
-        'start'
+        'start',
+        mood
     );
     prevWords.push(subject);
     
@@ -597,7 +800,8 @@ async function generateAdvancedSimpleSentence(contextEmbed, prevWords, emotional
         contextEmbed, 
         prevWords, 
         'acc', 
-        'middle'
+        'middle',
+        mood
     );
     const object = morphologyEngine.addCase(objectBase, 'acc');
     prevWords.push(object);
@@ -607,16 +811,17 @@ async function generateAdvancedSimpleSentence(contextEmbed, prevWords, emotional
         contextEmbed, 
         prevWords, 
         'nom', 
-        'end'
+        'end',
+        mood
     );
     prevWords.push(verb);
     
     return `${sentenceComposer.capitalize(subject)} ${object} ${verb}`;
 }
 
-async function generateCompoundSentence(contextEmbed, prevWords, emotionalTone) {
+async function generateCompoundSentence(contextEmbed, prevWords, emotionalTone, mood = 0.5) {
     // Generate two simple sentences and connect them
-    const sentence1 = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone);
+    const sentence1 = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone, mood);
     
     const conjunction = sentenceComposer.randomChoice(dynamicLexicon.getWords('conjunctions'));
     
@@ -626,7 +831,8 @@ async function generateCompoundSentence(contextEmbed, prevWords, emotionalTone) 
         contextEmbed, 
         prevWords, 
         'nom', 
-        'start'
+        'start',
+        mood
     );
     
     const objectBase2 = scoringEngine.beamSearchBest(
@@ -634,7 +840,8 @@ async function generateCompoundSentence(contextEmbed, prevWords, emotionalTone) 
         contextEmbed, 
         [...prevWords, subject2], 
         'acc', 
-        'middle'
+        'middle',
+        mood
     );
     const object2 = morphologyEngine.addCase(objectBase2, 'acc');
     
@@ -643,22 +850,23 @@ async function generateCompoundSentence(contextEmbed, prevWords, emotionalTone) 
         contextEmbed, 
         [...prevWords, subject2, object2], 
         'nom', 
-        'end'
+        'end',
+        mood
     );
     
     return `${sentence1}, ${conjunction} ${subject2} ${object2} ${verb2}`;
 }
 
-async function generateTemporalSentence(contextEmbed, prevWords, emotionalTone) {
+async function generateTemporalSentence(contextEmbed, prevWords, emotionalTone, mood = 0.5) {
     const temporal = sentenceComposer.randomChoice(dynamicLexicon.getWords('temporal'));
-    const baseSentence = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone);
+    const baseSentence = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone, mood);
     
     return `${sentenceComposer.capitalize(temporal)} ${baseSentence.toLowerCase()}`;
 }
 
-async function generateModalSentence(contextEmbed, prevWords, emotionalTone) {
+async function generateModalSentence(contextEmbed, prevWords, emotionalTone, mood = 0.5) {
     const modal = sentenceComposer.randomChoice(['belki', 'muhtemelen', 'kesinlikle', 'sanki', 'galiba']);
-    const baseSentence = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone);
+    const baseSentence = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone, mood);
     
     const words = baseSentence.split(' ');
     words.splice(1, 0, modal); // Insert after subject
@@ -666,9 +874,9 @@ async function generateModalSentence(contextEmbed, prevWords, emotionalTone) {
     return words.join(' ');
 }
 
-async function generateIntensiveSentence(contextEmbed, prevWords, emotionalTone) {
+async function generateIntensiveSentence(contextEmbed, prevWords, emotionalTone, mood = 0.5) {
     const intensity = sentenceComposer.randomChoice(dynamicLexicon.getWords('intensifiers'));
-    const baseSentence = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone);
+    const baseSentence = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone, mood);
     
     const words = baseSentence.split(' ');
     if (words.length >= 3) {
@@ -678,13 +886,14 @@ async function generateIntensiveSentence(contextEmbed, prevWords, emotionalTone)
     return words.join(' ');
 }
 
-async function generateAdvancedComplexSentence(contextEmbed, prevWords, emotionalTone) {
+async function generateAdvancedComplexSentence(contextEmbed, prevWords, emotionalTone, mood = 0.5) {
     const subject = scoringEngine.beamSearchBest(
         dynamicLexicon.getWords('subjects'), 
         contextEmbed, 
         prevWords, 
         'nom', 
-        'start'
+        'start',
+        mood
     );
     prevWords.push(subject);
     
@@ -693,7 +902,8 @@ async function generateAdvancedComplexSentence(contextEmbed, prevWords, emotiona
         contextEmbed, 
         prevWords, 
         'loc', 
-        'middle'
+        'middle',
+        mood
     );
     const location = morphologyEngine.addCase(locationBase, 'loc');
     prevWords.push(location);
@@ -703,7 +913,8 @@ async function generateAdvancedComplexSentence(contextEmbed, prevWords, emotiona
         contextEmbed, 
         prevWords, 
         'acc', 
-        'middle'
+        'middle',
+        mood
     );
     const object = morphologyEngine.addCase(objectBase, 'acc');
     prevWords.push(object);
@@ -713,7 +924,33 @@ async function generateAdvancedComplexSentence(contextEmbed, prevWords, emotiona
         contextEmbed, 
         prevWords, 
         'nom', 
-        'end'
+        'end',
+        mood
     );
     
-    return `${sentenceComposer.capitalize(subject)} ${location} ${object} ${verb}`
+    return `${sentenceComposer.capitalize(subject)} ${location} ${object} ${verb}`;
+}
+
+// ——————————————
+// 6. Export & Global Access
+// ——————————————
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        generateEnhancedMorphSentence,
+        dynamicLexicon,
+        morphologyEngine,
+        scoringEngine,
+        sentenceComposer
+    };
+}
+
+// Global access for browser
+if (typeof window !== 'undefined') {
+    window.generateEnhancedMorphSentence = generateEnhancedMorphSentence;
+    window.dynamicLexicon = dynamicLexicon;
+    window.morphologyEngine = morphologyEngine;
+    window.scoringEngine = scoringEngine;
+    window.sentenceComposer = sentenceComposer;
+}
+
+console.log('🚀 Enhanced Morphological Generator v2.7 loaded successfully! - Sıkılaştırılmış ve Filtrelenmiş');

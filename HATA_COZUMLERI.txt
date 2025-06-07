@@ -99,3 +99,79 @@ ENTEGRASYON:
         - "Sevgi kalpte yaşıyor."
 PROJE: mnBac Language Evolution Simulation v8.9.1
 NOT: Turkish morphological synthesis perfected! 🇹🇷🧬 
+
+=== NeoMag Bacteria Simulation - HATA ÇÖZÜMLERİ ===
+
+TARIH: 2024-12-19
+PROJE: NeoMag Bacteria Simulation v9.2.0
+DOSYA: src/engine/EnhancedMorphologicalGenerator.js
+
+HATA: Enhanced Morphological System v2.0 - Aşırı Morfolojik Bozulma ve Anlamsız Çıktılar
+----------------------------------------------------------------------
+
+SORUNLAR:
+1. **Aşırı morfolojik bozulma**: "hmmparlaklk", "ibirlii", "dzeyinde", "gsteren gsteren", "alglyorum" gibi anlamsız kelimeler
+2. **Anlamsal bağ kurulamıyor**: Cümleler anlamsız, dinleyici kayboluyor
+3. **Tutarsız şablon kullanımı**: Meta-şablonlar da anlamsız kelimelerle birleşince bütünlük kayboluyor
+4. **Kelime havuzuna filtre eksik**: Rastgele mutasyonlardan gelen bozuk strings kabul ediliyor
+5. **Morfoloji kuralları gevşek**: Ünlü uyumu ve ek kuralları çiğneniyor
+
+KÖKLER:
+- beamSearchBest() fonksiyonu kelime filtreleme yapmıyor
+- dynamicWords havuzuna bozuk kelimeler eklenebiliyor
+- coherenceScore ağırlığı düşük (α = 1.0)
+- Kelime sanitasyon yok
+- Türkçe morfoloji kontrolleri yetersiz
+
+ÇÖZÜM:
+1. ✅ Kelime havuzuna sanitization filter ekle - TAMAMLANDI
+2. ✅ Morfoloji kurallarını sıkılaştır - TAMAMLANDI
+3. ✅ Coherence ağırlığını artır (α = 2.5) - TAMAMLANDI
+4. ✅ Bozuk kelimeleri otomatik düzelt/ele - TAMAMLANDI
+5. ✅ Mood ve energy kontrolü ile absürd toleransı düşür - TAMAMLANDI
+
+ÇÖZÜM DETAYLARİ:
+- DynamicLexicon: sanitizeWord(), findClosestWord(), levenshteinDistance() fonksiyonları eklendi
+- TurkishMorphologyEngine: isValidWord(), invalidCombinations kontrolü eklendi
+- OptimizedScoringEngine: Mood-based weights (high/medium/low), coherence ağırlığı α=2.5/2.0/3.0
+- generateBacteriaResponse(): mood parametresi eklendi, contextEmbed ve options objesi
+- generatePeerMessage(): mood kontrolü ile Enhanced Morphological System v2.7 entegrasyonu
+
+SONUÇ: Artık anlamsız kelimeler ("hmmparlaklk", "alglyorum") üretilmeyecek, 
+       Türkçe morfoloji kuralları sıkı kontrol altında,
+       Düşük mood'da basit ve anlamlı cümleler,
+       Yüksek coherence skorları ile tutarlı diyaloglar
+
+STATUS: ✅ ÇÖZÜLDÜ - 2024-12-19
+
+----------------------------------------------------------------------
+
+TARIH: 2024-12-19
+PROJE: NeoMag Bacteria Simulation v9.2.0
+ÖZELLİK: İnteraktif Chat & Konuşma Balonları
+
+YENİ ÖZELLİKLER:
+1. ✅ Chat'te bakteri ismine tıklayınca seçim - TAMAMLANDI
+2. ✅ Konuşma balonlarında isim + mesaj gösterimi - TAMAMLANDI
+
+UYGULAMA DETAYLARİ:
+- addChatMessage(): Bacteria name'e click event listener eklendi
+- renderSpeechBubble(): İsim + mesaj layout, hover efektleri, click to select
+- showBacteriaDetails(): Chat'ten seçim için yeni fonksiyon
+- highlightSelectedBacteria(): Canvas'ta pulsing highlight efekti
+- Speech bubble design: Gradient background, border, hover animations
+- Click feedback: Color change, scale animation, border color transition
+
+ÖZELLİK DETAYLARİ:
+1. Chat'te bacteria name hover → blue highlight + underline
+2. Click → selected bacteria change + visual feedback (green color + bold)
+3. Speech bubble → isim + mesaj + click to select + hover zoom
+4. Canvas → pulsing green dashed circle highlight 3 saniye
+5. Otomatik chat mode değişimi → individual mode
+
+SONUÇ: Kullanıcı artık hem chat'ten hem speech bubble'dan bakterileri seçebilir,
+       Konuşan bakterilerin canvas'ta nerede olduğunu isim + baloncukla görebilir
+
+STATUS: ✅ TAMAMLANDI - 2024-12-19
+
+---------------------------------------------------------------------- 
