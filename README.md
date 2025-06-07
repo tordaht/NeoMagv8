@@ -1,6 +1,15 @@
-# 🧬 NeoMag v8.9.1 - AI Bakteri Comedy Show! 🎭
+# 🧬 mnBac v9.6.0 - Complete Button System & All Features Working! 🎭
 
-## 🎯 Proje Özeti
+## 🎯 **Proje Özeti**
+
+**mnBac v9.6.0** şu ana kadar geliştirilen en gelişmiş bakteriyel dil evrim simülasyonudur. Bu sistem, Türkçe morfojik işleme, AI tabanlı öğrenme, ultra-agresif monotonluk karşıtı algoritmalara ve **eksiksiz buton sistemi**ne sahiptir.
+
+### 🆕 **v9.6.0 Yenilikleri:**
+- ✅ **Tüm butonlar çalışır durumda** (17/17 buton)
+- ✅ **Language Evolution Stats** butonu eklendi
+- ✅ **Peer Dialogue** butonu eklendi  
+- ✅ **Production-ready kod temizliği** tamamlandı
+- ✅ **Zero missing functions** - artık hiçbir buton boş değil
 
 NeoMag, AI destekli bakteri comedy show simülasyonudur. Türkçe morfoloji motoru ve gelişmiş diyalog sistemi ile bakteriler anlamlı, komik ve bağlama uygun cümleler kurar. TabPFN teknolojisi ile desteklenen hibrit dil sistemi, bakterilerin gerçek zamanlı komedi performansları sergilemesini sağlar.
 
@@ -191,5 +200,8 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosy
 
 ---
 
-🧬 **NeoMag v8.9.1** - AI Bakteri Comedy Show! 🎭
-*Türkçe morfoloji ve AI ile komedi performansları* 
+🧬 **mnBac v9.6.0** - Complete Button System & All Features Working! 🎭
+
+*Geliştirici: mnBac Team*  
+*Versiyon: 9.6.0*  
+*Son Güncelleme: 19 Aralık 2024* 

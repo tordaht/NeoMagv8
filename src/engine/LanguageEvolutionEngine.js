@@ -1,3 +1,9 @@
+/**
+ * 🧬 mnBac v9.5.0 - Ultra-Aggressive Anti-Monotony Language Evolution Engine
+ * Production-Ready Maximum Diversity System
+ * Date: December 19, 2024
+ */
+
 // Language Evolution Engine - Enterprise v4.0 - Modular & Memory-Efficient
 import { tabPFNAdapter } from './TabPFNAdapter.js';
 import { wordSuccessTracker } from './WordSuccessTracker.js';
@@ -53,10 +59,13 @@ export class LanguageEvolutionEngine {
             await this.enhancedTabPFN.init();
             
             this.initialized = true;
-            console.log('✅ LanguageEvolutionEngine hazır! (Enhanced AI aktif)');
+            if (RUNTIME_CONFIG.DEV.ENABLE_DETAILED_LOGGING) {
+                console.log('✅ LanguageEvolutionEngine hazır! (Enhanced AI aktiv)');
+            }
             
         } catch (error) {
             console.error('❌ LanguageEvolutionEngine başlatılamadı:', error);
+            throw error;
         }
     }
 
@@ -65,7 +74,9 @@ export class LanguageEvolutionEngine {
         try {
             const response = await fetch('src/data/semantic_fields.json');
             this.semanticFields = await response.json();
-            console.log('🎯 Semantic fields yüklendi:', Object.keys(this.semanticFields));
+            if (RUNTIME_CONFIG.DEV.ENABLE_DETAILED_LOGGING) {
+                console.log('🎯 Semantic fields yüklendi:', Object.keys(this.semanticFields));
+            }
         } catch (error) {
             console.warn('⚠️ Semantic fields yüklenemedi, default kullanılıyor:', error);
             this._loadDefaultSemanticFields();
@@ -731,7 +742,9 @@ export class LanguageEvolutionEngine {
 
     // 🎯 Main API: Generate Contextual Response (Called by UI)
     async generateContextualResponse(bacteria, context, trigger = null) {
-        console.log(`🎯 LanguageEvolutionEngine.generateContextualResponse called for ${bacteria.name}`);
+        if (RUNTIME_CONFIG.DEV.ENABLE_DETAILED_LOGGING) {
+            console.log(`🎯 LanguageEvolutionEngine.generateContextualResponse called for ${bacteria.name}`);
+        }
         
         if (!this.initialized) {
             await this.init();
@@ -744,7 +757,9 @@ export class LanguageEvolutionEngine {
         const words = response.split(' ').filter(w => w && w.length > 2);
         this.adaptLanguageStyle(bacteria, true, context, words);
         
-        console.log(`🎭 Generated: "${response}" (Context: ${context})`);
+        if (RUNTIME_CONFIG.DEV.ENABLE_DETAILED_LOGGING) {
+            console.log(`🎭 Generated: "${response}" (Context: ${context})`);
+        }
         return response;
     }
 

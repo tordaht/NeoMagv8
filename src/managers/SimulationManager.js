@@ -1,8 +1,15 @@
-// Simulation Manager - Ana simülasyon kontrolü ve sistem entegrasyonu
+/**
+ * 🧬 mnBac v9.5.0 - Simulation Manager
+ * Ultra-Aggressive Anti-Monotony Language Evolution System
+ * Production-Ready Canvas & Interaction Management
+ * Date: December 19, 2024
+ */
+
 import { languageEvolutionEngine } from '@/engine/LanguageEvolutionEngine.js';
 import { tabPFNAdapter } from '@/engine/TabPFNAdapter.js';
 import { wordSuccessTracker } from '@/engine/WordSuccessTracker.js';
 import { getContextualWord, getSemanticFieldsStatus } from '@/utils/semanticFields.js';
+import { RUNTIME_CONFIG } from '../config/SystemConfig.js';
 
 export class SimulationManager {
     constructor() {

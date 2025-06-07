@@ -1,11 +1,14 @@
 /**
- * User Interaction Manager
- * Kullanıcıdan gelen mesajları niyet analizi ile işler ve uygun yanıtlar üretir
+ * 🧬 mnBac v9.5.0 - User Interaction Manager
+ * Ultra-Aggressive Anti-Monotony Language Evolution System
+ * Production-Ready User Input & Chat Management
+ * Date: December 19, 2024
  */
 
 import { languageEvolutionEngine } from '@/engine/LanguageEvolutionEngine.js';
 import { getContextualWord } from '@/utils/semanticFields.js';
 import { turkceDialogueGenerator } from '@/engine/TurkceDialogueGenerator.js';
+import { RUNTIME_CONFIG } from '../config/SystemConfig.js';
 
 export default class UserInteractionManager {
     constructor(simulationManager) {

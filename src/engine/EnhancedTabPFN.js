@@ -1,3 +1,9 @@
+/*
+ * mnBac v9.5.0 - Advanced AI Conversation System
+ * Ultra-Aggressive Anti-Monotony TabPFN Integration
+ * Production-Ready Version - December 19, 2024
+ */
+
 /**
  * 🧠 Enhanced TabPFN - Multi-Layer Prediction Engine
  * NeoMag v8.9.1 - Advanced AI Conversation System

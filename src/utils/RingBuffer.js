@@ -319,7 +319,9 @@ export class BufferManager {
 
             for (const [name, entry] of this.buffers.entries()) {
                 if (entry.autoCleanup && (now - entry.lastAccess) > threshold) {
-                    console.log(`🧹 Auto-cleaning unused buffer: ${name}`);
+                    if (RUNTIME_CONFIG.DEV.ENABLE_DETAILED_LOGGING) {
+                        console.log(`🧹 Auto-cleaning unused buffer: ${name}`);
+                    }
                     entry.buffer.clear();
                     this.buffers.delete(name);
                 }
@@ -358,7 +360,9 @@ export class BufferManager {
         for (const [name, entry] of this.buffers.entries()) {
             entry.buffer.clear();
         }
-        console.log('🧹 All buffers cleared');
+        if (RUNTIME_CONFIG.DEV.ENABLE_DETAILED_LOGGING) {
+            console.log('🧹 All buffers cleared');
+        }
     }
 
     // Shutdown manager

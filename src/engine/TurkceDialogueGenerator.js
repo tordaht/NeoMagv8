@@ -68,9 +68,9 @@ export class TurkceDialogueGenerator {
                 ]
             },
             absurd: {
-                subjects: ['dinozor', 'uzaylı', 'hipopotam', 'çaydanlık', 'bulut', 'robot', 'balık'],
+                subjects: ['uzaylı', 'hipopotam', 'çaydanlık', 'bulut', 'robot', 'balık', 'ejder'],
                 verbs: ['dans etmek', 'uçmak', 'hayal etmek', 'şarkı söylemek', 'düşlemek', 'ziplamak'],
-                objects: ['pizza', 'mikrofon', 'gözyaşı', 'gökkuşağı', 'mantık', 'çikolata', 'mıknatıs'],
+                objects: ['gözyaşı', 'gökkuşağı', 'mantık', 'çikolata', 'mıknatıs', 'müzik', 'sanat'],
                 adverbs: ['aniden', 'sessizce', 'komik bir şekilde', 'garip biçimde', 'sürreal olarak'],
                 templates: [
                     "{subj} {obj_acc} {adv} {verb_er}.",             // Dinozor pizzayı aniden dans eder.
@@ -136,7 +136,7 @@ export class TurkceDialogueGenerator {
     /**
      * Template'deki slotları doldur
      */
-    fillTemplate(template, field, bacteria) {
+    fillTemplate(template, field, bacteria, weightedSelection) {
         let sentence = template;
         const replacements = {};
         
@@ -151,7 +151,7 @@ export class TurkceDialogueGenerator {
         
         // Özne
         if (template.includes("{subj}")) {
-            const subject = this.weightedPick(combinedField.subjects, null, 'subject');
+            const subject = weightedSelection(combinedField.subjects);
             if (subject) {
                 replacements.subj = this.capitalize(subject);
             }
@@ -159,7 +159,7 @@ export class TurkceDialogueGenerator {
         
         // Fiil çekimleri
         if (template.includes("{verb")) {
-            const verbRoot = this.weightedPick(combinedField.verbs, null, 'verb');
+            const verbRoot = weightedSelection(combinedField.verbs);
             if (verbRoot) {
                 if (template.includes("{verb_yor}")) {
                     replacements.verb_yor = this.morphologyEngine.conjugateVerb(verbRoot, 'present_continuous');
@@ -183,7 +183,7 @@ export class TurkceDialogueGenerator {
         
         // Nesne halleri
         if (template.includes("{obj")) {
-            const objectRoot = this.weightedPick(combinedField.objects, null, 'object');
+            const objectRoot = weightedSelection(combinedField.objects);
             if (objectRoot) {
                 if (template.includes("{obj_acc}")) {
                     replacements.obj_acc = this.morphologyEngine.applyAdvancedSuffix(objectRoot, 'accusative');
@@ -201,7 +201,7 @@ export class TurkceDialogueGenerator {
         
         // Zarf
         if (template.includes("{adv}") && combinedField.adverbs.length > 0) {
-            const adverb = this.weightedPick(combinedField.adverbs, null, 'adverb');
+            const adverb = weightedSelection(combinedField.adverbs);
             if (adverb) {
                 replacements.adv = adverb;
             }

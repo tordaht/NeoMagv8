@@ -6,7 +6,7 @@
 class DynamicLexicon {
     constructor() {
         this.baseWords = {
-            subjects: ['bakteri', 'hücre', 'gezgin', 'dinozor', 'hayal', 'karınca', 'atom', 'kristal', 'çiçek', 'balık', 'ruh', 'zihin', 'kalp', 'nefes', 'yıldız', 
+            subjects: ['bakteri', 'hücre', 'gezgin', 'hayal', 'karınca', 'atom', 'çiçek', 'balık', 'ruh', 'zihin', 'kalp', 'nefes', 'yıldız', 
                       'elektron', 'proton', 'molekül', 'organizma', 'sistem', 'nesne', 'varlık', 'bilim', 'sanat', 'müzik', 'renk', 'ışık', 'ses', 'hareket',
                       'doğa', 'evren', 'galaksi', 'gezegen', 'uydu', 'güneş', 'ay', 'toprak', 'deniz', 'nehir', 'dağ', 'orman', 'ağaç', 'yaprak', 'meyve',
                       'hayvan', 'kuş', 'kedi', 'köpek', 'fil', 'kaplan', 'aslan', 'kartal', 'balina', 'yunus', 'kelebek', 'arı', 'böcek', 'solucan'],
@@ -15,7 +15,7 @@ class DynamicLexicon {
                    'öğreniyor', 'öğretiyor', 'araştırıyor', 'buluyor', 'yaratıyor', 'üretiyor', 'tasarlıyor', 'kurguluyor', 'hayali kuruyor', 'düşünüyor',
                    'seviyoг', 'nefret ediyor', 'kızıyor', 'gülüyor', 'ağlıyor', 'şarkı söylüyor', 'dans ediyor', 'oyunlar oynuyor', 'hikayeler anlatıyor',
                    'keşfediyor', 'geziyoг', 'maceralara atılıyor', 'savaşıyor', 'barış yapıyor', 'arkadaşlık kuruyor', 'işbirliği yapıyor', 'yarışıyor'],
-            objects: ['enerji', 'dna', 'pizza', 'mikrofon', 'düşünce', 'vitamin', 'mineral', 'şarkı', 'renk', 'koku', 'anı', 'gizem', 'umut', 'korku', 'sevgi',
+            objects: ['enerji', 'dna', 'düşünce', 'vitamin', 'mineral', 'şarkı', 'renk', 'koku', 'anı', 'gizem', 'umut', 'korku', 'sevgi',
                      'protein', 'karbohidrat', 'yağ', 'vitamin', 'enzim', 'hormon', 'antikor', 'gen', 'kromozom', 'ribozom', 'mitokondri', 'çekirdek',
                      'çikolata', 'dondurma', 'kek', 'kurabiye', 'meyve', 'sebze', 'et', 'balık', 'tavuk', 'süt', 'peynir', 'ekmek', 'pasta', 'şeker',
                      'kitap', 'film', 'oyun', 'müzik', 'resim', 'heykel', 'dans', 'tiyatro', 'şiir', 'hikaye', 'masal', 'efsane', 'rüya', 'hayal',
@@ -917,22 +917,7 @@ async function generateMorphDialogue(sentences = 3, contextEmbed = null) {
 // ——————————————
 // 9. Örnek Kullanım ve Test
 // ——————————————
-async function testMorphologicalGenerator() {
-  console.log('=== Morfolojik Diyalog Üretici Test ===\n');
-  
-  const sentenceTypes = ['simple', 'complex', 'emotional', 'locative'];
-  
-  for (const type of sentenceTypes) {
-    console.log(`${type.toUpperCase()} Cümle:`);
-    const sentence = await generateMorphSentence(null, type);
-    console.log(sentence);
-    console.log('');
-  }
-  
-  console.log('DIYALOG:');
-  const dialogue = await generateMorphDialogue(4);
-  console.log(dialogue);
-}
+// Test function moved to tests/MorphologicalDialogueGenerator.test.js
 
 // ——————————————
 // 🚀 Enhanced Generation Functions with All Improvements
@@ -1356,57 +1341,7 @@ function getMostFrequentEmotion(dialogueContext) {
     ) || 'neutral';
 }
 
-/**
- * Enhanced testing function with all new features
- */
-async function testEnhancedMorphologicalSystem() {
-    console.log('🚀 Enhanced Morphological System Test Starting...\n');
-    
-    // Test 1: Dynamic lexicon
-    console.log('1. 📚 Dynamic Lexicon Test:');
-    dynamicLexicon.addDynamicWord('subjects', 'rüya', 0.8);
-    dynamicLexicon.addDynamicWord('verbs', 'büyüleniyor', 0.9);
-    dynamicLexicon.addDynamicWord('objects', 'sihir', 0.7);
-    
-    console.log(`  Added dynamic words. Current subjects count: ${dynamicLexicon.getWords('subjects').length}`);
-    
-    // Test 2: Enhanced sentence generation
-    console.log('\n2. 🎭 Enhanced Sentence Generation:');
-    const sentenceTypes = ['simple', 'complex', 'emotional', 'compound', 'temporal', 'modal', 'intensive'];
-    
-    for (const type of sentenceTypes) {
-        const sentence = await generateEnhancedMorphSentence(null, type, {
-            emotionalTone: 'heyecanlı',
-            complexity: 'complex',
-            enableStyle: true,
-            enableComposition: true
-        });
-        console.log(`  ${type}: ${sentence}`);
-    }
-    
-    // Test 3: Enhanced dialogue
-    console.log('\n3. 💬 Enhanced Dialogue Generation:');
-    const dialogue = await generateEnhancedMorphDialogue(4, null, {
-        emotionalProgression: true,
-        narrativeCoherence: true,
-        styleDiversity: true
-    });
-    console.log(`  ${dialogue}`);
-    
-    // Test 4: Performance metrics
-    console.log('\n4. ⚡ Performance Test:');
-    const startTime = performance.now();
-    
-    for (let i = 0; i < 50; i++) {
-        await generateEnhancedMorphSentence(null, 'simple');
-    }
-    
-    const endTime = performance.now();
-    console.log(`  Generated 50 sentences in ${(endTime - startTime).toFixed(2)}ms`);
-    console.log(`  Average: ${((endTime - startTime) / 50).toFixed(2)}ms per sentence`);
-    
-    console.log('\n✅ Enhanced Morphological System Test Completed!');
-}
+// Test function moved to tests/EnhancedMorphologicalSystem.test.js
 
 // ——————————————
 // 10. Expanded Module Exports
@@ -1415,14 +1350,14 @@ export {
   // Original functions (backward compatibility)
   generateMorphSentence, 
   generateMorphDialogue, 
-  testMorphologicalGenerator,
+  // testMorphologicalGenerator, // Moved to tests
   addCase,
   LEXICON,
   
   // Enhanced functions
   generateEnhancedMorphSentence,
   generateEnhancedMorphDialogue,
-  testEnhancedMorphologicalSystem,
+  // testEnhancedMorphologicalSystem, // Moved to tests
   
   // Classes and engines
   DynamicLexicon,
