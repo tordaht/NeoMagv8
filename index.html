@@ -7573,33 +7573,8 @@
             }
         });
 
-        // Chat mode event listeners
-        document.getElementById('individualChatBtn').addEventListener('click', () => {
-            if (selectedBacteria) {
-                // v826: Use new modal system instead of old chat
-                openIndividualChatWindow(selectedBacteria);
-            } else {
-                alert('⚠️ Önce bir bakteri seçin. Bir bakteriye tıklayarak seçebilirsiniz.');
-            }
-        });
-
-        document.getElementById('groupChatBtn').addEventListener('click', () => {
-            setupGroupChat();
-        });
-
-        document.getElementById('startBacteriaConversationBtn').addEventListener('click', () => {
-            // v826: Manual trigger for natural conversation
-            if (bacteriaPopulation.length >= 2) {
-                const socialBacteria = bacteriaPopulation.filter(b => b.personality_traits.sociability > 0.3);
-                if (socialBacteria.length >= 2) {
-                    startNaturalBacteriaConversation(socialBacteria);
-                } else {
-                    console.log('⚠️ Not enough social bacteria for conversation');
-                }
-            } else {
-                console.log('⚠️ Need at least 2 bacteria for conversation');
-            }
-        });
+        // Legacy chat mode event listeners - DEPRECATED (moved to initializeChatSystem)
+        // These elements no longer exist in the new chat system
 
         // v829: High-Frequency Auto Bacteria Conversations for Dynamic Experience
         setInterval(() => {

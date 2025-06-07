@@ -248,6 +248,32 @@ Versiyon numaraları v9.5.0'a güncellendi:
 - ✅ LanguageEvolutionEngine.js: v9.5.0 header
 - ✅ DynamicLexicon.js: v9.5.0 header
 - ✅ SimulationManager.js: v9.5.0 header
+
+==================================================
+
+📅 TARİH: 07.06.2025 - 19:30
+🐛 HATA: Cannot read properties of null (reading 'addEventListener')
+📍 LOKASYON: index.html:7577 - Legacy chat event listeners
+💡 ÇÖZÜM: addEventListener null check eksikliği
+    - Legacy chat butonları (individualChatBtn, groupChatBtn, startBacteriaConversationBtn) HTML'de artık mevcut değil
+    - Bu legacy addEventListener kodlarını temizledim 
+    - initializeChatSystem() fonksiyonuna tüm null check'leri ekledim
+    - Eski chat sistemi tamamen kaldırıldı, yeni chat panel sistemi kullanılıyor
+    - DOM elementlerine addEventListener eklemeden önce null kontrolü yapılmalı!
+    
+🔧 DETAYLAR:
+    - v9.6.4'te chat sistemi tamamen yenilendi: tabbed chat system
+    - Eski popup chat pencereleri → Yan panel individual/group chat
+    - Legacy HTML elementleri kaldırıldı ama JavaScript'te referansları kalmış
+    - initializeChatSystem() fonksiyonu tüm yeni elementlere güvenli null-check addEventListener ekliyor
+    - Artık tüm chat işlevleri yeni sistem üzerinden çalışıyor
+
+⚠️ GELECEK UYARISI: 
+    - Herhangi bir DOM element'e addEventListener eklerken MUTLAKA null check yapın!
+    - Örnek: if (element) { element.addEventListener(...) } else { console.warn('Element bulunamadı') }
+    - Legacy kodları temizlerken JavaScript referanslarını da kontrol edin
+
+==================================================
 - ✅ UserInteractionManager.js: v9.5.0 header
 - ✅ Console log'lar: v9.5.0 mesajları
 
