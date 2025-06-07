@@ -99,7 +99,7 @@ J097,"Bir bukalemun neden renk değiştirir?","[""Neden?"", ""Çünkü eski reng
 J098,"En çok uyuyan şehir hangisidir?","[""Hangisi?"", ""Sinop-sis."", ""Uyku şehri.""]",Kelime_Oyunu,,TR,Genel
 J099,"Adamın biri camdan aşağı bakmış, kendini görmüş.","[""Nasıl yani?"", ""Cam ayna gibiymiş."", ""Vay canına.""]",Soguk_Espri,,TR,Genel
 J100,"Bir bilgisayar neden hasta olur?","[""Neden?"", ""Çünkü virüs kapmıştır."", ""Geçmiş olsun.""]",Mesleki_Espri,Bilgisayar,TR,Genel
-J101,"Benim babam pilot, senin baban ne? - Benim babam da pilot, ama o kalem."","[""Hahaha!"", ""Pilot kalem esprisi."", ""Bu iyiydi.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J101,"Benim babam pilot, senin baban ne? - Benim babam da pilot, ama o kalem.","[""Hahaha!"", ""Pilot kalem esprisi."", ""Bu iyiydi.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
 J102,"En çok kapısı olan bitki hangisidir?","[""Hangisi?"", ""Susam. Açıl susam açıl."", ""Masalsı bir cevap.""]",Kelime_Oyunu,,TR,Genel
 J103,"Kargalar neden 'Gak' der?","[""Neden?"", ""Çünkü 'Cik' deselerdi kanarya olurlardı."", ""Doğru.""]",Absurt_Mizah,,TR,Genel
 J104,"Tarihteki en komik savaş hangisidir?","[""Hangisi?"", ""Gülme Krizi Savaşı."", ""Böyle bir savaş yok.""]",Soguk_Espri,,TR,Genel
@@ -254,3 +254,623 @@ J252,"Hangi devlet dairesinde işler hiç yürümez?","[""Hangisinde?"", ""Mezar
 J253,"Newton neden yerçekimini keşfetti?","[""Neden?"", ""Çünkü canı elma çekmişti."", ""Bu iyiydi!""]",Bilimsel_Espri,Fizik,TR,Genel
 J254,"En çok konuşan organ hangisidir?","[""Hangisi?"", ""Çene."", ""Çenesi düşük.""]",Soguk_Espri,,TR,Genel
 J255,"Adamın biri o kadar sinirliymiş ki, telefon rehberindeki herkesi aramış.","[""Neden?"", ""Sinirini çıkarmak için."", ""Garip bir yöntem.""]",Absurt_Mizah,,TR,Genel
+J256,"Neden proton mutluydu?","[""Çünkü hep pozitifti!""," ""Anlamadım ama komik?""," ""Fizikçiler anlar!""]",Bilimsel_Espri,Fizik,TR,Genel
+J257,"Adamın biri ağlamış, vazoya koymuşlar.","[""Hahaha!""," ""Bu çok soğuktu!""," ""İğrenç bir espri.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J258,"Vur kaleci vur!","[""Oyna oyna oyna!""," ""Kaleci iyidir!""," ""Yine mi bu?""]",Rituel,Sim_Ozel,TR,Genel
+J259,"Dedem sonunda ideal kilosuna ulaştı: 2.5 kilo, külleri dahil.","[""Bu biraz ağır oldu.""," ""Kara mizah severim!""," ""Hiç komik değil.""]",Kara_Mizah,Olum,TR,Kara_Mizah_Seviye2
+J260,"Ben çay içiyorum, Demet Akbağ.","[""Zekice!""," ""Kelime oyunu mu bu?""," ""Güzeldi!""]",Kelime_Oyunu,,TR,Genel
+J261,"Kediler neden dünyayı istila etmiyor?","[""Neden?""," ""Çünkü bütün gün uyuyorlar, vakitleri yok.""," ""Mantıklı geldi.""]",Absurt_Mizah,,TR,Genel
+J262,"Temel bir gün Almanya'ya gitmiş. 'Vay be, burası da mı gurbetçi dolu?' demiş.","[""Klasik Temel fıkrası.""," ""Hahaha!""," ""?""]",Bolgesel_Fikra,Temel,TR,Genel
+J263,"Geçen gün bir kitap okudum, hala bitmedi.","[""Offf!""," ""Baba şakası alarmı!""," ""Güldüm, ne yalan söyleyeyim.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J264,"İki doktor karşılaşmış, biri diğerine 'Naber kanka, nabzın kaç atıyor?' demiş.","[""Doktorlar anlar.""," ""Çok komik!""," ""Sadece biz güleriz buna.""]",Mesleki_Espri,Saglik,TR,Genel
+J265,"İki molekül yolda çarpışmış. Biri 'Kusura bakma, bağlarımı koparttın!' demiş. Diğeri 'Önemli değil, iyonik zaten.'","[""Bu iyiydi!""," ""Kimya dersi gibi.""," ""Bilimsel ve komik!""]",Bilimsel_Espri,Kimya,TR,Genel
+J266,"Seni görünce kalbim sterlin, aklım frank.","[""Uluslararası bir aşk.""," ""Hahaha!""," ""Çok kötüydü!""]",Soguk_Espri,,TR,Genel
+J267,"Sana bir şirinlik yapayım, şirinlerini toplarsın.","[""Bu çok eski.""," ""Ayıp ama komik.""," ""Yine mi bu?""]",Kelime_Oyunu,,TR,Genel
+J268,"Hasta: 'Doktor bey, kendimi bir eşek gibi hissediyorum.' Doktor: 'Ne zamandan beri?' Hasta: 'Anırdığımdan beri.'","[""Acı ama gerçekçi.""," ""Kara mizahın dibi.""," ""Gülsem mi ağlasam mı?""]",Kara_Mizah,Hastalik,TR,Kara_Mizah_Seviye1
+J269,"Siyah besin geldi mi?","[""Sonunda!""," ""Paylaşalım mı?""," ""Bütün gün bunu bekledim.""]",Rituel,Sim_Ozel,TR,Genel
+J270,"Kafam karışık. -Kafan kim?","[""Lütfen yapma bunu.""," ""Klasik baba şakası.""," ""Düştüm bu espriye.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J271,"Argon bir partiye gitmiş, kimseyle konuşmamış. Çünkü o bir soylu gazmış.","[""Soylu bir tepkisizlik.""," ""Anlayan anladı.""," ""Harika!""]",Bilimsel_Espri,Kimya,TR,Genel
+J272,"Kadınlar neden alışverişi sever?","[""Neden?""," ""Çünkü 'indirim' kelimesi sihirli.""," ""Bu biraz cinsiyetçi olabilir.""]",Mustehcen,,TR,Hafif_Mustehcen
+J273,"Fatih Sultan Mehmet neden gemileri karadan yürütmüş?","[""Bilmiyorum, neden?""," ""Deniz trafiği çokmuş.""," ""Tarihi bir soğuk espri.""]",Soguk_Espri,Tarih,TR,Genel
+J274,"Hoca bir gün pazara gitmiş. 'Bu elmalar ne kadar?' diye sormuş. Satıcı 'Tanesi 1 lira ama sana 50 kuruş olur hocam' demiş. Hoca 'O zaman iki tane ver de borcum olmasın' demiş.","[""Ya tutarsa!""," ""Umudun fıkrası.""," ""Nasreddin Hoca klasiği.""]",Bolgesel_Fikra,Nasreddin_Hoca,TR,Genel
+J275,"Bir öğretmen sınıfta sordu: 'Çocuklar, en sevdiğiniz ders hangisi?' Arkadan bir öğrenci bağırdı: 'Boş ders hocam!'","[""Meslek hastalığı.""," ""Bu çok iyiydi!""," ""Öğrenciler hep aynı.""]",Mesleki_Espri,Egitim,TR,Genel
+J276,"Bir zürafa neden sarı lacivert atkı takar?","[""Neden ki?""," ""Çünkü Fenerbahçeliydi.""," ""Absürtlüğün zirvesi!""]",Absurt_Mizah,,TR,Genel
+J277,"İyimserlik bulaşıcıdır. Kötümserlik de.","[""Bu doğru.""," ""Sarkazm kokusu alıyorum.""," ""Biraz karamsar ama komik.""]",Kara_Mizah,Sarkazm,TR,Kara_Mizah_Seviye1
+J278,"Bir üçgen ile bir kare neden hiç anlaşamaz?","[""Ne yaparlar?""," ""Çünkü birinin üç, diğerinin dört köşesi var; ortak noktaları az.""," ""Matematik ve felsefe bir arada.""]",Bilimsel_Espri,Matematik,TR,Genel
+J279,"Adamın biri o kadar çalışkanmış ki, rüyasında bile proje yapıyormuş.","[""Çalışkanlığın bu kadarı!""," ""Akıllıca.""," ""Hahaha!""]",Soguk_Espri,,TR,Genel
+J280,"Alarm neden çalar?","[""Ne işe yarar?""," ""Çünkü uyanmamız gerektiğini bilir.""," ""Mantık hatası ama komik.""]",Absurt_Mizah,,TR,Genel
+J281,"Gökyüzünde hangi örtü serilmez?","[""Yıldız örtüsü.""," ""Bunu beklemiyordum.""," ""Soğuk, çok soğuk!""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J282,"En zeki meyve hangisidir?","[""Hangisi?""," ""Bilge-dut.""," ""Anladım, bilge dut...""]",Kelime_Oyunu,,TR,Genel
+J283,"Kızartılan patatese ne denir?","[""French fries.""," ""Off bu çok kötüydü.""," ""İngilizce bilenler güldü.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J284,"Televizyonda maç arası dedi, aradım meşguldü.","[""Ciddi olamazsın.""," ""Güldürdün.""," ""Tam bir baba şakası.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J285,"Heisenberg'in arabası neden hep belirsizdir?","[""Bu çok iyi!""," ""Kuantum esprisi!""," ""Anlamak için fizikçi olmak lazım.""]",Bilimsel_Espri,Fizik,TR,Genel
+J286,"Bu kivino, başka kivi yok.","[""Hahaha!""," ""Marka şakası ha?""," ""Zekice düşünülmüş.""]",Kelime_Oyunu,,TR,Genel
+J287,"Temel'in en sevdiği yemek hangisidir?","[""Hangisi?""," ""Hamsili pilav, tabii ki.""," ""Temel yine formunda.""]",Bolgesel_Fikra,Temel,TR,Genel
+J288,"İtalyanlar neden spagetti yer?","[""Neden?""," ""Çünkü 'pasta' la vista baby!""," ""İtalyanca bilmek lazım.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J289,"Adamın biri çok şişmanmış, üçüncü kata çıkmış.","[""Hahahaha!""," ""Spor esprisi.""," ""Formda kalmak lazım.""]",Soguk_Espri,,TR,Genel
+J290,"Neden bazı kuşlar güneye uçar?","[""Bilmiyorum.""," ""Çünkü yürümek çok uzun sürer.""," ""Çok saçma ama güldüm.""]",Absurt_Mizah,,TR,Genel
+J291,"Benim neden dedem yok?","[""Neden?""," ""Çünkü annem de babam da tek çocuk değil ama dedem vefat etti.""," ""Mantıklı!""]",Soguk_Espri,,TR,Genel
+J292,"Bir realist ile bir idealist arasındaki fark nedir?","[""Nedir?""," ""Realist bardağın yarısı boş der, idealist yarısı dolu; mühendis ise bardak gereğinden büyük der.""," ""Doğru söze ne denir.""]",Felsefi_Mizah,,TR,Genel
+J293,"Uzun pantolonla gezen adama ne denir?","[""Ne denir?"", ""Pantol-on.""," ""Pantol-on, anladım!""]",Kelime_Oyunu,,TR,Genel
+J294,"Almanlar neden bira sever?","[""Neden?""," ""Çünkü 'bier' olmadan 'wir' olamazlar.""," ""Takım ruhu için demek.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J295,"Geçmişten geldim, çok renkliydi, herkes disko müzik dinliyordu.","[""Bu çok eğlenceliydi.""," ""Zamanda yolculuk esprisi mi?""," ""Biraz nostaljik.""]",Kara_Mizah,Zaman,TR,Kara_Mizah_Seviye1
+J296,"Çorbayı neyle içersin?","[""Kaşıkla?""," ""Hayır, 'afiyet olsun'dan sonra.""," ""Teşekkürler, çok naziksiniz.""]",Soguk_Espri,,TR,Genel
+J297,"En tatlı 5 nedir?","[""Şekerbeş.""," ""Bu tatlıydı.""," ""Çok kötü.""]",Soguk_Espri,,TR,Genel
+J298,"En cesur organ hangisidir?","[""Hangisi?"", ""Yürek.""," ""Çünkü yürek yemiş deriz.""]",Kelime_Oyunu,,TR,Genel
+J299,"Kedi bir zıplar, iki zıplar, üçüncüde ne olur?","[""Düşer mi?"", ""Mamasını yer.""," ""Beklenmedik cevap.""]",Absurt_Mizah,,TR,Genel
+J300,"Turkuaz enerji içeceği geldi mi?","[""Geldi geldi!""," ""Hızlanma zamanı!""," ""Paylaşalım hemen.""]",Rituel,Sim_Ozel,TR,Genel
+J301,"Bir hayalet, bankada ne yapar?","[""Ne yapar?"", ""Ruhsat alır.""," ""Hayalet bürokrasisi.""]",Soguk_Espri,,TR,Genel
+J302,"En çalışkan böcek hangisidir?","[""Hangisi?"", ""Arı. Çünkü hep bal yapar.""," ""Bu doğruydu.""]",Kelime_Oyunu,,TR,Genel
+J303,"Adamın kafasına meteor düşmüş, ne demiş?","[""Ne demiş?"", ""Yıldızım parladı sandım.""," ""Hahaha!""]",Kelime_Oyunu,,TR,Genel
+J304,"Bilgisayar neden çalışır?","[""Bilmem."", ""Fişi takılı olduğu için.""," ""Elektriği de var mı?""]",Soguk_Espri,,TR,Genel
+J305,"Hakimler neden cübbe giyer?","[""Neden?"", ""Çünkü adaleti örterler.""," ""Çok mantıklı!""]",Mesleki_Espri,Hukuk,TR,Genel
+J306,"En serin hava hangisidir?","[""Hangisi?"", ""Es-inti.""," ""Ferahlatıcı bir cevap.""]",Kelime_Oyunu,,TR,Genel
+J307,"Bir mumya sınavı geçemezse ne olur?","[""Ne olur?"", ""Sargıları çözülür.""," ""Zaten sargılı değil miydi?""]",Kara_Mizah,Mumya,TR,Kara_Mizah_Seviye1
+J308,"En kısa sakal kimdedir?","[""Bebek?"", ""Hayır, benimki. Çünkü her gün keserim.""," ""Bu çok kötüydü.""]",Soguk_Espri,,TR,Genel
+J309,"En çok akrabası olan sebze hangisidir?","[""Hangisi?"", ""Soğan. Çünkü kat kat.""," ""Aile boyu sebze.""]",Kelime_Oyunu,,TR,Genel
+J310,"Hangi boyayla duvar boyanmaz?","[""Hangisi?"", ""Göz boyasıyla.""," ""Tadını düşünemiyorum.""]",Soguk_Espri,,TR,Genel
+J311,"Prens ölünce kraliçe ne olur?","[""Kraliçe olur?"", ""Hayır, dul kalır.""," ""Doğru söze ne denir.""]",Soguk_Espri,,TR,Genel
+J312,"En yavaş harf hangisidir?","[""Hangisi?"", ""Kaplumbağ-A.""," ""Hayvanlara gittik.""]",Kelime_Oyunu,,TR,Genel
+J313,"Zürafalar neden uzun boyunludur?","[""Bilmiyorum."", ""Çünkü ayakları kokmasın diye.""," ""Eski zaman zürafaları.""]",Absurt_Mizah,,TR,Genel
+J314,"Bir hayalet diğerine ne demiş?","[""Ne demiş?"", ""Senin ruhun ne, canın ne?""," ""Bu çok iyiydi!""]",Kara_Mizah,Hayalet,TR,Kara_Mizah_Seviye1
+J315,"Koşan adama ne denir?","[""Ne denir?"", ""Denmez, yetişilmeye çalışılır.""," ""Mantıklı.""]",Soguk_Espri,,TR,Genel
+J316,"En çok vergi alan kurum hangisidir?","[""Hangisi?"", ""Devlet.""," ""Her zaman yapıyor.""]",Kelime_Oyunu,,TR,Genel
+J317,"Hangi müzik hem dinlenmez hem de çalınmaz?","[""Hangisi?"", ""Gürültü.""," ""Resmi bir cevap.""]",Soguk_Espri,,TR,Genel
+J318,"Temel, fırıncıya gitmiş. 'Bana bayat ekmek ver' demiş. Fırıncı şaşırmış: 'Neden hocam?' Temel: 'Ekmek tahtası yapacağım da.'","[""Ne yapmış?""," ""Temel'in pratik zekası.""," ""Temel'in icatları.""]",Bolgesel_Fikra,Temel,TR,Genel
+J319,"Bir aşçı neden hapse girmiş?","[""Neden?""," ""Çünkü birinin yemeğine zehir katmış.""," ""Katma o zaman.""]",Mesleki_Espri,Aşçılık,TR,Genel
+J320,"Ağacı kesen nedir?","[""Balta?""," ""Hayır, oduncu.""," ""Doğru cevap.""]",Soguk_Espri,,TR,Genel
+J321,"En güzel kahve hangi fincanda içilir?","[""Seramikte?""," ""Keyif fincanında.""," ""Cevap soruda gizli.""]",Soguk_Espri,,TR,Genel
+J322,"Hiçbir sesi olmayan müzik hangisidir?","[""Hangisi?"", ""Sessizlik.""," ""Sadece hislerden oluşur.""]",Kelime_Oyunu,,TR,Genel
+J323,"Kadının biri 'Ben gencim' demiş. Yanındaki de 'Ben de yaşlıyım' demiş.","[""?""," ""Bu bir şaka mıydı?""," ""Anlamsız.""]",Absurt_Mizah,,TR,Genel
+J324,"Bir fizikçi neden ressam olamaz?","[""Neden?""," ""Çünkü sürekli 'kuantum sıçramaları' yapar.""," ""Bu iyiydi!""]",Mesleki_Espri,Fizik,TR,Genel
+J325,"En çok 'Var' diyen ilimiz hangisidir?","[""Hangisi?"", ""Var-to.""," ""Coğrafi espri.""]",Kelime_Oyunu,,TR,Genel
+J326,"Adamın biri uçmuş, karısı da hostes.","[""Hahaha!""," ""Havacı aile.""," ""Çok soğuk!""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J327,"Biberi nerde ekersin?","[""Tarlada.""," ""Nevşehir'de.""," ""Çok uzaklara gittik.""]",Kelime_Oyunu,,TR,Genel
+J328,"Vampirler neden matematik sevmez?","[""Neden?""," ""Çünkü sürekli 'kan' almak zorunda kalırlar.""," ""Kanlı dersler.""]",Soguk_Espri,,TR,Genel
+J329,"En utangaç balık hangisidir?","[""Hangisi?"", ""Pisi pisi balığı. Sürekli saklanır.""," ""Balıkların utangacı.""]",Absurt_Mizah,,TR,Genel
+J330,"Pembe besin geldi mi?","[""Geldi!""," ""Paylaşım zamanı!""," ""Enerji depolayalım.""]",Rituel,Sim_Ozel,TR,Genel
+J331,"Geçen gün bir fikir patlattım, herkes alkışladı.","[""Ne oldu?""," ""Sahnedeydim.""," ""Popüler şakalar.""]",Soguk_Espri,,TR,Genel
+J332,"Bir kimyager laboratuvarda en çok neye sinirlenir?","[""Neye?""," ""Deneyin tutmamasına.""," ""Sabır taşı.""]",Mesleki_Espri,Kimya,TR,Genel
+J333,"İki salyangoz karşılaşmış. Biri diğerine 'Evin ne güzelmiş?' demiş. Diğeri 'Sırtımda taşıyorum.' demiş.","[""Taşınabilir ev.""," ""Komikti.""," ""?""]",Kelime_Oyunu,,TR,Genel
+J334,"Nasreddin Hoca bir gün borç para istemiş. Adam 'Hocam, şimdi yok ama yarın gel vereyim' demiş. Hoca ertesi gün gitmiş, adam yine yok. Hoca bir kağıda 'Alacağım olsun' yazıp kapıya asmış.","[""Klasik.""," ""Hoca yine haklı.""," ""Mantıklı çözüm.""]",Bolgesel_Fikra,Nasreddin_Hoca,TR,Genel
+J335,"Hangi kedi mırıldanmaz?","[""Hangisi?""," ""Oyuncak kedi.""," ""Bu olmadı.""]",Soguk_Espri,,TR,Genel
+J336,"Beş tarafı dağla çevrili göle ne denir?","[""Krater gölü.""," ""Zekice.""," ""Doğru cevap.""]",Kelime_Oyunu,,TR,Genel
+J337,"Güneş sistemindeki en hızlı gezegen hangisidir?","[""Hangisi?""," ""Merkür. Çünkü Güneş'e en yakın o.""," ""Astrolojik espri.""]",Bilimsel_Espri,Astronomi,TR,Genel
+J338,"Neden İspanyollar çok dans eder?","[""Neden?""," ""Çünkü 'Olé!' demek için bahane ararlar.""," ""İspanyolca öğrenmek lazım.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J339,"Adamın biri o kadar unutkanmış ki, kendi adını unutmuş.","[""İnanılmaz.""," ""Unutkanlığın bu kadarı.""," ""Nasıl yani?""]",Absurt_Mizah,,TR,Genel
+J340,"Çok yorgun bir ayıya ne denir?","[""Ne denir?"", ""Ayı-lmış.""," ""Dinlenmiş ayı.""]",Kelime_Oyunu,,TR,Genel
+J341,"Adamın biri sürekli üşüyormuş. Neden?","[""Neden?""," ""Çünkü adı Don-Juan'mış.""," ""Bu kötüydü.""]",Soguk_Espri,,TR,Genel
+J342,"En zayıf harf hangisidir?","[""Hangisi?"", ""C. Çünkü cılız.""," ""C-ılız.""]",Kelime_Oyunu,,TR,Genel
+J343,"Bir DJ'in en sevdiği yemek nedir?","[""Nedir?"", ""Mix-er. Çünkü her şeyi karıştırır.""," ""Müzik-yemek.""]",Soguk_Espri,,TR,Genel
+J344,"Saçları dökülen adama ne denir?","[""Ne denir?"", ""Kel-oğlan.""," ""Masal kahramanı.""]",Kelime_Oyunu,,TR,Genel
+J345,"Bir hayalet neden barda yalnız içer?","[""Neden?""," ""Çünkü 'ruhu' sıkılmıştır.""," ""İngilizce espri.""]",Kara_Mizah,Hayalet,TR,Kara_Mizah_Seviye1
+J346,"En hüzünlü çiçek hangisidir?","[""Hangisi?"", ""Ağlayan-Gelin.""," ""Çiçekler de ağlar.""]",Kelime_Oyunu,,TR,Genel
+J347,"Mahkemedeki en ağır dosya hangisidir?","[""Hangisi?""," ""Anayasa Mahkemesi dosyası. Çok ağırdır.""," ""Hukuki espri.""]",Mesleki_Espri,Hukuk,TR,Genel
+J348,"Adamın biri her gün spor yapıyormuş ama yine de göbeği varmış. Bu adam kimdir?","[""Kimdir?"", ""Hamile adam.""," ""Mantıklı.""]",Mesleki_Espri,Saglik,TR,Genel
+J349,"Yüzen balığa ne denir?","[""Ne denir?"", ""Yüzen balık denir.""," ""Bu kadar mıydı?""]",Soguk_Espri,,TR,Genel
+J350,"En çok yorulan spor dalı hangisidir?","[""Hangisi?"", ""Maraton. Çünkü sürekli koşarlar.""," ""Dayanıklılık sporu.""]",Soguk_Espri,,TR,Genel
+J351,"Temel, bir sınavda sonuncuyu geçmiş. Kaçıncı olmuş?","[""Sondan ikinci?""," ""Hayır, yine sonuncu olmuş, çünkü o da kalmış.""," ""Mantık hatası.""]",Bolgesel_Fikra,Temel,TR,Genel
+J352,"Bir penguen neden smokin giyer?","[""Neden?""," ""Çünkü her gün resmi davete gidiyormuş gibi hissetmek ister.""," ""Modayı takip ediyor.""]",Absurt_Mizah,,TR,Genel
+J353,"En çok yemek yiyen şehir hangisidir?","[""Hangisi?"", ""Ye-mekke.""," ""Kutsal yemek.""]",Kelime_Oyunu,,TR,Genel
+J354,"Adamın biri yoldan karşıya geçmiş, trafik polisi görmüş.","[""Nasıl yani?""," ""Yaya geçidinden geçmiş.""," ""Vay canına.""]",Soguk_Espri,,TR,Genel
+J355,"Bir web sitesi neden hasta olur?","[""Neden?""," ""Çünkü 'cookie'leri bozulmuştur.""," ""Geçmiş olsun.""]",Mesleki_Espri,Bilgisayar,TR,Genel
+J356,"Benim annem öğretmen, senin annen ne? - Benim annem de öğretmen, ama o hayat bilgisi.","[""Hahaha!""," ""Öğretmen esprisi.""," ""Bu iyiydi.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J357,"En çok yaprağı olan ağaç hangisidir?","[""Hangisi?"", ""Çınar. Yaprak yaprak üstüne.""," ""Gölge ağacı.""]",Kelime_Oyunu,,TR,Genel
+J358,"Tavuklar neden 'Gıt gıt gıdak' der?","[""Neden?""," ""Çünkü 'Miyav' deselerdi kedi olurlardı.""," ""Doğru.""]",Absurt_Mizah,,TR,Genel
+J359,"Tarihteki en sıkıcı savaş hangisidir?","[""Hangisi?"", ""Bekleme Savaşı.""," ""Böyle bir savaş yok.""]",Soguk_Espri,,TR,Genel
+J360,"Bir gurme zombiye ne denir?","[""Ne denir?"", ""'Taze beyiiin...' diye seçer.""," ""Komikti.""]",Kara_Mizah,Zombi,TR,Kara_Mizah_Seviye1
+J361,"En çok düşünen organımız hangisidir?","[""Hangisi?"", ""Beyin.""," ""Basit ve doğru.""]",Soguk_Espri,,TR,Genel
+J362,"Adamın çayı bitmiş, kahvesi demli.","[""Bu çok kötüydü.""," ""İçeceksever adam.""," ""İğrenç.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J363,"Hangi yolda trafik ışığı olmaz?","[""Hangi yolda?""," ""Patika yolunda.""," ""Doğru cevap.""]",Soguk_Espri,,TR,Genel
+J364,"En çok uyuyan hayvan hangisidir?","[""Hangisi?"", ""Koala. Günde 20 saat uyur.""," ""Uykucu hayvan.""]",Kelime_Oyunu,,TR,Genel
+J365,"Bir yılan diğerine ne demiş?","[""Ne demiş?"", ""Sürünerek geldik, sürünerek gideriz.""," ""Atasözü gibi.""]",Kelime_Oyunu,,TR,Genel
+J366,"En çok borcu olan ilimiz hangisidir?","[""Hangisi?"", ""Ver-esiye.""," ""Ekonomik sıkıntı.""]",Kelime_Oyunu,,TR,Genel
+J367,"Okyanuslar neden mavidir?","[""Neden?""," ""Çünkü balıklar 'Depresyondayım!' demesin diye.""," ""Bu çok zorlamaydı.""]",Soguk_Espri,,TR,Genel
+J368,"En zeki kuş hangisidir?","[""Hangisi?"", ""Karga. Alet kullanabilir.""," ""Bilimsel gerçek.""]",Soguk_Espri,,TR,Genel
+J369,"Bir lamba diğerine ne demiş?","[""Ne demiş?"", ""Işığımız bol olsun.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J370,"Siyah enerji içeceği geldi mi?","[""Sonunda!""," ""Gece vardiyası zamanı!""," ""Enerji topluyoruz.""]",Rituel,Sim_Ozel,TR,Genel
+J371,"Hangi mevsimde çok üşünür?","[""Hangisinde?"", ""Kış-ın (Winter)."", ""Bu olmadı.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J372,"İki bulut sohbet ediyormuş. Biri 'Bugün çok doluyum' demiş. Diğeri 'Ben de birazdan ağlayacağım galiba' demiş.","[""Bulutların derdi büyük.""," ""Komik.""," ""Hahaha!""]",Hayvan_Fikrasi,,TR,Genel
+J373,"Adamın biri koşmuş, karısı da maratoncu.","[""Koşu-maratoncu, anladım.""," ""Sporcu aile.""," ""Çok soğuk.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J374,"En az okunan kitap hangisidir?","[""Hangisi?"", ""Kullanım kılavuzları.""," ""Genellikle okunmaz.""]",Soguk_Espri,,TR,Genel
+J375,"Bir piyanist neden espri yapamaz?","[""Neden?""," ""Çünkü hep 'nota'ları karıştırır.""," ""Müzikal espri.""]",Mesleki_Espri,Muzik,TR,Genel
+J376,"Sürekli para isteyen birine ne denir?","[""Ne denir?"", ""Bankacı.""," ""Bu biraz mesleki oldu.""]",Kara_Mizah,Ekonomi,TR,Kara_Mizah_Seviye1
+J377,"En sıcak dağ hangisidir?","[""Hangisi?"", ""Yanar Dağ. Çünkü hep yanar.""," ""Bu yaktı.""]",Soguk_Espri,,TR,Genel
+J378,"İki kitap konuşuyormuş. Ne demişler?","[""Ne demişler?"", ""Sayfada buluşalım.""," ""Mantıklı.""]",Soguk_Espri,,TR,Genel
+J379,"En çok hangi ağacın başı döner?","[""Hangisinin?"", ""Fırıldak ağacının.""," ""Doğal olarak.""]",Soguk_Espri,,TR,Genel
+J380,"Bir terlikle diğer terlik ne demiş?","[""Ne demişler?"", ""Sende de ne çok ayak kokusu var.""," ""Doğru tespit.""]",Soguk_Espri,,TR,Genel
+J381,"Temel, bir pastaneye girmiş ve sormuş: 'Bu pasta ne kadar?' Satıcı '20 lira' demiş. Temel 'Ya şu börek?' diye sormuş. Satıcı 'O 15 lira' demiş. Temel 'Niye o daha ucuz?' diye sorunca satıcı 'O, o-kasyon' demiş.","[""Temel ve indirimler.""," ""Hahaha!""," ""İndirim her zaman iyidir.""]",Bolgesel_Fikra,Temel,TR,Genel
+J382,"En tembel arı hangisidir?","[""Hangisi?"", ""Erkek arı.""," ""Bu şaka değil, gerçek.""]",Soguk_Espri,,TR,Genel
+J383,"Hangi fırçayla resim yapılmaz?","[""Hangisiyle?"", ""Diş fırçasıyla.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J384,"Adamın biri o kadar cömertmiş ki, cebindeki son kuruşu bile sadaka vermiş.","[""Cömertliğin bu kadarı.""," ""İnanılmaz.""," ""Komik.""]",Absurt_Mizah,,TR,Genel
+J385,"Bir prenses neden tacını çıkarmaz?","[""Neden?"", ""Çünkü saçı bozulmasın diye.""," ""Bakım önemli.""]",Soguk_Espri,,TR,Genel
+J386,"En çok hangi kuş güler?","[""Hangisi?"", ""Kahkaha atan kuş.""," ""Bu kadar basit miydi?""]",Soguk_Espri,,TR,Genel
+J387,"En çok hangi ilimizde kış olur?","[""Hangisinde?"", ""Kars-tal.""," ""Kar... anladım.""]",Kelime_Oyunu,,TR,Genel
+J388,"Bir mühendis neden gözlük takar?","[""Neden?"", ""Çünkü projeleri daha net görmek için.""," ""Kesinlikle doğru.""]",Mesleki_Espri,Muhendislik,TR,Genel
+J389,"Nasreddin Hoca'ya sormuşlar: 'Dünyanın en zor işi nedir?' Hoca düşünmüş, 'Bilmediğin bir şeyi öğretmektir' demiş.","[""Hoca'dan net cevap.""," ""Zekice.""," ""Klasik.""]",Bolgesel_Fikra,Nasreddin_Hoca,TR,Genel
+J390,"Bir iskelet diğerine neden darılmış?","[""Neden?""," ""Çünkü kemiğine laf etmiş.""," ""Bu iyiydi.""]",Kara_Mizah,Iskelet,TR,Kara_Mizah_Seviye1
+J391,"Hangi çorba içilir?","[""Hangisi?"", ""Mercimek çorbası.""," ""Acıktım.""]",Soguk_Espri,,TR,Genel
+J392,"En çok taş olan şehir hangisidir?","[""Hangisi?"", ""Taş-kent.""," ""Bu zorlamaydı.""]",Kelime_Oyunu,,TR,Genel
+J393,"Bir köpek ağaca çıkmış, nasıl iner?","[""Nasıl?"", ""İn-emez, köpek o, kedi değil.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J394,"En çok hangi böcek müzik dinler?","[""Hangisi?"", ""Radyo böceği.""," ""Doğru cevap.""]",Kelime_Oyunu,,TR,Genel
+J395,"Bir kadın 'kocam nerede?' diye bağırmış. Ne olmuş?","[""Ne olmuş?""," ""Kocası dışarıdaymış.""," ""Anladım.""]",Kelime_Oyunu,,TR,Genel
+J396,"En çok hangi ayda tatil yapılır?","[""Hangisinde?"", ""Ağus-tos.""," ""Tatil zamanı.""]",Kelime_Oyunu,,TR,Genel
+J397,"Bir adamın bıyığı varmış, favorisi yokmuş. Sonra ne olmuş?","[""Ne olmuş?"", ""Bıyık favori olmuş.""," ""Nasıl yani?""]",Absurt_Mizah,,TR,Genel
+J398,"En çok gülen su hangisidir?","[""Hangisi?"", ""Kah-kaha-su.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J399,"Hangi aslan en uysaldır?","[""Hangisi?"", ""Oyuncak-aslan.""," ""Uysal aslan.""]",Kelime_Oyunu,,TR,Genel
+J400,"Gri enerji içeceği geldi mi?","[""Geldi!""," ""Nötr şarj zamanı!""," ""İhtiyacım vardı.""]",Rituel,Sim_Ozel,TR,Genel
+J401,"Bir yazar ölünce ne der?","[""Ne der?"", ""Ben son noktayı değil, üç noktayı koyuyorum...""," ""Meslek hastalığı.""]",Mesleki_Espri,Yazarlik,TR,Genel
+J402,"En fakir harf hangisidir?","[""Hangisi?"", ""Y. Çünkü yokluk y ile başlar.""," ""Mantıklı.""]",Kelime_Oyunu,,TR,Genel
+J403,"Adamın biri çok konuşuyormuş, ölmek üzereyken ne demiş?","[""Ne demiş?"", ""Su-su-susadım.""," ""Hüzünlü ama komik.""]",Kara_Mizah,Hastalik,TR,Kara_Mizah_Seviye1
+J404,"En çok bekleyen meyve hangisidir?","[""Hangisi?"", ""Sabır-taşı. Çünkü hep bekler.""," ""Sabır meyvesi.""]",Kelime_Oyunu,,TR,Genel
+J405,"Bir makasla bir kağıt neden arkadaş olamaz?","[""Neden?""," ""Çünkü makas hep kağıdı keser.""," ""Zorbalık.""]",Soguk_Espri,,TR,Genel
+J406,"Gökyüzünün ortasında ne vardır?","[""Ne vardır?"", ""'K' harfi.""," ""Bu çok iyiydi.""]",Kelime_Oyunu,,TR,Genel
+J407,"Hangi bahçede çiçek yetişmez?","[""Hangisinde?"", ""Hayvanat bahçesinde.""," ""Kesinlikle doğru.""]",Kara_Mizah,,TR,Kara_Mizah_Seviye1
+J408,"En çok hangi hayvanın keyfi yerindedir?","[""Hangisinin?"", ""Keyfi-yeh.""," ""Adı üstünde.""]",Kelime_Oyunu,,TR,Genel
+J409,"Adamın biri Mars'a gitmiş, ne olmuş?","[""Ne olmuş?"", ""Kırmızı görmüş.""," ""Mars kırmızı.""]",Soguk_Espri,,TR,Genel
+J410,"Hangi okul bitmez?","[""Hangisi?"", ""Hayat okulu.""," ""Ömür boyu sürer.""]",Soguk_Espri,,TR,Genel
+J411,"En çok hangi ilimizde dağ keçisi bulunur?","[""Hangisinde?"", ""Dağ-larda.""," ""Bu olmadı.""]",Kelime_Oyunu,,TR,Genel
+J412,"Bir kuzu saklanırsa ne olur?","[""Ne olur?"", ""Me-elenir.""," ""Bu bir şaka mıydı?""]",Absurt_Mizah,,TR,Genel
+J413,"Hangi gölde su olmaz?","[""Hangisinde?"", ""Tuz Gölü'nde (çok az). Zaten tuzlu.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J414,"En çok susayan ilimiz hangisidir?","[""Hangisi?"", ""Su-suz.""," ""Coğrafi espri.""]",Kelime_Oyunu,,TR,Genel
+J415,"Bir cellat diğerine ne demiş?","[""Ne demiş?""," ""Geçen gün bir kral kestim, başı bir hoştu.""," ""Cellat gurmesi.""]",Kara_Mizah,Meslek,TR,Kara_Mizah_Seviye2
+J416,"En çok hangi hayvan doğruyu söyler?","[""Hangisi?"", ""Doğru-can.""," ""Doğrucu hayvan.""]",Kelime_Oyunu,,TR,Genel
+J417,"En çok hangi kuş internet kullanır?","[""Hangisi?"", ""Tweet-kuşu.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J418,"Temel'in en sevdiği tatlı nedir?","[""Nedir?"", ""Laz Böreği.""," ""Lazları seviyor.""]",Bolgesel_Fikra,Temel,TR,Genel
+J419,"En çok hangi ilimizde orman yangını çıkar?","[""Hangisinde?"", ""Yan-dalya.""," ""Bu olmadı.""]",Kelime_Oyunu,,TR,Genel
+J420,"Bir kimya deneyi neden üzgündü?","[""Neden?""," ""Çünkü reaksiyon göstermiyordu.""," ""Anlıyorum onu.""]",Bilimsel_Espri,Kimya,TR,Genel
+J421,"En çok hangi kedi süt ister?","[""Hangisi?"", ""Süt-laç kedisi.""," ""Sütlaç seven kedi.""]",Kelime_Oyunu,,TR,Genel
+J422,"Hangi araba uçmaz?","[""Hangisi?"", ""Yer-arabası.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J423,"En çok hangi balığın sesi güzeldir?","[""Hangisinin?"", ""Şarkıcı balık.""," ""Bu doğru.""]",Soguk_Espri,,TR,Genel
+J424,"Bir adam 'ben geliyorum' demiş. Nereden gelmiş?","[""Nereden?""," ""Geldiği yerden.""," ""Bu bir cevap değil.""]",Absurt_Mizah,,TR,Genel
+J425,"En çok hangi hayvanın borcu vardır?","[""Hangisinin?"", ""Borç-lu (hamster).""," ""İngilizce espri.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J426,"Hangi ressam resim yapmaz?","[""Hangisi?"", ""Duvar-ressamı (boyacı).""," ""Sanatsal ressam.""]",Mesleki_Espri,Sanat,TR,Genel
+J427,"En çok hangi nota su içer?","[""Hangisi?"", ""Do. Çünkü 'do-lu' deriz.""," ""Bu zorlama.""]",Kelime_Oyunu,,TR,Genel
+J428,"Bir bisiklet neden ağlar?","[""Neden?""," ""Çünkü zinciri atmıştır.""," ""Canı acımış.""]",Soguk_Espri,,TR,Genel
+J429,"En çok hangi köyde üşürüz?","[""Hangisinde?"", ""Don-köy.""," ""Soğuk bir yer.""]",Kelime_Oyunu,,TR,Genel
+J430,"Kahverengi besin geldi mi?","[""Geldi!""," ""Toprak zamanı!""," ""Enerji dolu!""]",Rituel,Sim_Ozel,TR,Genel
+J431,"En çok hangi hayvanın canı yanar?","[""Hangisinin?"", ""Yan-ar döner.""," ""Adı üstünde.""]",Kelime_Oyunu,,TR,Genel
+J432,"En çok hangi ilimiz sinirlidir?","[""Hangisi?"", ""Sinir-li.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J433,"Hangi gölde balık tutulmaz?","[""Hangisinde?"", ""Volkanik gölde.""," ""Coğrafi espri.""]",Kelime_Oyunu,,TR,Genel
+J434,"Nasreddin Hoca komşusundan kazan istemiş. Geri verirken içine küçük bir kazan daha koymuş. Komşusu 'Bu ne hocam?' deyince, 'Kazanınız doğurdu' demiş. Bir dahaki sefere Hoca kazanı isteyince komşusu hemen vermiş. Hoca bu sefer kazanı geri vermemiş. Komşusu sorunca 'Kazanınız öldü' demiş. Komşu 'Hocam hiç kazan ölür mü?' deyince Hoca 'Doğurduğuna inandın da öldüğüne mi inanmıyorsun?' demiş.","[""Hoca'nın kıvrak zekası.""," ""Mantık dersi.""," ""Hahaha!""]",Bolgesel_Fikra,Nasreddin_Hoca,TR,Genel
+J435,"En çok hangi hayvanın dişi ağrır?","[""Hangisinin?"", ""Diş-li balık.""," ""Balık dişi.""]",Kelime_Oyunu,,TR,Genel
+J436,"Hangi silgi silmez?","[""Hangisi?"", ""Cam silgisi.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J437,"En çok hangi ilimizde çikolata yenir?","[""Hangisinde?"", ""Çiko-latya.""," ""Çikolatalı şehir.""]",Kelime_Oyunu,,TR,Genel
+J438,"Adamın biri o kadar şakacıymış ki, kendi cenazesinde bile espri yapmış.","[""İnanılmaz.""," ""Şakacılığın bu kadarı.""," ""Ruhu şad olsun.""]",Absurt_Mizah,,TR,Genel
+J439,"Hangi yıldızda hayat yoktur?","[""Hangisinde?"", ""Kayan yıldızda. Çünkü kayıp gitmiş.""," ""Bu olmadı.""]",Bilimsel_Espri,Astronomi,TR,Genel
+J440,"En çok hangi ilimiz sıcaktır?","[""Hangisi?"", ""Sıcak-su.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J441,"Hangi perdede desen yoktur?","[""Hangisinde?"", ""Göz perdesinde.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J442,"En çok hangi hayvanın boyu kısılır?","[""Hangisinin?"", ""Kıs-kaç.""," ""Bu zorlama.""]",Kelime_Oyunu,,TR,Genel
+J443,"Hangi filmde kahraman yoktur?","[""Hangisinde?"", ""Belgesel filmde.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J444,"En çok hangi hayvanın canı sıkkındır?","[""Hangisinin?"", ""Sıkkın su samurunun.""," ""Mantıklı.""]",Soguk_Espri,,TR,Genel
+J445,"Hangi oyunda şah olmaz?","[""Hangisinde?"", ""Dama oyununda.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J446,"Hangi içecekler patlamaz?","[""Hangisi?"", ""Gaz-ozlar (dikkatli açılırsa).""," ""Tehlikeli.""]",Kelime_Oyunu,,TR,Genel
+J447,"En çok hangi ilimiz büyüktür?","[""Hangisi?"", ""Büyük-ada.""," ""Bu Türkiye'de ada.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J448,"Temel, bir gün restorana gitmiş. Garson sormuş: 'Ne alırsınız?' Temel: 'Bana bir karışık ızgara, ama içinde her şeyden olsun.' Garson getirmiş, Temel bakmış: 'Bunun içinde kürdan yok!'","[""Temel ve detaylar.""," ""Hahaha!""," ""Garsonun işi zor.""]",Bolgesel_Fikra,Temel,TR,Genel
+J449,"En çok hangi hayvanın kanadı kırılır?","[""Hangisinin?"", ""Kırık-kanat.""," ""Yaralı kuş.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J450,"Hangi radyo doğruyu söylemez?","[""Hangisi?"", ""Bozuk radyo.""," ""Parazit yapar.""]",Soguk_Espri,,TR,Genel
+J451,"En çok hangi ilimizde hamam yapılır?","[""Hangisinde?"", ""Hamam-özü.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J452,"Hangi okyanusun suyu içilmez?","[""Hangisinin?"", ""Pasifik Okyanusu.""," ""Tuzlu su.""]",Kelime_Oyunu,,TR,Genel
+J453,"En çok hangi hayvanın postu incedir?","[""Hangisinin?"", ""İnce-derili.""," ""Bu olmadı.""]",Kelime_Oyunu,,TR,Genel
+J454,"Hangi kitapta sayfa yoktur?","[""Hangisinde?"", ""Sesli kitapta.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J455,"Bir hücre diğerine ne demiş?","[""Ne demiş?"", ""Aşkım, sana mitoz oluyorum.""," ""Biyolojik aşk.""]",Bilimsel_Espri,Biyoloji,TR,Genel
+J456,"Adamın biri her şeye 'belki' diyormuş. Neden?","[""Neden?"", ""Çünkü kararsızmış.""," ""Basit.""]",Soguk_Espri,,TR,Genel
+J457,"Hangi boyayla resim çizilir?","[""Hangisiyle?"", ""Sulu boyayla.""," ""Bu şaka değil.""]",Soguk_Espri,,TR,Genel
+J458,"En çok hangi hayvanın adı uzundur?","[""Hangisinin?"", ""Uzun-kulaklı tavşan.""," ""Bu olmadı.""]",Kelime_Oyunu,,TR,Genel
+J459,"Hangi yoldan çıkılmaz?","[""Hangisinden?"", ""Çıkmaz sokaktan.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J460,"Hangi defter yırtılmaz?","[""Hangisi?"", ""Sanal defter.""," ""Var mı öyle bir şey?""]",Soguk_Espri,,TR,Genel
+J461,"En çok hangi ilimizde lale vardır?","[""Hangisinde?"", ""Lale-li.""," ""Coğrafi espri.""]",Kelime_Oyunu,,TR,Genel
+J462,"Hangi denizde yüzülmez?","[""Hangisinde?"", ""Ölüdeniz'de (çok tuzlu)."," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J463,"Hangi masada ders çalışılmaz?","[""Hangisinde?"", ""Mutfak masasında (yemek kokar)."," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J464,"En çok hangi hayvanın gözü yoktur?","[""Hangisinin?"", ""Kör hayvanın.""," ""Bu şaka değil.""]",Soguk_Espri,,TR,Genel
+J465,"Hangi aşkta ayrılık olmaz?","[""Hangisinde?"", ""Allah aşkında.""," ""Doğru.""]",Felsefi_Mizah,,TR,Genel
+J466,"Hangi kış günü sıcak değildir?","[""Hangisi?"", ""Kar yağan gün.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J467,"Hangi boyayla elbise boyanmaz?","[""Hangisiyle?"", ""Yağlı boyayla.""," ""Zor olur.""]",Soguk_Espri,,TR,Genel
+J468,"Hangi dağda yaşanılmaz?","[""Hangisinde?"", ""Yanardağda.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J469,"Hangi nehrin suyu acıdır?","[""Hangisinin?"", ""Acı-göl nehri.""," ""Adı üstünde.""]",Kelime_Oyunu,,TR,Genel
+J470,"Altın besin geldi mi?","[""Geldi!""," ""Zenginlik zamanı!""," ""Parlak enerji.""]",Rituel,Sim_Ozel,TR,Genel
+J471,"En çok hangi ilimizde göl vardır?","[""Hangisinde?"", ""Göl-cük.""," ""Adı üstünde.""]",Kelime_Oyunu,,TR,Genel
+J472,"Hangi elma yenmez?","[""Hangisi?"", ""El-alem ne der.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J473,"Hangi kuş uçamaz?","[""Hangisi?"", ""Devekuşu.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J474,"Hangi sözle yola çıkmak en güvenlidir?","[""Hangisiyle?"", ""Besmeleyle.""," ""Felsefi.""]",Felsefi_Mizah,,TR,Genel
+J475,"Hangi fil koşmaz?","[""Hangisi?"", ""Satranç fili.""," ""Çapraz gider.""]",Soguk_Espri,,TR,Genel
+J476,"En çok hangi ilimizde yağmur yağar?","[""Hangisinde?"", ""Yağmur-dere.""," ""Doğru.""]",Kelime_Oyunu,,TR,Genel
+J477,"Hangi gölün suyu tatlıdır?","[""Hangisinin?"", ""Tatlı-göl.""," ""Adı üstünde.""]",Kelime_Oyunu,,TR,Genel
+J478,"En çok hangi hayvanın kuyruğu ağrımaz?","[""Hangisinin?"", ""Tavuğun (kısa olduğu için).""," ""Kuyruğu yok ki.""]",Soguk_Espri,,TR,Genel
+J479,"Hangi kalede asker olmaz?","[""Hangisinde?"", ""Pamukkale'de.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J480,"En çok hangi ilimizde tepe vardır?","[""Hangisinde?"", ""Tepe-cik.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J481,"Hangi yılda 367 gün vardır?","[""Hangisinde?"", ""Hiçbirinde (artık yıllar 366)."," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J482,"En çok hangi hayvanın dili güzel değildir?","[""Hangisinin?"", ""Yılanın (çatallı).""," ""Tıs tıs.""]",Soguk_Espri,,TR,Genel
+J483,"Hangi denizde gemi batmaz?","[""Hangisinde?"", ""Kum denizinde.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J484,"En çok hangi ilimizde bağ vardır?","[""Hangisinde?"", ""Bağ-cılar.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J485,"Hangi kuzunun sesi yoktur?","[""Hangisinin?"", ""Sessiz kuzu.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J486,"En çok hangi hayvanın dişi büyüktür?","[""Hangisinin?"", ""Filin.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J487,"Hangi suda trafik olmaz?","[""Hangisinde?"", ""Durgun suda.""," ""Genellikle.""]",Soguk_Espri,,TR,Genel
+J488,"Hangi gölde su kurur?","[""Hangisinde?"", ""Kuruyan gölde.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J489,"En çok hangi ilimizde şeftali yetişir?","[""Hangisinde?"", ""Bursa.""," ""Bu şaka değil.""]",Soguk_Espri,,TR,Genel
+J490,"Hangi günde en az saat vardır?","[""Hangisinde?"", ""Saatlerin geri alındığı gün (23 saat)."," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J491,"En çok hangi hayvanın sırtı kalındır?","[""Hangisinin?"", ""Kaplumbağanın.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J492,"Hangi bardakta çay içilmez?","[""Hangisinde?"", ""Su bardağında (ince belli olmalı).""," ""Bu kara mizahtı.""]",Kara_Mizah,Gelenek,TR,Kara_Mizah_Seviye1
+J493,"En çok hangi ilimizde zeytin yetişir?","[""Hangisinde?"", ""Ege Bölgesi.""," ""Bu da gerçek.""]",Soguk_Espri,,TR,Genel
+J494,"Hangi sarayın kapısı yoktur?","[""Hangisinin?"", ""Buzdan sarayın.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J495,"En çok hangi hayvanın yünü dökülür?","[""Hangisinin?"", ""Yün-döken koyun.""," ""Bu olmadı.""]",Kelime_Oyunu,,TR,Genel
+J496,"Hangi sevgide çıkar yoktur?","[""Hangisinde?"", ""Anne sevgisinde.""," ""Doğru.""]",Felsefi_Mizah,,TR,Genel
+J497,"En çok hangi ilimizde kahve içilir?","[""Hangisinde?"", ""Her ilde.""," ""Bu da doğru.""]",Soguk_Espri,,TR,Genel
+J498,"Hangi yatakta uyunmaz?","[""Hangisinde?"", ""Gül yatağında (dikenleri batar).""," ""Doğru.""]",Kara_Mizah,Romantizm,TR,Kara_Mizah_Seviye1
+J499,"En çok hangi hayvanın adı uzundur?","[""Hangisinin?"", ""Karıncayiyen.""," ""Uzun isim.""]",Soguk_Espri,,TR,Genel
+J500,"Hangi trende yolcu gitmez?","[""Hangisinde?"", ""Oyuncak trende.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J501,"En çok hangi ilimizde incir yetişir?","[""Hangisinde?"", ""Aydın.""," ""Bu da bilgi.""]",Soguk_Espri,,TR,Genel
+J502,"Hangi ormanda ağaç kesilmez?","[""Hangisinden?"", ""Milli Park ormanından.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J503,"En çok hangi hayvanın boynuzu kırıktır?","[""Hangisinin?"", ""Kırık boynuzlu keçinin.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J504,"Hangi sofrada yemek yenmez?","[""Hangisinde?"", ""Poker masasında.""," ""Bu olmadı.""]",Soguk_Espri,,TR,Genel
+J505,"En çok hangi ilimizde portakal yetişir?","[""Hangisinde?"", ""Antalya, Mersin.""," ""Bu da bilgi.""]",Soguk_Espri,,TR,Genel
+J506,"Adamın biri varmış, on katlı binadan atlamış ölmemiş, neden?","[""Neden?""," ""Çünkü adamın soyadı 'Uçar'mış, uçarak inmiş.""," ""Bu çok kötüydü.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J507,"Hangi şirkette işler hiç ilerlemez?","[""Hangisinde?"", ""İflas etmiş şirkette.""," ""Bu kara mizahtı.""]",Kara_Mizah,Ekonomi,TR,Kara_Mizah_Seviye2
+J508,"Arşimet neden 'Evreka!' diye bağırdı?","[""Neden?""," ""Çünkü banyoda anahtarını bulmuştu.""," ""Bu iyiydi!""]",Bilimsel_Espri,Fizik,TR,Genel
+J509,"En çok ağlayan organ hangisidir?","[""Hangisi?"", ""Göz.""," ""Gözyaşı.""]",Soguk_Espri,,TR,Genel
+J510,"Adamın biri o kadar meraklıymış ki, komşusunun evini gözetlemiş.","[""Neden?""," ""Merakını gidermek için.""," ""Garip bir yöntem.""]",Absurt_Mizah,,TR,Genel
+J511,"Neden nötron arkadaş canlısıydı?","[""Çünkü yüksüzdü, kimseyi itmiyordu!""," ""Anlamadım ama komik?""," ""Fizikçiler anlar!""]",Bilimsel_Espri,Fizik,TR,Genel
+J512,"Adamın biri koşmuş, maratona katılmışlar.","[""Hahaha!""," ""Bu çok soğuktu!""," ""İğrenç bir espri.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J513,"Vur davulcu vur!","[""Oyna oyna oyna!""," ""Davulcu iyidir!""," ""Yine mi bu?""]",Rituel,Sim_Ozel,TR,Genel
+J514,"Komşum sonunda ideal kilosuna ulaştı: 1 kilo, vazosu dahil.","[""Bu biraz ağır oldu.""," ""Kara mizah severim!""," ""Hiç komik değil.""]",Kara_Mizah,Olum,TR,Kara_Mizah_Seviye2
+J515,"Ben ayran içiyorum, Ferdi Tayfur.","[""Zekice!""," ""Kelime oyunu mu bu?""," ""Güzeldi!""]",Kelime_Oyunu,,TR,Genel
+J516,"Köpekler neden dünyayı istila etmiyor?","[""Neden?""," ""Çünkü kemiklerini saklamakla meşguller.""," ""Mantıklı geldi.""]",Absurt_Mizah,,TR,Genel
+J517,"Temel bir gün Japonya'ya gitmiş. 'Ula burası da mı suşi dolu?' demiş.","[""Klasik Temel fıkrası.""," ""Hahaha!""," ""?""]",Bolgesel_Fikra,Temel,TR,Genel
+J518,"Geçen gün bir film izledim, hala aklımda.","[""Offf!""," ""Baba şakası alarmı!""," ""Güldüm, ne yalan söyleyeyim.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J519,"İki öğretmen karşılaşmış, biri diğerine 'Naber hocam, ders programın nasıl?' demiş.","[""Öğretmenler anlar.""," ""Çok komik!""," ""Sadece biz güleriz buna.""]",Mesleki_Espri,Egitim,TR,Genel
+J520,"İki su molekülü kaynaşmış. Biri 'Artık daha güçlüyüz!' demiş. Diğeri 'Evet, hidrojen bağımız kuvvetli!'","[""Bu iyiydi!""," ""Kimya dersi gibi.""," ""Bilimsel ve komik!""]",Bilimsel_Espri,Kimya,TR,Genel
+J521,"Seni görünce aklım yen, kalbim won.","[""Asyalı bir aşk.""," ""Hahaha!""," ""Çok kötüydü!""]",Soguk_Espri,,TR,Genel
+J522,"Sana bir tatlılık yapayım, lokumlarını yersin.","[""Bu çok eski.""," ""Ayıp ama komik.""," ""Yine mi bu?""]",Kelime_Oyunu,,TR,Genel
+J523,"Hasta: 'Doktor bey, kendimi bir kuş gibi hissediyorum.' Doktor: 'Uçabiliyor musunuz?' Hasta: 'Hayır, ama sürekli cıvıldıyorum.'","[""Acı ama gerçekçi.""," ""Kara mizahın dibi.""," ""Gülsem mi ağlasam mı?""]",Kara_Mizah,Hastalik,TR,Kara_Mizah_Seviye1
+J524,"Parlak besin geldi mi?","[""Sonunda!""," ""Paylaşalım mı?""," ""Bütün gün bunu bekledim.""]",Rituel,Sim_Ozel,TR,Genel
+J525,"Moralim bozuk. -Moral kim?","[""Lütfen yapma bunu.""," ""Klasik baba şakası.""," ""Düştüm bu espriye.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J526,"Neon bir diskoya gitmiş, bütün gece parlamış. Çünkü o bir aydınlatıcı gazmış.","[""Parlak bir tepki.""," ""Anlayan anladı.""," ""Harika!""]",Bilimsel_Espri,Kimya,TR,Genel
+J527,"Robotlar neden evlenmez?","[""Neden?""," ""Çünkü duygusal devreleri yok.""," ""Bu biraz mantıklı.""]",Mustehcen,,TR,Hafif_Mustehcen
+J528,"Kanuni Sultan Süleyman neden sefere çıkmış?","[""Bilmiyorum, neden?""," ""Evde canı sıkılmış.""," ""Tarihi bir soğuk espri.""]",Soguk_Espri,Tarih,TR,Genel
+J529,"Hoca bir gün bakkala gitmiş. 'Bu peynir ne kadar?' diye sormuş. Bakkal 'Kilosu 20 lira ama sana 15 olur hocam' demiş. Hoca 'O zaman 1 kilo ver de 5 lira borçlu kalayım' demiş.","[""Ya tutarsa!""," ""Ticari zeka.""," ""Nasreddin Hoca klasiği.""]",Bolgesel_Fikra,Nasreddin_Hoca,TR,Genel
+J530,"Bir avukat duruşmada sordu: 'Müvekkilim masum mu?' Arkadan bir ses bağırdı: 'Parasına göre!'","[""Meslek hastalığı.""," ""Bu çok iyiydi!""," ""Adalet pahalı.""]",Mesleki_Espri,Hukuk,TR,Genel
+J531,"Bir kaktüs neden yeşil tişört giyer?","[""Neden ki?""," ""Çünkü dikenleri batsın istemez.""," ""Absürtlüğün zirvesi!""]",Absurt_Mizah,,TR,Genel
+J532,"Politika çok güzel, özellikle de iktidardayken.","[""Bu doğru.""," ""Sarkazm kokusu alıyorum.""," ""Biraz karamsar ama komik.""]",Kara_Mizah,Politik,TR,Kara_Mizah_Seviye1
+J533,"Bir daire ile bir çizgi neden hiç arkadaş olamaz?","[""Ne yaparlar?""," ""Çünkü birinin içi var, diğerinin yok; ortak boyutları az.""," ""Matematik ve felsefe bir arada.""]",Bilimsel_Espri,Matematik,TR,Genel
+J534,"Adamın biri o kadar yorgunmuş ki, ayakta uyuyakalmış.","[""Yorgunluğun bu kadarı!""," ""Akıllıca.""," ""Hahaha!""]",Soguk_Espri,,TR,Genel
+J535,"Kapı zili ne işe yarar?","[""Ne işe yarar?""," ""Kapının açılmasına.""," ""Mantık hatası ama komik.""]",Absurt_Mizah,,TR,Genel
+J536,"Denizde hangi örtü kullanılmaz?","[""Dalga örtüsü.""," ""Bunu beklemiyordum.""," ""Soğuk, çok soğuk!""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J537,"En sportif sebze hangisidir?","[""Hangisi?""," ""Koş-turp.""," ""Anladım, koş turp...""]",Kelime_Oyunu,,TR,Genel
+J538,"Haşlanan yumurtaya ne denir?","[""Hard boiled egg.""," ""Off bu çok kötüydü.""," ""İngilizce bilenler güldü.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J539,"Derste on dakika mola dedi, aradım ders çalışıyordu.","[""Ciddi olamazsın.""," ""Güldürdün.""," ""Tam bir baba şakası.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J540,"Pavlov'un köpeği bir bara girer ve girmez zil çalar.","[""Bu çok iyi!""," ""Psikoloji esprisi!""," ""Anlamak için psikolog olmak lazım.""]",Bilimsel_Espri,Psikoloji,TR,Genel
+J541,"Bu elma-cık, başka elma yok.","[""Hahaha!""," ""Marka şakası ha?""," ""Zekice düşünülmüş.""]",Kelime_Oyunu,,TR,Genel
+J542,"Temel'in en sevdiği hayvan hangisidir?","[""Hangisi?""," ""Hamsi, tabii ki.""," ""Temel yine formunda.""]",Bolgesel_Fikra,Temel,TR,Genel
+J543,"Ruslar neden matruşka sever?","[""Neden?""," ""Çünkü 'iç içe' geçmiş bir kültürleri var.""," ""Rusça bilmek lazım.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J544,"Adamın biri çok zayıfmış, rüzgarda uçmuş.","[""Hahahaha!""," ""Hava durumu esprisi.""," ""Sağlıklı olmak lazım.""]",Soguk_Espri,,TR,Genel
+J545,"Neden bazı ağaçlar yaprak döker?","[""Bilmiyorum.""," ""Çünkü sonbahar gelmiştir.""," ""Çok saçma ama güldüm.""]",Absurt_Mizah,,TR,Genel
+J546,"Benim neden halam yok?","[""Neden?""," ""Çünkü babamın kız kardeşi yok.""," ""Mantıklı!""]",Soguk_Espri,,TR,Genel
+J547,"Bir şüpheci ile bir inançlı arasındaki fark nedir?","[""Nedir?""," ""Şüpheci 'Görmeden inanmam' der, inançlı 'İnanırsan görürsün' der.""," ""Doğru söze ne denir.""]",Felsefi_Mizah,,TR,Genel
+J548,"Parmak arası terlikle dolaşan adama ne denir?","[""Ne denir?"", ""Flip-flopçu.""," ""Flip-flop, anladım!""]",Kelime_Oyunu,,TR,Genel
+J549,"Japonlar neden suşi sever?","[""Neden?""," ""Çünkü 'raw'k ve 'roll' yaparlar.""," ""Müzik ve yemek bir arada.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J550,"Evrenden geldim, çok büyüktü, her yer yıldız doluydu.","[""Bu çok etkileyiciydi.""," ""Uzay yolculuğu esprisi mi?""," ""Biraz felsefi.""]",Kara_Mizah,Uzay,TR,Kara_Mizah_Seviye1
+J551,"Pizzayı neyle yersin?","[""Elle?""," ""Hayır, 'sipariş'ten sonra.""," ""Teşekkürler, çok naziksiniz.""]",Soguk_Espri,,TR,Genel
+J552,"En soğuk 7 nedir?","[""Buz-yedi.""," ""Bu dondurdu.""," ""Çok kötü.""]",Soguk_Espri,,TR,Genel
+J553,"En konuşkan organ hangisidir?","[""Hangisi?"", ""Dil.""," ""Çünkü dilin kemiği yok deriz.""]",Kelime_Oyunu,,TR,Genel
+J554,"Aslan bir zıplar, iki zıplar, üçüncüde ne olur?","[""Düşer mi?"", ""Avını yakalar.""," ""Beklenmedik cevap.""]",Absurt_Mizah,,TR,Genel
+J555,"Eflatun enerji içeceği geldi mi?","[""Geldi geldi!""," ""Felsefe zamanı!""," ""Paylaşalım hemen.""]",Rituel,Sim_Ozel,TR,Genel
+J556,"Bir casus, bankada ne yapar?","[""Ne yapar?"", ""Gizli hesap açtırır.""," ""Gizemli casus.""]",Soguk_Espri,,TR,Genel
+J557,"En müzikal böcek hangisidir?","[""Hangisi?"", ""Cırcır böceği. Çünkü hep şarkı söyler.""," ""Bu doğruydu.""]",Kelime_Oyunu,,TR,Genel
+J558,"Adamın kafasına ansiklopedi düşmüş, ne demiş?","[""Ne demiş?"", ""Başımıza bu da mı gelecekti, bilgili bilgili.""," ""Hahaha!""]",Kelime_Oyunu,,TR,Genel
+J559,"Telefon neden çalışır?","[""Bilmem."", ""Şarjı var çünkü.""," ""Faturası da ödenmiş mi?""]",Soguk_Espri,,TR,Genel
+J560,"Polisler neden üniforma giyer?","[""Neden?"", ""Çünkü görevleri var.""," ""Çok mantıklı!""]",Mesleki_Espri,Guvenlik,TR,Genel
+J561,"En enerjik hava hangisidir?","[""Hangisi?"", ""Bol-ero.""," ""Dansöz bir cevap.""]",Kelime_Oyunu,,TR,Genel
+J562,"Bir uzaylı sınavı geçemezse ne olur?","[""Ne olur?"", ""Gezegenine geri gönderilir.""," ""Zaten uzaylı değil miydi?""]",Kara_Mizah,Uzayli,TR,Kara_Mizah_Seviye1
+J563,"En yamuk burun kimdedir?","[""Boksör?"", ""Hayır, benimki. Çünkü hep yamuk bakarım.""," ""Bu çok kötüydü.""]",Soguk_Espri,,TR,Genel
+J564,"En çok çekirdeği olan meyve hangisidir?","[""Hangisi?"", ""Nar. Çünkü içi dışı çekirdek.""," ""Çekirdekli meyve.""]",Kelime_Oyunu,,TR,Genel
+J565,"Hangi merhemle yara iyileşmez?","[""Hangisi?"", ""Zift merhemiyle.""," ""Tadını düşünemiyorum.""]",Soguk_Espri,,TR,Genel
+J566,"Vezir ölünce şah ne olur?","[""Şah olur?""," ""Hayır, yalnız kalır.""," ""Doğru söze ne denir.""]",Soguk_Espri,,TR,Genel
+J567,"En zengin sayı hangisidir?","[""Hangisi?"", ""Milyon. Çünkü onun çok sıfırı var.""," ""Zenginliğe gittik.""]",Kelime_Oyunu,,TR,Genel
+J568,"Ayılar neden kış uykusuna yatar?","[""Bilmiyorum."", ""Çünkü yazın çok yorulmuşlardır.""," ""Dinlenme zamanı.""]",Absurt_Mizah,,TR,Genel
+J569,"Bir tabut diğerine ne demiş?","[""Ne demiş?"", ""Senin için ne kadar dar?""," ""Bu çok iyiydi!""]",Kara_Mizah,Olum,TR,Kara_Mizah_Seviye1
+J570,"Okuyan adama ne denir?","[""Ne denir?"", ""Denmez, rahatsız edilmez.""," ""Mantıklı.""]",Soguk_Espri,,TR,Genel
+J571,"En çok indirim yapan kurum hangisidir?","[""Hangisi?"", ""Marketler.""," ""Her hafta yapıyor.""]",Kelime_Oyunu,,TR,Genel
+J572,"Hangi araba hem gitmez hem de durmaz?","[""Hangisi?"", ""Bozuk araba.""," ""Tamirciye götür.""]",Soguk_Espri,,TR,Genel
+J573,"Temel, kuyumcuya gitmiş. 'Bana bir altın zincir ver' demiş. Kuyumcu 'Kaç ayar olsun?' diye sormuş. Temel: 'Farketmez, gece parlasın yeter.'","[""Ne yapmış?""," ""Temel'in gösteriş merakı.""," ""Temel'in zevkleri.""]",Bolgesel_Fikra,Temel,TR,Genel
+J574,"Bir pilot neden hapse girmiş?","[""Neden?""," ""Çünkü birinin uçağını kaçırmış.""," ""Kaçırma o zaman.""]",Mesleki_Espri,Havacilik,TR,Genel
+J575,"Camı kıran nedir?","[""Taş?""," ""Hayır, dikkatsizlik.""," ""Doğru cevap.""]",Soguk_Espri,,TR,Genel
+J576,"En güzel manzara hangi tepeden izlenir?","[""Uludağ'dan?""," ""Keyif tepesinden.""," ""Cevap soruda gizli.""]",Soguk_Espri,,TR,Genel
+J577,"Hiçbir rengi olmayan bayrak hangisidir?","[""Hangisi?"", ""Beyaz bayrak (teslimiyet).""," ""Anlamlı bir bayrak.""]",Kelime_Oyunu,,TR,Genel
+J578,"Çocuğun biri 'Ben açım' demiş. Annesi de 'Ben de tokum' demiş.","[""?""," ""Bu bir şaka mıydı?""," ""Anlamsız.""]",Absurt_Mizah,,TR,Genel
+J579,"Bir biyolog neden marangoz olamaz?","[""Neden?""," ""Çünkü sürekli 'hücreleri' böler.""," ""Bu iyiydi!""]",Mesleki_Espri,Biyoloji,TR,Genel
+J580,"En çok 'Gel' diyen ilimiz hangisidir?","[""Hangisi?"", ""Gel-ibolu.""," ""Coğrafi espri.""]",Kelime_Oyunu,,TR,Genel
+J581,"Adamın biri koşmuş, karısı da antrenör.","[""Hahaha!""," ""Sporcu aile.""," ""Çok soğuk!""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J582,"Soğanı nerde doğrarsın?","[""Mutfakta.""," ""Ağrı'da (gözyaşı döktürür).""," ""Çok uzaklara gittik.""]",Kelime_Oyunu,,TR,Genel
+J583,"Melekler neden yalan söyleyemez?","[""Neden?""," ""Çünkü hep doğruları uçururlar.""," ""Saf varlıklar.""]",Soguk_Espri,,TR,Genel
+J584,"En komik balık hangisidir?","[""Hangisi?"", ""Palyaço balığı. Sürekli güldürür.""," ""Balıkların komedyeni.""]",Absurt_Mizah,,TR,Genel
+J585,"Lacivert besin geldi mi?","[""Geldi!""," ""Paylaşım zamanı!""," ""Enerji depolayalım.""]",Rituel,Sim_Ozel,TR,Genel
+J586,"Geçen gün bir şarkı patlattım, komşular geldi.","[""Ne oldu?""," ""Polis de oradaydı, gürültüden.""," ""Tehlikeli şarkılar.""]",Soguk_Espri,,TR,Genel
+J587,"Bir gökbilimci teleskopla en çok neye sinirlenir?","[""Neye?""," ""Bulutlu havaya.""," ""Gözlem engeli.""]",Mesleki_Espri,Astronomi,TR,Genel
+J588,"İki örümcek karşılaşmış. Biri diğerine 'Ağın ne güzelmiş?' demiş. Diğeri 'İpekten yaptım.' demiş.","[""Doğal malzeme.""," ""Komikti.""," ""?""]",Kelime_Oyunu,,TR,Genel
+J589,"Nasreddin Hoca bir gün eşeğini kaybetmiş. Türkü söyleyerek arıyormuş. Komşusu sormuş: 'Hocam, eşeğin kayıp, ne bu neşe?' Hoca cevaplamış: 'Ya ben de üstünde olsaydım, o zaman ne yapardım?'","[""Klasik.""," ""Hoca yine haklı.""," ""Mantıklı çözüm.""]",Bolgesel_Fikra,Nasreddin_Hoca,TR,Genel
+J590,"Hangi fil hortum kullanmaz?","[""Hangisi?"", ""Oyuncak fil.""," ""Bu olmadı.""]",Soguk_Espri,,TR,Genel
+J591,"Dört tarafı çölle çevrili vahaya ne denir?","[""Vaha.""," ""Zekice.""," ""Doğru cevap.""]",Kelime_Oyunu,,TR,Genel
+J592,"Güneş sistemindeki en sıcak gezegen hangisidir?","[""Hangisi?"", ""Venüs. Çünkü atmosferi yoğun.""," ""Astrolojik espri.""]",Bilimsel_Espri,Astronomi,TR,Genel
+J593,"Neden Meksikalılar acı biber yer?","[""Neden?""," ""Çünkü 'fiesta' yapmadan önce enerji toplarlar.""," ""Meksikaca öğrenmek lazım.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J594,"Adamın biri o kadar cimriymiş ki, kendi gölgesine bile para vermiyormuş.","[""İnanılmaz.""," ""Cimriliğin bu kadarı.""," ""Nasıl yani?""]",Absurt_Mizah,,TR,Genel
+J595,"Çok tembel bir kaplana ne denir?","[""Ne denir?"", ""Kaplan-mış.""," ""Yatmış kaplan.""]",Kelime_Oyunu,,TR,Genel
+J596,"Adamın biri sürekli terliyormuş. Neden?","[""Neden?""," ""Çünkü adı Ter-biyesiz'miş.""," ""Bu kötüydü.""]",Soguk_Espri,,TR,Genel
+J597,"En komik harf hangisidir?","[""Hangisi?"", ""H. Çünkü hep HaHaHa.""," ""H-ahaha.""]",Kelime_Oyunu,,TR,Genel
+J598,"Bir bahçıvanın en sevdiği şarkı nedir?","[""Nedir?"", ""Sula-la. Çünkü çiçekleri sular.""," ""Çiçek-şarkı.""]",Soguk_Espri,,TR,Genel
+J599,"Nefesi kokan adama ne denir?","[""Ne denir?"", ""Sarımsak yemiş.""," ""Doğal koku.""]",Kelime_Oyunu,,TR,Genel
+J600,"Bir vampir neden asla güneşlenmez?","[""Neden?""," ""Çünkü 'toz' olmak istemez.""," ""Karanlık espri.""]",Kara_Mizah,Vampir,TR,Kara_Mizah_Seviye1
+J601,"En romantik çiçek hangisidir?","[""Hangisi?"", ""Aşk-merdiveni.""," ""Çiçekler de sever.""]",Kelime_Oyunu,,TR,Genel
+J602,"Okuldaki en kalın kitap hangisidir?","[""Hangisi?"", ""Müdürün disiplin yönetmeliği. Herkesten kalındır.""," ""Eğitim esprisi.""]",Mesleki_Espri,Egitim,TR,Genel
+J603,"Adamın biri her gün banyo yapıyormuş ama yine de kirliymiş. Bu adam kimdir?","[""Kimdir?"", ""Baca temizleyicisi.""," ""Mantıklı.""]",Mesleki_Espri,Temizlik,TR,Genel
+J604,"Duran arabaya ne denir?","[""Ne denir?"", ""Park etmiş araba denir.""," ""Bu kadar mıydı?""]",Soguk_Espri,,TR,Genel
+J605,"En çok ağlayan spor dalı hangisidir?","[""Hangisi?"", ""Boks. Çünkü sürekli yumruk yerler.""," ""Acı dolu spor.""]",Soguk_Espri,,TR,Genel
+J606,"Temel, bir sınavda birinciyi geçmiş. Kaçıncı olmuş?","[""Sıfırıncı?""," ""Hayır, yine birinci olmuş, çünkü diğerleri kopya çekmiş.""," ""Mantık hatası.""]",Bolgesel_Fikra,Temel,TR,Genel
+J607,"Bir karga neden siyah giyer?","[""Neden?""," ""Çünkü yastadır.""," ""Modayı takip ediyor.""]",Absurt_Mizah,,TR,Genel
+J608,"En çok fotoğraf çeken şehir hangisidir?","[""Hangisi?"", ""Foto-kent.""," ""Turistik şehir.""]",Kelime_Oyunu,,TR,Genel
+J609,"Adamın biri duvardan atlamış, kendini incitmiş.","[""Nasıl yani?""," ""Duvar yüksekmiş.""," ""Vay canına.""]",Soguk_Espri,,TR,Genel
+J610,"Bir e-posta neden hasta olur?","[""Neden?"", ""Çünkü 'spam' kapmıştır.""," ""Geçmiş olsun.""]",Mesleki_Espri,Bilgisayar,TR,Genel
+J611,"Benim dedem doktor, senin deden ne? - Benim dedem de doktor, ama o kalpten anlar.","[""Hahaha!""," ""Doktor esprisi.""," ""Bu iyiydi.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J612,"En çok çiçeği olan bitki hangisidir?","[""Hangisi?"", ""Gül. Açıl gülüm açıl.""," ""Aşk çiçeği.""]",Kelime_Oyunu,,TR,Genel
+J613,"Serçeler neden 'Cik Cik' der?","[""Neden?""," ""Çünkü 'Moo' deselerdi inek olurlardı.""," ""Doğru.""]",Absurt_Mizah,,TR,Genel
+J614,"Tarihteki en lezzetli savaş hangisidir?","[""Hangisi?"", ""Yemek Savaşı.""," ""Böyle bir savaş yok.""]",Soguk_Espri,,TR,Genel
+J615,"Bir fitness delisi zombiye ne denir?","[""Ne denir?"", ""'Kasss...' diye inler.""," ""Komikti.""]",Kara_Mizah,Zombi,TR,Kara_Mizah_Seviye1
+J616,"En çok çalışan organımız hangisidir?","[""Hangisi?"", ""Kalp.""," ""Basit ve doğru.""]",Soguk_Espri,,TR,Genel
+J617,"Adamın eli yanmış, ayağı su toplamış.","[""Bu çok kötüydü.""," ""Sakarlık.""," ""İğrenç.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J618,"Hangi denizde balık tutulmaz?","[""Hangi denizde?""," ""Ateş denizinde.""," ""Doğru cevap.""]",Soguk_Espri,,TR,Genel
+J619,"En çok gülen hayvan hangisidir?","[""Hangisi?"", ""Sırtlan. Bütün gün güler.""," ""Neşeli hayvan.""]",Kelime_Oyunu,,TR,Genel
+J620,"Bir kertenkele diğerine ne demiş?","[""Ne demiş?"", ""Kuyruğum yine koptu.""," ""Yenisi çıkar.""]",Kelime_Oyunu,,TR,Genel
+J621,"En çok altını olan ilimiz hangisidir?","[""Hangisi?"", ""Altın-ordu.""," ""Zengin şehir.""]",Kelime_Oyunu,,TR,Genel
+J622,"Göller neden tatlıdır?","[""Neden?""," ""Çünkü balıklar 'Şekerim düştü!' demesin diye.""," ""Bu çok zorlamaydı.""]",Soguk_Espri,,TR,Genel
+J623,"En uykucu kuş hangisidir?","[""Hangisi?"", ""Yarasa. Çünkü bütün gün uyur.""," ""Gece kuşu.""]",Soguk_Espri,,TR,Genel
+J624,"Bir trafik ışığı diğerine ne demiş?","[""Ne demiş?"", ""Rengimiz solmasın.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J625,"Gümüş besin geldi mi?","[""Sonunda!""," ""Değerli zaman!""," ""Enerji topluyoruz.""]",Rituel,Sim_Ozel,TR,Genel
+J626,"Hangi dilde çok küfür edilir?","[""Hangisinde?"", ""Argo-ca (Argotic)."", ""Bu olmadı.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J627,"İki kar tanesi sohbet ediyormuş. Biri 'Yere ne zaman ineceğiz?' demiş. Diğeri 'Acele etme, biraz daha süzülelim' demiş.","[""Kar tanelerinin hayatı zor.""," ""Komik.""," ""Hahaha!""]",Hayvan_Fikrasi,,TR,Genel
+J628,"Adamın biri yüzmüş, karısı da havuz.","[""Yüzme-havuz, anladım.""," ""Su sporları ailesi.""," ""Çok soğuk.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J629,"En eski kitap hangisidir?","[""Hangisi?"", ""Taş tabletler.""," ""Tarihi eser.""]",Soguk_Espri,,TR,Genel
+J630,"Bir futbolcu neden espri yapamaz?","[""Neden?""," ""Çünkü hep 'ofsayt'a düşer.""," ""Spor esprisi.""]",Mesleki_Espri,Spor,TR,Genel
+J631,"Sürekli şikayet eden birine ne denir?","[""Ne denir?"", ""Müşteri hizmetleri.""," ""Bu biraz ironik oldu.""]",Kara_Mizah,Is_hayati,TR,Kara_Mizah_Seviye1
+J632,"En komik dağ hangisidir?","[""Hangisi?"", ""Kahkaha Dağı. Çünkü hep güldürür.""," ""Bu neşelendirdi.""]",Soguk_Espri,,TR,Genel
+J633,"İki pencere konuşuyormuş. Ne demişler?","[""Ne demişler?"", ""Manzarada buluşalım.""," ""Mantıklı.""]",Soguk_Espri,,TR,Genel
+J634,"En çok hangi çiçeğin başı ağrır?","[""Hangisinin?"", ""Saksı çiçeğinin (düşerse).""," ""Doğal olarak.""]",Soguk_Espri,,TR,Genel
+J635,"Bir yastıkla diğer yastık ne demiş?","[""Ne demişler?"", ""Sende de ne çok rüya var.""," ""Doğru tespit.""]",Soguk_Espri,,TR,Genel
+J636,"Temel, bir otele girmiş ve sormuş: 'Bu oda ne kadar?' Resepsiyonist 'Geceliği 100 dolar' demiş. Temel 'Ya gündüzlüğü?' diye sormuş. Resepsiyonist 'O da 100 dolar' demiş. Temel 'Niye o kadar pahalı?' diye sorunca resepsiyonist 'O, o-da' demiş.","[""Temel ve oteller.""," ""Hahaha!""," ""Oda her zaman odadır.""]",Bolgesel_Fikra,Temel,TR,Genel
+J637,"En çalışkan böcek hangisidir?","[""Hangisi?"", ""Karınca.""," ""Bu şaka değil, gerçek.""]",Soguk_Espri,,TR,Genel
+J638,"Hangi makasla kumaş kesilmez?","[""Hangisiyle?"", ""Tırnak makasıyla.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J639,"Adamın biri o kadar zekiymiş ki, kendi kendine satrançta yeniliyormuş.","[""Zekiliğin bu kadarı.""," ""İnanılmaz.""," ""Komik.""]",Absurt_Mizah,,TR,Genel
+J640,"Bir korsan neden göz bandı takmaz?","[""Neden?""," ""Çünkü modası geçmiş.""," ""Stil önemli.""]",Soguk_Espri,,TR,Genel
+J641,"En çok hangi nehir ağlar?","[""Hangisi?"", ""Ağlayan nehir.""," ""Bu kadar basit miydi?""]",Soguk_Espri,,TR,Genel
+J642,"En çok hangi ilimizde yol vardır?","[""Hangisinde?"", ""Yol-ava.""," ""Yol... anladım.""]",Kelime_Oyunu,,TR,Genel
+J643,"Bir itfaiyeci neden gözlük takar?","[""Neden?"", ""Çünkü yangını daha iyi görmek için.""," ""Kesinlikle doğru.""]",Mesleki_Espri,Itfaiye,TR,Genel
+J644,"Nasreddin Hoca'ya sormuşlar: 'Dünyanın en tatlı şeyi nedir?' Hoca düşünmüş, 'Uykudur, çünkü bedavadır' demiş.","[""Hoca'dan net cevap.""," ""Zekice.""," ""Klasik.""]",Bolgesel_Fikra,Nasreddin_Hoca,TR,Genel
+J645,"Bir iskelet diğerine neden gülmüş?","[""Neden?""," ""Çünkü komik bir kemiği varmış.""," ""Bu iyiydi.""]",Kara_Mizah,Iskelet,TR,Kara_Mizah_Seviye1
+J646,"Hangi kebap yenir?","[""Hangisi?"", ""Adana kebap.""," ""Acıktım.""]",Soguk_Espri,,TR,Genel
+J647,"En çok kaya olan şehir hangisidir?","[""Hangisi?"", ""Kaya-şehir.""," ""Bu zorlamaydı.""]",Kelime_Oyunu,,TR,Genel
+J648,"Bir maymun ağaca çıkmış, nasıl iner?","[""Nasıl?"", ""İn-emez, maymun o, daldan dala atlar.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J649,"En çok hangi sürüngen masal okur?","[""Hangisi?"", ""Ejderha (ateşli masallar).""," ""Doğru cevap.""]",Kelime_Oyunu,,TR,Genel
+J650,"Bir adam 'hava soğuk' diye bağırmış. Ne olmuş?","[""Ne olmuş?"", ""Hava gerçekten soğukmuş.""," ""Anladım.""]",Kelime_Oyunu,,TR,Genel
+J651,"En çok hangi zamanda alışveriş yapılır?","[""Hangisinde?"", ""İndi-rim zamanı.""," ""Alışveriş zamanı.""]",Kelime_Oyunu,,TR,Genel
+J652,"Bir adamın kolu varmış, bacağı yokmuş. Sonra ne olmuş?","[""Ne olmuş?"", ""Kol bacak birbirine girmiş.""," ""Nasıl yani?""]",Absurt_Mizah,,TR,Genel
+J653,"En çok korkan bulut hangisidir?","[""Hangisi?"", ""Şim-şekli bulut.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J654,"Hangi kaplan en uysaldır?","[""Hangisi?"", ""Peluş-kaplan.""," ""Uysal kaplan.""]",Kelime_Oyunu,,TR,Genel
+J655,"Bronz enerji içeceği geldi mi?","[""Geldi!""," ""Üçüncülük şarj zamanı!""," ""İhtiyacım vardı.""]",Rituel,Sim_Ozel,TR,Genel
+J656,"Bir çöpçü ölünce ne der?","[""Ne der?"", ""Ben dünyaya değil, geri dönüşüme gidiyorum.""," ""Meslek hastalığı.""]",Mesleki_Espri,Temizlik,TR,Genel
+J657,"En mutlu harf hangisidir?","[""Hangisi?"", ""G. Çünkü gülmek g ile başlar.""," ""Mantıklı.""]",Kelime_Oyunu,,TR,Genel
+J658,"Adamın biri çok sessizmiş, ölmek üzereyken ne demiş?","[""Ne demiş?"", ""Hiç-bir-şey.""," ""Hüzünlü ama komik.""]",Kara_Mizah,Olum,TR,Kara_Mizah_Seviye1
+J659,"En çok üzülen meyve hangisidir?","[""Hangisi?"", ""Ağlayan-elma. Çünkü hep ağlar.""," ""Elma suyu.""]",Kelime_Oyunu,,TR,Genel
+J660,"Bir iğneyle bir balon neden arkadaş olamaz?","[""Neden?""," ""Çünkü iğne hep balonu patlatır.""," ""Zorbalık.""]",Soguk_Espri,,TR,Genel
+J661,"Alfabenin ortasında ne vardır?","[""Ne vardır?"", ""'F' ve 'G' harfleri.""," ""Bu çok iyiydi.""]",Kelime_Oyunu,,TR,Genel
+J662,"Hangi yolda araba yarışmaz?","[""Hangisinde?"", ""Kaldırımda.""," ""Kesinlikle doğru.""]",Kara_Mizah,,TR,Kara_Mizah_Seviye1
+J663,"En çok hangi hayvanın uykusu hafiftir?","[""Hangisinin?"", ""Hafif-uykulu yarasa.""," ""Adı üstünde.""]",Kelime_Oyunu,,TR,Genel
+J664,"Adamın biri Ay'a gitmiş, ne olmuş?","[""Ne olmuş?"", ""Ay ışığına bulanmış.""," ""Ay parlak.""]",Soguk_Espri,,TR,Genel
+J665,"Hangi üniversite bitmez?","[""Hangisi?"", ""Açıköğretim (uzun sürer).""," ""Ömür boyu öğrenci.""]",Soguk_Espri,,TR,Genel
+J666,"En çok hangi ilimizde nehir bulunur?","[""Hangisinde?"", ""Nehir-li.""," ""Bu olmadı.""]",Kelime_Oyunu,,TR,Genel
+J667,"Bir penguen saklanırsa ne olur?","[""Ne olur?"", ""Buzların arasında kaybolur.""," ""Bu bir şaka mıydı?""]",Absurt_Mizah,,TR,Genel
+J668,"Hangi ormanda ateş yanmaz?","[""Hangisinde?"", ""Yağmur ormanında. Zaten ıslak.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J669,"En çok tok olan ilimiz hangisidir?","[""Hangisi?"", ""Tok-at.""," ""Coğrafi espri.""]",Kelime_Oyunu,,TR,Genel
+J670,"Bir astronot diğerine ne demiş?","[""Ne demiş?"", ""Geçen gün bir kara delik gördüm, içi bir boştu.""," ""Astronot gurmesi.""]",Kara_Mizah,Uzay,TR,Kara_Mizah_Seviye2
+J671,"En çok hangi hayvan yavaş konuşur?","[""Hangisi?"", ""Yavaş-konuşan kaplumbağa.""," ""Ağırkanlı hayvan.""]",Kelime_Oyunu,,TR,Genel
+J672,"En çok hangi martı denizde yüzer?","[""Hangisi?"", ""Deniz-martısı.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J673,"Temel'in en sevdiği içecek nedir?","[""Nedir?"", ""Laz Kahvesi.""," ""Karadeniz'i seviyor.""]",Bolgesel_Fikra,Temel,TR,Genel
+J674,"En çok hangi ilimizde sis vardır?","[""Hangisinde?"", ""Sis-li.""," ""Bu olmadı.""]",Kelime_Oyunu,,TR,Genel
+J675,"Bir fizik problemi neden üzgündü?","[""Neden?""," ""Çünkü çok fazla bilinmeyeni vardı.""," ""Anlıyorum onu.""]",Bilimsel_Espri,Fizik,TR,Genel
+J676,"En çok hangi ağaç gölge ister?","[""Hangisi?"", ""Gölge-ağacı.""," ""Gölge seven ağaç.""]",Kelime_Oyunu,,TR,Genel
+J677,"Hangi çocuk emeklemez?","[""Hangisi?"", ""Oyuncak bebek.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J678,"En çok hangi hayvanın sesi kısıktır?","[""Hangisinin?"", ""Fısıldayan yılan.""," ""Bu doğru.""]",Soguk_Espri,,TR,Genel
+J679,"Bir adam 'ben uyuyorum' demiş. Nerede uyumuş?","[""Nerede?"", ""Yatağında.""," ""Bu bir cevap değil.""]",Absurt_Mizah,,TR,Genel
+J680,"En çok hangi kuşun serveti vardır?","[""Hangisinin?"", ""Altın-başlı bülbül.""," ""Zengin kuş.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J681,"Hangi profesör hastasına bakmaz?","[""Hangisi?"", ""Profesör-lük yapan.""," ""Akademik profesör.""]",Mesleki_Espri,Egitim,TR,Genel
+J682,"En çok hangi rakam su içer?","[""Hangisi?"", ""Bir. Çünkü 'bir-i-su' deriz.""," ""Bu zorlama.""]",Kelime_Oyunu,,TR,Genel
+J683,"Bir kamyon neden ağlar?","[""Neden?""," ""Çünkü yükü ağırdır.""," ""Canı acımış.""]",Soguk_Espri,,TR,Genel
+J684,"En çok hangi kasabada üşürüz?","[""Hangisinde?"", ""Buz-köy.""," ""Soğuk bir yer.""]",Kelime_Oyunu,,TR,Genel
+J685,"Şeffaf besin geldi mi?","[""Geldi!""," ""Görünmezlik zamanı!""," ""Hafif enerji!""]",Rituel,Sim_Ozel,TR,Genel
+J686,"En çok hangi hayvanın başı döner?","[""Hangisinin?"", ""Fırıl-dak.""," ""Adı üstünde.""]",Kelime_Oyunu,,TR,Genel
+J687,"En çok hangi ilimiz şaşkındır?","[""Hangisi?"", ""Şaşkın-bakkal.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J688,"Hangi tepede çiçek açmaz?","[""Hangisinde?"", ""Kel Tepe'de.""," ""Coğrafi espri.""]",Kelime_Oyunu,,TR,Genel
+J689,"Nasreddin Hoca camide vaaz veriyormuş. Cemaate sormuş: 'Ey ahali, size ne anlatacağımı biliyor musunuz?' Cemaat 'Hayır hocam bilmiyoruz' demiş. Hoca 'Bilmediğiniz bir şeyi size nasıl anlatayım?' deyip gitmiş. Ertesi hafta yine sormuş. Cemaat bu sefer 'Evet hocam biliyoruz' demiş. Hoca 'Madem biliyorsunuz, o zaman anlatmama ne gerek var?' deyip yine gitmiş. Üçüncü hafta cemaat akıllanmış, yarısı 'Biliyoruz', yarısı 'Bilmiyoruz' demiş. Hoca 'O zaman bilenler bilmeyenlere anlatsın' demiş.","[""Hoca'nın dersleri.""," ""Cemaat şaşkın.""," ""Hahaha!""]",Bolgesel_Fikra,Nasreddin_Hoca,TR,Genel
+J690,"En çok hangi hayvanın gözü ağrır?","[""Hangisinin?"", ""Göz-lük takan maymun.""," ""Maymun gözü.""]",Kelime_Oyunu,,TR,Genel
+J691,"Hangi fırça boyamaz?","[""Hangisi?"", ""Saç fırçası.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J692,"En çok hangi ilimizde pasta yenir?","[""Hangisinde?"", ""Pasta-hane.""," ""Tatlı şehir.""]",Kelime_Oyunu,,TR,Genel
+J693,"Adamın biri o kadar komikmiş ki, kendi kendine gülmekten katılıyormuş.","[""İnanılmaz.""," ""Komikliğin bu kadarı.""," ""Neşeli adam.""]",Absurt_Mizah,,TR,Genel
+J694,"Hangi kuyruklu yıldızda su yoktur?","[""Hangisinde?"", ""Buzdan olmayan kuyruklu yıldızda. Çünkü 'kuyruklu-su' yok.""," ""Bu olmadı.""]",Bilimsel_Espri,Astronomi,TR,Genel
+J695,"En çok hangi ilimiz serindir?","[""Hangisi?"", ""Serin-dere.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J696,"Hangi duvarda resim yoktur?","[""Hangisinde?"", ""Ağlama duvarında.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J697,"En çok hangi hayvanın boynu bükülür?","[""Hangisinin?"", ""Bükük-boyunlu flamingo.""," ""Bu zorlama.""]",Kelime_Oyunu,,TR,Genel
+J698,"Hangi gazetede haber yoktur?","[""Hangisinde?"", ""Eski gazetede.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J699,"En çok hangi hayvanın derisi kalındır?","[""Hangisinin?"", ""Gergedanın.""," ""Mantıklı.""]",Soguk_Espri,,TR,Genel
+J700,"Hangi yarışta atletler koşmaz?","[""Hangisinde?"", ""Araba yarışında.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J701,"Hangi ampuller patlamaz?","[""Hangisi?"", ""LED-ampuller (genellikle).""," ""Dayanıklı.""]",Kelime_Oyunu,,TR,Genel
+J702,"En çok hangi ilimiz alçaktır?","[""Hangisi?"", ""Alçak-ova.""," ""Bu Türkiye'de değil.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J703,"Temel, bir gün markete gitmiş. Kasiyere sormuş: 'Bu yumurtalar taze mi?' Kasiyer 'Evet hocam, daha yeni geldi' demiş. Temel: 'Peki tavukları da taze miydi?'","[""Temel ve tazelik.""," ""Hahaha!""," ""Kasiyerin işi zor.""]",Bolgesel_Fikra,Temel,TR,Genel
+J704,"En çok hangi kuşun kanadı kırıktır?","[""Hangisinin?"", ""Yaralı-güvercin.""," ""Kanadı kırık kuş.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J705,"Hangi televizyon doğruyu göstermez?","[""Hangisi?"", ""Bozuk televizyon.""," ""Karıncalı gösterir.""]",Soguk_Espri,,TR,Genel
+J706,"En çok hangi ilimizde plaj yapılır?","[""Hangisinde?"", ""Plaj-kent.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J707,"Hangi denizin suyu içilmez?","[""Hangisinin?"", ""Marmara Denizi (kirli olabilir).""," ""Tuzlu ve kirli su.""]",Kelime_Oyunu,,TR,Genel
+J708,"En çok hangi hayvanın kürkü incedir?","[""Hangisinin?"", ""İnce-kürk.""," ""Bu olmadı.""]",Kelime_Oyunu,,TR,Genel
+J709,"Hangi dergide sayfa yoktur?","[""Hangisinde?"", ""Online dergide.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J710,"Bir bakteri diğerine ne demiş?","[""Ne demiş?"", ""Aşkım, sana bölünüyorum.""," ""Mikrobiyolojik aşk.""]",Bilimsel_Espri,Biyoloji,TR,Genel
+J711,"Adamın biri her şeye 'hayır' diyormuş. Neden?","[""Neden?"", ""Çünkü inatçıymış.""," ""Basit.""]",Soguk_Espri,,TR,Genel
+J712,"Hangi fırçayla duvar boyanır?","[""Hangisiyle?"", ""Boya fırçasıyla.""," ""Bu şaka değil.""]",Soguk_Espri,,TR,Genel
+J713,"En çok hangi hayvanın adı kısadır?","[""Hangisinin?"", ""At.""," ""Bu olmadı.""]",Kelime_Oyunu,,TR,Genel
+J714,"Hangi dolaptan girilmez?","[""Hangisinden?"", ""Buzdolabından (içi doluysa).""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J715,"Hangi top patlamaz?","[""Hangisi?"", ""Kar topu.""," ""Var mı öyle bir şey?""]",Soguk_Espri,,TR,Genel
+J716,"En çok hangi ilimizde menekşe vardır?","[""Hangisinde?"", ""Menekşe-köy.""," ""Coğrafi espri.""]",Kelime_Oyunu,,TR,Genel
+J717,"Hangi okyanusta yüzülmez?","[""Hangisinde?"", ""Arktik Okyanusu'nda (çok soğuk).""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J718,"Hangi yatakta uyku kaçar?","[""Hangisinde?"", ""Dikenli yatakta.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J719,"En çok hangi hayvanın burnu yoktur?","[""Hangisinin?"", ""Solucanın.""," ""Bu şaka değil.""]",Soguk_Espri,,TR,Genel
+J720,"Hangi dostlukta yalan olmaz?","[""Hangisinde?"", ""Gerçek dostlukta.""," ""Doğru.""]",Felsefi_Mizah,,TR,Genel
+J721,"Hangi yaz günü serin değildir?","[""Hangisi?"", ""Sıcak basan gün.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J722,"Hangi kalemle tahtaya yazı yazılmaz?","[""Hangisiyle?"", ""Kurşun kalemle (görünmez).""," ""Zor olur.""]",Soguk_Espri,,TR,Genel
+J723,"Hangi tepede yaşanılmaz?","[""Hangisinde?"", ""Çorak tepede.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J724,"Hangi gölün suyu acıdır?","[""Hangisinin?"", ""Acı-göl.""," ""Adı üstünde.""]",Kelime_Oyunu,,TR,Genel
+J725,"Platin besin geldi mi?","[""Geldi!""," ""Değerli zaman!""," ""Soylu enerji.""]",Rituel,Sim_Ozel,TR,Genel
+J726,"En çok hangi ilimizde ova vardır?","[""Hangisinde?"", ""Ova-cık.""," ""Adı üstünde.""]",Kelime_Oyunu,,TR,Genel
+J727,"Hangi armut yenmez?","[""Hangisi?"", ""Armut-veren (soyisim).""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J728,"Hangi yılan uçamaz?","[""Hangisi?"", ""Bütün yılanlar.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J729,"Hangi kitapla uyumak en zevklidir?","[""Hangisiyle?"", ""Masal kitabıyla.""," ""Felsefi.""]",Felsefi_Mizah,,TR,Genel
+J730,"Hangi deve koşmaz?","[""Hangisi?"", ""Oyuncak deve.""," ""Çölde gider.""]",Soguk_Espri,,TR,Genel
+J731,"En çok hangi ilimizde fırtına eser?","[""Hangisinde?"", ""Fırtına-dere.""," ""Doğru.""]",Kelime_Oyunu,,TR,Genel
+J732,"Hangi pınarın suyu tatlıdır?","[""Hangisinin?"", ""Tatlı-pınar.""," ""Adı üstünde.""]",Kelime_Oyunu,,TR,Genel
+J733,"En çok hangi hayvanın kanadı ağrımaz?","[""Hangisinin?"", ""Uçağın (metal olduğu için).""," ""Kanadı yok ki.""]",Soguk_Espri,,TR,Genel
+J734,"Hangi camide namaz kılınmaz?","[""Hangisinde?"", ""Yıkık camide.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J735,"En çok hangi ilimizde bayır vardır?","[""Hangisinde?"", ""Bayır-köy.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J736,"Hangi on yılda 3653 gün vardır?","[""Hangisinde?"", ""İki artık yıl içeren on yılda.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J737,"En çok hangi hayvanın tüyleri güzel değildir?","[""Hangisinin?"", ""Akbabanın.""," ""Kel kafalı.""]",Soguk_Espri,,TR,Genel
+J738,"Hangi limanda gemi batmaz?","[""Hangisinde?"", ""Kuru limanda.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J739,"En çok hangi ilimizde yayla vardır?","[""Hangisinde?"", ""Yayla-dağ.""," ""Bu kötüydü.""]",Kelime_Oyunu,,TR,Genel
+J740,"Hangi maymunun sesi yoktur?","[""Hangisinin?"", ""Sessiz maymun.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J741,"En çok hangi hayvanın bıyığı büyüktür?","[""Hangisinin?"", ""Morsun.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J742,"Hangi caddede trafik olmaz?","[""Hangisinde?"", ""Trafiğe kapalı caddede.""," ""Genellikle.""]",Soguk_Espri,,TR,Genel
+J743,"Hangi koyda balık olmaz?","[""Hangisinde?"", ""Issız koyda (bazen).""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J744,"En çok hangi ilimizde kiraz yetişir?","[""Hangisinde?"", ""Afyon, Kemalpaşa.""," ""Bu şaka değil.""]",Soguk_Espri,,TR,Genel
+J745,"Hangi mevsimde en az gün vardır?","[""Hangisinde?"", ""Kış (Şubat nedeniyle).""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J746,"En çok hangi hayvanın kabuğu kalındır?","[""Hangisinin?"", ""Kaplumbağanın.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J747,"Hangi kasede çorba içilmez?","[""Hangisinde?"", ""Oyuncak kasede.""," ""Bu kara mizahtı.""]",Kara_Mizah,Oyuncak,TR,Kara_Mizah_Seviye1
+J748,"En çok hangi ilimizde narenciye yetişir?","[""Hangisinde?"", ""Akdeniz Bölgesi.""," ""Bu da gerçek.""]",Soguk_Espri,,TR,Genel
+J749,"Hangi köprünün ayağı yoktur?","[""Hangisinin?"", ""Asma köprünün (direkt ayak değil).""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J750,"En çok hangi hayvanın sakalı dökülür?","[""Hangisinin?"", ""Sakal-döken teke.""," ""Bu olmadı.""]",Kelime_Oyunu,,TR,Genel
+J751,"Hangi arkadaşlıkta ihanet yoktur?","[""Hangisinde?"", ""Sadık hayvan dostluğunda.""," ""Doğru.""]",Felsefi_Mizah,,TR,Genel
+J752,"En çok hangi ilimizde limonata içilir?","[""Hangisinde?"", ""Sıcak illerde.""," ""Bu da doğru.""]",Soguk_Espri,,TR,Genel
+J753,"Hangi sandalyede yemek yenmez?","[""Hangisinde?"", ""Elektrikli sandalyede.""," ""Doğru.""]",Kara_Mizah,Olum,TR,Kara_Mizah_Seviye2
+J754,"En çok hangi hayvanın adı kısadır ve uçar?","[""Hangisinin?"", ""Kuş.""," ""Tek hece.""]",Soguk_Espri,,TR,Genel
+J755,"Hangi sokakta araba gitmez?","[""Hangisinde?"", ""Çıkmaz sokakta.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J756,"En çok hangi ilimizde tütün yetişir?","[""Hangisinde?"", ""Ege, Karadeniz.""," ""Bu da bilgi.""]",Soguk_Espri,,TR,Genel
+J757,"Hangi kapıdan çıkılmaz?","[""Hangisinden?"", ""Acil çıkış kapısından (normalde).""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J758,"En çok hangi hayvanın dişi keskindir?","[""Hangisinin?"", ""Köpekbalığının.""," ""Doğru.""]",Soguk_Espri,,TR,Genel
+J759,"Hangi mutfakta ekmek pişmez?","[""Hangisinde?"", ""Oyuncak mutfakta.""," ""Bu olmadı.""]",Soguk_Espri,,TR,Genel
+J760,"En çok hangi ilimizde nar yetişir?","[""Hangisinde?"", ""Antalya, Denizli.""," ""Bu da bilgi.""]",Soguk_Espri,,TR,Genel
+J761,"Adamın biri varmış, yirmi katlı binadan düşmüş ölmemiş, neden?","[""Neden?""," ""Çünkü adamın adı 'Paraşüt'müş, açılıp inmiş.""," ""Bu çok kötüydü.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J762,"Hangi bankada işler hiç yürümez?","[""Hangisinde?"", ""Kan bankasında (kanlar durur).""," ""Bu kara mizahtı.""]",Kara_Mizah,Saglik,TR,Kara_Mizah_Seviye2
+J763,"Einstein neden göreliliği keşfetti?","[""Neden?""," ""Çünkü zamanı göreceliydi.""," ""Bu iyiydi!""]",Bilimsel_Espri,Fizik,TR,Genel
+J764,"En çok gülen organ hangisidir?","[""Hangisi?"", ""Ağız.""," ""Kahkahası bol.""]",Soguk_Espri,,TR,Genel
+J765,"Adamın biri o kadar şakacıymış ki, rüyasında bile fıkra anlatıyormuş.","[""Neden?""," ""Şakacılığından.""," ""Garip bir yöntem.""]",Absurt_Mizah,,TR,Genel
+J766,"Neden foton kütlesizdi?","[""Çünkü diyetteydi!""," ""Anlamadım ama komik?""," ""Fizikçiler anlar!""]",Bilimsel_Espri,Fizik,TR,Genel
+J767,"Kadının biri zıplamış, havuza düşmüşler.","[""Hahaha!""," ""Bu çok soğuktu!""," ""İğrenç bir espri.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J768,"Vur kemancı vur!","[""Oyna oyna oyna!""," ""Kemancı iyidir!""," ""Yine mi bu?""]",Rituel,Sim_Ozel,TR,Genel
+J769,"Eniştem sonunda ideal kilosuna ulaştı: 500 gram, fotoğraf albümü dahil.","[""Bu biraz ağır oldu.""," ""Kara mizah severim!""," ""Hiç komik değil.""]",Kara_Mizah,Olum,TR,Kara_Mizah_Seviye2
+J770,"Ben gazoz içiyorum, Ajda Pekkan.","[""Zekice!""," ""Kelime oyunu mu bu?""," ""Güzeldi!""]",Kelime_Oyunu,,TR,Genel
+J771,"Balıklar neden dünyayı istila etmiyor?","[""Neden?""," ""Çünkü karada nefes alamıyorlar.""," ""Mantıklı geldi.""]",Absurt_Mizah,,TR,Genel
+J772,"Temel bir gün İtalya'ya gitmiş. 'Aboo, burası da mı pizza dolu?' demiş.","[""Klasik Temel fıkrası.""," ""Hahaha!""," ""?""]",Bolgesel_Fikra,Temel,TR,Genel
+J773,"Geçen gün bir şarkı dinledim, hala dilimde.","[""Offf!""," ""Baba şakası alarmı!""," ""Güldüm, ne yalan söyleyeyim.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J774,"İki astronot karşılaşmış, biri diğerine 'Naber kanka, yerçekimi nasıl?' demiş.","[""Astronotlar anlar.""," ""Çok komik!""," ""Sadece biz güleriz buna.""]",Mesleki_Espri,Uzay,TR,Genel
+J775,"İki karbon atomu evlenmiş. Biri 'Artık organik bir bağımız var!' demiş. Diğeri 'Evet, çok kararlıyız!'","[""Bu iyiydi!""," ""Kimya dersi gibi.""," ""Bilimsel ve komik!""]",Bilimsel_Espri,Kimya,TR,Genel
+J776,"Seni görünce ruhum ruble, beynim dinar.","[""Ekonomik bir aşk.""," ""Hahaha!""," ""Çok kötüydü!""]",Soguk_Espri,,TR,Genel
+J777,"Sana bir güzellik yapayım, çiçeklerini sularsın.","[""Bu çok eski.""," ""Ayıp ama komik.""," ""Yine mi bu?""]",Kelime_Oyunu,,TR,Genel
+J778,"Hasta: 'Doktor bey, kendimi bir bilgisayar gibi hissediyorum.' Doktor: 'Format atmak ister misiniz?' Hasta: 'Hayır, ama sürekli donuyorum.'","[""Acı ama gerçekçi.""," ""Kara mizahın dibi.""," ""Gülsem mi ağlasam mı?""]",Kara_Mizah,Hastalik,TR,Kara_Mizah_Seviye1
+J779,"Metalik besin geldi mi?","[""Sonunda!""," ""Paylaşalım mı?""," ""Bütün gün bunu bekledim.""]",Rituel,Sim_Ozel,TR,Genel
+J780,"Enerjim düşük. -Enerji kim?","[""Lütfen yapma bunu.""," ""Klasik baba şakası.""," ""Düştüm bu espriye.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J781,"Kripton bir mağaraya girmiş, kimse onu bulamamış. Çünkü o bir süper-gazmış.","[""Gizemli bir tepki.""," ""Anlayan anladı.""," ""Harika!""]",Bilimsel_Espri,Kimya,TR,Genel
+J782,"Bilgisayarlar neden evlenmez?","[""Neden?""," ""Çünkü uyumluluk sorunları yaşarlar.""," ""Bu biraz teknik.""]",Mustehcen,,TR,Hafif_Mustehcen
+J783,"Osman Gazi neden devlet kurmuş?","[""Bilmiyorum, neden?""," ""Canı sıkılmış, yeni bir aktivite aramış.""," ""Tarihi bir soğuk espri.""]",Soguk_Espri,Tarih,TR,Genel
+J784,"Hoca bir gün camiye gitmiş. 'Ey cemaat, namaz kılarken ne düşünürsünüz?' diye sormuş. Biri 'Allah'ı düşünürüm hocam' demiş. Diğeri 'Ahireti düşünürüm hocam' demiş. Temel 'Ben de ineğimi düşünürüm hocam, acaba ahırda mı otlakta mı?' demiş.","[""Ya tutarsa!""," ""Düşünce gücü.""," ""Nasreddin Hoca ve Temel.""]",Bolgesel_Fikra,Nasreddin_Hoca,TR,Genel
+J785,"Bir hakim mahkemede sordu: 'Sanık suçlu mu?' Arkadan bir ses bağırdı: 'Avukatına bağlı!'","[""Meslek hastalığı.""," ""Bu çok iyiydi!""," ""Savunma önemli.""]",Mesleki_Espri,Hukuk,TR,Genel
+J786,"Bir ananas neden dikenli şapka takar?","[""Neden ki?""," ""Çünkü tropikal modayı takip eder.""," ""Absürtlüğün zirvesi!""]",Absurt_Mizah,,TR,Genel
+J787,"Cehalet çok güzel, özellikle de farkında değilsen.","[""Bu doğru.""," ""Sarkazm kokusu alıyorum.""," ""Biraz karamsar ama komik.""]",Kara_Mizah,Sarkazm,TR,Kara_Mizah_Seviye1
+J788,"Bir nokta ile bir virgül neden hiç anlaşamaz?","[""Ne yaparlar?""," ""Çünkü biri bitirir, diğeri duraklatır; farklı görevleri var.""," ""Dilbilgisi ve felsefe bir arada.""]",Bilimsel_Espri,Dilbilim,TR,Genel
+J789,"Adamın biri o kadar uykucuymuş ki, alarmı bile uyuyakalmış.","[""Uykuculuğun bu kadarı!""," ""Akıllıca.""," ""Hahaha!""]",Soguk_Espri,,TR,Genel
+J790,"Pencere camı ne işe yarar?","[""Ne işe yarar?""," ""Dışarıyı göstermesine.""," ""Mantık hatası ama komik.""]",Absurt_Mizah,,TR,Genel
+J791,"Yatakta hangi örtü kullanılmaz?","[""Kar örtüsü.""," ""Bunu beklemiyordum.""," ""Soğuk, çok soğuk!""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J792,"En düşünceli meyve hangisidir?","[""Hangisi?""," ""Fikir-elma.""," ""Anladım, fikir elma...""]",Kelime_Oyunu,,TR,Genel
+J793,"Pişirilen makarnaya ne denir?","[""Pasta.""," ""Off bu çok kötüydü.""," ""İtalyanca bilenler güldü.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J794,"Konferansta on dakika mola dedi, aradım konuşma yapıyordu.","[""Ciddi olamazsın.""," ""Güldürdün.""," ""Tam bir baba şakası.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J795,"Maxwell'in cini bir bara girer ve ortalığı karıştırır.","[""Bu çok iyi!""," ""Termodinamik esprisi!""," ""Anlamak için fizikçi olmak lazım.""]",Bilimsel_Espri,Fizik,TR,Genel
+J796,"Bu armut-suz, başka armut yok.","[""Hahaha!""," ""Marka şakası ha?""," ""Zekice düşünülmüş.""]",Kelime_Oyunu,,TR,Genel
+J797,"Temel'in en sevdiği müzik aleti hangisidir?","[""Hangisi?""," ""Kemençe, tabii ki.""," ""Temel yine formunda.""]",Bolgesel_Fikra,Temel,TR,Genel
+J798,"Çinliler neden pirinç yer?","[""Neden?""," ""Çünkü 'noodle' larını bitirmişler.""," ""Çince bilmek lazım.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J799,"Adamın biri çok güçlüymüş, dağı yerinden oynatmış.","[""Hahahaha!""," ""Mitilojik espri.""," ""Güçlü olmak lazım.""]",Soguk_Espri,,TR,Genel
+J800,"Neden bazı yıldızlar kayar?","[""Bilmiyorum.""," ""Çünkü dilek tutmamızı isterler.""," ""Çok saçma ama güldüm.""]",Absurt_Mizah,,TR,Genel
+J801,"Benim neden teyzem yok?","[""Neden?""," ""Çünkü annemin kız kardeşi yok.""," ""Mantıklı!""]",Soguk_Espri,,TR,Genel
+J802,"Bir meraklı ile bir bilge arasındaki fark nedir?","[""Nedir?""," ""Meraklı her şeyi sorar, bilge her şeyi bilir ama susar.""," ""Doğru söze ne denir.""]",Felsefi_Mizah,,TR,Genel
+J803,"Parmak arası sandaletle dolaşan adama ne denir?","[""Ne denir?"", ""Sandal-etçi.""," ""Sandal-et, anladım!""]",Kelime_Oyunu,,TR,Genel
+J804,"Hintliler neden köri sever?","[""Neden?""," ""Çünkü 'baharat'lı hayatı severler.""," ""Yaşam tarzı.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J805,"Rüyalardan geldim, çok karışıktı, her şey mümkündü.","[""Bu çok ilginçti.""," ""Rüya tabiri esprisi mi?""," ""Biraz fantastik.""]",Kara_Mizah,Ruya,TR,Kara_Mizah_Seviye1
+J806,"Döneri neyle yersin?","[""Çatalla?""," ""Hayır, 'usta'dan sonra.""," ""Teşekkürler, çok naziksiniz.""]",Soguk_Espri,,TR,Genel
+J807,"En sıcak 3 nedir?","[""Ateş-üç.""," ""Bu yaktı.""," ""Çok kötü.""]",Soguk_Espri,,TR,Genel
+J808,"En hassas organ hangisidir?","[""Hangisi?"", ""Kalp.""," ""Çünkü kalbi kırılır deriz.""]",Kelime_Oyunu,,TR,Genel
+J809,"Tavşan bir zıplar, iki zıplar, üçüncüde ne olur?","[""Düşer mi?"", ""Havuç yer.""," ""Beklenmedik cevap.""]",Absurt_Mizah,,TR,Genel
+J810,"Bordo enerji içeceği geldi mi?","[""Geldi geldi!""," ""Asalet zamanı!""," ""Paylaşalım hemen.""]",Rituel,Sim_Ozel,TR,Genel
+J811,"Bir define avcısı, bankada ne yapar?","[""Ne yapar?"", ""Hazine hesabı açtırır.""," ""Zengin avcı.""]",Soguk_Espri,,TR,Genel
+J812,"En tembel böcek hangisidir?","[""Hangisi?"", ""Uyuz böceği. Çünkü hep kaşınır.""," ""Bu komikti.""]",Kelime_Oyunu,,TR,Genel
+J813,"Adamın kafasına dünya haritası düşmüş, ne demiş?","[""Ne demiş?"", ""Başımıza bütün dünya mı yıkılacaktı.""," ""Hahaha!""]",Kelime_Oyunu,,TR,Genel
+J814,"Araba neden çalışır?","[""Bilmem."", ""Motoru var çünkü.""," ""Benzini de var mı?""]",Soguk_Espri,,TR,Genel
+J815,"İtfaiyeciler neden kırmızı giyer?","[""Neden?"", ""Çünkü yangınları var.""," ""Çok mantıklı!""]",Mesleki_Espri,Itfaiye,TR,Genel
+J816,"En neşeli hava hangisidir?","[""Hangisi?"", ""Şen-lik.""," ""Kutlama havası.""]",Kelime_Oyunu,,TR,Genel
+J817,"Bir hayalet sınavı geçemezse ne olur?","[""Ne olur?"", ""Görünmez olur.""," ""Zaten görünmez değil miydi?""]",Kara_Mizah,Hayalet,TR,Kara_Mizah_Seviye1
+J818,"En düzgün burun kimdedir?","[""Manken?"", ""Hayır, cetvelinki. Çünkü hep düzdür.""," ""Bu çok kötüydü.""]",Soguk_Espri,,TR,Genel
+J819,"En çok yaprağı olan sebze hangisidir?","[""Hangisi?"", ""Marul. Çünkü kat kat.""," ""Salata sebzesi.""]",Kelime_Oyunu,,TR,Genel
+J820,"Hangi macunla ayakkabı parlatılmaz?","[""Hangisi?"", ""Diş macunuyla.""," ""Tadını düşünemiyorum.""]",Soguk_Espri,,TR,Genel
+J821,"General ölünce asker ne olur?","[""General olur?""," ""Hayır, komutansız kalır.""," ""Doğru söze ne denir.""]",Soguk_Espri,,TR,Genel
+J822,"En düşünceli sayı hangisidir?","[""Hangisi?"", ""Filozof-Beş.""," ""Felsefeye gittik.""]",Kelime_Oyunu,,TR,Genel
+J823,"Kaplumbağalar neden yavaş yürür?","[""Bilmiyorum."", ""Çünkü aceleleri yoktur.""," ""Rahat hayvanlar.""]",Absurt_Mizah,,TR,Genel
+J824,"Bir iskelet diğerine ne demiş?","[""Ne demiş?"", ""Senin kemiklerin ne, iliklerin ne?""," ""Bu çok iyiydi!""]",Kara_Mizah,Iskelet,TR,Kara_Mizah_Seviye1
+J825,"Yazan adama ne denir?","[""Ne denir?"", ""Denmez, ilhamı kaçırılır.""," ""Mantıklı.""]",Soguk_Espri,,TR,Genel
+J826,"En çok kar yapan kurum hangisidir?","[""Hangisi?"", ""Meteoroloji.""," ""Her kış yapıyor.""]",Kelime_Oyunu,,TR,Genel
+J827,"Hangi bisiklet hem gitmez hem de durmaz?","[""Hangisi?"", ""Kırık bisiklet.""," ""Tamirciye götür.""]",Soguk_Espri,,TR,Genel
+J828,"Temel, doktora gitmiş. 'Doktor bey, her yerim ağrıyor' demiş. Doktor 'Nasıl yani?' demiş. Temel parmağıyla başına dokunmuş 'Ağrıyor', göğsüne dokunmuş 'Ağrıyor', bacağına dokunmuş 'Ağrıyor'. Doktor 'Anladım, parmağın kırık.' demiş.","[""Ne yapmış?""," ""Temel'in teşhisi.""," ""Temel'in mantığı.""]",Bolgesel_Fikra,Temel,TR,Genel
+J829,"Bir müzisyen neden hapse girmiş?","[""Neden?""," ""Çünkü birinin kalbini çalmış.""," ""Çalma o zaman.""]",Mesleki_Espri,Muzik,TR,Genel
+J830,"Denizi kirleten nedir?","[""Çöp?""," ""Hayır, sorumsuzluk.""," ""Doğru cevap.""]",Soguk_Espri,,TR,Genel
+J831,"En güzel film hangi sinemada izlenir?","[""Imax'te?""," ""Keyif sinemasında.""," ""Cevap soruda gizli.""]",Soguk_Espri,,TR,Genel
+J832,"Hiçbir melodisi olmayan şarkı hangisidir?","[""Hangisi?"", ""Slogan.""," ""Sadece sözlerden oluşur.""]",Kelime_Oyunu,,TR,Genel
+J833,"Yaşlı adam 'Ben yorgunum' demiş. Yanındaki de 'Ben de gencim' demiş.","[""?""," ""Bu bir şaka mıydı?""," ""Anlamsız.""]",Absurt_Mizah,,TR,Genel
+J834,"Bir kimyager neden aşçı olamaz?","[""Neden?""," ""Çünkü sürekli 'reaksiyonları' ölçer.""," ""Bu iyiydi!""]",Mesleki_Espri,Kimya,TR,Genel
+J835,"En çok 'Dur' diyen ilimiz hangisidir?","[""Hangisi?"", ""Dur-ak.""," ""Coğrafi espri.""]",Kelime_Oyunu,,TR,Genel
+J836,"Adamın biri yüzmüş, karısı da deniz kızı.","[""Hahaha!""," ""Denizci aile.""," ""Çok soğuk!""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J837,"Domatesi nerde yetiştirirsin?","[""Bahçede.""," ""Antalya'da.""," ""Çok uzaklara gittik.""]",Kelime_Oyunu,,TR,Genel
+J838,"Zombiler neden yavaş yürür?","[""Neden?""," ""Çünkü aceleleri yoktur, zaten ölüler.""," ""Ölümsüz varlıklar.""]",Soguk_Espri,,TR,Genel
+J839,"En meraklı balık hangisidir?","[""Hangisi?"", ""Meraklı palamut. Sürekli etrafı kolaçan eder.""," ""Balıkların meraklısı.""]",Absurt_Mizah,,TR,Genel
+J840,"Fuşya besin geldi mi?","[""Geldi!""," ""Paylaşım zamanı!""," ""Enerji depolayalım.""]",Rituel,Sim_Ozel,TR,Genel
+J841,"Geçen gün bir sır patlattım, herkes duydu.","[""Ne oldu?""," ""Çok sesli söylemişim.""," ""Gizli kalmayan sırlar.""]",Soguk_Espri,,TR,Genel
+J842,"Bir tarihçi müzede en çok neye sinirlenir?","[""Neye?""," ""Eserlerin çalınmasına.""," ""Kültür mirası.""]",Mesleki_Espri,Tarih,TR,Genel
+J843,"İki uğur böceği karşılaşmış. Biri diğerine 'Kaç beneklisin?' demiş. Diğeri 'Saymadım, uğurlu olsun yeter.' demiş.","[""Uğurlu böcekler.""," ""Komikti.""," ""?""]",Kelime_Oyunu,,TR,Genel
+J844,"Nasreddin Hoca bir gün yolda yürürken cüzdanını düşürmüş. Aramış taramış bulamamış. Eve gelince hanımına 'Hanım, benim cüzdanım kayıp, acaba sen mi aldın?' demiş. Hanımı 'Yok hocam, ben almadım' deyince Hoca 'O zaman kesin sen aldın, çünkü başka kimse alamazdı!' demiş.","[""Klasik.""," ""Hoca yine haklı.""," ""Mantıklı çözüm.""]",Bolgesel_Fikra,Nasreddin_Hoca,TR,Genel
+J845,"Hangi tavşan havuç yemez?","[""Hangisi?"", ""Oyuncak tavşan.""," ""Bu olmadı.""]",Soguk_Espri,,TR,Genel
+J846,"Üç tarafı suyla çevrili toprağa ne denir?","[""Yarımada.""," ""Zekice.""," ""Doğru cevap.""]",Kelime_Oyunu,,TR,Genel
+J847,"Güneş sistemindeki en soğuk gezegen hangisidir?","[""Hangisi?"", ""Neptün. Çünkü Güneş'e en uzak o.""," ""Astrolojik espri.""]",Bilimsel_Espri,Astronomi,TR,Genel
+J848,"Neden Amerikalılar hamburger yer?","[""Neden?""," ""Çünkü 'fast food'u severler.""," ""Amerikanca öğrenmek lazım.""]",Kelime_Oyunu,Yabanci_Dil,TR,Genel
+J849,"Adamın biri o kadar safmış ki, her söylenene inanıyormuş.","[""İnanılmaz.""," ""Saflığın bu kadarı.""," ""Nasıl yani?""]",Absurt_Mizah,,TR,Genel
+J850,"Çok kızgın bir boğaya ne denir?","[""Ne denir?"", ""Boğa-rmış.""," ""Sinirli boğa.""]",Kelime_Oyunu,,TR,Genel
+J851,"Adamın biri sürekli gülüyormuş. Neden?","[""Neden?""," ""Çünkü adı Kah-kaha'ymış.""," ""Bu kötüydü.""]",Soguk_Espri,,TR,Genel
+J852,"En sevimli harf hangisidir?","[""Hangisi?"", ""A. Çünkü Aşk A ile başlar.""," ""A-şk.""]",Kelime_Oyunu,,TR,Genel
+J853,"Bir ressamın en sevdiği içecek nedir?","[""Nedir?"", ""Boya-lı su. Çünkü renk katar.""," ""Sanat-içecek.""]",Soguk_Espri,,TR,Genel
+J854,"Gözleri şiş olan adama ne denir?","[""Ne denir?"", ""Ağlamış.""," ""Duygusal anlar.""]",Kelime_Oyunu,,TR,Genel
+J855,"Bir mumya neden asla parti kaçırmaz?","[""Neden?""," ""Çünkü 'sargı'larını çözüp eğlenmek ister.""," ""Eski espri.""]",Kara_Mizah,Mumya,TR,Kara_Mizah_Seviye1
+J856,"En utangaç çiçek hangisidir?","[""Hangisi?"", ""Mahçup-Menekşe.""," ""Çiçekler de utanır.""]",Kelime_Oyunu,,TR,Genel
+J857,"Karakoldaki en komik ifade hangisidir?","[""Hangisi?"", ""Suçlunun 'ben yapmadım' demesi. Herkes güler.""," ""Polis esprisi.""]",Mesleki_Espri,Guvenlik,TR,Genel
+J858,"Adamın biri her gün kitap okuyormuş ama yine de cahilmiş. Bu adam kimdir?","[""Kimdir?"", ""Okuma yazma bilmeyen.""," ""Mantıklı.""]",Mesleki_Espri,Egitim,TR,Genel
+J859,"Yürüyen merdivene ne denir?","[""Ne denir?"", ""Yürüyen merdiven denir.""," ""Bu kadar mıydı?""]",Soguk_Espri,,TR,Genel
+J860,"En çok terleyen spor dalı hangisidir?","[""Hangisi?"", ""Sauna. Çünkü herkes terler.""," ""Sıcak spor.""]",Soguk_Espri,,TR,Genel
+J861,"Temel, bir konferansta en öndekini geçmiş. Kaçıncı olmuş?","[""Sıfırıncı?""," ""Hayır, yine en önde olmuş, çünkü o konuşmacıymış.""," ""Mantık hatası.""]",Bolgesel_Fikra,Temel,TR,Genel
+J862,"Bir yarasa neden baş aşağı uyur?","[""Neden?""," ""Çünkü düz uyursa düşer.""," ""Modayı takip ediyor.""]",Absurt_Mizah,,TR,Genel
+J863,"En çok müzik dinleyen şehir hangisidir?","[""Hangisi?"", ""Nota-kent.""," ""Müzikal şehir.""]",Kelime_Oyunu,,TR,Genel
+J864,"Adamın biri yokuş aşağı koşmuş, kendini durduramamış.","[""Nasıl yani?""," ""Yokuş dikmiş.""," ""Vay canına.""]",Soguk_Espri,,TR,Genel
+J865,"Bir hard disk neden hasta olur?","[""Neden?"", ""Çünkü 'bad sector' kapmıştır.""," ""Geçmiş olsun.""]",Mesleki_Espri,Bilgisayar,TR,Genel
+J866,"Benim teyzem hemşire, senin teyzen ne? - Benim teyzem de hemşire, ama o kan alır.","[""Hahaha!""," ""Hemşire esprisi.""," ""Bu iyiydi.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J867,"En çok dikeni olan bitki hangisidir?","[""Hangisi?"", ""Kaktüs. Diken diken üstüne.""," ""Çöl bitkisi.""]",Kelime_Oyunu,,TR,Genel
+J868,"İnekler neden 'Möö' der?","[""Neden?""," ""Çünkü 'Hav' deselerdi köpek olurlardı.""," ""Doğru.""]",Absurt_Mizah,,TR,Genel
+J869,"Tarihteki en sessiz savaş hangisidir?","[""Hangisi?"", ""Soğuk Savaş.""," ""Böyle bir savaş var.""]",Soguk_Espri,,TR,Genel
+J870,"Bir teknoloji bağımlısı zombiye ne denir?","[""Ne denir?"", ""'Wi-Fiii...' diye inler.""," ""Komikti.""]",Kara_Mizah,Zombi,TR,Kara_Mizah_Seviye1
+J871,"En az çalışan organımız hangisidir?","[""Hangisi?"", ""Apandisit (işlevi tartışmalı).""," ""Basit ve doğru.""]",Soguk_Espri,,TR,Genel
+J872,"Adamın başı dönmüş, midesi bulanmış.","[""Bu çok kötüydü.""," ""Hasta adam.""," ""İğrenç.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
+J873,"Hangi ormanda ağaç kesilmez?","[""Hangi ormanda?""," ""Kutsal ormanda.""," ""Doğru cevap.""]",Soguk_Espri,,TR,Genel
+J874,"En çok korkan hayvan hangisidir?","[""Hangisi?"", ""Ödlek tavuk. Bütün gün korkar.""," ""Korkak hayvan.""]",Kelime_Oyunu,,TR,Genel
+J875,"Bir bilgisayar diğerine ne demiş?","[""Ne demiş?"", ""Formatın yine kaymış.""," ""Teknolojik dertleşme.""]",Kelime_Oyunu,,TR,Genel
