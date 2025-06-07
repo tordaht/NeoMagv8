@@ -5314,7 +5314,7 @@
         }
 
         // 🚀 V8.9.1: REVOLUTIONARY ANTI-PATTERN LANGUAGE EVOLUTION RESPONSE GENERATOR
-        function generateBacteriaResponse(bacteria, message, context = 'user') {
+        async function generateBacteriaResponse(bacteria, message, context = 'user') {
             const age = bacteria.biological_state.age;
             const consciousness = bacteria.consciousness_level;
             const vocabularySize = bacteria.vocabulary.size;
@@ -5336,7 +5336,34 @@
                 return jokeResponse;
             }
             
-            // 🚀 V8.9.1: USE ANTI-PATTERN LANGUAGE EVOLUTION ENGINE
+            // 🔤 V2.7: ENHANCED MORPHOLOGICAL SYSTEM INTEGRATION
+            if (window.aiTrainingAdapter && window.enhancedMorphGenerator && consciousness >= 0.8) {
+                // Determine conversation context for morphological generation
+                let conversationContext = 'general';
+                if (message && message.toLowerCase().includes('merhaba')) conversationContext = 'social';
+                else if (message && (message.includes('öğren') || message.includes('bil'))) conversationContext = 'learning';
+                else if (message && (message.includes('arkadaş') || message.includes('dostluk'))) conversationContext = 'social';
+                else if (message && (message.includes('ATP') || message.includes('hücre'))) conversationContext = 'scientific';
+                else if (message && message.includes('vur joker vur')) conversationContext = 'creative';
+                else if (message && (message.includes('niye') || message.includes('niçin'))) conversationContext = 'philosophical';
+                
+                try {
+                    // Generate morphologically-aware response
+                    const morphResponse = await window.enhancedMorphGenerator.generateAdvancedMorphSentence(
+                        conversationContext,
+                        consciousness,
+                        bacteria.vocabulary ? Array.from(bacteria.vocabulary) : []
+                    );
+                    
+                    console.log(`🔤 ${bacteria.name} Enhanced Morphological response (context: ${conversationContext})`);
+                    return morphResponse;
+                } catch (error) {
+                    console.warn(`⚠️ Morphological generation failed for ${bacteria.name}:`, error);
+                    // Fall through to next system
+                }
+            }
+            
+            // 🚀 V8.9.1: USE ANTI-PATTERN LANGUAGE EVOLUTION ENGINE (FALLBACK)
             if (languageEvolutionEngine && consciousness >= 1) {
                 // Determine conversation context for smart evolution
                 let conversationContext = 'general';
@@ -5399,8 +5426,8 @@
 
             if (chatMode === 'individual') {
                 // Individual chat with selected bacteria
-                setTimeout(() => {
-                    const response = generateBacteriaResponse(selectedBacteria, message, 'user');
+                setTimeout(async () => {
+                    const response = await generateBacteriaResponse(selectedBacteria, message, 'user');
                     selectedBacteria.conversation_history.push({ user: message, bacteria: response });
                     addChatMessage(response, 'bacteria', selectedBacteria.name);
                     showChatLoading(false);
@@ -5412,9 +5439,9 @@
                  const responseBacteria = [];
                  
                  bacteriaPopulation.forEach((bacteria, index) => {
-                     setTimeout(() => {
+                     setTimeout(async () => {
                          if (Math.random() < 0.7) { // 70% chance each bacteria responds
-                             const response = generateBacteriaResponse(bacteria, message, 'user');
+                             const response = await generateBacteriaResponse(bacteria, message, 'user');
                              bacteria.conversation_history.push({ user: message, bacteria: response });
                              addChatMessage(response, 'bacteria', bacteria.name);
                              responseBacteria.push(bacteria);
@@ -5482,8 +5509,8 @@
             };
             
             // Start natural conversation
-            setTimeout(() => {
-                const message1 = generateBacteriaResponse(bacteria1, topic, 'bacteria');
+            setTimeout(async () => {
+                const message1 = await generateBacteriaResponse(bacteria1, topic, 'bacteria');
                 conversation.messages.push({ speaker: bacteria1.name, message: message1, time: Date.now() });
                 
                 // Save to individual chat histories
@@ -5494,8 +5521,8 @@
                 bacteria2.chatHistory.push({type: 'received', from: bacteria1.name, message: message1, time: Date.now()});
                 
                 // Second bacteria responds
-                setTimeout(() => {
-                    const message2 = generateBacteriaResponse(bacteria2, message1, 'bacteria');
+                setTimeout(async () => {
+                    const message2 = await generateBacteriaResponse(bacteria2, message1, 'bacteria');
                     conversation.messages.push({ speaker: bacteria2.name, message: message2, time: Date.now() });
                     
                     bacteria2.chatHistory.push({type: 'sent', to: bacteria1.name, message: message2, time: Date.now()});
@@ -6473,8 +6500,8 @@
             bacteria.conversation_history = bacteria.conversation_history || [];
             
             // Generate bacteria response
-            setTimeout(() => {
-                const response = generateBacteriaResponse(bacteria, message, 'user');
+            setTimeout(async () => {
+                const response = await generateBacteriaResponse(bacteria, message, 'user');
                 addMessageToWindow(messagesArea, response, 'bacteria', bacteria.name);
                 
                 // Save conversation
@@ -7006,6 +7033,24 @@ ${recentSummary}${errorSummary}
             }
         }
 
+        // Dynamic Script Loader Utility
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                // Check if script already loaded
+                if (document.querySelector(`script[src="${src}"]`)) {
+                    resolve();
+                    return;
+                }
+                
+                const script = document.createElement('script');
+                script.src = src;
+                script.type = 'module';
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
         // Global Event Delegation System (Modern Approach)
         function initializeEventDelegation() {
             document.addEventListener('click', function(event) {
@@ -7120,6 +7165,41 @@ ${recentSummary}${errorSummary}
                     languageEvolutionEngine = new LanguageEvolutionEngine();
                     console.log('🧬 Language Evolution Engine initialized - bacterial languages will now evolve!');
                 }, 4000); // Wait for other systems to be ready
+                
+                // 8. 🔤 Initialize Enhanced Morphological System (Phase 2.7)
+                setTimeout(async () => {
+                    try {
+                        // Load scripts dynamically
+                        await loadScript('./src/engine/AITrainingAdapter.js');
+                        await loadScript('./src/engine/EnhancedMorphologicalGenerator.js');
+                        await loadScript('./src/engine/MorphologicalDialogueGenerator.js');
+                        
+                        // Initialize Enhanced Morphological System
+                        window.aiTrainingAdapter = new AITrainingAdapter();
+                        window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
+                        
+                        // Wait for training data to load
+                        await new Promise(resolve => {
+                            const checkLoaded = () => {
+                                if (window.aiTrainingAdapter.isLoaded) {
+                                    resolve();
+                                } else {
+                                    setTimeout(checkLoaded, 100);
+                                }
+                            };
+                            checkLoaded();
+                        });
+                        
+                        console.log('🔤 Enhanced Morphological System v2.7 initialized!');
+                        console.log(`📚 Training examples loaded: ${window.aiTrainingAdapter.getSystemStatus().trainingExamples}`);
+                        
+                        // Emit event for other systems to know it's ready
+                        appEvents.emit('morphological:system:ready');
+                        
+                    } catch (error) {
+                        console.error('❌ Enhanced Morphological System initialization failed:', error);
+                    }
+                }, 5000); // Wait for all other systems to be ready
                 
                 console.log('🎉 Event-driven initialization complete!');
                 
