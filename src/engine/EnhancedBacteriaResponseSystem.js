@@ -40,7 +40,12 @@ export class EnhancedBacteriaResponseSystem {
             'sanırım {context} beni biraz heyecanlandırdı{ending}',
             'bugünlerde {context} pek aklımdan çıkmıyor{ending}',
             '{context} yüzünden hafif gerildim{ending}',
-            'bazen {context} gerçekten tuhaf geliyor{ending}'
+            'bazen {context} gerçekten tuhaf geliyor{ending}',
+            '{context} bana komik geliyor{ending}',
+            '{context} üzerine hayal kuruyorum{ending}',
+            'arada sırada {context} hakkında düşünüyorum{ending}',
+            'galiba {context} beni şaşırtıyor{ending}',
+            'minicik bedenimle {context} anlamaya çalışıyorum{ending}'
         ];
 
         this.midPhrases = [
@@ -53,7 +58,12 @@ export class EnhancedBacteriaResponseSystem {
             '{context} konusunda kararsız kaldım{ending}',
             '{context} bence oldukça değişik bir konu{ending}',
             'bazı geceler {context} beni uyutmuyor{ending}',
-            'araştırmalarım {context} üzerine yoğunlaşıyor{ending}'
+            'araştırmalarım {context} üzerine yoğunlaşıyor{ending}',
+            '{context} için küçük notlar alıyorum{ending}',
+            'daha derin araştırınca {context} ilginçleşiyor{ending}',
+            '{context} hakkında düşünmek beni rahatlatıyor{ending}',
+            'son zamanlarda {context} üzerine okuyorum{ending}',
+            'arkadaşlar {context} hakkında tartışıyor{ending}'
         ];
 
         this.highPhrases = [
@@ -66,7 +76,12 @@ export class EnhancedBacteriaResponseSystem {
             'gördüğüm rüyalarda bile {context} var{ending}',
             '{context} üzerine tez yazsam mı diye düşünüyorum{ending}',
             'tüm bilinç gücümle {context} üzerine odaklanıyorum{ending}',
-            'son zamanlarda {context} beni bambaşka yerlere götürüyor{ending}'
+            'son zamanlarda {context} beni bambaşka yerlere götürüyor{ending}',
+            '{context} varlığın özünde bir gizem gibi{ending}',
+            '{context} üzerine makale yazmayı planlıyorum{ending}',
+            'her açıdan {context} yorumlamaya çalışıyorum{ending}',
+            'ruhsal yolculuğumda {context} önemli bir başlık{ending}',
+            'bilincimin derinliklerinde {context} yankılanıyor{ending}'
         ];
 
         this.endings = [' 😄', ' 🤔', ' 😊', ' 😅', ' 🧬', ' 😉', ' 🙃', ' 🤪', ' 🤖', ' 😴'];
@@ -88,8 +103,8 @@ export class EnhancedBacteriaResponseSystem {
 
     _buildTemplate(consciousness) {
         let phrases;
-        if (consciousness < 20) phrases = this.lowPhrases;
-        else if (consciousness < 50) phrases = this.midPhrases;
+        if (consciousness < 0.3) phrases = this.lowPhrases;
+        else if (consciousness < 0.7) phrases = this.midPhrases;
         else phrases = this.highPhrases;
 
         const prefix = this._choose(this.prefixes);
@@ -108,6 +123,11 @@ export class EnhancedBacteriaResponseSystem {
 
         let sentence = this._buildTemplate(bacteria.consciousness_level || 0);
         sentence = sentence.replace('{context}', this.getContextWords(userMessage));
+
+        if (bacteria.memory.length > 1 && Math.random() < 0.25) {
+            const past = this._choose(bacteria.memory.slice(0, -1)).user;
+            sentence += ` (\"${past}\" demiştin)`;
+        }
 
         const mood = bacteria.personality_traits?.mood ?? 0.5;
         if (mood > 0.7) sentence += ' 😀';
@@ -147,7 +167,12 @@ export class EnhancedBacteriaResponseSystem {
 
         if (window.aiTrainingAdapter && window.aiTrainingAdapter.generateTrainingAwareMorphSentence) {
             try {
-                sentence = window.aiTrainingAdapter.generateTrainingAwareMorphSentence(sentence);
+                const morphSentence = await window.aiTrainingAdapter.generateTrainingAwareMorphSentence(
+                    this.getContextWords(userMessage),
+                    bacteria.consciousness_level || 0,
+                    mood > 0.7 ? 'positive' : mood < 0.3 ? 'negative' : null
+                );
+                if (morphSentence) sentence += ' ' + morphSentence;
             } catch (e) {
                 console.warn('Morphological generator error:', e);
             }
