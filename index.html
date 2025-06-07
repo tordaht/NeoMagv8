@@ -7648,13 +7648,54 @@ ${recentSummary}${errorSummary}
             }
         }
 
+        // 🛡️ System Readiness Checker
+        function isSystemReady() {
+            // Priority 1: Check if system is fully ready
+            if (window.systemFullyReady) {
+                return true;
+            }
+            
+            // Priority 2: Check if basic simulation is ready (bacteria exist)
+            if (bacteriaList && bacteriaList.length > 0) {
+                return true;
+            }
+            
+            // Priority 3: Check if any critical system is available
+            const checks = {
+                enhancedMorphGenerator: window.enhancedMorphGenerator || window.morphGenerator,
+                languageEvolutionEngine: window.languageEvolutionEngine,
+                simulationManager: window.simulationManager
+            };
+            
+            return Object.values(checks).some(check => check);
+        }
+        
+        // 📊 Get System Status for User Info
+        function getSystemStatus() {
+            const status = {
+                fullyReady: !!window.systemFullyReady,
+                bacteriaCount: bacteriaList ? bacteriaList.length : 0,
+                systemsLoaded: 0,
+                totalSystems: 4,
+                readyTime: window.systemFullyReady ? 'Ready!' : 'Loading...'
+            };
+            
+            if (window.enhancedMorphGenerator) status.systemsLoaded++;
+            if (window.languageEvolutionEngine) status.systemsLoaded++;
+            if (window.simulationManager) status.systemsLoaded++;
+            if (bacteriaList && bacteriaList.length > 0) status.systemsLoaded++;
+            
+            return status;
+        }
+
         // 🎭 Show Word Diversity Stats
         function showDiversityStats() {
             console.log('🎭 SHOWING DIVERSITY STATS...');
             
-            // Check if Enhanced Morphological System is loaded
-            if (!window.enhancedMorphGenerator) {
-                alert('⚠️ Enhanced Morphological System is not ready yet.\n\nPlease wait a few seconds and try again.');
+            // Check if any system is ready, show detailed status
+            if (!isSystemReady()) {
+                const status = getSystemStatus();
+                alert(`⚠️ System is still initializing...\n\n📊 Status: ${status.systemsLoaded}/${status.totalSystems} systems loaded\n🧬 Bacteria: ${status.bacteriaCount}\n⏱️ ${status.readyTime}\n\nPlease wait a few more seconds and try again.\nFull initialization takes about 5-10 seconds.`);
                 return;
             }
             
@@ -7709,8 +7750,9 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
         function resetDiversitySystem() {
             console.log('🔄 RESETTING DIVERSITY SYSTEM...');
             
-            if (!window.enhancedMorphGenerator) {
-                alert('⚠️ Enhanced Morphological System is not ready yet.\n\nPlease wait a few seconds and try again.');
+            if (!isSystemReady()) {
+                const status = getSystemStatus();
+                alert(`⚠️ System is still initializing...\n\n📊 Status: ${status.systemsLoaded}/${status.totalSystems} systems loaded\n🧬 Bacteria: ${status.bacteriaCount}\n⏱️ ${status.readyTime}\n\nPlease wait a few more seconds and try again.\nFull initialization takes about 5-10 seconds.`);
                 return;
             }
             
@@ -7748,8 +7790,9 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
         function showLanguageEvolutionStats() {
             console.log('📊 LANGUAGE EVOLUTION STATS...');
             
-            if (!window.languageEvolutionEngine) {
-                alert('⚠️ Language Evolution Engine is not ready yet.\n\nPlease wait a few seconds and try again.');
+            if (!isSystemReady()) {
+                const status = getSystemStatus();
+                alert(`⚠️ System is still initializing...\n\n📊 Status: ${status.systemsLoaded}/${status.totalSystems} systems loaded\n🧬 Bacteria: ${status.bacteriaCount}\n⏱️ ${status.readyTime}\n\nPlease wait a few more seconds and try again.\nFull initialization takes about 5-10 seconds.`);
                 return;
             }
             
@@ -8057,9 +8100,22 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                         console.log('🧬 Persistent Learning Engine initialized!');
                         console.log(`💾 Previous interactions: ${window.persistentLearning.metrics.totalInteractions}`);
                         
+                        // Mark system as fully ready
+                        window.systemFullyReady = true;
+                        
+                        // Update UI to show system is ready
+                        const loadingIndicators = document.querySelectorAll('.loading-indicator');
+                        loadingIndicators.forEach(indicator => {
+                            indicator.style.display = 'none';
+                        });
+                        
+                        // Show success notification
+                        console.log('🎉 mnBac v9.6.0 FULLY LOADED - All systems operational!');
+                        
                         // Emit event for other systems to know it's ready
                         appEvents.emit('morphological:system:ready');
                         appEvents.emit('persistent:learning:ready');
+                        appEvents.emit('system:fully:ready');
                         
                     } catch (error) {
                         console.error('❌ Enhanced Morphological System initialization failed:', error);
