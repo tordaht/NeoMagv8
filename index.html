@@ -8559,8 +8559,8 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
             // Get responses from all bacteria
             bacteriaPopulation.forEach(bacteria => {
                 if (bacteria && bacteria.generateResponse) {
-                    setTimeout(() => {
-                        const response = bacteria.generateResponse(message);
+                    setTimeout(async () => {
+                        const response = await bacteria.generateResponse(message);
                         if (groupChatMessages) {
                             addChatMessageToPanel(response, 'bacteria', bacteria.name, groupChatMessages);
                         }
@@ -8593,8 +8593,8 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
             
             // Get response from selected bacteria
             if (selectedBacteria.generateResponse) {
-                setTimeout(() => {
-                    const response = selectedBacteria.generateResponse(message);
+                setTimeout(async () => {
+                    const response = await selectedBacteria.generateResponse(message);
                     if (individualChatMessages) {
                         addChatMessageToPanel(response, 'bacteria', selectedBacteria.name, individualChatMessages);
                     }
@@ -8672,6 +8672,7 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                             await loadScript('./src/engine/EnhancedMorphologicalGenerator.js');
                             await loadScript('./src/engine/MorphologicalDialogueGenerator.js');
                             await loadScript('./src/engine/PersistentLearningEngine.js');
+                            await loadScript('./src/engine/EnhancedBacteriaResponseSystem.js');
                             
                             // Initialize Enhanced Morphological System
                             window.aiTrainingAdapter = new AITrainingAdapter();
@@ -8748,79 +8749,24 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
             }
         }
 
-        // 🤖 Simple LLM Integration - Level 1 (Transformers.js)
+        // 🤖 Enhanced Bacteria Response System
         async function initializeSimpleLLM() {
             try {
-                console.log('🤖 Loading simple LLM (Transformers.js)...');
-                
-                // CDN import for Transformers.js
-                const script = document.createElement('script');
-                script.src = 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.6.0';
-                script.type = 'module';
-                document.head.appendChild(script);
-                
-                // Wait a bit for loading
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                // Create simple LLM system
-                window.simpleLLM = {
-                    ready: false,
-                    
-                    async generateResponse(userMessage, bacteriaContext) {
-                        // Simple template-based responses enhanced with context
-                        const templates = this.getTemplatesForConsciousness(bacteriaContext.consciousness || 0);
-                        const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
-                        
-                        // Add some context-aware words
-                        const contextWords = this.getContextWords(userMessage);
-                        
-                        return randomTemplate.replace('{context}', contextWords);
-                    },
-                    
-                    getTemplatesForConsciousness(consciousness) {
-                        if (consciousness < 20) {
-                            return [
-                                "... mikroskobik düşünce... 🦠",
-                                "enerji {context} arıyorum...",
-                                "küçük ama {context} hissediyorum"
-                            ];
-                        } else if (consciousness < 50) {
-                            return [
-                                "Hücresel seviyede {context} düşünüyorum",
-                                "ATP üretirken {context} geldi aklıma",
-                                "Biyolojik olarak {context} anlamlı geliyor"
-                            ];
-                        } else {
-                            return [
-                                "Felsefi açıdan {context} çok ilginç",
-                                "Bilinç seviyemle {context} değerlendiriyorum",
-                                "Karmaşık düşüncelerim var {context} hakkında 🧬"
-                            ];
-                        }
-                    },
-                    
-                    getContextWords(message) {
-                        const lowerMsg = message.toLowerCase();
-                        
-                        if (lowerMsg.includes('merhaba') || lowerMsg.includes('selam')) return 'sosyal etkileşim';
-                        if (lowerMsg.includes('enerji') || lowerMsg.includes('güç')) return 'enerji metabolizması';
-                        if (lowerMsg.includes('düşün') || lowerMsg.includes('anlam')) return 'bilinç felsefesi';
-                        if (lowerMsg.includes('büyü') || lowerMsg.includes('bölün')) return 'hücresel gelişim';
-                        if (lowerMsg.includes('arkadaş') || lowerMsg.includes('dostluk')) return 'bakteri toplumu';
-                        
-                        return 'bu konu';
-                    }
-                };
-                
+                console.log('🤖 Loading Enhanced Bacteria Response System...');
+
+                if (typeof EnhancedBacteriaResponseSystem === 'undefined') {
+                    await loadScript('./src/engine/EnhancedBacteriaResponseSystem.js');
+                }
+
+                window.simpleLLM = new EnhancedBacteriaResponseSystem();
                 window.simpleLLM.ready = true;
-                console.log('✅ Simple LLM ready! Using template-enhanced responses.');
-                
+                console.log('✅ Enhanced Bacteria Response System ready!');
+
             } catch (error) {
-                console.warn('⚠️ Simple LLM initialization failed:', error);
-                // Fallback to basic templates
+                console.warn('⚠️ Enhanced system initialization failed:', error);
                 window.simpleLLM = {
                     ready: true,
-                    generateResponse: (msg, ctx) => "Mikroskobik düşüncelerim var... 🦠"
+                    generateResponse: () => 'Mikroskobik düşüncelerim var... 🦠'
                 };
             }
         }
