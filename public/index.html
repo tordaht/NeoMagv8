@@ -515,6 +515,23 @@
                 this.frameCount = 0;
                 this.fpsDisplay = document.getElementById('fpsDisplay');
                 this.gameLoop = this.gameLoop.bind(this);
+                
+                // 🗣️ Enhanced Peer Communication System
+                this.stepCount = 0;
+                this.CHAT_INTERVAL = 5; // Her 5 adımda peer chat
+                this.GROUP_CHAT_INTERVAL = 15; // Her 15 adımda grup sohbeti
+                this.speechBubbles = new Map(); // Konuşma balonları tracking
+                
+                // Mood-based vocabulary lists
+                this.POSITIVE_WORDS = new Set([
+                    'iyi', 'mutlu', 'hoş', 'güzel', 'harika', 'mükemmel', 'sevgi', 
+                    'dostluk', 'neşe', 'umut', 'başarı', 'kazanç', 'büyüme', 'gelişim'
+                ]);
+                
+                this.NEGATIVE_WORDS = new Set([
+                    'kötü', 'üzgün', 'berbat', 'korkunç', 'başarısız', 'kayıp', 
+                    'ağrı', 'acı', 'kırık', 'yalnız', 'depresif', 'karanlık'
+                ]);
             }
 
             gameLoop(timestamp) {
@@ -587,12 +604,29 @@
 
             simulationStep() {
                 this.simulationDay++;
+                this.stepCount++; // 🗣️ Peer communication tracking
                 simulationDay = this.simulationDay; // Global ile senkronize
                 simulationTimeSpan.textContent = `Simülasyon Zamanı: ${this.simulationDay} gün`;
                 
                 // Auto-generate food for sustained ecosystem
                 if (Math.random() < CONFIG.SIMULATION.AUTO_FOOD_GENERATION_CHANCE) {
                     addRandomFood();
+                }
+                
+                // 🗣️ Enhanced Peer Communication System
+                if (bacteriaPopulation.length >= 2) {
+                    // Regular peer chats
+                    if (this.stepCount % this.CHAT_INTERVAL === 0) {
+                        this.runPeerChats();
+                    }
+                    
+                    // Group therapy sessions
+                    if (this.stepCount % this.GROUP_CHAT_INTERVAL === 0) {
+                        this.runGroupChat();
+                    }
+                    
+                    // Support for depressed bacteria
+                    this.checkDepressedBacteria();
                 }
                 
                 bacteriaPopulation.forEach((bacteria, index) => {
@@ -629,6 +663,325 @@
                 if (selectedBacteria) {
                     updateBacteriaDetails(selectedBacteria);
                 }
+            }
+            
+            // 🗣️ Enhanced Peer Communication Methods
+            
+            /**
+             * Her bakteri rastgele bir eş seçer ve sohbet eder
+             */
+            async runPeerChats() {
+                const socialBacteria = bacteriaPopulation.filter(b => 
+                    b.consciousness_level > 0.5 && b.personality_traits.sociability > 0.3
+                );
+                
+                if (socialBacteria.length < 2) return;
+                
+                // Her bakteriye partner bul ve konuş
+                for (const bacteria of socialBacteria) {
+                    if (Math.random() < 0.7) { // %70 şans ile konuşma
+                        const partner = this.getRandomNeighbor(bacteria, socialBacteria);
+                        if (partner) {
+                            await this.exchangeDialog(bacteria, partner);
+                        }
+                    }
+                }
+                
+                console.log(`🗣️ Peer chats completed: ${socialBacteria.length} bacteria participated`);
+            }
+            
+            /**
+             * Rastgele komşu bakteri seç (proximity veya random)
+             */
+            getRandomNeighbor(bacteria, pool = bacteriaPopulation) {
+                const others = pool.filter(x => x !== bacteria);
+                if (others.length === 0) return null;
+                
+                // Yakınlık bazlı seçim (%30 şans)
+                if (Math.random() < 0.3) {
+                    const nearby = others.filter(other => {
+                        const dx = bacteria.x - other.x;
+                        const dy = bacteria.y - other.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        return distance < 100; // 100px yakınlık
+                    });
+                    
+                    if (nearby.length > 0) {
+                        return nearby[Math.floor(Math.random() * nearby.length)];
+                    }
+                }
+                
+                // Random seçim
+                return others[Math.floor(Math.random() * others.length)];
+            }
+            
+            /**
+             * İki bakteri arası çift yönlü diyalog
+             */
+            async exchangeDialog(bacteriaA, bacteriaB) {
+                try {
+                    // A'dan B'ye mesaj
+                    const contextA = this.getBacteriaContext(bacteriaA);
+                    const messageA = await this.generatePeerMessage(bacteriaA, contextA);
+                    
+                    // B mesajı öğrenir ve mood etkilenir
+                    this.learnFromPeer(bacteriaB, messageA, bacteriaA);
+                    this.renderSpeechBubble(bacteriaA, messageA, 3000);
+                    
+                    // B'den A'ya cevap (kısa gecikme)
+                    setTimeout(async () => {
+                        const contextB = this.getBacteriaContext(bacteriaB);
+                        const messageB = await this.generatePeerMessage(bacteriaB, contextB);
+                        
+                        this.learnFromPeer(bacteriaA, messageB, bacteriaB);
+                        this.renderSpeechBubble(bacteriaB, messageB, 3000);
+                    }, 500 + Math.random() * 1000);
+                    
+                } catch (error) {
+                    console.warn('⚠️ Peer dialog failed:', error);
+                }
+            }
+            
+            /**
+             * Bakterinin mevcut context'ini belirle
+             */
+                         getBacteriaContext(bacteria) {
+                 // Mood'a göre context seç (personality_traits.mood kullan)
+                 if (bacteria.personality_traits.mood < 0.3) return 'sad';
+                 if (bacteria.personality_traits.mood > 0.7) return 'happy';
+                 if (bacteria.energy && bacteria.energy < 0.3) return 'hungry';
+                 if (bacteria.biological_state.energy < 0.3) return 'hungry';
+                 if (bacteria.consciousness_level > 2.0) return 'philosophical';
+                 if (bacteria.personality_traits.sociability > 0.7) return 'social';
+                 
+                 const contexts = ['general', 'friendly', 'curious', 'learning'];
+                 return contexts[Math.floor(Math.random() * contexts.length)];
+             }
+            
+            /**
+             * Peer mesajı üret (Enhanced Morphological System veya fallback)
+             */
+            async generatePeerMessage(bacteria, context) {
+                // Enhanced Morphological System kullan
+                if (window.enhancedMorphGenerator && bacteria.consciousness_level >= 0.8) {
+                    try {
+                        return await window.enhancedMorphGenerator.generateAdvancedMorphSentence(
+                            context,
+                            bacteria.consciousness_level,
+                            bacteria.vocabulary ? Array.from(bacteria.vocabulary) : []
+                        );
+                    } catch (error) {
+                        console.warn('⚠️ Enhanced morphology failed, using fallback');
+                    }
+                }
+                
+                // Fallback - basit mesaj üretimi
+                return this.generateSimplePeerMessage(bacteria, context);
+            }
+            
+            /**
+             * Basit peer mesajı (fallback)
+             */
+            generateSimplePeerMessage(bacteria, context) {
+                                 const templates = {
+                     'sad': ['Moralim bozuk...', 'Kendimi kötü hissediyorum', 'Yardıma ihtiyacım var'],
+                     'happy': ['Harika hissediyorum!', 'Bu gün çok güzel!', 'Seninle konuşmak güzel'],
+                     'hungry': ['Acıktım...', 'Yemek arıyorum', 'Enerji lazım'],
+                     'philosophical': ['Varoluş hakkında düşünüyorum', 'Bilinç nedir?', 'Büyümek güzel'],
+                     'social': ['Merhaba arkadaş!', 'Nasılsın?', 'Birlikte takılalım'],
+                     'general': ['Selam!', 'Ne yapıyorsun?', 'Güzel gün'],
+                     'friendly': ['Arkadaşım!', 'Seni görmek güzel', 'Beraber olalım'],
+                     'curious': ['Bu nedir?', 'Öğrenmek istiyorum', 'Merak ediyorum'],
+                     'learning': ['Yeni şeyler öğreniyorum', 'Akıllanıyorum', 'Gelişiyorum'],
+                     'supportive': ['Üzülme arkadaş!', 'Her şey düzelecek', 'Yanındayım', 'Moralini bozma', 'Birlikte güçlüyüz'],
+                     'group_social': ['Herkese merhaba!', 'Güzel bir grup', 'Hep birlikte güzeliz', 'Bu sohbet çok hoş']
+                 };
+                
+                const contextTemplates = templates[context] || templates['general'];
+                const template = contextTemplates[Math.floor(Math.random() * contextTemplates.length)];
+                
+                // Vocabulary'den kelime ekle
+                if (bacteria.vocabulary && bacteria.vocabulary.size > 0) {
+                    const vocab = Array.from(bacteria.vocabulary);
+                    const randomWord = vocab[Math.floor(Math.random() * vocab.length)];
+                    return `${template} ${randomWord}!`;
+                }
+                
+                return template;
+            }
+            
+            /**
+             * Peer'den öğrenme ve mood etkileşimi
+             */
+            learnFromPeer(receiver, message, sender) {
+                // Kelimeleri çıkar ve öğren
+                const words = message.toLowerCase()
+                    .replace(/[^\wçğıöşüâîû\s]/g, ' ')
+                    .split(/\s+/)
+                    .filter(word => word.length > 2);
+                
+                // Yeni kelimeleri vocabulary'ye ekle
+                let newWordsLearned = 0;
+                words.forEach(word => {
+                    if (!receiver.vocabulary.has(word) && Math.random() < 0.4) { // %40 öğrenme şansı
+                        receiver.vocabulary.add(word);
+                        newWordsLearned++;
+                    }
+                });
+                
+                // Mood analizi ve güncelleme
+                let moodDelta = 0;
+                words.forEach(word => {
+                    if (this.POSITIVE_WORDS.has(word)) {
+                        moodDelta += 0.05;
+                    } else if (this.NEGATIVE_WORDS.has(word)) {
+                        moodDelta -= 0.03;
+                    }
+                });
+                
+                // Sosyal etkileşim bonus
+                moodDelta += 0.02; // Konuşmak genel olarak mood artırır
+                
+                                 // Mood güncelle (0-1 arası sınırla) - personality_traits.mood kullan
+                 receiver.personality_traits.mood = Math.max(0, Math.min(1, receiver.personality_traits.mood + moodDelta));
+                
+                // Consciousness artışı (peer learning bonus)
+                if (newWordsLearned > 0) {
+                    receiver.consciousness_level += newWordsLearned * 0.01;
+                }
+                
+                // Persistent Learning'e kaydet
+                if (window.persistentLearning) {
+                    window.persistentLearning.recordInteraction(
+                        message,
+                        `Learned from ${sender.name}`,
+                        'peer_learning',
+                        receiver.id
+                    );
+                }
+                
+                                 console.log(`🧠 ${receiver.name} learned ${newWordsLearned} words from ${sender.name}, mood: ${receiver.personality_traits.mood.toFixed(2)}`);
+            }
+            
+            /**
+             * Grup sohbeti (3-4 bakteri)
+             */
+            async runGroupChat() {
+                const activeBacteria = bacteriaPopulation.filter(b => 
+                    b.consciousness_level > 1.0 && b.personality_traits.sociability > 0.4
+                );
+                
+                if (activeBacteria.length < 3) return;
+                
+                // 3-4 bakteri seç
+                const groupSize = Math.min(4, activeBacteria.length);
+                const group = this.shuffleArray(activeBacteria).slice(0, groupSize);
+                
+                console.log(`👥 Group chat started with: ${group.map(b => b.name).join(', ')}`);
+                
+                // Her bakteri sırayla konuşur
+                for (let i = 0; i < group.length; i++) {
+                    const speaker = group[i];
+                    const context = 'group_social';
+                    
+                    const message = await this.generatePeerMessage(speaker, context);
+                    this.renderSpeechBubble(speaker, message, 4000);
+                    
+                    // Diğer grup üyeleri öğrenir
+                    group.filter(b => b !== speaker).forEach(listener => {
+                        this.learnFromPeer(listener, message, speaker);
+                    });
+                    
+                    // Kısa gecikme
+                    await new Promise(resolve => setTimeout(resolve, 800));
+                }
+            }
+            
+            /**
+             * Depresif bakterilere destek
+             */
+                         async checkDepressedBacteria() {
+                 const depressedBacteria = bacteriaPopulation.filter(b => b.personality_traits.mood < 0.3);
+                
+                for (const depressed of depressedBacteria) {
+                    // Pozitif bakteri bul
+                                         const supporter = bacteriaPopulation.find(b => 
+                         b !== depressed && 
+                         b.personality_traits.mood > 0.6 && 
+                         b.personality_traits.sociability > 0.5
+                     );
+                    
+                    if (supporter && Math.random() < 0.3) { // %30 şans ile destek
+                        const supportMessage = await this.generatePeerMessage(supporter, 'supportive');
+                        this.learnFromPeer(depressed, supportMessage, supporter);
+                        this.renderSpeechBubble(supporter, `→ ${depressed.name}: ${supportMessage}`, 4000);
+                        
+                                                 // Extra mood boost for support
+                         depressed.personality_traits.mood = Math.min(1, depressed.personality_traits.mood + 0.1);
+                        
+                        console.log(`💝 ${supporter.name} supported depressed ${depressed.name}`);
+                    }
+                }
+            }
+            
+            /**
+             * Konuşma balonu render
+             */
+            renderSpeechBubble(bacteria, message, duration = 3000) {
+                // Previous bubble'ı temizle
+                if (this.speechBubbles.has(bacteria.id)) {
+                    clearTimeout(this.speechBubbles.get(bacteria.id).timeout);
+                }
+                
+                // Bubble element oluştur veya güncelle
+                let bubble = document.getElementById(`speech-${bacteria.id}`);
+                if (!bubble) {
+                    bubble = document.createElement('div');
+                    bubble.id = `speech-${bacteria.id}`;
+                    bubble.className = 'speech-bubble';
+                    bubble.style.cssText = `
+                        position: absolute;
+                        background: rgba(255, 255, 255, 0.95);
+                        border: 1px solid #ccc;
+                        border-radius: 8px;
+                        padding: 4px 8px;
+                        font-size: 10px;
+                        max-width: 120px;
+                        word-wrap: break-word;
+                        z-index: 1000;
+                        pointer-events: none;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    `;
+                    simulationArea.appendChild(bubble);
+                }
+                
+                // Pozisyon güncelle
+                bubble.style.left = `${bacteria.x + 10}px`;
+                bubble.style.top = `${bacteria.y - 20}px`;
+                bubble.textContent = message.substring(0, 50) + (message.length > 50 ? '...' : '');
+                bubble.style.display = 'block';
+                
+                // Auto-hide timeout
+                const timeout = setTimeout(() => {
+                    if (bubble) {
+                        bubble.style.display = 'none';
+                    }
+                    this.speechBubbles.delete(bacteria.id);
+                }, duration);
+                
+                this.speechBubbles.set(bacteria.id, { bubble, timeout });
+            }
+            
+            /**
+             * Array karıştırma utility
+             */
+            shuffleArray(array) {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
             }
         }
 
