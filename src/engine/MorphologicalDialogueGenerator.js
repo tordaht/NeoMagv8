@@ -6,14 +6,38 @@
 class DynamicLexicon {
     constructor() {
         this.baseWords = {
-            subjects: ['bakteri', 'hücre', 'gezgin', 'dinozor', 'hayal', 'karınca', 'atom', 'kristal', 'çiçek', 'balık', 'ruh', 'zihin', 'kalp', 'nefes', 'yıldız'],
-            verbs: ['sentezliyor', 'keşfediyor', 'dans ediyor', 'paylaşıyor', 'yıldızı görüyor', 'müzik yapıyor', 'rüya kuruyor', 'titreşiyor', 'parıldıyor', 'evrimleşiyor', 'fısıldıyor', 'büyülüyor', 'uyanıyor', 'hissediyor', 'anlıyor'],
-            objects: ['enerji', 'dna', 'pizza', 'mikrofon', 'düşünce', 'vitamin', 'mineral', 'şarkı', 'renk', 'koku', 'anı', 'gizem', 'umut', 'korku', 'sevgi'],
-            emotions: ['mutlu', 'meraklı', 'şaşkın', 'kararlı', 'hüzünlü', 'heyecanlı', 'sakin', 'endişeli', 'umutlu', 'korkmuş', 'şefkatli', 'gururlu', 'utangaç', 'cesur', 'nazik'],
-            locations: ['laboratuvar', 'okyanús', 'gökyüzü', 'yaprak', 'toprak', 'hava', 'su', 'ışık', 'gölge', 'rüzgar', 'kalp', 'zihin', 'ev', 'yol', 'köprü'],
-            conjunctions: ['ancak', 'ama', 'fakat', 'lakin', 'oysa', 've', 'ile', 'hem', 'ya da', 'veya', 'ki', 'çünkü', 'zira', 'hatta', 'ayrıca'],
-            intensifiers: ['çok', 'epey', 'oldukça', 'fazlasıyla', 'son derece', 'büyük ölçüde', 'hayli', 'bir hayli', 'gayet', 'pek'],
-            temporal: ['şimdi', 'sonra', 'önce', 'hemen', 'yavaşça', 'birden', 'aniden', 'derhal', 'zamanla', 'sonunda']
+            subjects: ['bakteri', 'hücre', 'gezgin', 'dinozor', 'hayal', 'karınca', 'atom', 'kristal', 'çiçek', 'balık', 'ruh', 'zihin', 'kalp', 'nefes', 'yıldız', 
+                      'elektron', 'proton', 'molekül', 'organizma', 'sistem', 'nesne', 'varlık', 'bilim', 'sanat', 'müzik', 'renk', 'ışık', 'ses', 'hareket',
+                      'doğa', 'evren', 'galaksi', 'gezegen', 'uydu', 'güneş', 'ay', 'toprak', 'deniz', 'nehir', 'dağ', 'orman', 'ağaç', 'yaprak', 'meyve',
+                      'hayvan', 'kuş', 'kedi', 'köpek', 'fil', 'kaplan', 'aslan', 'kartal', 'balina', 'yunus', 'kelebek', 'arı', 'böcek', 'solucan'],
+            verbs: ['sentezliyor', 'keşfediyor', 'dans ediyor', 'paylaşıyor', 'yıldızı görüyor', 'müzik yapıyor', 'rüya kuruyor', 'titreşiyor', 'parıldıyor', 'evrimleşiyor', 'fısıldıyor', 'büyülüyor', 'uyanıyor', 'hissediyor', 'anlıyor',
+                   'koşuyor', 'uçuyor', 'yüzüyor', 'zıplıyor', 'döküyor', 'yakıyor', 'soğutuyor', 'ısıtıyor', 'büyüyor', 'küçülüyor', 'değişiyor', 'dönüşüyor',
+                   'öğreniyor', 'öğretiyor', 'araştırıyor', 'buluyor', 'yaratıyor', 'üretiyor', 'tasarlıyor', 'kurguluyor', 'hayali kuruyor', 'düşünüyor',
+                   'seviyoг', 'nefret ediyor', 'kızıyor', 'gülüyor', 'ağlıyor', 'şarkı söylüyor', 'dans ediyor', 'oyunlar oynuyor', 'hikayeler anlatıyor',
+                   'keşfediyor', 'geziyoг', 'maceralara atılıyor', 'savaşıyor', 'barış yapıyor', 'arkadaşlık kuruyor', 'işbirliği yapıyor', 'yarışıyor'],
+            objects: ['enerji', 'dna', 'pizza', 'mikrofon', 'düşünce', 'vitamin', 'mineral', 'şarkı', 'renk', 'koku', 'anı', 'gizem', 'umut', 'korku', 'sevgi',
+                     'protein', 'karbohidrat', 'yağ', 'vitamin', 'enzim', 'hormon', 'antikor', 'gen', 'kromozom', 'ribozom', 'mitokondri', 'çekirdek',
+                     'çikolata', 'dondurma', 'kek', 'kurabiye', 'meyve', 'sebze', 'et', 'balık', 'tavuk', 'süt', 'peynir', 'ekmek', 'pasta', 'şeker',
+                     'kitap', 'film', 'oyun', 'müzik', 'resim', 'heykel', 'dans', 'tiyatro', 'şiir', 'hikaye', 'masal', 'efsane', 'rüya', 'hayal',
+                     'aşk', 'dostluk', 'mutluluk', 'hüzün', 'öfke', 'korku', 'heyecan', 'merak', 'şaşkınlık', 'gurur', 'utanç', 'pişmanlık', 'özlem'],
+            emotions: ['mutlu', 'meraklı', 'şaşkın', 'kararlı', 'hüzünlü', 'heyecanlı', 'sakin', 'endişeli', 'umutlu', 'korkmuş', 'şefkatli', 'gururlu', 'utangaç', 'cesur', 'nazik',
+                      'neşeli', 'keyifli', 'rahat', 'huzurlu', 'memnun', 'tatmin olmuş', 'şanslı', 'başarılı', 'güvenli', 'özgür', 'yaratıcı', 'ilhamlı',
+                      'üzgün', 'melankoli', 'kırık', 'yalnız', 'kayıp', 'çaresiz', 'umutsuz', 'bitkin', 'yorgun', 'stresli', 'gergin', 'sinirli',
+                      'şaşırmış', 'hayret', 'dehşet', 'panik', 'kaygılı', 'tedirgin', 'kuşkulu', 'kararsız', 'şüpheli', 'endişeli', 'korkutucu'],
+            locations: ['laboratuvar', 'okyanús', 'gökyüzü', 'yaprak', 'toprak', 'hava', 'su', 'ışık', 'gölge', 'rüzgar', 'kalp', 'zihin', 'ev', 'yol', 'köprü',
+                       'şehir', 'kasaba', 'köy', 'park', 'bahçe', 'orman', 'dağ', 'vadi', 'göl', 'nehir', 'deniz', 'okyanús', 'ada', 'yarımada', 'kıta',
+                       'okul', 'hastane', 'kütüphane', 'müze', 'tiyatro', 'sinema', 'restoran', 'kafe', 'market', 'dükkan', 'fabrika', 'ofis', 'bina',
+                       'uzay', 'galaksi', 'yıldız', 'gezegen', 'ay', 'güneş', 'dünya', 'mars', 'venüs', 'jüpiter', 'satürn', 'uranüs', 'neptün'],
+            conjunctions: ['ancak', 'ama', 'fakat', 'lakin', 'oysa', 've', 'ile', 'hem', 'ya da', 'veya', 'ki', 'çünkü', 'zira', 'hatta', 'ayrıca',
+                          'böylece', 'bundan dolayı', 'bu nedenle', 'bu yüzden', 'sonuç olarak', 'özetle', 'kısacası', 'diğer taraftan', 'öte yandan',
+                          'benzer şekilde', 'aynı zamanda', 'bunun yanında', 'buna ek olarak', 'dahası', 'üstelik', 'hatta', 'bile', 'dahi'],
+            intensifiers: ['çok', 'epey', 'oldukça', 'fazlasıyla', 'son derece', 'büyük ölçüde', 'hayli', 'bir hayli', 'gayet', 'pek',
+                          'aşırı', 'müthiş', 'inanılmaz', 'dehşet', 'korkunç', 'berbat', 'mükemmel', 'harika', 'fantastik', 'olağanüstü',
+                          'biraz', 'az', 'hafif', 'ufak', 'minimal', 'sınırlı', 'kısmen', 'kısa', 'uzun', 'devasa', 'mini', 'maksi'],
+            temporal: ['şimdi', 'sonra', 'önce', 'hemen', 'yavaşça', 'birden', 'aniden', 'derhal', 'zamanla', 'sonunda',
+                      'başlangıçta', 'ilk önce', 'ilk başta', 'öncelikle', 'daha sonra', 'arkasından', 'peşinden', 'devamında',
+                      'arada sırada', 'bazen', 'ara ara', 'zaman zaman', 'sürekli', 'sürekli olarak', 'devamlı', 'hiç durmadan',
+                      'dün', 'bugün', 'yarın', 'geçmişte', 'gelecekte', 'şu anda', 'o sırada', 'o zaman', 'şimdiye kadar']
         };
         
         this.dynamicWords = {
@@ -401,9 +425,134 @@ class AdvancedSentenceComposer {
 
 const sentenceComposer = new AdvancedSentenceComposer();
 
-// Backward compatibility function
+// ——————————————
+// 🎲 ÇEŞITLILIK ENJİNİ - Anti-Monoton Kelime Seçimi
+// ——————————————
+class DiversityEngine {
+    constructor() {
+        this.recentWords = []; // Son kullanılan kelimeler
+        this.maxHistory = 20; // Tekrar cezası için hafıza
+        this.diversityBoost = 0.8; // Çeşitlilik faktörü
+    }
+    
+    // Top-K + Softmax Sampling - Greedy'nin alternatifi
+    pickDiverse(candidates, contextEmbed, prevWords = [], role = 'nom', K = 3, temp = 1.2) {
+        if (!candidates || candidates.length === 0) return 'hücre';
+        
+        // 1) Her adayı skorla
+        const scored = candidates.map(word => {
+            const coherence = this.coherenceScore(word, contextEmbed, prevWords);
+            const info = this.infoScore(word);
+            const surprisal = this.surprisalScore(word, prevWords);
+            const morph = this.morphCompatibilityScore(role);
+            const novelty = this.noveltyScore(word); // YENİ!
+            
+            const totalScore = coherence + info - surprisal + morph + novelty;
+            return { word, score: totalScore };
+        });
+        
+        // 2) En iyi K adayı al
+        scored.sort((a, b) => b.score - a.score);
+        const topK = scored.slice(0, Math.min(K, scored.length));
+        
+        if (topK.length === 0) return candidates[0];
+        
+        // 3) Softmax ile probabilistic selection
+        const exps = topK.map(item => Math.exp(item.score / temp));
+        const sumExp = exps.reduce((a, b) => a + b, 0);
+        const probs = exps.map(e => e / sumExp);
+        
+        // 4) Weighted random selection
+        let random = Math.random();
+        let acc = 0;
+        for (let i = 0; i < probs.length; i++) {
+            acc += probs[i];
+            if (random < acc) {
+                this.addToHistory(topK[i].word);
+                return topK[i].word;
+            }
+        }
+        
+        // Fallback
+        const selected = topK[0].word;
+        this.addToHistory(selected);
+        return selected;
+    }
+    
+    // Yenilik skoru - son kullanılan kelimeleri cezalandır
+    noveltyScore(word) {
+        const recentUsage = this.recentWords.filter(w => w === word).length;
+        const penalty = recentUsage * 0.5; // Her tekrar -0.5 puan
+        const bonus = this.recentWords.length > 0 && !this.recentWords.includes(word) ? 0.3 : 0;
+        return bonus - penalty;
+    }
+    
+    addToHistory(word) {
+        this.recentWords.push(word);
+        if (this.recentWords.length > this.maxHistory) {
+            this.recentWords.shift(); // Eski kelimeleri sil
+        }
+    }
+    
+    // Basit scoring functions (backward compatibility)
+    coherenceScore(word, contextEmbed, prevWords) {
+        let score = 1.0;
+        if (prevWords.length > 0) {
+            const lastWord = prevWords[prevWords.length - 1];
+            if (this.getWordCategory(word) === this.getWordCategory(lastWord)) {
+                score += 0.2;
+            }
+        }
+        return score;
+    }
+    
+    infoScore(word) {
+        const allWords = Object.values(dynamicLexicon.baseWords).flat();
+        const frequency = allWords.filter(w => w === word).length;
+        return frequency > 0 ? -Math.log(frequency / allWords.length) : 2.0;
+    }
+    
+    surprisalScore(word, prevWords) {
+        if (prevWords.length === 0) return Math.random() * 0.3;
+        const lastWord = prevWords[prevWords.length - 1];
+        return this.getWordCategory(word) !== this.getWordCategory(lastWord) ? 0.5 : 0.1;
+    }
+    
+    morphCompatibilityScore(role) {
+        const scores = { 'nom': 1.0, 'acc': 1.2, 'dat': 0.9, 'loc': 0.8 };
+        return scores[role] || 1.0;
+    }
+    
+    getWordCategory(word) {
+        for (const [category, words] of Object.entries(dynamicLexicon.baseWords)) {
+            if (words.includes(word)) return category;
+        }
+        return 'unknown';
+    }
+    
+    // Context çeşitliliği için rastgele field seçimi
+    diversifyContext() {
+        const contexts = ['biological', 'creative', 'social', 'philosophical', 'emotional'];
+        return contexts[Math.floor(Math.random() * contexts.length)];
+    }
+    
+    // Debugging
+    getStats() {
+        const wordCounts = {};
+        this.recentWords.forEach(w => wordCounts[w] = (wordCounts[w] || 0) + 1);
+        return { 
+            recentWords: this.recentWords.slice(-10),
+            topRepeated: Object.entries(wordCounts).sort((a,b) => b[1] - a[1]).slice(0, 5)
+        };
+    }
+}
+
+// Global diversity engine
+const diversityEngine = new DiversityEngine();
+
+// Backward compatibility function - ARTIK ÇEŞİTLİLİK KULLANIR!
 function pickBest(candidates, contextEmbed, prevWords = [], role = 'nom', position = 'middle') {
-    return optimizedScoring.beamSearchBest(candidates, contextEmbed, prevWords, role, position);
+    return diversityEngine.pickDiverse(candidates, contextEmbed, prevWords, role, 4, 1.5);
 }
 
 // ——————————————
@@ -434,42 +583,86 @@ async function generateMorphSentence(contextEmbed = null, sentenceType = 'simple
 }
 
 async function generateSimpleSentence(contextEmbed, prevWords) {
-  // SOV: Özne + Nesne + Fiil
+  // SOV: Özne + Nesne + Fiil - ÇEŞİTLİLİK ENJİNİ İLE!
   
-  // Özne seçimi
-  const subject = pickBest(LEXICON.subjects, contextEmbed, prevWords, 'nom', 'start');
+  // 🎲 Rastgele context değişimi (20% şans)
+  if (Math.random() < 0.2) {
+    const newContext = diversityEngine.diversifyContext();
+    console.log(`🎯 Context diversified to: ${newContext}`);
+  }
+  
+  // Özne seçimi - çeşitli kategorilerden
+  const subjectSources = [LEXICON.subjects, LEXICON.emotions, LEXICON.objects];
+  const selectedSubjectSource = subjectSources[Math.floor(Math.random() * subjectSources.length)];
+  const subject = pickBest(selectedSubjectSource, contextEmbed, prevWords, 'nom', 'start');
   prevWords.push(subject);
   
-  // Nesne seçimi ve durum eki
-  const objectBase = pickBest(LEXICON.objects, contextEmbed, prevWords, 'acc', 'middle');
-  const object = addCase(objectBase, 'acc');
-  prevWords.push(object);
+  // Nesne seçimi ve durum eki - bazen temporal/intensifier ekle
+  let objectPart = '';
+  if (Math.random() < 0.3) {
+    const temporal = pickBest(LEXICON.temporal, contextEmbed, prevWords, 'nom', 'middle');
+    const objectBase = pickBest(LEXICON.objects, contextEmbed, prevWords, 'acc', 'middle');
+    const object = addCase(objectBase, 'acc');
+    objectPart = `${temporal} ${object}`;
+    prevWords.push(temporal, object);
+  } else {
+    const objectBase = pickBest(LEXICON.objects, contextEmbed, prevWords, 'acc', 'middle');
+    const object = addCase(objectBase, 'acc');
+    objectPart = object;
+    prevWords.push(object);
+  }
   
   // Fiil seçimi
   const verb = pickBest(LEXICON.verbs, contextEmbed, prevWords, 'nom', 'end');
   prevWords.push(verb);
   
-  return `${capitalize(subject)} ${object} ${verb}.`;
+  return `${capitalize(subject)} ${objectPart} ${verb}.`;
 }
 
 async function generateComplexSentence(contextEmbed, prevWords) {
-  // Özne + Yer + Nesne + Fiil
+  // Özne + Yer + Nesne + Fiil - GENİŞLETİLMİŞ ÇEŞİTLİLİK
   
-  const subject = pickBest(LEXICON.subjects, contextEmbed, prevWords, 'nom', 'start');
+  // Özne çeşitliliği
+  const subjectMix = [...LEXICON.subjects, ...LEXICON.emotions.slice(0, 5)];
+  const subject = pickBest(subjectMix, contextEmbed, prevWords, 'nom', 'start');
   prevWords.push(subject);
   
-  const locationBase = pickBest(LEXICON.locations, contextEmbed, prevWords, 'loc', 'middle');
-  const location = addCase(locationBase, 'loc');
-  prevWords.push(location);
+  // Konum + yoğunluk belirteci (bazen)
+  let locationPart = '';
+  if (Math.random() < 0.4) {
+    const intensifier = pickBest(LEXICON.intensifiers, contextEmbed, prevWords, 'nom', 'middle');
+    const locationBase = pickBest(LEXICON.locations, contextEmbed, prevWords, 'loc', 'middle');
+    const location = addCase(locationBase, 'loc');
+    locationPart = `${intensifier} ${location}`;
+    prevWords.push(intensifier, location);
+  } else {
+    const locationBase = pickBest(LEXICON.locations, contextEmbed, prevWords, 'loc', 'middle');
+    const location = addCase(locationBase, 'loc');
+    locationPart = location;
+    prevWords.push(location);
+  }
   
-  const objectBase = pickBest(LEXICON.objects, contextEmbed, prevWords, 'acc', 'middle');
-  const object = addCase(objectBase, 'acc');
-  prevWords.push(object);
+  // Nesne + bağlaç kombinasyonu (bazen)
+  let objectPart = '';
+  if (Math.random() < 0.25) {
+    const objectBase1 = pickBest(LEXICON.objects, contextEmbed, prevWords, 'acc', 'middle');
+    const object1 = addCase(objectBase1, 'acc');
+    const conjunction = pickBest(LEXICON.conjunctions.slice(5, 9), contextEmbed, prevWords, 'nom', 'middle'); // 've', 'ile', 'hem', 'ya da'
+    const objectBase2 = pickBest(LEXICON.objects, contextEmbed, prevWords, 'acc', 'middle');
+    const object2 = addCase(objectBase2, 'acc');
+    objectPart = `${object1} ${conjunction} ${object2}`;
+    prevWords.push(object1, conjunction, object2);
+  } else {
+    const objectBase = pickBest(LEXICON.objects, contextEmbed, prevWords, 'acc', 'middle');
+    const object = addCase(objectBase, 'acc');
+    objectPart = object;
+    prevWords.push(object);
+  }
   
   const verb = pickBest(LEXICON.verbs, contextEmbed, prevWords, 'nom', 'end');
   prevWords.push(verb);
   
-  return `${capitalize(subject)} ${location} ${object} ${verb}.`;
+  return `${capitalize(subject)} ${locationPart} ${objectPart} ${verb}.`;
 }
 
 async function generateEmotionalSentence(contextEmbed, prevWords) {
@@ -525,8 +718,28 @@ async function generateMorphDialogue(sentences = 3, contextEmbed = null) {
   const dialogue = [];
   const types = ['simple', 'complex', 'emotional', 'locative'];
   
+  // 🎯 ÇEŞİTLİLİK ENJİNİ - Her cümle farklı tip olsun
+  const usedTypes = [];
+  
   for (let i = 0; i < sentences; i++) {
-    const randomType = types[Math.floor(Math.random() * types.length)];
+    // Mevcut kullanılmamış tipleri al
+    const availableTypes = types.filter(type => !usedTypes.includes(type) || usedTypes.length >= types.length);
+    
+    // Eğer tüm tipler kullanıldıysa, listesini temizle
+    if (availableTypes.length === 0) {
+      usedTypes.length = 0;
+      availableTypes.push(...types);
+    }
+    
+    // Rastgele ama kullanılmamış tip seç
+    const randomType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
+    usedTypes.push(randomType);
+    
+    // Diversity engine history'sini kontrol et
+    if (i > 0 && diversityEngine.recentWords.length > 10) {
+      console.log(`🔄 Diversity stats: ${JSON.stringify(diversityEngine.getStats().topRepeated)}`);
+    }
+    
     const sentence = await generateMorphSentence(contextEmbed, randomType);
     dialogue.push(sentence);
   }
@@ -1048,9 +1261,11 @@ export {
   DynamicLexicon,
   OptimizedScoringEngine,
   AdvancedSentenceComposer,
+  DiversityEngine, // YENİ!
   
   // Instances
   dynamicLexicon,
   optimizedScoring,
-  sentenceComposer
+  sentenceComposer,
+  diversityEngine // YENİ!
 }; 
