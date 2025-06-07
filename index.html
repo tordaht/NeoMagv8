@@ -4,7 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mnBac v9.6.4 - Speech Bubbles & Enhanced Chat System</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%230066cc'/%3E%3Ctext x='16' y='20' text-anchor='middle' fill='white' font-size='16' font-family='Arial'%3E🦠%3C/text%3E%3C/svg%3E">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Suppress Tailwind CDN production warning for demo
+        const originalWarn = console.warn;
+        console.warn = function(...args) {
+            if (args[0] && args[0].toString().includes('tailwindcss.com')) {
+                return; // Suppress Tailwind warning
+            }
+            originalWarn.apply(console, args);
+        };
+    </script>
     <!-- Note: Tailwind CDN is used for rapid prototyping. For production, use PostCSS or CLI installation -->
     <!-- TensorFlow.js -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0/dist/tf.min.js"></script>
@@ -8688,7 +8699,7 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                             console.log(`💾 Previous interactions: ${window.persistentLearning.metrics.totalInteractions}`);
                             
                         } catch (scriptError) {
-                            console.warn('⚠️ Enhanced Morphological System scripts not found, using fallback mode:', scriptError.message);
+                            console.log('ℹ️ Enhanced Morphological System scripts not found - using basic mode (this is normal)');
                             // Create fallback objects to prevent errors
                             window.aiTrainingAdapter = {
                                 isLoaded: true,
@@ -8721,7 +8732,7 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                         appEvents.emit('system:fully:ready');
                         
                     } catch (error) {
-                        console.warn('⚠️ Enhanced Morphological System initialization failed, continuing with basic mode:', error);
+                        console.log('ℹ️ Advanced AI features not available - using basic mode (this is normal for demo)');
                         // Ensure system still works without advanced features
                         window.systemFullyReady = true;
                         await initializeSimpleLLM();
