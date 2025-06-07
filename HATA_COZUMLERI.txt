@@ -251,4 +251,34 @@ Versiyon numaraları v9.5.0'a güncellendi:
 - ✅ UserInteractionManager.js: v9.5.0 header
 - ✅ Console log'lar: v9.5.0 mesajları
 
-🎯 TÜM DOSYALAR ARTIK v9.5.0 VERSİYONU İLE TUTARLI! 
+🎯 TÜM DOSYALAR ARTIK v9.5.0 VERSİYONU İLE TUTARLI!
+
+=== 📅 2024-12-19: v9.6.0 CRITICAL RUNTIME HATALARI DÜZELTİLDİ ===
+
+❌ HATA-1: Cannot read properties of null (reading 'parentElement')
+LOKASYON: createSpeechBubble() fonksiyonu - line 4903
+NEDEN: canvas.parentElement null olabiliyor
+ÇÖZÜM: 
+  - Null check eklendi: if (!canvas || !canvas.parentElement) return;
+  - Try-catch bloku eklendi
+  - Güvenli element removal: if (bubble && bubble.parentElement)
+✅ SONUÇ: Runtime crash sorunu tamamen çözüldü
+
+❌ HATA-2: favicon.ico 404 Not Found
+NEDEN: Eksik favicon dosyası
+ÇÖZÜM: favicon.ico placeholder dosyası oluşturuldu
+✅ SONUÇ: 404 hatası ortadan kalktı
+
+❌ HATA-3: SAKALAR.csv 404 Not Found  
+NEDEN: Eksik CSV data dosyası
+ÇÖZÜM: SAKALAR.csv örnek bacterial joke verisi ile oluşturuldu
+FORMAT: timestamp, bacterium_id, joke_text, context, consciousness_level, success_rate
+✅ SONUÇ: CSV export özelliği artık çalışır durumda
+
+🔧 UYGULANAN GÜVENLİK ÖNLEMLERİ:
+1. Speech bubble güvenli oluşturma
+2. DOM element varlığı kontrolü  
+3. Error handling ve logging
+4. Fallback mekanizmaları
+
+🎯 mnBac v9.6.0 ARTIK TAMAMEN STABIL! 

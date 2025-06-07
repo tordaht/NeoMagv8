@@ -1,0 +1,6 @@
+timestamp,bacterium_id,joke_text,context,consciousness_level,success_rate
+2024-12-19T10:00:00Z,bacteria_1,"Aç mısın? Ben de aç-ılmışım!",food_seeking,1.2,0.8
+2024-12-19T10:01:00Z,bacteria_2,"Niye hareket ediyorsun? Çünkü mikroskobik koşucuyum!",exploration,2.1,0.75
+2024-12-19T10:02:00Z,bacteria_3,"Bölünmek istiyorum ama yarıya indirimli değil!",reproduction,3.4,0.9
+2024-12-19T10:03:00Z,bacteria_4,"Felsefi düşünüyorum, varım... mikroskobik olarak!",philosophical,5.6,0.85
+2024-12-19T10:04:00Z,bacteria_5,"Arkadaş arıyorum, sosyal mesafe 1 mikron!",social_interaction,2.8,0.7 

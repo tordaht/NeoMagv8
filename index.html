@@ -4879,6 +4879,12 @@
 
             // 🎭 Create speech bubble with context styling
             createSpeechBubble(message, context) {
+                // 🛡️ SAFETY CHECK: Ensure canvas and parentElement exist
+                if (!canvas || !canvas.parentElement) {
+                    console.warn('⚠️ Canvas or parentElement not found, skipping speech bubble');
+                    return;
+                }
+                
                 const bubble = document.createElement('div');
                 bubble.className = `speech-bubble speech-${context}`;
                 bubble.textContent = message;
@@ -4900,13 +4906,17 @@
                     animation: speechBubbleAnim 4s ease-in-out;
                 `;
                 
-                canvas.parentElement.appendChild(bubble);
-                
-                setTimeout(() => {
-                    if (bubble.parentElement) {
-                        bubble.parentElement.removeChild(bubble);
-                    }
-                }, 4000);
+                try {
+                    canvas.parentElement.appendChild(bubble);
+                    
+                    setTimeout(() => {
+                        if (bubble && bubble.parentElement) {
+                            bubble.parentElement.removeChild(bubble);
+                        }
+                    }, 4000);
+                } catch (error) {
+                    console.error('❌ Speech bubble creation error:', error);
+                }
             }
 
             // 🎨 Context-based bubble colors
