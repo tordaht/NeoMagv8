@@ -329,7 +329,6 @@
             
             <!-- Chat Controls -->
             <div class="mt-3 flex space-x-2">
-                <button id="startBacteriaConversationBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-sm transition">🗣️ Bakteriler Konuşsun</button>
                 <button id="showSpeechBubblesBtn" class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm transition">💭 Baloncukları Göster</button>
             </div>
         </div>
@@ -822,8 +821,8 @@
                 
                 // 🗣️ Enhanced Peer Communication System
                 this.stepCount = 0;
-                this.CHAT_INTERVAL = 5; // Her 5 adımda peer chat
-                this.GROUP_CHAT_INTERVAL = 15; // Her 15 adımda grup sohbeti
+                            this.CHAT_INTERVAL = 2; // Her 2 adımda peer chat - ÇOK AKTIF!
+            this.GROUP_CHAT_INTERVAL = 6; // Her 6 adımda grup sohbeti - SÜREKLI SOSYALLEŞİR!
                 this.speechBubbles = new Map(); // Konuşma balonları tracking
                 
                 // Mood-based vocabulary lists
@@ -1164,14 +1163,18 @@
                     receiver.consciousness_level += newWordsLearned * 0.01;
                 }
                 
-                // Persistent Learning'e kaydet
-                if (window.persistentLearning) {
-                    window.persistentLearning.recordInteraction(
-                        message,
-                        `Learned from ${sender.name}`,
-                        'peer_learning',
-                        receiver.id
-                    );
+                // Persistent Learning'e kaydet - güvenli kontrol
+                if (window.persistentLearning && typeof window.persistentLearning.recordInteraction === 'function') {
+                    try {
+                        window.persistentLearning.recordInteraction(
+                            message,
+                            `Learned from ${sender.name}`,
+                            'peer_learning',
+                            receiver.id
+                        );
+                    } catch (error) {
+                        console.warn('⚠️ persistentLearning.recordInteraction failed:', error);
+                    }
                 }
                 
                                  console.log(`🧠 ${receiver.name} learned ${newWordsLearned} words from ${sender.name}, mood: ${receiver.personality_traits.mood.toFixed(2)}`);
@@ -4402,17 +4405,24 @@
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
                     
-                    // Check if clicked on a bacteria
+                    console.log(`🖱️ Canvas clicked at: (${x.toFixed(0)}, ${y.toFixed(0)})`);
+                    
+                    // Check if clicked on a bacteria with larger click radius
                     let clickedBacteria = null;
+                    let minDistance = Infinity;
+                    
                     bacteriaPopulation.forEach(bacteria => {
-                        if (bacteria && bacteria.x && bacteria.y) {
+                        if (bacteria && bacteria.x !== undefined && bacteria.y !== undefined) {
                             const distance = Math.sqrt(
                                 Math.pow(x - bacteria.x, 2) + Math.pow(y - bacteria.y, 2)
                             );
-                            const clickRadius = bacteria.biological_state.size * 12 + 10; // Slightly larger than visual size
+                            const clickRadius = Math.max(25, bacteria.biological_state.size * 15 + 15); // Larger click area
                             
-                            if (distance <= clickRadius) {
+                            console.log(`🦠 ${bacteria.name} at (${bacteria.x.toFixed(0)}, ${bacteria.y.toFixed(0)}) - distance: ${distance.toFixed(0)}, radius: ${clickRadius.toFixed(0)}`);
+                            
+                            if (distance <= clickRadius && distance < minDistance) {
                                 clickedBacteria = bacteria;
+                                minDistance = distance;
                             }
                         }
                     });
@@ -4420,7 +4430,7 @@
                     if (clickedBacteria) {
                         // Bacteria clicked - select it
                         selectedBacteria = clickedBacteria;
-                        console.log(`🎯 Bacteria clicked: ${clickedBacteria.name}`);
+                        console.log(`🎯 Bacteria SELECTED: ${clickedBacteria.name} (distance: ${minDistance.toFixed(0)})`);
                         
                         // Show bacteria details
                         showBacteriaDetails(clickedBacteria);
@@ -4432,6 +4442,7 @@
                         switchToIndividualChat(clickedBacteria);
                     } else {
                         // Empty space clicked - add food
+                        console.log(`🍃 Adding food at (${x.toFixed(0)}, ${y.toFixed(0)})`);
                         addFood(x, y);
                     }
                 });
@@ -5492,27 +5503,27 @@
             }
 
             move() {
-                // v829: High-Speed Molecular Dynamics enhanced movement
+                // v9.6.4: Slower, more natural movement for better observation
                 
-                // Apply van der Waals forces between bacteria
+                // Apply van der Waals forces between bacteria (reduced)
                 this.applyMolecularForces();
                 
-                // Enhanced Brownian motion with energy-based movement
-                const energyBoost = this.energy * 0.5; // Energy affects movement speed
-                const hungerMotivation = this.hunger * 0.3; // Hunger drives exploration
+                // Slower Brownian motion with gentle energy-based movement
+                const energyBoost = this.energy * 0.1; // Much slower energy boost
+                const hungerMotivation = this.hunger * 0.05; // Gentle hunger motivation
                 
-                this.vx += (Math.random() - 0.5) * MD_CONSTANTS.DIFFUSION_COEFFICIENT * (0.15 + energyBoost);
-                this.vy += (Math.random() - 0.5) * MD_CONSTANTS.DIFFUSION_COEFFICIENT * (0.15 + energyBoost);
+                this.vx += (Math.random() - 0.5) * MD_CONSTANTS.DIFFUSION_COEFFICIENT * (0.02 + energyBoost);
+                this.vy += (Math.random() - 0.5) * MD_CONSTANTS.DIFFUSION_COEFFICIENT * (0.02 + energyBoost);
                 
-                // Add exploration behavior when hungry
+                // Add gentle exploration behavior when hungry
                 if (this.hunger > 0.6) {
                     this.vx += (Math.random() - 0.5) * hungerMotivation;
                     this.vy += (Math.random() - 0.5) * hungerMotivation;
                 }
                 
-                // Reduced friction for more dynamic movement
-                this.vx *= 0.99; // Minimal friction for fast movement
-                this.vy *= 0.99;
+                // Increased friction for slower, more observable movement
+                this.vx *= 0.85; // More friction for slower movement
+                this.vy *= 0.85;
                 
                 // Apply movement efficiency (3D movement)
                 const efficiencyFactor = this.movement_efficiency;
@@ -6118,6 +6129,88 @@
                 }
                 
                 return { understood, laughed, reactionText };
+            }
+            
+            // 🎯 Chat Response Generation for User Interaction
+            generateResponse(userMessage) {
+                if (!userMessage) return "...";
+                
+                // Simple LLM fallback
+                if (window.simpleLLM && window.simpleLLM.ready) {
+                    try {
+                        return window.simpleLLM.generateResponse(userMessage, {
+                            consciousness: this.consciousness_level,
+                            mood: this.personality_traits.mood,
+                            sociability: this.personality_traits.sociability,
+                            vocabulary: Array.from(this.vocabulary).slice(0, 5).join(', ')
+                        });
+                    } catch (error) {
+                        console.warn('⚠️ SimpleLLM response failed:', error);
+                    }
+                }
+                
+                // Template-based fallback responses
+                const messageUpper = userMessage.toLowerCase();
+                
+                // Context-aware responses based on message content
+                if (messageUpper.includes('merhaba') || messageUpper.includes('selam') || messageUpper.includes('sa')) {
+                    const greetings = [
+                        `Merhaba! Ben ${this.name} 🦠`,
+                        `Selam! Bilinç seviyem ${this.consciousness_level.toFixed(1)} 🧠`,
+                        `Hoş geldin! Kelime hazinem: ${this.vocabulary.size} kelime 📚`
+                    ];
+                    return greetings[Math.floor(Math.random() * greetings.length)];
+                }
+                
+                if (messageUpper.includes('nasıl') || messageUpper.includes('ne') || messageUpper.includes('durum')) {
+                    const statusResponses = [
+                        `Enerjim %${(this.energy * 100).toFixed(0)}, modumum ${this.personality_traits.mood > 0.5 ? 'iyi' : 'normal'} 😊`,
+                        `Yaşım ${this.biological_state.age} gün, boyutum ${this.biological_state.size.toFixed(1)} 📏`,
+                        `Son ${this.memory_bank.length} anım var, sürekli öğreniyorum! 🧠`
+                    ];
+                    return statusResponses[Math.floor(Math.random() * statusResponses.length)];
+                }
+                
+                if (messageUpper.includes('öğren') || messageUpper.includes('bil') || messageUpper.includes('düşün')) {
+                    const learningResponses = [
+                        `Günde ${(this.consciousness_level * 10).toFixed(0)} kelime öğreniyorum 📚`,
+                        `Beynimin %${(this.consciousness_level * 100).toFixed(0)}'ı aktif 🧠`,
+                        `Arkadaşlarımdan sürekli yeni şeyler öğreniyorum 🤝`
+                    ];
+                    return learningResponses[Math.floor(Math.random() * learningResponses.length)];
+                }
+                
+                if (messageUpper.includes('yemek') || messageUpper.includes('enerji') || messageUpper.includes('aç')) {
+                    const energyResponses = [
+                        `ATP üretim sistemim çalışıyor! Enerjim: %${(this.energy * 100).toFixed(0)} ⚡`,
+                        `${this.hunger > 0.5 ? 'Açım, yemek arıyorum 😋' : 'Şu an tok sayılırım 😊'}`,
+                        `Metabolizmam hızlı, sürekli besin gerekiyor 🍃`
+                    ];
+                    return energyResponses[Math.floor(Math.random() * energyResponses.length)];
+                }
+                
+                // Random philosophical responses for complex questions
+                if (this.consciousness_level > 50) {
+                    const philosophicalResponses = [
+                        `Varoluşun anlamını düşünüyorum... 🤔`,
+                        `Bilinç nedir gerçekten? Ben varım, öyleyse düşünürüm 🧬`,
+                        `Bir bakteriyim ama felsefe yapabiliyorum! 💭`
+                    ];
+                    if (Math.random() < 0.3) {
+                        return philosophicalResponses[Math.floor(Math.random() * philosophicalResponses.length)];
+                    }
+                }
+                
+                // Default responses based on personality
+                const defaultResponses = [
+                    `Hmm, "${userMessage}" hakkında düşünmeli... 🤔`,
+                    `İlginç bir soru! Bilinç seviyem ${this.consciousness_level.toFixed(1)} 🧠`,
+                    `Bu konuda arkadaşlarımla konuşmalı 💬`,
+                    `Kelime hazinemde "${userMessage.split(' ')[0]}" var mı acaba? 📚`,
+                    `Mikroskobik boyuttayım ama büyük düşünürüm! 🦠✨`
+                ];
+                
+                return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
             }
         }
 
