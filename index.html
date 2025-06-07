@@ -1388,16 +1388,60 @@
             parseCSVJokes(csvText) {
                 const lines = csvText.split('\n').slice(1); // Skip header
                 return lines.filter(line => line.trim()).map((line, index) => {
-                    const parts = line.split(',');
-                    return {
-                        SakaID: index + 1,
-                        Kategori: (parts[0] && parts[0].trim()) || 'Genel',
-                        SakaMetni: (parts[1] && parts[1].replace(/"/g, '').trim()) || '',
-                        TepkiMetinleri: (parts[2] && parts[2].split('|').map(r => r.trim())) || ['😄', '🤔', '😅'],
-                        UygunlukSeviyesi: parseInt(parts[3]) || 1,
-                        KaraMizahSeviyesi: parseInt(parts[4]) || 0
-                    };
-                }).filter(joke => joke.SakaMetni.length > 5);
+                    // Handle CSV parsing more carefully due to quoted text
+                    const parts = this.parseCSVLine(line);
+                    
+                    // Two formats supported: 
+                    // 1. timestamp,bacterium_id,joke_text,context,consciousness_level,success_rate (first few lines)
+                    // 2. Kategori,SakaMetni,TepkiMetinleri,UygunlukSeviyesi,KaraMizahSeviyesi (joke lines)
+                    
+                    if (parts.length >= 5 && parts[0].includes('_')) {
+                        // Format 2: Category-based jokes
+                        return {
+                            SakaID: index + 1,
+                            Kategori: parts[0].trim(),
+                            SakaMetni: parts[1].replace(/"/g, '').trim(),
+                            TepkiMetinleri: parts[2].replace(/"/g, '').split('|').map(r => r.trim()),
+                            UygunlukSeviyesi: parseInt(parts[3]) || 1,
+                            KaraMizahSeviyesi: parseInt(parts[4]) || 0
+                        };
+                    } else if (parts.length >= 3) {
+                        // Format 1: timestamped jokes, convert to our format
+                        return {
+                            SakaID: index + 1,
+                            Kategori: 'Genel',
+                            SakaMetni: parts[2].replace(/"/g, '').trim(),
+                            TepkiMetinleri: ['😄', '🤔', '😅', 'Komik!', 'Güzel!'],
+                            UygunlukSeviyesi: 1,
+                            KaraMizahSeviyesi: 0
+                        };
+                    }
+                    
+                    return null;
+                }).filter(joke => joke && joke.SakaMetni && joke.SakaMetni.length > 5);
+            }
+            
+            // Helper function to parse CSV lines with quoted text
+            parseCSVLine(line) {
+                const result = [];
+                let current = '';
+                let inQuotes = false;
+                
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        result.push(current);
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                
+                if (current) result.push(current);
+                return result;
             }
 
             initializeFallbackJokes() {
@@ -1541,7 +1585,7 @@
                        bacteria.personality_traits.mood >= COMEDY_MATH_CONFIG.MIN_MOOD_THRESHOLD;
                 
                 // Add mathematical probability threshold
-                return baseEligibility && jokeProbability > 0.1; // 10% minimum joke probability
+                return baseEligibility && jokeProbability > 0.05; // 5% minimum joke probability
             }
 
             getPredefinedJoke(bacteria) {
@@ -5602,8 +5646,8 @@
                     const jokeProbability = ComedyMath.calculateJokeProbability(this);
                     const randomThreshold = Math.random();
                     
-                    // 🔥 CRITICAL FIX: Increased from 0.001 to 0.1 (10% base chance)
-                    if (randomThreshold < jokeProbability * 0.1) {
+                    // 🔥 CRITICAL FIX: Increased from 0.001 to 0.3 (30% base chance)
+                    if (randomThreshold < jokeProbability * 0.3) {
                         this.attemptToTellJoke();
                         console.log(`🧮 ${this.name} tells joke with probability: ${(jokeProbability*100).toFixed(1)}%`);
                     }
