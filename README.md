@@ -1,15 +1,15 @@
-# 🧬 mnBac v9.6.0 - Complete Button System & All Features Working! 🎭
+# 🧬 mnBac v9.6.2 - System Readiness & GitHub Pages Fix! 🎭
 
 ## 🎯 **Proje Özeti**
 
-**mnBac v9.6.0** şu ana kadar geliştirilen en gelişmiş bakteriyel dil evrim simülasyonudur. Bu sistem, Türkçe morfojik işleme, AI tabanlı öğrenme, ultra-agresif monotonluk karşıtı algoritmalara ve **eksiksiz buton sistemi**ne sahiptir.
+**mnBac v9.6.2** şu ana kadar geliştirilen en gelişmiş bakteriyel dil evrim simülasyonudur. Bu sistem, Türkçe morfojik işleme, AI tabanlı öğrenme, ultra-agresif monotonluk karşıtı algoritmalara ve **eksiksiz buton sistemi**ne sahiptir.
 
-### 🆕 **v9.6.0 Yenilikleri:**
-- ✅ **Tüm butonlar çalışır durumda** (17/17 buton)
-- ✅ **Language Evolution Stats** butonu eklendi
-- ✅ **Peer Dialogue** butonu eklendi  
-- ✅ **Production-ready kod temizliği** tamamlandı
-- ✅ **Zero missing functions** - artık hiçbir buton boş değil
+### 🆕 **v9.6.2 Yenilikleri:**
+- ✅ **GitHub Pages initialization fix** - Artık tordaht.github.io'da düzgün çalışıyor
+- ✅ **System readiness checker** - Kullanıcıya detaylı yüklenme durumu gösterimi
+- ✅ **Progressive loading** - Sistemler aşama aşama başlatılıyor
+- ✅ **Better error messages** - "Please wait" yerine detaylı status bilgisi
+- ✅ **Runtime crash protection** - Speech bubble null errors çözüldü
 
 NeoMag, AI destekli bakteri comedy show simülasyonudur. Türkçe morfoloji motoru ve gelişmiş diyalog sistemi ile bakteriler anlamlı, komik ve bağlama uygun cümleler kurar. TabPFN teknolojisi ile desteklenen hibrit dil sistemi, bakterilerin gerçek zamanlı komedi performansları sergilemesini sağlar.
 
@@ -200,8 +200,8 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosy
 
 ---
 
-🧬 **mnBac v9.6.0** - Complete Button System & All Features Working! 🎭
+🧬 **mnBac v9.6.2** - System Readiness & GitHub Pages Fix! 🎭
 
 *Geliştirici: mnBac Team*  
-*Versiyon: 9.6.0*  
+*Versiyon: 9.6.2*  
 *Son Güncelleme: 19 Aralık 2024* 

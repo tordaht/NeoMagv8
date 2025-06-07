@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mnBac v9.6.0 - Complete Button System & All Features Working</title>
+    <title>mnBac v9.6.2 - System Readiness & GitHub Pages Fix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Note: Tailwind CDN is used for rapid prototyping. For production, use PostCSS or CLI installation -->
     <!-- TensorFlow.js -->
@@ -140,7 +140,7 @@
     <!-- Header -->
     <header class="bg-gray-800 shadow-lg p-4 sticky top-0 z-50">
         <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-teal-400">🧬 mnBac v9.6.0 - Complete Button System & All Features Working</h1>
+            <h1 class="text-2xl font-bold text-teal-400">🧬 mnBac v9.6.2 - System Readiness & GitHub Pages Fix</h1>
             <div class="flex gap-2 text-xs">
                 <div class="bg-green-600 text-white px-2 py-1 rounded" id="fpsDisplay">FPS: --</div>
                 <div class="bg-blue-600 text-white px-2 py-1 rounded" id="bacteriaCount">Bakteri: 0</div>
@@ -1155,7 +1155,7 @@
         };
 
         // Version and Build Info (moved up to prevent hoisting issues)  
-        const VERSION = 'v9.6.0 Complete Button System';
+        const VERSION = 'v9.6.2 GitHub Pages Fix';
         const BUILD_DATE = new Date().toISOString().slice(0,19);
         const FEATURES = [
             'Frontend-Only TabPFN (Mobile Compatible)',
@@ -7382,13 +7382,13 @@
             // Update version to show AI integration
             const versionDisplay = document.querySelector('h1');
             if (versionDisplay && aiSuccess) {
-                versionDisplay.innerHTML = '🧬 mnBac v9.6.0 - Complete Button System & All Features Working';
+                versionDisplay.innerHTML = '🧬 mnBac v9.6.2 - System Readiness & GitHub Pages Fix';
             }
         }
 
         // Initialize simulation (v826)
         async function initializeV826() {
-            console.log('🚀 Initializing mnBac v9.6.0 - Complete Button System & All Features Working...');
+            console.log('🚀 Initializing mnBac v9.6.2 - System Readiness & GitHub Pages Fix...');
             
             // Initialize ML models first (placeholder)
             console.log('🧠 ML models loading skipped for now');
@@ -8012,7 +8012,7 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
 
         // 🚀 MAIN INITIALIZATION - EVENT DRIVEN
         async function mainInitialize() {
-            console.log('🚀 mnBac v9.6.0 - Complete Button System & All Features Working - Final Initialization Complete!');
+            console.log('🚀 mnBac v9.6.2 - System Readiness & GitHub Pages Fix - Final Initialization Complete!');
             
             // 1. Setup event listeners first
             initializeEventListeners();
@@ -8110,7 +8110,7 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                         });
                         
                         // Show success notification
-                        console.log('🎉 mnBac v9.6.0 FULLY LOADED - All systems operational!');
+                        console.log('🎉 mnBac v9.6.2 FULLY LOADED - All systems operational!');
                         
                         // Emit event for other systems to know it's ready
                         appEvents.emit('morphological:system:ready');
