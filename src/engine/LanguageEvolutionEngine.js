@@ -570,10 +570,13 @@ export class LanguageEvolutionEngine {
             // Prefix addition
             (word, bacteria) => ['neo', 'meta', 'proto', 'ultra'][Math.floor(Math.random() * 4)] + word,
             
-            // Vowel shift
-            (word, bacteria) => word.replace(/[aeiou]/g, match => 
-                ['a', 'e', 'i', 'o', 'u'][Math.floor(Math.random() * 5)]
-            ),
+            // Vowel shift - extended for Turkish characters
+            (word, bacteria) =>
+                word.replace(/[aeıioöuü]/g, () =>
+                    ['a', 'e', 'ı', 'i', 'o', 'ö', 'u', 'ü'][
+                        Math.floor(Math.random() * 8)
+                    ]
+                ),
             
             // Character doubling
             (word, bacteria) => {
@@ -597,8 +600,8 @@ export class LanguageEvolutionEngine {
         // Pattern breaking effects
         if (Math.random() < style.patternBreaking * 0.2) {
             // Random capitalization
-            response = response.replace(/./g, c => 
-                Math.random() < 0.15 ? c.toUpperCase() : c.toLowerCase()
+            response = response.replace(/./g, c =>
+                Math.random() < 0.15 ? c.toLocaleUpperCase('tr') : c.toLocaleLowerCase('tr')
             );
             
             // Emotion punctuation

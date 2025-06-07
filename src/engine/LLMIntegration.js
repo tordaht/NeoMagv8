@@ -1,4 +1,4 @@
-// LLM Integration for mnBac v9.6.3+
+// LLM Integration for mnBac v9.6.4+
 // Multi-tier AI system for bacteria consciousness levels
 
 class LLMIntegration {
@@ -190,7 +190,7 @@ Bakteri ${bacteriaContext.name}:`;
         
         // Add bacteria personality touch
         if (bacteriaContext.consciousness < 15) {
-            response = response.toLowerCase() + " 🦠";
+            response = response.toLocaleLowerCase('tr') + " 🦠";
         } else if (bacteriaContext.consciousness > 70) {
             response += " 🧬✨";
         }
@@ -292,7 +292,7 @@ Bakteri ${bacteriaContext.name}:`;
         
         // Add bacteria-specific touches based on consciousness
         if (bacteriaContext.consciousness < 10) {
-            response = response.toLowerCase();
+            response = response.toLocaleLowerCase('tr');
         } else if (bacteriaContext.consciousness > 80) {
             response += " 🧬";
         }

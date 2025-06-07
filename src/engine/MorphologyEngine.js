@@ -45,7 +45,7 @@ export class MorphologyEngine {
      * Kelimenin son harfini bul
      */
     getLastChar(word) {
-        return word.slice(-1).toLowerCase();
+        return word.slice(-1).toLocaleLowerCase('tr');
     }
 
     /**

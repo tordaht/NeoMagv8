@@ -49,7 +49,7 @@ class DynamicLexicon {
         if (!word || typeof word !== 'string') return null;
         
         // Küçük harfe çevir ve temizle
-        let cleaned = word.toLowerCase().trim();
+        let cleaned = word.toLocaleLowerCase('tr').trim();
         
         // Sadece Türkçe karakterleri tut
         cleaned = cleaned.split('').filter(char => this.validCharacters.has(char)).join('');
@@ -222,7 +222,7 @@ class TurkishMorphologyEngine {
     
     getLastVowel(word) {
         for (let i = word.length - 1; i >= 0; i--) {
-            const char = word[i].toLowerCase();
+            const char = word[i].toLocaleLowerCase('tr');
             if ([...this.vowelHarmony.back, ...this.vowelHarmony.front].includes(char)) {
                 return char;
             }
@@ -240,7 +240,7 @@ class TurkishMorphologyEngine {
     
     getLastConsonant(word) {
         for (let i = word.length - 1; i >= 0; i--) {
-            const char = word[i].toLowerCase();
+            const char = word[i].toLocaleLowerCase('tr');
             if (!'aıoueiöü'.includes(char)) {
                 return char;
             }
@@ -249,9 +249,9 @@ class TurkishMorphologyEngine {
     }
     
     needsBuffer(word) {
-        const lastChar = word.slice(-1).toLowerCase();
+        const lastChar = word.slice(-1).toLocaleLowerCase('tr');
         const consonantClusters = ['st', 'sk', 'sp', 'kt', 'pt'];
-        return consonantClusters.some(cluster => word.toLowerCase().endsWith(cluster));
+        return consonantClusters.some(cluster => word.toLocaleLowerCase('tr').endsWith(cluster));
     }
     
     getAccusativeEnding(word) {
@@ -464,7 +464,7 @@ class OptimizedScoringEngine {
             'philosophical': ['anlam', 'varlık', 'düşünce', 'bilinç', 'ruh', 'zihin']
         };
         
-        const contextType = contextEmbed.context.toLowerCase();
+        const contextType = contextEmbed.context.toLocaleLowerCase('tr');
         const relevantWords = contextWords[contextType] || [];
         
         // Kelime ile context arasında benzerlik skoru
@@ -712,7 +712,7 @@ class AdvancedSentenceComposer {
     }
     
     capitalize(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
+        return str.charAt(0).toLocaleUpperCase('tr') + str.slice(1);
     }
 }
 
@@ -861,7 +861,7 @@ async function generateTemporalSentence(contextEmbed, prevWords, emotionalTone, 
     const temporal = sentenceComposer.randomChoice(dynamicLexicon.getWords('temporal'));
     const baseSentence = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone, mood);
     
-    return `${sentenceComposer.capitalize(temporal)} ${baseSentence.toLowerCase()}`;
+    return `${sentenceComposer.capitalize(temporal)} ${baseSentence.toLocaleLowerCase('tr')}`;
 }
 
 async function generateModalSentence(contextEmbed, prevWords, emotionalTone, mood = 0.5) {

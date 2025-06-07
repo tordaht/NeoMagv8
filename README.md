@@ -1,10 +1,10 @@
-# 🧬 mnBac v9.6.3 - System Readiness & GitHub Pages Fix! 🎭
+# 🧬 mnBac v9.6.4 - System Readiness & GitHub Pages Fix! 🎭
 
 ## 🎯 **Proje Özeti**
 
-**mnBac v9.6.3** şu ana kadar geliştirilen en gelişmiş bakteriyel dil evrim simülasyonudur. Bu sistem, Türkçe morfojik işleme, AI tabanlı öğrenme, ultra-agresif monotonluk karşıtı algoritmalara ve **eksiksiz buton sistemi**ne sahiptir.
+**mnBac v9.6.4** şu ana kadar geliştirilen en gelişmiş bakteriyel dil evrim simülasyonudur. Bu sistem, Türkçe morfojik işleme, AI tabanlı öğrenme, ultra-agresif monotonluk karşıtı algoritmalara ve **eksiksiz buton sistemi**ne sahiptir.
 
-### 🆕 **v9.6.3 Yenilikleri:**
+### 🆕 **v9.6.4 Yenilikleri:**
 - ✅ **GitHub Pages initialization fix** - Artık tordaht.github.io'da düzgün çalışıyor
 - ✅ **System readiness checker** - Kullanıcıya detaylı yüklenme durumu gösterimi
 - ✅ **Progressive loading** - Sistemler aşama aşama başlatılıyor
@@ -200,8 +200,8 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosy
 
 ---
 
-🧬 **mnBac v9.6.3** - System Readiness & GitHub Pages Fix! 🎭
+🧬 **mnBac v9.6.4** - System Readiness & GitHub Pages Fix! 🎭
 
 *Geliştirici: mnBac Team*  
-*Versiyon: 9.6.3*
+*Versiyon: 9.6.4*
 *Son Güncelleme: 19 Aralık 2024* 

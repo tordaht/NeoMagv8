@@ -320,5 +320,5 @@ AVANTAJLAR:
         ✅ Bacteria personality integration - kişilik bazlı yanıtlar
         ✅ Türkçe optimized prompting - "Bakteri X: ..." format
         ✅ Production ready - error handling, rate limit management
-PROJE: mnBac Language Evolution Simulation v9.6.3+
+PROJE: mnBac Language Evolution Simulation v9.6.4+
 NOT: AI-powered bacteria conversations achieved! 🤖🧬 

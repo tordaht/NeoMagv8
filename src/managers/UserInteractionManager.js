@@ -79,7 +79,7 @@ export default class UserInteractionManager {
      * Kullanıcı niyetini tespit et
      */
     _detectIntent(message) {
-        const msg = message.toLowerCase();
+        const msg = message.toLocaleLowerCase('tr');
         
         // Intent skorlaması
         const scores = {};
@@ -382,7 +382,7 @@ export default class UserInteractionManager {
     _updateBacteriaVocabulary(bacteria, userMsg) {
         if (!bacteria) return;
         
-        const words = userMsg.toLowerCase()
+        const words = userMsg.toLocaleLowerCase('tr')
             .replace(/[^\w\s]/g, '')
             .split(' ')
             .filter(word => word.length > 2);

@@ -384,7 +384,7 @@ class AITrainingAdapter {
         if (!this.isLoaded) return {};
 
         const relevantExamples = this.trainingData.filter(item =>
-            item.layers.includes(layerName.toLowerCase())
+            item.layers.includes(layerName.toLocaleLowerCase('tr'))
         );
 
         const weights = {};

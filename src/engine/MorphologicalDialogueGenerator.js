@@ -874,8 +874,8 @@ async function generateLocativeSentence(contextEmbed, prevWords) {
 // ——————————————
 // 7. Yardımcı Fonksiyon
 // ——————————————
-function capitalize(s) { 
-  return s.charAt(0).toUpperCase() + s.slice(1); 
+function capitalize(s) {
+  return s.charAt(0).toLocaleUpperCase('tr') + s.slice(1);
 }
 
 // ——————————————
@@ -1147,7 +1147,7 @@ async function generateTemporalSentence(contextEmbed, prevWords, emotionalTone) 
     );
     const baseSentence = await generateAdvancedSimpleSentence(contextEmbed, prevWords, emotionalTone);
     
-    return `${capitalize(temporal)} ${baseSentence.toLowerCase()}`;
+    return `${capitalize(temporal)} ${baseSentence.toLocaleLowerCase('tr')}`;
 }
 
 async function generateModalSentence(contextEmbed, prevWords, emotionalTone) {
