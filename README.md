@@ -1,10 +1,10 @@
-# 🧬 mnBac v9.6.4 - Speech Bubbles & Enhanced Chat System! 💭
+# 🧬 mnBac v10.0.1 - Revolutionary Response System! 💭
 
 ## 🎯 **Proje Özeti**
 
-**mnBac v9.6.4** şu ana kadar geliştirilen en gelişmiş bakteriyel dil evrim simülasyonudur. Bu sistem, Türkçe morfojik işleme, AI tabanlı öğrenme, ultra-agresif monotonluk karşıtı algoritmalara ve **gelişmiş konuşma baloncukları sistemi**ne sahiptir.
+**mnBac v10.0.1** şu ana kadar geliştirilen en gelişmiş bakteriyel dil evrim simülasyonudur. Bu sistem, Türkçe morfojik işleme, AI tabanlı öğrenme, ultra-agresif monotonluk karşıtı algoritmalara ve **gelişmiş konuşma baloncukları sistemi**ne sahiptir.
 
-### 🆕 **v9.6.4 Yenilikleri:**
+### 🆕 **v10.0.1 Yenilikleri:**
 - ✅ **Enhanced Speech Bubbles** - Daha görünür, tıklanabilir konuşma baloncukları
 - ✅ **Dual Chat System** - Grup ve tekil sohbet sekmeleri
 - ✅ **Bacteria Selection** - Chat'te isim tıklama ve canvas'ta bakteri seçimi
@@ -201,8 +201,8 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosy
 
 ---
 
-🧬 **mnBac v9.6.3** - System Readiness & GitHub Pages Fix! 🎭
+🧬 **mnBac v10.0.1** - Revolutionary Response System! 🎭
 
 *Geliştirici: mnBac Team*  
-*Versiyon: 9.6.3*
+*Versiyon: 10.0.1*
 *Son Güncelleme: 19 Aralık 2024* 
