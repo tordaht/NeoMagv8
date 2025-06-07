@@ -5217,9 +5217,9 @@
 
             // 🎭 Create speech bubble with context styling
             createSpeechBubble(message, context) {
-                // 🛡️ SAFETY CHECK: Ensure canvas and parentElement exist
-                if (!canvas || !canvas.parentElement) {
-                    console.warn('⚠️ Canvas or parentElement not found, skipping speech bubble');
+                // 🛡️ SAFETY CHECK: Ensure simulationArea exists
+                if (!simulationArea) {
+                    console.warn('⚠️ simulationArea not found, skipping speech bubble');
                     return;
                 }
                 
@@ -5268,7 +5268,7 @@
                 });
                 
                 try {
-                    canvas.parentElement.appendChild(bubble);
+                    simulationArea.appendChild(bubble);
                     
                     setTimeout(() => {
                         if (bubble && bubble.parentElement) {
