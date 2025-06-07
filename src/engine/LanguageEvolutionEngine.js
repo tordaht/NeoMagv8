@@ -1,8 +1,11 @@
-// Language Evolution Engine - Hibrit Dil Üretim Sistemi
+// Language Evolution Engine - Enterprise v4.0 - Modular & Memory-Efficient
 import { tabPFNAdapter } from './TabPFNAdapter.js';
 import { wordSuccessTracker } from './WordSuccessTracker.js';
 import { turkceDialogueGenerator } from './TurkceDialogueGenerator.js';
 import { EnhancedTabPFN } from './EnhancedTabPFN.js';
+import { topKSample, calculateNoveltyScore, calculateContextDrift, adjustStyleByMood } from '../utils/sampling.js';
+import { RUNTIME_CONFIG } from '../config/SystemConfig.js';
+import { bufferManager, WordTrackingBuffer, ContextHistoryBuffer } from '../utils/RingBuffer.js';
 
 export class LanguageEvolutionEngine {
     constructor() {
@@ -16,6 +19,24 @@ export class LanguageEvolutionEngine {
         // 🧠 Enhanced AI Systems
         this.enhancedTabPFN = new EnhancedTabPFN(wordSuccessTracker);
         this.conversationHistory = new Map(); // bacteriaId -> conversation history
+        
+        // 🎭 NEW: Advanced Diversity & Anti-Monotony Systems (Memory-Efficient)
+        this.wordUsageCount = new Map(); // Global word usage tracking
+        this.lastContextChange = new Map(); // bacteriaId -> timestamp
+        this.antiMonotonyActive = true; // Master switch for anti-monotony features
+        
+        // 🎯 Context Management (Config-driven)
+        this.availableContexts = ['biological', 'emotional', 'social', 'creative', 'philosophical', 'absurd'];
+        this.contextDriftProbability = RUNTIME_CONFIG.LANGUAGE_EVOLUTION.CONTEXT_DRIFT_PROBABILITY;
+        
+        // 📊 Performance tracking
+        this.diversityMetrics = {
+            totalGenerations: 0,
+            uniqueWordsUsed: new Set(),
+            contextChanges: 0,
+            antiMonotonyTriggers: 0,
+            samplingUsage: 0
+        };
     }
 
     async init() {
@@ -62,11 +83,13 @@ export class LanguageEvolutionEngine {
         };
     }
 
-    // Bakteri için dil stilini başlat
+    // Bakteri için dil stilini başlat - Enhanced v3.0
     initializeLanguageStyle(bacteria) {
         if (this.personalityMap.has(bacteria.id)) return;
 
-        const style = {
+        const mood = bacteria.mood || 0.5;
+        
+        let style = {
             // Temel parametreler
             markovChainUsage: 0.3 + (bacteria.consciousness_level * 0.4),
             tabPFNUsage: 0.2 + (bacteria.consciousness_level * 0.6),
@@ -77,6 +100,11 @@ export class LanguageEvolutionEngine {
             emotionLevel: bacteria.personality.optimism || 0.5,
             socialLevel: bacteria.personality.sociability || 0.5,
             creativity: bacteria.personality.creativity || 0.3,
+            
+            // 🎭 NEW: Enhanced Sampling Parameters
+            samplingTemp: 1.5, // Softmax temperature for diversity
+            topK: 5, // Number of top candidates to consider
+            noveltyWeight: 1.0, // How much to weight novelty vs. coherence
             
             // Dil özellikleri
             wordOrder: Math.random() < 0.2 ? 'inverted' : 'normal',
@@ -93,13 +121,31 @@ export class LanguageEvolutionEngine {
             lastUpdate: Date.now()
         };
 
+        // 🎯 Apply mood-based adjustments
+        style = adjustStyleByMood(mood, style);
+
         this.personalityMap.set(bacteria.id, style);
         this._initializeBigrams(bacteria);
         
-        console.log(`🎭 ${bacteria.name} dil stili başlatıldı:`, {
+        // 🎭 Initialize bacteria-specific tracking (Ring Buffers)
+        const maxRecentWords = RUNTIME_CONFIG.LANGUAGE_EVOLUTION.MAX_RECENT_WORDS;
+        const maxContextHistory = RUNTIME_CONFIG.LANGUAGE_EVOLUTION.MAX_CONTEXT_HISTORY;
+        
+        bufferManager.create(`recent_words_${bacteria.id}`, 'word', maxRecentWords);
+        bufferManager.create(`context_history_${bacteria.id}`, 'context', maxContextHistory);
+        
+        // Initialize context history with current context
+        const contextBuffer = bufferManager.get(`context_history_${bacteria.id}`);
+        contextBuffer.push(bacteria.currentContext || 'biological');
+        
+        this.lastContextChange.set(bacteria.id, Date.now());
+        
+        console.log(`🎭 ${bacteria.name} Enhanced Language Style v3.0 başlatıldı:`, {
             markov: style.markovChainUsage.toFixed(2),
             tabPFN: style.tabPFNUsage.toFixed(2),
-            absurd: style.absurdTolerance.toFixed(2)
+            absurd: style.absurdTolerance.toFixed(2),
+            samplingTemp: style.samplingTemp.toFixed(2),
+            topK: style.topK
         });
     }
 
@@ -124,19 +170,44 @@ export class LanguageEvolutionEngine {
         }
     }
 
-    // Ana yaratıcı ifade üretme metodu
+    // Ana yaratıcı ifade üretme metodu - Enhanced v3.0
     async generateCreativeExpression(bacteria, context) {
+        this.diversityMetrics.totalGenerations++;
+        
         const style = this.personalityMap.get(bacteria.id);
         if (!style) {
             this.initializeLanguageStyle(bacteria);
             return this.generateCreativeExpression(bacteria, context);
         }
 
+        // 🎯 Smart Context Drift - dinamik bağlam değişimi (Ring Buffer)
+        const recentWordsBuffer = bufferManager.get(`recent_words_${bacteria.id}`);
+        const recentWords = recentWordsBuffer ? recentWordsBuffer.toArray() : [];
+        
+        const originalContext = context;
+        context = calculateContextDrift(context, this.availableContexts, recentWords, this.contextDriftProbability);
+        
+        if (context !== originalContext) {
+            console.log(`🔄 ${bacteria.name} context drift: ${originalContext} → ${context}`);
+            this.diversityMetrics.contextChanges++;
+            
+            // Update context history (Ring Buffer)
+            const contextBuffer = bufferManager.get(`context_history_${bacteria.id}`);
+            if (contextBuffer) {
+                contextBuffer.push(context);
+            }
+            this.lastContextChange.set(bacteria.id, Date.now());
+        }
+
+        // 🎭 Apply mood-based style adjustments (dynamic)
+        const mood = bacteria.mood || 0.5;
+        const adjustedStyle = adjustStyleByMood(mood, style);
+
         const vocab = Array.from(bacteria.vocabulary);
         let words = [];
 
-        // 1. Çekirdek kelime seçimi
-        let coreWord = await this._selectCoreWord(bacteria, context, style);
+        // 1. Çekirdek kelime seçimi (adjusted style ile)
+        let coreWord = await this._selectCoreWord(bacteria, context, adjustedStyle);
         if (coreWord) {
             words.push(coreWord);
         }
@@ -235,6 +306,11 @@ export class LanguageEvolutionEngine {
             }
         }
 
+        // 🎭 NEW: Smart Top-K + Softmax Sampling with Anti-Monotony
+        if (this.antiMonotonyActive && Math.random() < 0.7) { // 70% chance to use enhanced sampling
+            return await this._selectWordWithDiversity(bacteria, context, style);
+        }
+
         // Öncelik 2: Original TabPFN önerisi  
         if (Math.random() < style.tabPFNUsage * 0.5) {
             const suggestions = await tabPFNAdapter.analyzeVocabulary(bacteria);
@@ -258,6 +334,104 @@ export class LanguageEvolutionEngine {
 
         // Fallback: Rastgele
         return vocab[Math.floor(Math.random() * vocab.length)];
+    }
+
+    // 🎭 NEW: Enhanced Word Selection with Top-K + Softmax + Novelty
+    async _selectWordWithDiversity(bacteria, context, style) {
+        this.diversityMetrics.samplingUsage++;
+        
+        // Collect all possible words
+        const vocab = Array.from(bacteria.vocabulary);
+        const semanticWords = this.semanticFields[context] || [];
+        const allCandidates = [...new Set([...vocab, ...semanticWords])]; // Remove duplicates
+        
+        if (allCandidates.length === 0) return 'hmm';
+        
+        // Get recent words for this bacteria (Ring Buffer)
+        const recentWordsBuffer = bufferManager.get(`recent_words_${bacteria.id}`);
+        const recentWords = recentWordsBuffer ? recentWordsBuffer.toArray() : [];
+        
+        // Calculate scores for each candidate
+        const scoredCandidates = allCandidates.map(word => {
+            const baseScore = this._scoreWord(word, bacteria, context);
+            const noveltyScore = calculateNoveltyScore(word, recentWords, this.wordUsageCount);
+            const totalScore = baseScore + (noveltyScore * style.noveltyWeight);
+            
+            return {
+                word,
+                score: totalScore,
+                baseScore,
+                noveltyScore
+            };
+        });
+        
+        // Use Top-K + Softmax sampling (Config-driven)
+        const words = scoredCandidates.map(item => item.word);
+        const scores = scoredCandidates.map(item => item.score);
+        
+        const topK = style.topK || RUNTIME_CONFIG.LANGUAGE_EVOLUTION.DEFAULT_TOP_K;
+        const samplingTemp = style.samplingTemp || RUNTIME_CONFIG.LANGUAGE_EVOLUTION.DEFAULT_SAMPLING_TEMP;
+        
+        const selectedWord = topKSample(words, scores, topK, samplingTemp);
+        
+        if (selectedWord) {
+            // Track word usage
+            this._trackWordUsage(bacteria.id, selectedWord);
+            
+            // Log diversity info
+            const selectedCandidate = scoredCandidates.find(c => c.word === selectedWord);
+            if (selectedCandidate && selectedCandidate.noveltyScore !== 0) {
+                console.log(`🎭 ${bacteria.name} diversity boost: "${selectedWord}" (novelty: ${selectedCandidate.noveltyScore.toFixed(2)})`);
+                this.diversityMetrics.antiMonotonyTriggers++;
+            }
+            
+            return selectedWord;
+        }
+        
+        // Fallback
+        return allCandidates[Math.floor(Math.random() * allCandidates.length)];
+    }
+
+    // 🎯 Enhanced Word Scoring with multiple factors (Config-driven)
+    _scoreWord(word, bacteria, context) {
+        const config = RUNTIME_CONFIG.LANGUAGE_EVOLUTION;
+        let score = 1.0;
+        
+        // Semantic relevance
+        if (this.semanticFields[context]?.includes(word)) {
+            score += config.SEMANTIC_RELEVANCE_WEIGHT;
+        }
+        
+        // Vocabulary ownership bonus
+        if (bacteria.vocabulary.has(word)) {
+            score += config.VOCABULARY_OWNERSHIP_WEIGHT;
+        }
+        
+        // Success tracking bonus
+        const successRate = wordSuccessTracker.getWordSuccessRate(word, context);
+        score += successRate * config.SUCCESS_RATE_WEIGHT;
+        
+        // Consciousness-based bonus for complex words
+        if (word.length > 6 && bacteria.consciousness_level > 0.5) {
+            score += config.CONSCIOUSNESS_BONUS_WEIGHT;
+        }
+        
+        return score;
+    }
+
+    // 🎭 Track word usage for anti-monotony (Ring Buffer)
+    _trackWordUsage(bacteriaId, word) {
+        // Update global usage count
+        this.wordUsageCount.set(word, (this.wordUsageCount.get(word) || 0) + 1);
+        
+        // Update bacteria's recent words (Ring Buffer)
+        const recentWordsBuffer = bufferManager.get(`recent_words_${bacteriaId}`);
+        if (recentWordsBuffer) {
+            recentWordsBuffer.push(word);
+        }
+        
+        // Update global diversity metrics
+        this.diversityMetrics.uniqueWordsUsed.add(word);
     }
 
     // Markov sequence üretimi
@@ -500,8 +674,126 @@ export class LanguageEvolutionEngine {
         return pattern.split(' ').slice(0, 2).map(w => this.mutateWord(bacteria, w));
     }
 
+    // 🗣️ NEW: Run Peer Dialogue - Enhanced Cross-Bacteria Communication
+    async runPeerDialogue(bacteria1, bacteria2) {
+        if (!bacteria1 || !bacteria2) return null;
+        
+        console.log(`🗣️ Cross-bacteria dialogue: ${bacteria1.name} ↔ ${bacteria2.name}`);
+        
+        // Generate responses from both bacteria
+        const context1 = bacteria1.currentContext || 'social';
+        const context2 = bacteria2.currentContext || 'social';
+        
+        const response1 = await this.generateCreativeExpression(bacteria1, context1);
+        const response2 = await this.generateCreativeExpression(bacteria2, context2);
+        
+        // Cross-learning: each bacteria learns from the other's words
+        this._learnFromPeer(bacteria2, response1.split(' '));
+        this._learnFromPeer(bacteria1, response2.split(' '));
+        
+        // Update conversation histories
+        this._updateCrossConversationHistory(bacteria1.id, response1);
+        this._updateCrossConversationHistory(bacteria2.id, response2);
+        
+        return {
+            dialogue: [
+                { bacteria: bacteria1.name, message: response1 },
+                { bacteria: bacteria2.name, message: response2 }
+            ],
+            crossLearning: true,
+            timestamp: Date.now()
+        };
+    }
+
+    // 🧠 Enhanced peer learning with word significance
+    _learnFromPeer(learnerBacteria, peerWords) {
+        if (!peerWords || peerWords.length === 0) return;
+        
+        peerWords.forEach(word => {
+            if (word && word.length > 2) {
+                // Add to vocabulary if not present
+                if (!learnerBacteria.vocabulary.has(word)) {
+                    learnerBacteria.vocabulary.add(word);
+                    console.log(`🔗 ${learnerBacteria.name} learned "${word}" from peer`);
+                }
+                
+                // Track word as successful (peer usage implies value)
+                wordSuccessTracker.trackSuccess(word, 'social', true);
+                
+                // Update bigrams for peer-learned words
+                this.updateBigrams(learnerBacteria, [word]);
+            }
+        });
+    }
+
+    // 📚 Update cross-conversation history
+    _updateCrossConversationHistory(bacteriaId, message) {
+        const history = this.conversationHistory.get(bacteriaId) || [];
+        const words = message.split(' ').filter(w => w && w.length > 2);
+        
+        history.push(...words);
+        if (history.length > 20) {
+            history.splice(0, history.length - 20); // Keep last 20 words
+        }
+        
+        this.conversationHistory.set(bacteriaId, history);
+    }
+
+    // 🎭 Get Diversity Statistics
+    getDiversityStats() {
+        const stats = {
+            ...this.diversityMetrics,
+            uniqueWordsCount: this.diversityMetrics.uniqueWordsUsed.size,
+            totalWordUsage: this.wordUsageCount.size,
+            activeBacteria: this.recentWordsByBacteria.size,
+            averageRecentWords: 0,
+            contextDistribution: {},
+            antiMonotonyEffectiveness: 0
+        };
+        
+        // Calculate average recent words per bacteria
+        if (this.recentWordsByBacteria.size > 0) {
+            const totalRecentWords = Array.from(this.recentWordsByBacteria.values())
+                .reduce((sum, words) => sum + words.length, 0);
+            stats.averageRecentWords = totalRecentWords / this.recentWordsByBacteria.size;
+        }
+        
+        // Context distribution
+        this.availableContexts.forEach(context => {
+            stats.contextDistribution[context] = Array.from(this.contextHistory.values())
+                .reduce((count, history) => count + history.filter(c => c === context).length, 0);
+        });
+        
+        // Anti-monotony effectiveness
+        if (stats.totalGenerations > 0) {
+            stats.antiMonotonyEffectiveness = (stats.antiMonotonyTriggers / stats.totalGenerations) * 100;
+        }
+        
+        return stats;
+    }
+
+    // 🔄 Reset Diversity System
+    resetDiversitySystem() {
+        this.wordUsageCount.clear();
+        this.recentWordsByBacteria.clear();
+        this.contextHistory.clear();
+        this.lastContextChange.clear();
+        
+        this.diversityMetrics = {
+            totalGenerations: 0,
+            uniqueWordsUsed: new Set(),
+            contextChanges: 0,
+            antiMonotonyTriggers: 0,
+            samplingUsage: 0
+        };
+        
+        console.log('🔄 LanguageEvolutionEngine diversity system reset!');
+    }
+
     // Sistem durumu - Enhanced AI included
     getStatus() {
+        const diversityStats = this.getDiversityStats();
+        
         return {
             initialized: this.initialized,
             personalityCount: this.personalityMap.size,
@@ -514,12 +806,28 @@ export class LanguageEvolutionEngine {
             enhancedTabPFNStatus: this.enhancedTabPFN.getStatus(),
             trackerStatus: wordSuccessTracker.getStatus(),
             
+            // 🎭 NEW: Advanced Diversity Features
+            diversitySystem: {
+                antiMonotonyActive: this.antiMonotonyActive,
+                totalGenerations: diversityStats.totalGenerations,
+                uniqueWordsUsed: diversityStats.uniqueWordsCount,
+                antiMonotonyEffectiveness: diversityStats.antiMonotonyEffectiveness.toFixed(1) + '%',
+                contextChanges: diversityStats.contextChanges,
+                samplingUsage: diversityStats.samplingUsage,
+                activeBacteria: diversityStats.activeBacteria
+            },
+            
             // Advanced Features
             aiEnhancements: {
                 multiLayerPrediction: this.enhancedTabPFN.isReady,
                 crossBacteriaLearning: true,
                 conversationMemory: true,
-                reinforcementLearning: true
+                reinforcementLearning: true,
+                topKSampling: true, // NEW!
+                contextDrift: true, // NEW!
+                moodBasedStyling: true, // NEW!
+                noveltyPenalty: true, // NEW!
+                peerDialogue: true // NEW!
             }
         };
     }

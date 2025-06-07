@@ -431,23 +431,33 @@ const sentenceComposer = new AdvancedSentenceComposer();
 class DiversityEngine {
     constructor() {
         this.recentWords = []; // Son kullanılan kelimeler
-        this.maxHistory = 20; // Tekrar cezası için hafıza
-        this.diversityBoost = 0.8; // Çeşitlilik faktörü
+        this.maxHistory = 15; // Tekrar cezası için hafıza (biraz azalttım)
+        this.diversityBoost = 1.2; // Çeşitlilik faktörü (artırdım)
+        this.contextRotation = ['biological', 'creative', 'social', 'philosophical', 'emotional'];
+        this.currentContextIndex = 0;
+        this.sentenceCount = 0;
+        this.bannedWords = new Set(); // Geçici olarak yasaklanan kelimeler
+        this.wordUsageCount = new Map(); // Kelime kullanım sayacı
     }
     
-    // Top-K + Softmax Sampling - Greedy'nin alternatifi
-    pickDiverse(candidates, contextEmbed, prevWords = [], role = 'nom', K = 3, temp = 1.2) {
+    // Top-K + Softmax Sampling - Greedy'nin alternatifi - GÜÇLENDİRİLMİŞ!
+    pickDiverse(candidates, contextEmbed, prevWords = [], role = 'nom', K = 4, temp = 1.8) {
         if (!candidates || candidates.length === 0) return 'hücre';
         
-        // 1) Her adayı skorla
-        const scored = candidates.map(word => {
+        // 🚫 Yasaklı kelimeleri filtrele
+        const filteredCandidates = candidates.filter(word => !this.bannedWords.has(word));
+        const workingCandidates = filteredCandidates.length > 2 ? filteredCandidates : candidates;
+        
+        // 1) Her adayı skorla - AGGRESSIVE NOVELTY!
+        const scored = workingCandidates.map(word => {
             const coherence = this.coherenceScore(word, contextEmbed, prevWords);
             const info = this.infoScore(word);
             const surprisal = this.surprisalScore(word, prevWords);
             const morph = this.morphCompatibilityScore(role);
-            const novelty = this.noveltyScore(word); // YENİ!
+            const novelty = this.aggressiveNoveltyScore(word); // YENİ - DAHA AGRESİF!
+            const antiMonotony = this.antiMonotonyBonus(word, prevWords); // YENİ!
             
-            const totalScore = coherence + info - surprisal + morph + novelty;
+            const totalScore = coherence + info - surprisal + morph + (novelty * 1.5) + antiMonotony;
             return { word, score: totalScore };
         });
         
@@ -455,9 +465,9 @@ class DiversityEngine {
         scored.sort((a, b) => b.score - a.score);
         const topK = scored.slice(0, Math.min(K, scored.length));
         
-        if (topK.length === 0) return candidates[0];
+        if (topK.length === 0) return workingCandidates[0];
         
-        // 3) Softmax ile probabilistic selection
+        // 3) Softmax ile probabilistic selection - DAHA RASTGELE
         const exps = topK.map(item => Math.exp(item.score / temp));
         const sumExp = exps.reduce((a, b) => a + b, 0);
         const probs = exps.map(e => e / sumExp);
@@ -479,12 +489,38 @@ class DiversityEngine {
         return selected;
     }
     
-    // Yenilik skoru - son kullanılan kelimeleri cezalandır
-    noveltyScore(word) {
+    // DAHA AGRESİF yenilik skoru
+    aggressiveNoveltyScore(word) {
         const recentUsage = this.recentWords.filter(w => w === word).length;
-        const penalty = recentUsage * 0.5; // Her tekrar -0.5 puan
-        const bonus = this.recentWords.length > 0 && !this.recentWords.includes(word) ? 0.3 : 0;
-        return bonus - penalty;
+        const totalUsage = this.wordUsageCount.get(word) || 0;
+        
+        // Çok kullanılan kelimeler için ağır ceza
+        let heavyPenalty = 0;
+        if (recentUsage > 2) heavyPenalty = -2.0; // Son 15 kelimede 3+ kez kullanılmışsa
+        if (totalUsage > 5) heavyPenalty -= 1.0; // Toplam 5+ kez kullanılmışsa
+        
+        // Hiç kullanılmamış kelimeler için büyük bonus
+        const freshBonus = totalUsage === 0 ? 1.5 : 0;
+        const recentBonus = !this.recentWords.includes(word) ? 0.8 : 0;
+        
+        return freshBonus + recentBonus + heavyPenalty;
+    }
+    
+    // Monotonluk karşıtı bonus - YENI!
+    antiMonotonyBonus(word, prevWords) {
+        if (prevWords.length < 2) return 0;
+        
+        const lastTwo = prevWords.slice(-2);
+        const category = this.getWordCategory(word);
+        const lastCategories = lastTwo.map(w => this.getWordCategory(w));
+        
+        // Farklı kategoriden kelime seçimi için bonus
+        const isDifferentCategory = !lastCategories.includes(category);
+        
+        // Üçlü tekrarı önleme (ruh-dna-büyülüyor gibi)
+        const isBreakingPattern = !lastTwo.some(w => w === word);
+        
+        return (isDifferentCategory ? 0.7 : 0) + (isBreakingPattern ? 0.5 : -1.0);
     }
     
     addToHistory(word) {
@@ -492,15 +528,56 @@ class DiversityEngine {
         if (this.recentWords.length > this.maxHistory) {
             this.recentWords.shift(); // Eski kelimeleri sil
         }
+        
+        // Kelime kullanım sayacını güncelle
+        this.wordUsageCount.set(word, (this.wordUsageCount.get(word) || 0) + 1);
+        
+        // Çok kullanılan kelimeleri geçici yasak listesine ekle
+        if (this.wordUsageCount.get(word) >= 4) {
+            this.bannedWords.add(word);
+            // 10 cümle sonra yasağı kaldır
+            setTimeout(() => {
+                this.bannedWords.delete(word);
+                this.wordUsageCount.set(word, Math.max(0, (this.wordUsageCount.get(word) || 0) - 2));
+            }, 10000);
+        }
     }
     
-    // Basit scoring functions (backward compatibility)
+    // Context döndürme - YENI!
+    rotateContext() {
+        this.sentenceCount++;
+        if (this.sentenceCount % 3 === 0) { // Her 3 cümlede bir context değiştir
+            this.currentContextIndex = (this.currentContextIndex + 1) % this.contextRotation.length;
+            return this.contextRotation[this.currentContextIndex];
+        }
+        return null; // Context değişmedi
+    }
+    
+    // Kelime havuzunu genişlet - YENI!
+    expandWordPool(category) {
+        const expansions = {
+            'subjects': ['bakteri', 'hücre', 'organizma', 'yaşam', 'doğa', 'evren', 'zaman', 'düşünce', 'his', 'rüya'],
+            'objects': ['protein', 'enzim', 'ATP', 'molekül', 'oksijen', 'şeker', 'amino', 'vitamin', 'mineral', 'enerji'],
+            'verbs': ['hareket', 'büyüyor', 'gelişiyor', 'öğreniyor', 'keşfediyor', 'hissediyor', 'düşünüyor', 'yaratıyor', 'dönüşüyor', 'evrimleşiyor'],
+            'emotions': ['merak', 'sevgi', 'umut', 'korku', 'heyecan', 'huzur', 'şaşkınlık', 'özlem', 'neşe', 'endişe'],
+            'locations': ['laboratuvar', 'doğa', 'okul', 'ev', 'şehir', 'orman', 'deniz', 'gökyüzü', 'uzay', 'kalp']
+        };
+        return expansions[category] || [];
+    }
+    
+    // Basit scoring functions (backward compatibility) - GÜÇLENDİRİLMİŞ
     coherenceScore(word, contextEmbed, prevWords) {
         let score = 1.0;
         if (prevWords.length > 0) {
             const lastWord = prevWords[prevWords.length - 1];
-            if (this.getWordCategory(word) === this.getWordCategory(lastWord)) {
-                score += 0.2;
+            const wordCat = this.getWordCategory(word);
+            const lastCat = this.getWordCategory(lastWord);
+            
+            // Aynı kategoriden kelime cezası
+            if (wordCat === lastCat) {
+                score -= 0.3; // Ceza artırdım
+            } else {
+                score += 0.4; // Farklı kategori bonusu
             }
         }
         return score;
@@ -508,14 +585,25 @@ class DiversityEngine {
     
     infoScore(word) {
         const allWords = Object.values(dynamicLexicon.baseWords).flat();
-        const frequency = allWords.filter(w => w === word).length;
-        return frequency > 0 ? -Math.log(frequency / allWords.length) : 2.0;
+        const expanded = this.expandWordPool('subjects').concat(
+            this.expandWordPool('objects'),
+            this.expandWordPool('verbs')
+        );
+        const totalWords = [...allWords, ...expanded];
+        
+        const frequency = totalWords.filter(w => w === word).length;
+        return frequency > 0 ? -Math.log(frequency / totalWords.length) : 2.5; // Bilinmeyen kelimeler için bonus
     }
     
     surprisalScore(word, prevWords) {
-        if (prevWords.length === 0) return Math.random() * 0.3;
+        if (prevWords.length === 0) return Math.random() * 0.5;
         const lastWord = prevWords[prevWords.length - 1];
-        return this.getWordCategory(word) !== this.getWordCategory(lastWord) ? 0.5 : 0.1;
+        const surprise = this.getWordCategory(word) !== this.getWordCategory(lastWord) ? 0.8 : 0.1;
+        
+        // Tekrar eden kelimeler için sürpriz cezası
+        const repetitionPenalty = prevWords.includes(word) ? -0.5 : 0;
+        
+        return surprise + repetitionPenalty;
     }
     
     morphCompatibilityScore(role) {
@@ -527,23 +615,58 @@ class DiversityEngine {
         for (const [category, words] of Object.entries(dynamicLexicon.baseWords)) {
             if (words.includes(word)) return category;
         }
+        
+        // Genişletilmiş kelime havuzunda ara
+        for (const category of ['subjects', 'objects', 'verbs', 'emotions']) {
+            if (this.expandWordPool(category).includes(word)) {
+                return category;
+            }
+        }
+        
         return 'unknown';
     }
     
-    // Context çeşitliliği için rastgele field seçimi
+    // Context çeşitliliği için rastgele field seçimi - GÜÇLENDİRİLMİŞ
     diversifyContext() {
-        const contexts = ['biological', 'creative', 'social', 'philosophical', 'emotional'];
-        return contexts[Math.floor(Math.random() * contexts.length)];
+        const rotated = this.rotateContext();
+        if (rotated) {
+            console.log(`🔄 Context rotated to: ${rotated}`);
+            return rotated;
+        }
+        
+        // Rastgele değişim (daha sık)
+        if (Math.random() < 0.4) { // 20% -> 40%
+            const contexts = ['biological', 'creative', 'social', 'philosophical', 'emotional'];
+            const newContext = contexts[Math.floor(Math.random() * contexts.length)];
+            console.log(`🎲 Context randomized to: ${newContext}`);
+            return newContext;
+        }
+        
+        return this.contextRotation[this.currentContextIndex];
     }
     
-    // Debugging
+    // Debugging - GÜÇLENDİRİLMİŞ
     getStats() {
         const wordCounts = {};
         this.recentWords.forEach(w => wordCounts[w] = (wordCounts[w] || 0) + 1);
         return { 
             recentWords: this.recentWords.slice(-10),
-            topRepeated: Object.entries(wordCounts).sort((a,b) => b[1] - a[1]).slice(0, 5)
+            topRepeated: Object.entries(wordCounts).sort((a,b) => b[1] - a[1]).slice(0, 5),
+            bannedWords: Array.from(this.bannedWords),
+            currentContext: this.contextRotation[this.currentContextIndex],
+            sentenceCount: this.sentenceCount,
+            totalWordUsage: this.wordUsageCount.size
         };
+    }
+    
+    // Sistem resetleme için
+    resetDiversity() {
+        this.recentWords = [];
+        this.bannedWords.clear();
+        this.wordUsageCount.clear();
+        this.sentenceCount = 0;
+        this.currentContextIndex = 0;
+        console.log('🔄 Diversity engine reset!');
     }
 }
 
@@ -553,6 +676,31 @@ const diversityEngine = new DiversityEngine();
 // Backward compatibility function - ARTIK ÇEŞİTLİLİK KULLANIR!
 function pickBest(candidates, contextEmbed, prevWords = [], role = 'nom', position = 'middle') {
     return diversityEngine.pickDiverse(candidates, contextEmbed, prevWords, role, 4, 1.5);
+}
+
+// 🔍 DEBUGGING - Diversity Stats'ı göster
+function showDiversityStats() {
+    const stats = diversityEngine.getStats();
+    console.log('🎭 DIVERSITY ENGINE STATS:', stats);
+    
+    if (typeof window !== 'undefined' && window.console) {
+        console.group('🔤 Word Diversity Analysis');
+        console.log('📝 Recent words:', stats.recentWords);
+        console.log('🔁 Most repeated:', stats.topRepeated);
+        console.log('🚫 Banned words:', stats.bannedWords);
+        console.log('🎯 Current context:', stats.currentContext);
+        console.log('📊 Sentence count:', stats.sentenceCount);
+        console.log('📚 Total vocabulary used:', stats.totalWordUsage);
+        console.groupEnd();
+    }
+    
+    return stats;
+}
+
+// 🔄 Diversity Reset
+function resetDiversityEngine() {
+    diversityEngine.resetDiversity();
+    console.log('🔄 Diversity engine has been reset!');
 }
 
 // ——————————————
@@ -583,48 +731,67 @@ async function generateMorphSentence(contextEmbed = null, sentenceType = 'simple
 }
 
 async function generateSimpleSentence(contextEmbed, prevWords) {
-  // SOV: Özne + Nesne + Fiil - ÇEŞİTLİLİK ENJİNİ İLE!
+  // SOV: Özne + Nesne + Fiil - GENİŞLETİLMİŞ KELİME HAVUZU İLE!
   
-  // 🎲 Rastgele context değişimi (20% şans)
-  if (Math.random() < 0.2) {
-    const newContext = diversityEngine.diversifyContext();
-    console.log(`🎯 Context diversified to: ${newContext}`);
-  }
+  // 🎲 Context değişimi (daha sık)
+  const newContext = diversityEngine.diversifyContext();
   
-  // Özne seçimi - çeşitli kategorilerden
-  const subjectSources = [LEXICON.subjects, LEXICON.emotions, LEXICON.objects];
-  const selectedSubjectSource = subjectSources[Math.floor(Math.random() * subjectSources.length)];
-  const subject = pickBest(selectedSubjectSource, contextEmbed, prevWords, 'nom', 'start');
+  // Özne seçimi - GENİŞLETİLMİŞ kategorilerden
+  const expandedSubjects = [
+    ...LEXICON.subjects, 
+    ...diversityEngine.expandWordPool('subjects'),
+    ...LEXICON.emotions.slice(0, 3), // Sadece birkaç emotion
+    ...diversityEngine.expandWordPool('emotions').slice(0, 3)
+  ];
+  const subject = pickBest(expandedSubjects, contextEmbed, prevWords, 'nom', 'start');
   prevWords.push(subject);
   
-  // Nesne seçimi ve durum eki - bazen temporal/intensifier ekle
+  // Nesne seçimi - GENİŞLETİLMİŞ havuzdan
   let objectPart = '';
-  if (Math.random() < 0.3) {
-    const temporal = pickBest(LEXICON.temporal, contextEmbed, prevWords, 'nom', 'middle');
-    const objectBase = pickBest(LEXICON.objects, contextEmbed, prevWords, 'acc', 'middle');
+  const expandedObjects = [
+    ...LEXICON.objects,
+    ...diversityEngine.expandWordPool('objects')
+  ];
+  
+  if (Math.random() < 0.4) { // Temporal modifier şansını artırdım
+    const temporals = [...LEXICON.temporal, 'aniden', 'sessizce', 'dikkatli bir şekilde'];
+    const temporal = pickBest(temporals, contextEmbed, prevWords, 'nom', 'middle');
+    const objectBase = pickBest(expandedObjects, contextEmbed, prevWords, 'acc', 'middle');
     const object = addCase(objectBase, 'acc');
     objectPart = `${temporal} ${object}`;
     prevWords.push(temporal, object);
   } else {
-    const objectBase = pickBest(LEXICON.objects, contextEmbed, prevWords, 'acc', 'middle');
+    const objectBase = pickBest(expandedObjects, contextEmbed, prevWords, 'acc', 'middle');
     const object = addCase(objectBase, 'acc');
     objectPart = object;
     prevWords.push(object);
   }
   
-  // Fiil seçimi
-  const verb = pickBest(LEXICON.verbs, contextEmbed, prevWords, 'nom', 'end');
+  // Fiil seçimi - GENİŞLETİLMİŞ havuzdan
+  const expandedVerbs = [
+    ...LEXICON.verbs,
+    ...diversityEngine.expandWordPool('verbs')
+  ];
+  const verb = pickBest(expandedVerbs, contextEmbed, prevWords, 'nom', 'end');
   prevWords.push(verb);
   
   return `${capitalize(subject)} ${objectPart} ${verb}.`;
 }
 
 async function generateComplexSentence(contextEmbed, prevWords) {
-  // Özne + Yer + Nesne + Fiil - GENİŞLETİLMİŞ ÇEŞİTLİLİK
+  // Özne + Yer + Nesne + Fiil - ULTRA GENİŞLETİLMİŞ ÇEŞİTLİLİK
   
-  // Özne çeşitliliği
-  const subjectMix = [...LEXICON.subjects, ...LEXICON.emotions.slice(0, 5)];
-  const subject = pickBest(subjectMix, contextEmbed, prevWords, 'nom', 'start');
+  // Context rotation
+  diversityEngine.diversifyContext();
+  
+  // Özne çeşitliliği - BÜYÜK HAVUZ
+  const megaSubjects = [
+    ...LEXICON.subjects, 
+    ...diversityEngine.expandWordPool('subjects'),
+    ...LEXICON.emotions.slice(0, 4),
+    ...diversityEngine.expandWordPool('emotions').slice(0, 4)
+  ];
+  const subject = pickBest(megaSubjects, contextEmbed, prevWords, 'nom', 'start');
   prevWords.push(subject);
   
   // Konum + yoğunluk belirteci (bazen)
@@ -1267,5 +1434,9 @@ export {
   dynamicLexicon,
   optimizedScoring,
   sentenceComposer,
-  diversityEngine // YENİ!
+  diversityEngine, // YENİ!
+  
+  // Debug functions
+  showDiversityStats,
+  resetDiversityEngine
 }; 

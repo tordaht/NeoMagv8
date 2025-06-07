@@ -273,6 +273,18 @@
             <button data-action="clear-learning-db" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">
                 🧬 Clear Learning
             </button>
+            <button data-action="show-diversity-stats" class="bg-teal-600 hover:bg-teal-700 px-3 py-1 rounded text-sm">
+                🎭 Word Diversity
+            </button>
+            <button data-action="reset-diversity" class="bg-orange-600 hover:bg-orange-700 px-3 py-1 rounded text-sm">
+                🔄 Reset Diversity
+            </button>
+            <button data-action="show-language-stats" class="bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded text-sm">
+                🧠 Language Stats
+            </button>
+            <button data-action="peer-dialogue" class="bg-pink-600 hover:bg-pink-700 px-3 py-1 rounded text-sm">
+                🗣️ Peer Dialogue
+            </button>
         </div>
         
         <div class="text-xs text-gray-300">
@@ -7637,6 +7649,102 @@ ${recentSummary}${errorSummary}
             }
         }
 
+        // 🎭 Show Word Diversity Stats
+        function showDiversityStats() {
+            console.log('🎭 SHOWING DIVERSITY STATS...');
+            
+            // Check if Enhanced Morphological System is loaded
+            if (!window.enhancedMorphGenerator) {
+                alert('⚠️ Enhanced Morphological System is not ready yet.\n\nPlease wait a few seconds and try again.');
+                return;
+            }
+            
+            try {
+                // Import the diversity function dynamically
+                import('./src/engine/MorphologicalDialogueGenerator.js').then(module => {
+                    const { showDiversityStats } = module;
+                    const stats = showDiversityStats();
+                    
+                    // Format the stats nicely
+                    let displayText = `🎭 WORD DIVERSITY ANALYSIS:
+
+📝 Recent Words Used:
+${stats.recentWords.map(word => `• ${word}`).join('\n')}
+
+🔁 Most Repeated Words:
+${stats.topRepeated.map(([word, count]) => `• ${word}: ${count} times`).join('\n')}
+
+🚫 Currently Banned Words:
+${stats.bannedWords.length > 0 ? stats.bannedWords.map(word => `• ${word}`).join('\n') : '• None (Good!)'}
+
+🎯 Current Context: ${stats.currentContext}
+📊 Sentences Generated: ${stats.sentenceCount}
+📚 Total Vocabulary Used: ${stats.totalWordUsage} unique words
+
+🔍 ANALYSIS:
+${stats.bannedWords.length > 0 ? 
+  `⚠️ ${stats.bannedWords.length} words are temporarily banned due to overuse.` :
+  '✅ No words are banned - good diversity!'
+}
+
+${stats.topRepeated.length > 0 && stats.topRepeated[0][1] > 3 ?
+  `🔄 Word "${stats.topRepeated[0][0]}" has been used ${stats.topRepeated[0][1]} times recently.` :
+  '✅ No excessive word repetition detected.'
+}
+
+Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 sentences trigger a context change.`;
+                    
+                    alert(displayText);
+                }).catch(error => {
+                    console.error('❌ Failed to load diversity stats:', error);
+                    alert('❌ Failed to load diversity stats. Check console for details.');
+                });
+                
+            } catch (error) {
+                console.error('❌ Error showing diversity stats:', error);
+                alert('❌ Error showing diversity stats. The Enhanced Morphological System might not be fully loaded yet.');
+            }
+        }
+
+        // 🔄 Reset Diversity System
+        function resetDiversitySystem() {
+            console.log('🔄 RESETTING DIVERSITY SYSTEM...');
+            
+            if (!window.enhancedMorphGenerator) {
+                alert('⚠️ Enhanced Morphological System is not ready yet.\n\nPlease wait a few seconds and try again.');
+                return;
+            }
+            
+            const confirmed = confirm(
+                '🔄 Reset Word Diversity System?\n\n' +
+                'This will:\n' +
+                '• Clear recent word history\n' +
+                '• Remove all banned words\n' +
+                '• Reset word usage counters\n' +
+                '• Reset context rotation\n\n' +
+                'This can help if bacteria are stuck in repetitive patterns.'
+            );
+            
+            if (confirmed) {
+                try {
+                    import('./src/engine/MorphologicalDialogueGenerator.js').then(module => {
+                        const { resetDiversityEngine } = module;
+                        resetDiversityEngine();
+                        
+                        alert('✅ Diversity system reset successfully!\n\nBacteria will now have access to fresh vocabulary patterns.');
+                        console.log('🔄 Diversity system reset by user');
+                    }).catch(error => {
+                        console.error('❌ Failed to reset diversity system:', error);
+                        alert('❌ Failed to reset diversity system. Check console for details.');
+                    });
+                    
+                } catch (error) {
+                    console.error('❌ Error resetting diversity system:', error);
+                    alert('❌ Error resetting diversity system. The Enhanced Morphological System might not be fully loaded yet.');
+                }
+            }
+        }
+
         // v825: Auto-restore on page load
         async function autoRestoreFromDatabase() {
             console.log('🔄 Checking for saved bacteria to restore...');
@@ -7760,6 +7868,10 @@ ${recentSummary}${errorSummary}
                 else if (action === 'show-db-stats') showDatabaseStats();
                 else if (action === 'show-learning-stats') showLearningStats();
                 else if (action === 'clear-learning-db') clearLearningDatabase();
+                else if (action === 'show-diversity-stats') showDiversityStats();
+                else if (action === 'reset-diversity') resetDiversitySystem();
+                else if (action === 'show-language-stats') showLanguageEvolutionStats();
+                else if (action === 'peer-dialogue') runPeerDialogue();
             });
         }
 
