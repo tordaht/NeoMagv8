@@ -5,6 +5,8 @@
  * Few-shot learning ve multilabel eğitim yaklaşımları
  */
 
+import { generateMorphSentence, generateMorphDialogue, addCase, LEXICON } from './MorphologicalDialogueGenerator.js';
+
 class AITrainingAdapter {
     constructor() {
         this.trainingData = null;
@@ -421,6 +423,217 @@ class AITrainingAdapter {
                     examples: data.examples.length 
                 }))
         };
+    }
+
+    /**
+     * 🔥 NEW: Morphological Dialogue Generation Integration
+     * Training data ile morfolojik cümle üretimini birleştirir
+     */
+    async generateTrainingAwareMorphSentence(context, consciousnessLevel = 0.5, emotionalTone = null) {
+        if (!this.isLoaded) {
+            // Fallback to basic morphological generation
+            return await generateMorphSentence(null, 'simple');
+        }
+
+        // Context ve bilinç seviyesine uygun örnekleri filtrele
+        const relevantExamples = this.trainingData.filter(item => {
+            const contextMatch = item.context.includes(context);
+            const consciousnessMatch = Math.abs(item.consciousness_level - consciousnessLevel) < 0.4;
+            const emotionMatch = !emotionalTone || item.emotional_tone === emotionalTone;
+            
+            return contextMatch && consciousnessMatch && emotionMatch;
+        });
+
+        // Enhanced sentence type selection based on training data
+        let sentenceType = 'simple';
+        if (relevantExamples.length > 0) {
+            const complexExamples = relevantExamples.filter(ex => ex.complexity === 'complex');
+            const emotionalExamples = relevantExamples.filter(ex => 
+                ex.emotional_tone && ex.emotional_tone !== 'neutral'
+            );
+            
+            if (complexExamples.length > 0) {
+                sentenceType = Math.random() > 0.5 ? 'complex' : 'locative';
+            } else if (emotionalExamples.length > 0) {
+                sentenceType = 'emotional';
+            }
+        }
+
+        // Generate morphological sentence with training context
+        const contextEmbed = this.createContextEmbedding(relevantExamples);
+        return await generateMorphSentence(contextEmbed, sentenceType);
+    }
+
+    /**
+     * Enhanced dialogue generation with training awareness
+     */
+    async generateTrainingAwareMorphDialogue(context, sentences = 3, consciousnessLevel = 0.5) {
+        if (!this.isLoaded) {
+            return await generateMorphDialogue(sentences);
+        }
+
+        const dialogue = [];
+        const relevantExamples = this.trainingData.filter(item => 
+            item.context.includes(context) && 
+            Math.abs(item.consciousness_level - consciousnessLevel) < 0.3
+        );
+
+        // Generate contextually aware sentences
+        for (let i = 0; i < sentences; i++) {
+            const emotionalTone = this.selectContextualEmotion(relevantExamples);
+            const sentence = await this.generateTrainingAwareMorphSentence(
+                context, 
+                consciousnessLevel, 
+                emotionalTone
+            );
+            dialogue.push(sentence);
+        }
+
+        return dialogue.join(' ');
+    }
+
+    /**
+     * Training data'dan morfolojik case selection
+     */
+    getTrainingAwareCaseForWord(word, context, role = 'nom') {
+        if (!this.isLoaded) {
+            return addCase(word, role);
+        }
+
+        // Training data'da bu kelime nasıl kullanılmış?
+        const relevantExamples = this.trainingData.filter(item => {
+            if (!item.morph_analysis) return false;
+            return item.morph_analysis.some(morph => 
+                morph.token === word || morph.root === word
+            );
+        });
+
+        if (relevantExamples.length > 0) {
+            // Most common case usage in training data
+            const caseCounts = {};
+            relevantExamples.forEach(example => {
+                example.morph_analysis.forEach(morph => {
+                    if (morph.token === word || morph.root === word) {
+                        morph.tags?.forEach(tag => {
+                            if (tag.includes('Case:')) {
+                                const caseType = tag.split(':')[1];
+                                caseCounts[caseType] = (caseCounts[caseType] || 0) + 1;
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Select most frequent case, fallback to requested role
+            const mostFrequentCase = Object.keys(caseCounts)
+                .sort((a, b) => caseCounts[b] - caseCounts[a])[0];
+
+            if (mostFrequentCase) {
+                const caseMapping = {
+                    'Nom': 'nom',
+                    'Acc': 'acc', 
+                    'Dat': 'dat',
+                    'Loc': 'loc',
+                    'Abl': 'abl',
+                    'Gen': 'gen'
+                };
+                role = caseMapping[mostFrequentCase] || role;
+            }
+        }
+
+        return addCase(word, role);
+    }
+
+    /**
+     * Training data'dan emotional context seçimi
+     */
+    selectContextualEmotion(relevantExamples) {
+        if (relevantExamples.length === 0) return null;
+
+        const emotionCounts = {};
+        relevantExamples.forEach(example => {
+            const emotion = example.emotional_tone;
+            if (emotion) {
+                emotionCounts[emotion] = (emotionCounts[emotion] || 0) + 1;
+            }
+        });
+
+        const emotions = Object.keys(emotionCounts);
+        if (emotions.length === 0) return null;
+
+        // Weighted random selection
+        const totalCount = Object.values(emotionCounts).reduce((a, b) => a + b, 0);
+        let random = Math.random() * totalCount;
+
+        for (const emotion of emotions) {
+            random -= emotionCounts[emotion];
+            if (random <= 0) {
+                return emotion;
+            }
+        }
+
+        return emotions[0]; // fallback
+    }
+
+    /**
+     * Create pseudo context embedding from training examples
+     */
+    createContextEmbedding(relevantExamples) {
+        if (relevantExamples.length === 0) return null;
+
+        // Simple context representation
+        const wordFrequencies = {};
+        relevantExamples.forEach(example => {
+            if (example.word_weights) {
+                Object.entries(example.word_weights).forEach(([word, weight]) => {
+                    wordFrequencies[word] = (wordFrequencies[word] || 0) + weight;
+                });
+            }
+        });
+
+        return {
+            topWords: Object.entries(wordFrequencies)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 10)
+                .map(([word, freq]) => ({ word, frequency: freq })),
+            avgConsciousness: relevantExamples.reduce((sum, ex) => 
+                sum + ex.consciousness_level, 0) / relevantExamples.length,
+            dominantEmotion: this.selectContextualEmotion(relevantExamples)
+        };
+    }
+
+    /**
+     * Test morphological integration
+     */
+    async testMorphologicalIntegration() {
+        console.log('🔧 Testing Morphological Integration...\n');
+
+        // Test contexts from training data
+        const testContexts = ['philosophical', 'social', 'self-reflection', 'creative'];
+        
+        for (const context of testContexts) {
+            if (this.contextPatterns.has(context)) {
+                console.log(`Context: ${context}`);
+                
+                const sentence = await this.generateTrainingAwareMorphSentence(context, 0.7);
+                console.log(`  Generated: ${sentence}`);
+                
+                const dialogue = await this.generateTrainingAwareMorphDialogue(context, 2, 0.6);
+                console.log(`  Dialogue: ${dialogue}`);
+                console.log('');
+            }
+        }
+
+        // Test morphological case selection
+        const testWords = ['bakteri', 'enerji', 'düşünce'];
+        console.log('Morphological Case Testing:');
+        testWords.forEach(word => {
+            const cases = ['nom', 'acc', 'dat', 'loc'];
+            cases.forEach(role => {
+                const result = this.getTrainingAwareCaseForWord(word, 'philosophical', role);
+                console.log(`  ${word} (${role}): ${result}`);
+            });
+        });
     }
 }
 
