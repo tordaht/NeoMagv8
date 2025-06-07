@@ -5804,8 +5804,8 @@
                 return jokeResponse;
             }
             
-            // 🔤 V2.7: ENHANCED MORPHOLOGICAL SYSTEM INTEGRATION
-            if (window.generateEnhancedMorphSentence && consciousness >= 0.8) {
+            // 🧬 v9.5.0: ULTRA-AGGRESSIVE ANTI-MONOTONY LANGUAGE EVOLUTION ENGINE (PRIMARY SYSTEM)
+            if (languageEvolutionEngine && consciousness >= 0.5) {
                 // Determine conversation context for morphological generation
                 let conversationContext = 'general';
                 if (message && message.toLowerCase().includes('merhaba')) conversationContext = 'social';
@@ -5816,25 +5816,14 @@
                 else if (message && (message.includes('niye') || message.includes('niçin'))) conversationContext = 'philosophical';
                 
                 try {
-                    // Get bacteria mood for enhanced generation
-                    const mood = bacteria.personality_traits.mood || 0.5;
+                    // Map context to available contexts in v9.5.0 system
+                    if (conversationContext === 'scientific') conversationContext = 'biological';
+                    if (conversationContext === 'creative') conversationContext = 'creative';
+                    if (conversationContext === 'social') conversationContext = 'social';
+                    if (conversationContext === 'philosophical') conversationContext = 'philosophical';
                     
-                    // Create context embedding
-                    const contextEmbed = { context: conversationContext };
-                    
-                    // Generate morphologically-aware response with mood control
-                    const morphResponse = await window.generateEnhancedMorphSentence(
-                        contextEmbed,
-                        'simple',
-                        {
-                            emotionalTone: mood > 0.7 ? 'mutlu' : mood < 0.3 ? 'hüzünlü' : 'normal',
-                            complexity: consciousness > 1.5 ? 'complex' : 'simple',
-                            consciousness: consciousness,
-                            enableStyle: true,
-                            enableComposition: mood > 0.4,
-                            mood: mood
-                        }
-                    );
+                    // Get v9.5.0 Ultra-Aggressive Anti-Monotony response
+                    const morphResponse = await languageEvolutionEngine.generateContextualResponse(bacteria, conversationContext, message);
                     
                     // 🧬 Record interaction for persistent learning
                     if (window.persistentLearning && context === 'user') {
@@ -5854,16 +5843,16 @@
                         });
                     }
                     
-                    console.log(`🔤 ${bacteria.name} Enhanced Morphological response (context: ${conversationContext})`);
+                    console.log(`🧬 ${bacteria.name} v9.5.0 ULTRA-AGGRESSIVE ANTI-MONOTONY response (context: ${conversationContext})`);
                     return morphResponse;
                 } catch (error) {
-                    console.warn(`⚠️ Morphological generation failed for ${bacteria.name}:`, error);
-                    // Fall through to next system
+                    console.warn(`⚠️ v9.5.0 Language Evolution failed for ${bacteria.name}:`, error);
+                    // Fall through to legacy system
                 }
             }
             
-            // 🚀 V8.9.1: USE ANTI-PATTERN LANGUAGE EVOLUTION ENGINE (FALLBACK)
-            if (languageEvolutionEngine && consciousness >= 1) {
+            // 🔧 v9.5.0: LEGACY FALLBACK (for very low consciousness bacteria)
+            if (languageEvolutionEngine && consciousness >= 0.3) {
                 // Determine conversation context for smart evolution
                 let conversationContext = 'general';
                 if (message && message.toLowerCase().includes('merhaba')) conversationContext = 'greeting';
@@ -5872,10 +5861,10 @@
                 else if (message && (message.includes('ATP') || message.includes('hücre'))) conversationContext = 'science';
                 else if (message && message.includes('vur joker vur')) conversationContext = 'comedy';
                 
-                // Get anti-pattern evolved response
-                const evolvedResponse = languageEvolutionEngine.generateContextualResponse(bacteria, conversationContext, message);
+                // Get v9.5.0 fallback response
+                const evolvedResponse = await languageEvolutionEngine.generateContextualResponse(bacteria, conversationContext, message);
                 
-                console.log(`🧬 ${bacteria.name} ANTI-PATTERN response generated (context: ${conversationContext})`);
+                console.log(`🔧 ${bacteria.name} v9.5.0 FALLBACK response (context: ${conversationContext})`);
                 return evolvedResponse;
             }
             
