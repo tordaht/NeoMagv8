@@ -1,3 +1,4 @@
+```csv
 SakaID,SakaMetni,TepkiMetinleri,Kategori,AltKategori,Dil,UygunlukFiltresi
 J001,"Neden elektron mutsuzdu?","[""Çünkü hep negatifti!"", ""Anlamadım ama komik?"", ""Fizikçiler anlar!""]",Bilimsel_Espri,Fizik,TR,Genel
 J002,"Adamın biri gülmüş, saksıya koymuşlar.","[""Hahaha!"", ""Bu çok soğuktu!"", ""İğrenç bir espri.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
@@ -873,4 +874,4 @@ J871,"En az çalışan organımız hangisidir?","[""Hangisi?"", ""Apandisit (iş
 J872,"Adamın başı dönmüş, midesi bulanmış.","[""Bu çok kötüydü.""," ""Hasta adam.""," ""İğrenç.""]",Soguk_Espri,Baba_Sakasi,TR,Genel
 J873,"Hangi ormanda ağaç kesilmez?","[""Hangi ormanda?""," ""Kutsal ormanda.""," ""Doğru cevap.""]",Soguk_Espri,,TR,Genel
 J874,"En çok korkan hayvan hangisidir?","[""Hangisi?"", ""Ödlek tavuk. Bütün gün korkar.""," ""Korkak hayvan.""]",Kelime_Oyunu,,TR,Genel
-J875,"Bir bilgisayar diğerine ne demiş?","[""Ne demiş?"", ""Formatın yine kaymış.""," ""Teknolojik dertleşme.""]",Kelime_Oyunu,,TR,Genel
+J875,"Bir bilgisayar diğerine ne demiş?","[""Ne demiş?"", ""Formatın yine kaymış.""," ""Teknolojik dertleşme.""]",Kelime_Oyunu,,TR,G```
