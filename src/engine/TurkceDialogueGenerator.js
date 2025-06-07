@@ -5,6 +5,7 @@
 
 import { morphologyEngine } from '@/engine/MorphologyEngine.js';
 import { SEMANTIC_FIELDS } from '@/utils/semanticFields.js';
+import { wordSuccessTracker } from './WordSuccessTracker.js';
 
 export class TurkceDialogueGenerator {
     constructor() {
@@ -120,9 +121,11 @@ export class TurkceDialogueGenerator {
      */
     weightedPick(arr, contextKey, wordType) {
         if (!arr || arr.length === 0) return null;
-        
-        // Şimdilik rastgele, ileride WordSuccessTracker entegrasyonu
-        // TODO: Kelime başarı oranlarına göre ağırlıklandırma
+
+        // WordSuccessTracker entegrasyonu
+        const weighted = wordSuccessTracker.getWeightedRandomWord(contextKey, arr);
+        if (weighted) return weighted;
+
         return arr[Math.floor(Math.random() * arr.length)];
     }
 
@@ -130,7 +133,7 @@ export class TurkceDialogueGenerator {
      * String'in ilk harfini büyük yap
      */
     capitalize(str) {
-        return str ? str[0].toUpperCase() + str.slice(1) : "";
+        return str ? str[0].toLocaleUpperCase('tr') + str.slice(1) : "";
     }
 
     /**
@@ -210,7 +213,7 @@ export class TurkceDialogueGenerator {
         // Hedef (başka bir özne)
         if (template.includes("{target_dat}") && combinedField.subjects.length > 1) {
             const target = this.weightedPick(
-                combinedField.subjects.filter(s => s !== replacements.subj?.toLowerCase())
+                combinedField.subjects.filter(s => s !== replacements.subj?.toLocaleLowerCase('tr'))
             );
             if (target) {
                 replacements.target_dat = this.morphologyEngine.applyAdvancedSuffix(target, 'dative');

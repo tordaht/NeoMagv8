@@ -531,14 +531,55 @@ export class SimulationManager {
         this.ctx.fillText(bacteria.name, bacteria.x, bacteria.y - bacteria.size - 5);
         
         if (bacteria.lastMessage && (Date.now() - bacteria.lastMessageTime) < 3000) {
-            this.ctx.fillStyle = '#000000';
-            this.ctx.fillRect(bacteria.x - 30, bacteria.y + bacteria.size + 5, 60, 20);
-            this.ctx.fillStyle = '#FFFFFF';
-            this.ctx.font = '8px Arial';
-            this.ctx.fillText(bacteria.lastMessage.substring(0, 8) + '...', bacteria.x, bacteria.y + bacteria.size + 17);
+            this.drawSpeechBubble(bacteria);
         }
-        
+
         this.ctx.restore();
+    }
+
+    // Basit yuvarlak köşeli kutu çiz
+    roundRect(x, y, w, h, r) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + r, y);
+        this.ctx.lineTo(x + w - r, y);
+        this.ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        this.ctx.lineTo(x + w, y + h - r);
+        this.ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        this.ctx.lineTo(x + r, y + h);
+        this.ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        this.ctx.lineTo(x, y + r);
+        this.ctx.quadraticCurveTo(x, y, x + r, y);
+        this.ctx.closePath();
+    }
+
+    // Konuşma balonu çizimi
+    drawSpeechBubble(bacteria) {
+        const msg = bacteria.lastMessage;
+        const text = msg.length > 12 ? msg.substring(0, 12) + '...' : msg;
+        this.ctx.font = '8px Arial';
+        const padding = 4;
+        const metrics = this.ctx.measureText(text);
+        const width = metrics.width + padding * 2;
+        const height = 14;
+        const x = bacteria.x - width / 2;
+        const y = bacteria.y - bacteria.size - height - 8;
+
+        this.ctx.fillStyle = 'rgba(0,0,0,0.7)';
+        this.roundRect(x, y, width, height, 4);
+        this.ctx.fill();
+        this.ctx.strokeStyle = '#FFFFFF';
+        this.ctx.stroke();
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(bacteria.x - 3, y + height);
+        this.ctx.lineTo(bacteria.x, y + height + 5);
+        this.ctx.lineTo(bacteria.x + 3, y + height);
+        this.ctx.closePath();
+        this.ctx.fill();
+
+        this.ctx.fillStyle = '#FFFFFF';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText(text, bacteria.x, y + height - 4);
     }
 
     // FPS hesaplama

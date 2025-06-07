@@ -264,7 +264,7 @@ export class PersistentLearningEngine {
         // Basit heuristik - gerçek uygulamada daha sofistike olabilir
         const meaningfulResponse = bacteriaResponse.length > 10;
         const containsUserWords = this.extractWords(userInput).some(word => 
-            bacteriaResponse.toLowerCase().includes(word.toLowerCase())
+            bacteriaResponse.toLocaleLowerCase('tr').includes(word.toLocaleLowerCase('tr'))
         );
         const notGeneric = !bacteriaResponse.includes('Anlamadım') && 
                           !bacteriaResponse.includes('...');
@@ -276,7 +276,7 @@ export class PersistentLearningEngine {
      * Metinten kelimeleri çıkar
      */
     extractWords(text) {
-        return text.toLowerCase()
+        return text.toLocaleLowerCase('tr')
             .replace(/[^\wçğıöşüâîû\s]/g, ' ')
             .split(/\s+/)
             .filter(word => word.length > 2)
@@ -287,7 +287,7 @@ export class PersistentLearningEngine {
      * Öğrenilen kelime için başarı oranı getir
      */
     getWordSuccessRate(word) {
-        return this.wordSuccessRates.get(word.toLowerCase()) || 0.5;
+        return this.wordSuccessRates.get(word.toLocaleLowerCase('tr')) || 0.5;
     }
     
     /**
