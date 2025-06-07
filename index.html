@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mnBac v9.6.3 - System Readiness & GitHub Pages Fix</title>
+    <title>mnBac v9.6.4 - Speech Bubbles & Enhanced Chat System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Note: Tailwind CDN is used for rapid prototyping. For production, use PostCSS or CLI installation -->
     <!-- TensorFlow.js -->
@@ -80,57 +80,134 @@
             100% { transform: rotate(360deg); }
         }
             
-        /* 🎭 TabPFN Speech Bubble Animations */
+        /* 🎭 Enhanced Speech Bubble System */
         @keyframes speechBubbleAnim {
             0% { 
-                transform: scale(0.8) translateY(10px); 
+                transform: scale(0.6) translateY(20px); 
                 opacity: 0; 
             }
-            15% { 
-                transform: scale(1.05) translateY(-5px); 
+            10% { 
+                transform: scale(1.1) translateY(-10px); 
                 opacity: 1; 
             }
-            20% { 
+            15% { 
                 transform: scale(1) translateY(0px); 
                 opacity: 1; 
             }
-            80% { 
+            85% { 
                 transform: scale(1) translateY(0px); 
                 opacity: 1; 
             }
             100% { 
-                transform: scale(0.9) translateY(-10px); 
+                transform: scale(0.8) translateY(-15px); 
                 opacity: 0; 
             }
         }
 
+        @keyframes bubblePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
         .speech-bubble {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
             transition: all 0.3s ease;
+            cursor: pointer;
+            user-select: none;
+            backdrop-filter: blur(5px);
+            position: relative;
+            z-index: 1000;
         }
 
         .speech-bubble:hover {
-            transform: scale(1.1);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            transform: scale(1.15) !important;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+            animation: bubblePulse 0.8s ease-in-out infinite;
         }
 
-        /* Context-specific bubble styles */
+        .speech-bubble:before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid currentColor;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        /* Context-specific bubble styles with enhanced visuals */
         .speech-food_seeking {
-            border-left: 4px solid #FFD700;
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            border: 3px solid #FFD700;
+            color: white;
         }
 
         .speech-social_interaction {
-            border-left: 4px solid #00FFFF;
+            background: linear-gradient(135deg, #4ECDC4, #44A08D);
+            border: 3px solid #00FFFF;
+            color: white;
         }
 
         .speech-philosophical {
-            border-left: 4px solid #FF4500;
+            background: linear-gradient(135deg, #FB5607, #FF006E);
+            border: 3px solid #FF4500;
+            color: white;
             font-style: italic;
         }
 
         .speech-learning {
-            border-left: 4px solid #32CD32;
+            background: linear-gradient(135deg, #FFBE0B, #FFD60A);
+            border: 3px solid #32CD32;
+            color: #1a1a1a;
+        }
+
+        .speech-reproduction {
+            background: linear-gradient(135deg, #FF006E, #C77DFF);
+            border: 3px solid #FF69B4;
+            color: white;
+        }
+
+        .speech-exploration {
+            background: linear-gradient(135deg, #8338EC, #9D4EDD);
+            border: 3px solid #A020F0;
+            color: white;
+        }
+
+        .speech-general {
+            background: linear-gradient(135deg, #219EBC, #023047);
+            border: 3px solid #8ECAE6;
+            color: white;
+        }
+
+        /* Bacteria glow effect for highlighting */
+        .bacteria-glow {
+            filter: drop-shadow(0 0 10px #00ff00) drop-shadow(0 0 20px #00ff00) drop-shadow(0 0 30px #00ff00);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { 
+                filter: drop-shadow(0 0 10px #00ff00) drop-shadow(0 0 20px #00ff00);
+            }
+            50% { 
+                filter: drop-shadow(0 0 15px #00ff00) drop-shadow(0 0 30px #00ff00) drop-shadow(0 0 40px #00ff00);
+            }
+        }
+
+        /* Bacteria selection highlight */
+        .bacteria-selected {
+            outline: 3px dashed #00ff00;
+            outline-offset: 5px;
+            animation: selectionPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes selectionPulse {
+            0%, 100% { outline-color: #00ff00; }
+            50% { outline-color: #00ffff; }
         }
 
         </style>
@@ -140,7 +217,7 @@
     <!-- Header -->
     <header class="bg-gray-800 shadow-lg p-4 sticky top-0 z-50">
         <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-teal-400">🧬 mnBac v9.6.3 - System Readiness & GitHub Pages Fix</h1>
+            <h1 class="text-2xl font-bold text-teal-400">🧬 mnBac v9.6.4 - Speech Bubbles & Enhanced Chat System</h1>
             <div class="flex gap-2 text-xs">
                 <div class="bg-green-600 text-white px-2 py-1 rounded" id="fpsDisplay">FPS: --</div>
                 <div class="bg-blue-600 text-white px-2 py-1 rounded" id="bacteriaCount">Bakteri: 0</div>
@@ -198,26 +275,62 @@
 
         <!-- Sağ Panel Sohbet -->
         <div class="bg-gray-800 p-4 rounded-lg shadow-xl flex flex-col max-h-[80vh] lg:max-h-full">
-            <h2 class="text-xl font-semibold mb-3 text-teal-300 border-b border-gray-700 pb-2">Bakteri Sohbet Merkezi</h2>
+            <h2 class="text-xl font-semibold mb-3 text-teal-300 border-b border-gray-700 pb-2">🧬 Bakteri Sohbet Merkezi</h2>
             
-            <!-- Chat Mode Selector -->
-            <div class="mb-3 flex space-x-2">
-                <button id="individualChatBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition">Tekil Sohbet</button>
-                <button id="groupChatBtn" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition">Grup Sohbeti</button>
-                <button id="startBacteriaConversationBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-sm transition">Bakteriler Konuşsun</button>
+            <!-- Chat Tabs -->
+            <div class="mb-3 flex space-x-1 bg-gray-700 p-1 rounded-lg">
+                <button id="groupChatTab" class="flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-green-600 text-white">
+                    👥 Grup Sohbet
+                </button>
+                <button id="individualChatTab" class="flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-gray-600 text-gray-300 hover:bg-gray-500">
+                    💬 Tekil Sohbet
+                </button>
             </div>
             
-            <div id="chatInfo" class="mb-2 text-sm text-gray-400">Sohbet modunu seçin.</div>
-            <div id="chatMessages" class="flex-grow bg-gray-700 rounded-md p-3 overflow-y-auto mb-3 smooth-scroll space-y-2 h-64 min-h-[16rem] max-h-[20rem]" style="display: flex; flex-direction: column-reverse;">
-                <!-- Sohbet mesajları buraya eklenecek -->
+            <!-- Chat Content Container -->
+            <div class="flex flex-col h-full">
+                <!-- Group Chat Panel -->
+                <div id="groupChatPanel" class="flex flex-col h-full">
+                    <div id="groupChatInfo" class="mb-2 text-sm text-gray-400">Tüm bakterilerle grup halinde sohbet edin</div>
+                    <div id="groupChatMessages" class="flex-grow bg-gray-700 rounded-md p-3 overflow-y-auto mb-3 smooth-scroll space-y-2 h-64 min-h-[16rem] max-h-[20rem]" style="display: flex; flex-direction: column-reverse;">
+                        <!-- Grup sohbet mesajları -->
+                    </div>
+                    <div class="flex">
+                        <input type="text" id="groupChatInput" class="flex-grow bg-gray-600 text-gray-200 border border-gray-500 rounded-l-lg p-2 focus:ring-teal-500 focus:border-teal-500 outline-none" placeholder="Grup mesajınızı yazın...">
+                        <button id="groupSendBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold p-2 rounded-r-lg transition duration-150 ease-in-out">Gönder</button>
+                    </div>
+                </div>
+                
+                <!-- Individual Chat Panel -->
+                <div id="individualChatPanel" class="flex flex-col h-full hidden">
+                    <div id="individualChatInfo" class="mb-2 text-sm text-gray-400">Bakteriye tıklayarak seçin</div>
+                    <div id="selectedBacteriaCard" class="mb-3 p-2 bg-gray-700 rounded-md hidden">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                            <span id="selectedBacteriaName" class="font-bold text-green-400"></span>
+                            <span id="selectedBacteriaStatus" class="text-xs text-gray-400"></span>
+                        </div>
+                    </div>
+                    <div id="individualChatMessages" class="flex-grow bg-gray-700 rounded-md p-3 overflow-y-auto mb-3 smooth-scroll space-y-2 h-64 min-h-[16rem] max-h-[20rem]" style="display: flex; flex-direction: column-reverse;">
+                        <!-- Tekil sohbet mesajları -->
+                    </div>
+                    <div class="flex">
+                        <input type="text" id="individualChatInput" class="flex-grow bg-gray-600 text-gray-200 border border-gray-500 rounded-l-lg p-2 focus:ring-teal-500 focus:border-teal-500 outline-none" placeholder="Özel mesajınızı yazın..." disabled>
+                        <button id="individualSendBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold p-2 rounded-r-lg transition duration-150 ease-in-out" disabled>Gönder</button>
+                    </div>
+                </div>
             </div>
+            
+            <!-- Chat Loading Indicator -->
             <div id="chatLoadingIndicator" class="hidden text-center py-2">
                 <div class="loader"></div>
                 <p class="text-sm text-gray-400">Bakteri düşünüyor...</p>
             </div>
-            <div class="flex">
-                <input type="text" id="chatInput" class="flex-grow bg-gray-600 text-gray-200 border border-gray-500 rounded-l-lg p-2 focus:ring-teal-500 focus:border-teal-500 outline-none" placeholder="Mesajınızı yazın..." disabled>
-                <button id="sendMessageBtn" class="bg-teal-500 hover:bg-teal-600 text-white font-bold p-2 rounded-r-lg transition duration-150 ease-in-out" disabled>Gönder</button>
+            
+            <!-- Chat Controls -->
+            <div class="mt-3 flex space-x-2">
+                <button id="startBacteriaConversationBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-sm transition">🗣️ Bakteriler Konuşsun</button>
+                <button id="showSpeechBubblesBtn" class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm transition">💭 Baloncukları Göster</button>
             </div>
         </div>
     </main>
@@ -308,11 +421,36 @@
         const bacteriaLanguageStageSpan = document.getElementById('bacteriaLanguageStage');
         const bacteriaVocabularySpan = document.getElementById('bacteriaVocabulary');
 
-        const chatInfoDiv = document.getElementById('chatInfo');
-        const chatMessagesDiv = document.getElementById('chatMessages');
-        const chatInput = document.getElementById('chatInput');
-        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        // Chat system elements
         const chatLoadingIndicator = document.getElementById('chatLoadingIndicator');
+        
+        // Group chat elements
+        const groupChatTab = document.getElementById('groupChatTab');
+        const groupChatPanel = document.getElementById('groupChatPanel');
+        const groupChatInfo = document.getElementById('groupChatInfo');
+        const groupChatMessages = document.getElementById('groupChatMessages');
+        const groupChatInput = document.getElementById('groupChatInput');
+        const groupSendBtn = document.getElementById('groupSendBtn');
+        
+        // Individual chat elements
+        const individualChatTab = document.getElementById('individualChatTab');
+        const individualChatPanel = document.getElementById('individualChatPanel');
+        const individualChatInfo = document.getElementById('individualChatInfo');
+        const selectedBacteriaCard = document.getElementById('selectedBacteriaCard');
+        const selectedBacteriaName = document.getElementById('selectedBacteriaName');
+        const selectedBacteriaStatus = document.getElementById('selectedBacteriaStatus');
+        const individualChatMessages = document.getElementById('individualChatMessages');
+        const individualChatInput = document.getElementById('individualChatInput');
+        const individualSendBtn = document.getElementById('individualSendBtn');
+        
+        // Speech bubble controls
+        const showSpeechBubblesBtn = document.getElementById('showSpeechBubblesBtn');
+        
+        // Legacy elements for compatibility
+        const chatInfoDiv = groupChatInfo;
+        const chatMessagesDiv = groupChatMessages;
+        const chatInput = groupChatInput;
+        const sendMessageBtn = groupSendBtn;
 
         const startSimulationBtn = document.getElementById('startSimulationBtn');
         const nextStepBtn = document.getElementById('nextStepBtn');
@@ -328,8 +466,118 @@
         let simulationRunning = false;
         let simulationDay = 0; // Global simulation day counter
         
+        // Chat State
+        let currentChatMode = 'group'; // 'group' or 'individual'
+        let speechBubblesEnabled = true;
+        
         // Initialize persistentDB early (null safety)
         var persistentDB = null;
+        
+        // 🎭 Chat System Functions
+        function switchToGroupChat() {
+            currentChatMode = 'group';
+            groupChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-green-600 text-white';
+            individualChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-gray-600 text-gray-300 hover:bg-gray-500';
+            groupChatPanel.classList.remove('hidden');
+            individualChatPanel.classList.add('hidden');
+            console.log('🎯 Switched to group chat mode');
+        }
+        
+        function switchToIndividualChat(bacteria = null) {
+            currentChatMode = 'individual';
+            individualChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-blue-600 text-white';
+            groupChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-gray-600 text-gray-300 hover:bg-gray-500';
+            individualChatPanel.classList.remove('hidden');
+            groupChatPanel.classList.add('hidden');
+            
+            if (bacteria) {
+                selectedBacteria = bacteria;
+                selectedBacteriaCard.classList.remove('hidden');
+                selectedBacteriaName.textContent = bacteria.name;
+                selectedBacteriaStatus.textContent = `Bilinç: ${bacteria.consciousness_level.toFixed(1)} | Enerji: ${(bacteria.energy * 100).toFixed(0)}%`;
+                individualChatInput.disabled = false;
+                individualSendBtn.disabled = false;
+                individualChatInput.placeholder = `${bacteria.name} ile konuş...`;
+                individualChatInfo.textContent = `${bacteria.name} ile özel sohbet`;
+            } else {
+                selectedBacteriaCard.classList.add('hidden');
+                individualChatInput.disabled = true;
+                individualSendBtn.disabled = true;
+                individualChatInput.placeholder = 'Bakteriye tıklayarak seçin...';
+                individualChatInfo.textContent = 'Bakteriye tıklayarak seçin';
+            }
+            
+            console.log(`🎯 Switched to individual chat mode${bacteria ? ` with ${bacteria.name}` : ''}`);
+        }
+        
+        function toggleSpeechBubbles() {
+            speechBubblesEnabled = !speechBubblesEnabled;
+            showSpeechBubblesBtn.textContent = speechBubblesEnabled ? '💭 Baloncukları Gizle' : '💭 Baloncukları Göster';
+            showSpeechBubblesBtn.className = speechBubblesEnabled ? 
+                'bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition' :
+                'bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm transition';
+            console.log(`💭 Speech bubbles ${speechBubblesEnabled ? 'enabled' : 'disabled'}`);
+        }
+        
+        function addChatMessageToPanel(message, sender, bacteriaName = null, targetPanel = null) {
+            const targetContainer = targetPanel || (currentChatMode === 'group' ? groupChatMessages : individualChatMessages);
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'} mb-2`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = `chat-bubble p-2 rounded-lg ${sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-bacteria'}`;
+            
+            if (sender === 'bacteria' && bacteriaName) {
+                const nameSpan = document.createElement('div');
+                nameSpan.className = 'text-xs font-semibold mb-1 opacity-75 cursor-pointer hover:text-blue-400 hover:underline';
+                nameSpan.textContent = bacteriaName;
+                nameSpan.title = `${bacteriaName}'e tıklayarak seç`;
+                
+                // 🎯 ÖZELLİK: Chat'te bakterinin adını tıklayınca o bakteriyi seç
+                nameSpan.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Bakteriyi ismine göre bul
+                    const targetBacteria = bacteriaPopulation.find(b => b.name === bacteriaName);
+                    if (targetBacteria) {
+                        selectedBacteria = targetBacteria;
+                        console.log(`🎯 Chat'ten bakteri seçildi: ${bacteriaName}`);
+                        
+                        // UI'yi güncelle
+                        showBacteriaDetails(targetBacteria);
+                        
+                        // Canvas'ta bakteriyi highlight et
+                        highlightSelectedBacteria(targetBacteria);
+                        
+                        // Individual chat'e geç
+                        switchToIndividualChat(targetBacteria);
+                        
+                        // Görsel feedback
+                        nameSpan.style.color = '#22c55e';
+                        nameSpan.style.fontWeight = 'bold';
+                        setTimeout(() => {
+                            nameSpan.style.color = '';
+                            nameSpan.style.fontWeight = '';
+                        }, 1000);
+                    } else {
+                        console.warn(`⚠️ Bakteri bulunamadı: ${bacteriaName}`);
+                    }
+                });
+                
+                bubbleDiv.appendChild(nameSpan);
+                
+                const messageSpan = document.createElement('div');
+                messageSpan.textContent = message;
+                bubbleDiv.appendChild(messageSpan);
+            } else {
+                bubbleDiv.textContent = message;
+            }
+            
+            messageDiv.appendChild(bubbleDiv);
+            targetContainer.insertBefore(messageDiv, targetContainer.firstChild);
+        }
         
         // 🎯 EVENT-DRIVEN INITIALIZATION SYSTEM
         class SimpleEventEmitter {
@@ -4104,12 +4352,44 @@
                 // Add resize listener
                 window.addEventListener('resize', resizeCanvas);
                 
-                // Canvas click handler for food placement
+                // Canvas click handler for bacteria selection and food placement
                 canvas.addEventListener('click', (e) => {
                     const rect = canvas.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    addFood(x, y);
+                    
+                    // Check if clicked on a bacteria
+                    let clickedBacteria = null;
+                    bacteriaPopulation.forEach(bacteria => {
+                        if (bacteria && bacteria.x && bacteria.y) {
+                            const distance = Math.sqrt(
+                                Math.pow(x - bacteria.x, 2) + Math.pow(y - bacteria.y, 2)
+                            );
+                            const clickRadius = bacteria.biological_state.size * 12 + 10; // Slightly larger than visual size
+                            
+                            if (distance <= clickRadius) {
+                                clickedBacteria = bacteria;
+                            }
+                        }
+                    });
+                    
+                    if (clickedBacteria) {
+                        // Bacteria clicked - select it
+                        selectedBacteria = clickedBacteria;
+                        console.log(`🎯 Bacteria clicked: ${clickedBacteria.name}`);
+                        
+                        // Show bacteria details
+                        showBacteriaDetails(clickedBacteria);
+                        
+                        // Highlight bacteria
+                        highlightSelectedBacteria(clickedBacteria);
+                        
+                        // Switch to individual chat
+                        switchToIndividualChat(clickedBacteria);
+                    } else {
+                        // Empty space clicked - add food
+                        addFood(x, y);
+                    }
                 });
             }
         }
@@ -4869,7 +5149,10 @@
                     this.conversation_history.splice(0, 1);
                 }
                 
-                this.createSpeechBubble(dynamicMessage, context);
+                // Only create speech bubble if enabled
+                if (speechBubblesEnabled) {
+                    this.createSpeechBubble(dynamicMessage, context);
+                }
                 
                 console.log(`🧬 ${this.name} evolved speech: "${dynamicMessage}" (Context: ${context}, Original: "${message}")`);
                 
@@ -4890,21 +5173,44 @@
                 bubble.textContent = message;
                 bubble.style.cssText = `
                     position: absolute;
-                    left: ${this.x + 15}px;
-                    top: ${this.y - 35}px;
-                    background: ${this.getBubbleColor(context)};
-                    color: white;
-                    padding: 6px 10px;
-                    border-radius: 15px;
-                    font-size: 11px;
+                    left: ${this.x + 20}px;
+                    top: ${this.y - 45}px;
+                    padding: 8px 12px;
+                    border-radius: 18px;
+                    font-size: 12px;
                     font-weight: bold;
-                    max-width: 140px;
+                    max-width: 160px;
                     word-wrap: break-word;
                     z-index: 1000;
-                    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
-                    border: 2px solid rgba(255,255,255,0.3);
-                    animation: speechBubbleAnim 4s ease-in-out;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+                    animation: speechBubbleAnim 6s ease-in-out;
+                    pointer-events: auto;
                 `;
+                
+                // Add click functionality to speech bubble
+                bubble.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Select this bacteria
+                    selectedBacteria = this;
+                    console.log(`💭 Speech bubble clicked: ${this.name}`);
+                    
+                    // Show bacteria details
+                    showBacteriaDetails(this);
+                    
+                    // Highlight bacteria
+                    highlightSelectedBacteria(this);
+                    
+                    // Switch to individual chat mode
+                    switchToIndividualChat(this);
+                    
+                    // Visual feedback
+                    bubble.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        bubble.style.transform = '';
+                    }, 300);
+                });
                 
                 try {
                     canvas.parentElement.appendChild(bubble);
@@ -4913,7 +5219,7 @@
                         if (bubble && bubble.parentElement) {
                             bubble.parentElement.removeChild(bubble);
                         }
-                    }, 4000);
+                    }, 6000);
                 } catch (error) {
                     console.error('❌ Speech bubble creation error:', error);
                 }
@@ -8029,14 +8335,109 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 else if (action === 'peer-dialogue') runPeerDialogue();
             });
         }
+        
+        // 🎭 Initialize Chat System
+        function initializeChatSystem() {
+            console.log('🎭 Initializing enhanced chat system...');
+            
+            // Chat tab event listeners
+            groupChatTab.addEventListener('click', () => {
+                switchToGroupChat();
+            });
+            
+            individualChatTab.addEventListener('click', () => {
+                switchToIndividualChat();
+            });
+            
+            // Speech bubble toggle
+            showSpeechBubblesBtn.addEventListener('click', () => {
+                toggleSpeechBubbles();
+            });
+            
+            // Group chat input handlers
+            groupChatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendGroupMessage();
+                }
+            });
+            
+            groupSendBtn.addEventListener('click', () => {
+                sendGroupMessage();
+            });
+            
+            // Individual chat input handlers
+            individualChatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendIndividualMessage();
+                }
+            });
+            
+            individualSendBtn.addEventListener('click', () => {
+                sendIndividualMessage();
+            });
+            
+            // Initialize with group chat mode
+            switchToGroupChat();
+            
+            console.log('✅ Chat system initialized');
+        }
+        
+        // 🎭 Chat Message Handlers
+        function sendGroupMessage() {
+            const message = groupChatInput.value.trim();
+            if (!message) return;
+            
+            // Add user message to group chat
+            addChatMessageToPanel(message, 'user', null, groupChatMessages);
+            groupChatInput.value = '';
+            
+            // Get responses from all bacteria
+            bacteriaPopulation.forEach(bacteria => {
+                if (bacteria && bacteria.generateResponse) {
+                    setTimeout(() => {
+                        const response = bacteria.generateResponse(message);
+                        addChatMessageToPanel(response, 'bacteria', bacteria.name, groupChatMessages);
+                    }, Math.random() * 2000 + 500); // Random delay 0.5-2.5s
+                }
+            });
+            
+            console.log(`📢 Group message sent: ${message}`);
+        }
+        
+        function sendIndividualMessage() {
+            if (!selectedBacteria) {
+                console.warn('⚠️ No bacteria selected for individual chat');
+                return;
+            }
+            
+            const message = individualChatInput.value.trim();
+            if (!message) return;
+            
+            // Add user message to individual chat
+            addChatMessageToPanel(message, 'user', null, individualChatMessages);
+            individualChatInput.value = '';
+            
+            // Get response from selected bacteria
+            if (selectedBacteria.generateResponse) {
+                setTimeout(() => {
+                    const response = selectedBacteria.generateResponse(message);
+                    addChatMessageToPanel(response, 'bacteria', selectedBacteria.name, individualChatMessages);
+                }, Math.random() * 1500 + 500); // Random delay 0.5-2s
+            }
+            
+            console.log(`💬 Individual message sent to ${selectedBacteria.name}: ${message}`);
+        }
 
         // 🚀 MAIN INITIALIZATION - EVENT DRIVEN
         async function mainInitialize() {
-            console.log('🚀 mnBac v9.6.3 - System Readiness & GitHub Pages Fix - Final Initialization Complete!');
+            console.log('🚀 mnBac v9.6.4 - Speech Bubbles & Enhanced Chat System - Final Initialization Complete!');
             
             // 1. Setup event listeners first
             initializeEventListeners();
             initializeEventDelegation();
+            initializeChatSystem();
             
             // 2. Basic setup
             updateBuildInfo(); // Initial state

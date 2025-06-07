@@ -1,15 +1,16 @@
-# 🧬 mnBac v9.6.3 - System Readiness & GitHub Pages Fix! 🎭
+# 🧬 mnBac v9.6.4 - Speech Bubbles & Enhanced Chat System! 💭
 
 ## 🎯 **Proje Özeti**
 
-**mnBac v9.6.3** şu ana kadar geliştirilen en gelişmiş bakteriyel dil evrim simülasyonudur. Bu sistem, Türkçe morfojik işleme, AI tabanlı öğrenme, ultra-agresif monotonluk karşıtı algoritmalara ve **eksiksiz buton sistemi**ne sahiptir.
+**mnBac v9.6.4** şu ana kadar geliştirilen en gelişmiş bakteriyel dil evrim simülasyonudur. Bu sistem, Türkçe morfojik işleme, AI tabanlı öğrenme, ultra-agresif monotonluk karşıtı algoritmalara ve **gelişmiş konuşma baloncukları sistemi**ne sahiptir.
 
-### 🆕 **v9.6.3 Yenilikleri:**
-- ✅ **GitHub Pages initialization fix** - Artık tordaht.github.io'da düzgün çalışıyor
-- ✅ **System readiness checker** - Kullanıcıya detaylı yüklenme durumu gösterimi
-- ✅ **Progressive loading** - Sistemler aşama aşama başlatılıyor
-- ✅ **Better error messages** - "Please wait" yerine detaylı status bilgisi
-- ✅ **Runtime crash protection** - Speech bubble null errors çözüldü
+### 🆕 **v9.6.4 Yenilikleri:**
+- ✅ **Enhanced Speech Bubbles** - Daha görünür, tıklanabilir konuşma baloncukları
+- ✅ **Dual Chat System** - Grup ve tekil sohbet sekmeleri
+- ✅ **Bacteria Selection** - Chat'te isim tıklama ve canvas'ta bakteri seçimi
+- ✅ **Visual Highlighting** - Seçili bakteriler için glow efekti
+- ✅ **Speech Bubble Toggle** - Baloncukları göster/gizle kontrolü
+- ✅ **Individual Chat Panel** - Yeni pencere yerine yan panel sistemi
 
 NeoMag, AI destekli bakteri comedy show simülasyonudur. Türkçe morfoloji motoru ve gelişmiş diyalog sistemi ile bakteriler anlamlı, komik ve bağlama uygun cümleler kurar. TabPFN teknolojisi ile desteklenen hibrit dil sistemi, bakterilerin gerçek zamanlı komedi performansları sergilemesini sağlar.
 
