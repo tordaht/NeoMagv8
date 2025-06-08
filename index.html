@@ -104,15 +104,54 @@
             }
         }
 
+        /* 💬 SPEECH BUBBLE SYSTEM - Modern Design */
         .speech-bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-            transition: all 0.3s ease;
+            font-size: 14px;
+            min-width: 150px;
+            max-width: 300px;
+            word-wrap: break-word;
+            opacity: 0.95;
+            transform: translateY(0);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .speech-bubble:hover {
-            transform: scale(1.1);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            transform: scale(1.02) translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+            opacity: 1;
+        }
+
+        .speech-content {
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            line-height: 1.4;
+        }
+
+        .speech-content strong {
+            color: #FFD700;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        /* Speech bubble arrow pointing down */
+        .speech-arrow {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 12px solid #667eea;
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.2));
         }
 
         /* Context-specific bubble styles */
@@ -4110,12 +4149,44 @@
                 // Add resize listener
                 window.addEventListener('resize', resizeCanvas);
                 
-                // Canvas click handler for food placement
+                // Canvas click handler for bacteria selection and food placement
                 canvas.addEventListener('click', (e) => {
                     const rect = canvas.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    addFood(x, y);
+                    
+                    // Check if clicked on a bacteria with larger click radius
+                    let clickedBacteria = null;
+                    let minDistance = Infinity;
+                    
+                    bacteriaList.forEach(bacteria => {
+                        const distance = Math.hypot(bacteria.x - x, bacteria.y - y);
+                        const clickRadius = Math.max(25, bacteria.biological_state.size * 15 + 15); // Larger click area
+                        
+                        if (distance <= clickRadius && distance < minDistance) {
+                            minDistance = distance;
+                            clickedBacteria = bacteria;
+                        }
+                    });
+                    
+                    if (clickedBacteria) {
+                        // Select bacteria for individual chat (NO MSGBOX!)
+                        selectedBacteria = clickedBacteria;
+                        console.log(`🎯 Bacteria SELECTED: ${clickedBacteria.name} (distance: ${minDistance.toFixed(0)})`);
+                        
+                        // Update bacteria details panel
+                        showBacteriaDetails(clickedBacteria);
+                        
+                        // Switch to individual chat mode
+                        switchToIndividualChat(clickedBacteria);
+                        
+                        // Highlight selected bacteria visually
+                        highlightSelectedBacteria(clickedBacteria);
+                        
+                    } else {
+                        // No bacteria clicked, add food instead
+                        addFood(x, y);
+                    }
                 });
             }
         }
@@ -6249,6 +6320,10 @@
                     if (this.startSimulationBtn) this.startSimulationBtn.textContent = 'Durdur';
                     if (this.nextStepBtn) this.nextStepBtn.disabled = true;
                     this.simulationManager.start();
+                    
+                    // 🤝 Start automatic bacteria conversations
+                    startAutoBacteriaConversations();
+                    console.log('🎯 Simulation started with auto-conversations enabled');
                 } else {
                     this.pauseSimulation();
                 }
@@ -6259,6 +6334,10 @@
                 if (this.startSimulationBtn) this.startSimulationBtn.textContent = 'Devam Et';
                 if (this.nextStepBtn) this.nextStepBtn.disabled = false;
                 this.simulationManager.pause();
+                
+                // 🤝 Stop automatic bacteria conversations
+                stopAutoBacteriaConversations();
+                console.log('🎯 Simulation paused, auto-conversations stopped');
             }
 
             nextStep() {
@@ -6683,6 +6762,32 @@
                 ctx.beginPath();
                 ctx.arc(bacteria.x + bacteriaSize - 3, bacteria.y - bacteriaSize + 3, 3, 0, Math.PI * 2);
                 ctx.fill();
+                
+                // 🎯 SELECTION HIGHLIGHT - Show if bacteria is selected
+                if (bacteria.isSelected || bacteria === selectedBacteria) {
+                    ctx.save();
+                    ctx.strokeStyle = '#22c55e'; // Green selection ring
+                    ctx.lineWidth = 3;
+                    ctx.setLineDash([8, 4]); // Dashed line
+                    ctx.globalAlpha = 0.8;
+                    ctx.beginPath();
+                    ctx.arc(bacteria.x, bacteria.y, bacteriaSize + 10, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    ctx.setLineDash([]); // Reset dash
+                    ctx.restore();
+                    
+                    // Add selection pulse effect
+                    const pulseTime = Date.now() * 0.005;
+                    const pulseAlpha = 0.3 + 0.2 * Math.sin(pulseTime);
+                    ctx.save();
+                    ctx.strokeStyle = '#22c55e';
+                    ctx.lineWidth = 2;
+                    ctx.globalAlpha = pulseAlpha;
+                    ctx.beginPath();
+                    ctx.arc(bacteria.x, bacteria.y, bacteriaSize + 15, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    ctx.restore();
+                }
             });
         }
 
@@ -7197,8 +7302,17 @@
 
         sendMessageBtn.addEventListener('click', () => {
             const message = chatInput.value.trim();
-            if (message && (selectedBacteria || chatMode === 'group')) {
-                sendMessageToBacteria(message);
+            if (message) {
+                if (chatMode === 'group') {
+                    // GRUP SOHBETİ - Tüm bakterilere gönder
+                    sendMessageToAllBacteria(message);
+                } else if (selectedBacteria) {
+                    // TEKİL SOHBETİ - Sadece seçili bakteriye gönder
+                    sendMessageToIndividualBacteria(selectedBacteria, message);
+                } else {
+                    alert('⚠️ Önce bir bakteri seçin veya grup sohbetine geçin.');
+                    return;
+                }
                 chatInput.value = '';
             }
         });
@@ -8023,6 +8137,421 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 else if (action === 'peer-dialogue') runPeerDialogue();
                 else if (action === 'debug-system') debugSystemStatus();
             });
+        }
+        
+        // 🎯 BACTERIA SELECTION SYSTEM
+        
+        // Switch to individual chat mode
+        function switchToIndividualChat(bacteria) {
+            console.log(`💬 Switching to individual chat with: ${bacteria.name}`);
+            
+            // Get chat elements
+            const chatModeIndicator = document.querySelector('.chat-mode-indicator');
+            const chatInput = document.getElementById('chatInput');
+            
+            // Update chat mode
+            chatMode = 'individual';
+            
+            // Update UI
+            if (chatModeIndicator) {
+                chatModeIndicator.textContent = `Individual Chat: ${bacteria.name}`;
+                chatModeIndicator.className = 'chat-mode-indicator bg-blue-600 text-white px-3 py-1 rounded text-sm';
+            }
+            
+            // Clear and focus input
+            if (chatInput) {
+                chatInput.placeholder = `Message ${bacteria.name}...`;
+                chatInput.focus();
+            }
+            
+            // Update build info
+            updateBuildInfo();
+        }
+        
+        // Highlight selected bacteria visually
+        function highlightSelectedBacteria(bacteria) {
+            bacteria.isSelected = true;
+            bacteria.selectionTime = Date.now();
+            
+            // Remove selection from other bacteria
+            bacteriaList.forEach(b => {
+                if (b !== bacteria) {
+                    b.isSelected = false;
+                }
+            });
+            
+            console.log(`✨ Bacteria highlighted: ${bacteria.name}`);
+        }
+        
+        // Add speech bubble above bacteria (NO MSGBOX!)
+        function showSpeechBubble(bacteria, message) {
+            // Create speech bubble element
+            const bubble = document.createElement('div');
+            bubble.className = 'speech-bubble';
+            bubble.innerHTML = `
+                <div class="speech-content">
+                    <strong>${bacteria.name}:</strong><br/>
+                    ${message}
+                </div>
+                <div class="speech-arrow"></div>
+            `;
+            
+            // Position above bacteria
+            const rect = canvas.getBoundingClientRect();
+            const bubbleX = rect.left + bacteria.x - 75; // Center bubble
+            const bubbleY = rect.top + bacteria.y - 80; // Above bacteria
+            
+            bubble.style.position = 'fixed';
+            bubble.style.left = `${bubbleX}px`;
+            bubble.style.top = `${bubbleY}px`;
+            bubble.style.zIndex = '9999';
+            bubble.style.pointerEvents = 'none';
+            
+            // Add to page
+            document.body.appendChild(bubble);
+            
+            // Auto-remove after 2 seconds with fade out
+            setTimeout(() => {
+                bubble.style.opacity = '0';
+                bubble.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    if (bubble.parentNode) {
+                        bubble.parentNode.removeChild(bubble);
+                    }
+                }, 300); // Wait for fade animation
+            }, 2000);
+            
+            console.log(`💬 Speech bubble shown for ${bacteria.name}: ${message}`);
+        }
+
+        // 🤝 BACTERIA AUTO-COMMUNICATION SYSTEM
+        
+        // Auto-conversation timer
+        let autoConversationInterval = null;
+        
+        // Start automatic bacteria conversations
+        function startAutoBacteriaConversations() {
+            if (autoConversationInterval) {
+                clearInterval(autoConversationInterval);
+            }
+            
+            // Every 5-15 seconds, bacteria might talk to each other
+            autoConversationInterval = setInterval(() => {
+                if (bacteriaList.length >= 2 && simulationRunning) {
+                    // 30% chance of conversation
+                    if (Math.random() < 0.3) {
+                        initiateBacteriaConversation();
+                    }
+                }
+            }, Math.random() * 10000 + 5000); // 5-15 seconds
+            
+            console.log('🤝 Auto-bacteria conversations started');
+        }
+        
+        // Stop automatic conversations
+        function stopAutoBacteriaConversations() {
+            if (autoConversationInterval) {
+                clearInterval(autoConversationInterval);
+                autoConversationInterval = null;
+                console.log('🤝 Auto-bacteria conversations stopped');
+            }
+        }
+        
+        // Initiate conversation between bacteria
+        function initiateBacteriaConversation() {
+            // Find bacteria with high consciousness (>40%)
+            const consciousBacteria = bacteriaList.filter(b => b.consciousness > 0.4);
+            
+            if (consciousBacteria.length < 2) return;
+            
+            // Pick two random bacteria
+            const bacteria1 = consciousBacteria[Math.floor(Math.random() * consciousBacteria.length)];
+            let bacteria2 = consciousBacteria[Math.floor(Math.random() * consciousBacteria.length)];
+            
+            // Make sure they're different
+            while (bacteria2 === bacteria1 && consciousBacteria.length > 1) {
+                bacteria2 = consciousBacteria[Math.floor(Math.random() * consciousBacteria.length)];
+            }
+            
+            if (bacteria1 === bacteria2) return;
+            
+            // Check if they're close enough to talk (proximity-based communication)
+            const distance = Math.hypot(bacteria1.x - bacteria2.x, bacteria1.y - bacteria2.y);
+            const maxTalkDistance = 150; // Maximum distance to communicate
+            
+            if (distance > maxTalkDistance) return;
+            
+            // Generate conversation
+            generateBacteriaToBacteriaConversation(bacteria1, bacteria2);
+        }
+        
+        // Generate conversation between two bacteria
+        async function generateBacteriaToBacteriaConversation(speaker, listener) {
+            try {
+                // Conversation topics based on bacteria state
+                const topics = [
+                    "food", "space", "growth", "friendship", "fear", "curiosity", 
+                    "energy", "movement", "territory", "cooperation", "learning"
+                ];
+                
+                const topic = topics[Math.floor(Math.random() * topics.length)];
+                const speakerPersonality = speaker.personality || { optimism: 0.5, sociability: 0.5 };
+                const listenerPersonality = listener.personality || { optimism: 0.5, sociability: 0.5 };
+                
+                // Generate message based on consciousness and personality
+                let message;
+                
+                if (speaker.consciousness > 0.8) {
+                    // High consciousness - philosophical
+                    const philosophicalMessages = [
+                        `Varoluşumuzun anlamı nedir, ${listener.name}?`,
+                        `Bu evrende yalnız mıyız?`,
+                        `Büyümek her zaman iyi midir?`,
+                        `Arkadaşlık nedir?`
+                    ];
+                    message = philosophicalMessages[Math.floor(Math.random() * philosophicalMessages.length)];
+                } else if (speaker.consciousness > 0.6) {
+                    // Medium consciousness - social
+                    const socialMessages = [
+                        `Merhaba ${listener.name}, nasılsın?`,
+                        `Bu bölgede yemek var mı?`,
+                        `Beraber hareket edelim mi?`,
+                        `Bugün kendimi büyük hissediyorum!`
+                    ];
+                    message = socialMessages[Math.floor(Math.random() * socialMessages.length)];
+                } else {
+                    // Low consciousness - basic needs
+                    const basicMessages = [
+                        "Açım...",
+                        "Yardım...",
+                        "Korku...",
+                        "Büyümek istiyorum"
+                    ];
+                    message = basicMessages[Math.floor(Math.random() * basicMessages.length)];
+                }
+                
+                // Show speech bubble
+                showSpeechBubble(speaker, message);
+                
+                // Update speaker's last spoken time
+                speaker.lastSpoken = Date.now();
+                
+                // Add to chat history
+                const chatBubble = document.createElement('div');
+                chatBubble.className = 'bg-purple-700 text-white p-2 rounded mb-2 text-sm';
+                chatBubble.innerHTML = `
+                    <strong>${speaker.name}</strong> → <strong>${listener.name}:</strong><br/>
+                    ${message}
+                    <div class="text-xs opacity-75 mt-1">🤝 Bacteria conversation</div>
+                `;
+                
+                // Add to main chat
+                if (chatMessagesDiv) {
+                    chatMessagesDiv.insertBefore(chatBubble, chatMessagesDiv.firstChild);
+                    // Keep only last 50 messages
+                    while (chatMessagesDiv.children.length > 50) {
+                        chatMessagesDiv.removeChild(chatMessagesDiv.lastChild);
+                    }
+                }
+                
+                // Track in word diversity system
+                if (window.persistentLearning) {
+                    window.persistentLearning.trackSpeech(speaker, message);
+                }
+                
+                // Listener might respond (30% chance)
+                if (Math.random() < 0.3 && listenerPersonality.sociability > 0.4) {
+                    setTimeout(() => {
+                        generateListenerResponse(listener, speaker, message);
+                    }, 1000 + Math.random() * 2000); // 1-3 seconds delay
+                }
+                
+                console.log(`🤝 Bacteria conversation: ${speaker.name} → ${listener.name}: "${message}"`);
+                
+            } catch (error) {
+                console.error('❌ Error in bacteria conversation:', error);
+            }
+        }
+        
+        // Generate listener response
+        function generateListenerResponse(responder, originalSpeaker, originalMessage) {
+            const personality = responder.personality || { optimism: 0.5, sociability: 0.5 };
+            
+            let response;
+            if (personality.optimism > 0.7) {
+                const positiveResponses = [
+                    "Evet, haklısın!",
+                    "Ne güzel bir düşünce!",
+                    "Benimle konuştuğun için teşekkürler!",
+                    "Beraber başarabiliriz!"
+                ];
+                response = positiveResponses[Math.floor(Math.random() * positiveResponses.length)];
+            } else if (personality.optimism < 0.3) {
+                const negativeResponses = [
+                    "Bilmiyorum...",
+                    "Korkuyorum",
+                    "Emin değilim",
+                    "Belki..."
+                ];
+                response = negativeResponses[Math.floor(Math.random() * negativeResponses.length)];
+            } else {
+                const neutralResponses = [
+                    "Anlıyorum",
+                    "İlginç",
+                    "Düşünmeliyim",
+                    "Haklı olabilirsin"
+                ];
+                response = neutralResponses[Math.floor(Math.random() * neutralResponses.length)];
+            }
+            
+            // Show response bubble
+            showSpeechBubble(responder, response);
+            
+            // Update last spoken time
+            responder.lastSpoken = Date.now();
+            
+            console.log(`🤝 Bacteria response: ${responder.name} → ${originalSpeaker.name}: "${response}"`);
+        }
+        
+        // 💬 SEPARATED CHAT SYSTEM
+        
+        // Send message to all bacteria (GROUP CHAT)
+        async function sendMessageToAllBacteria(message) {
+            console.log(`📢 GROUP CHAT: User → All bacteria: "${message}"`);
+            
+            // Add user message to group chat
+            const userChatBubble = document.createElement('div');
+            userChatBubble.className = 'bg-teal-600 text-white p-2 rounded mb-2 text-sm';
+            userChatBubble.innerHTML = `
+                <strong>Sen:</strong> ${message}
+                <div class="text-xs opacity-75 mt-1">📢 Group message to ${bacteriaList.length} bacteria</div>
+            `;
+            
+            if (chatMessagesDiv) {
+                chatMessagesDiv.insertBefore(userChatBubble, chatMessagesDiv.firstChild);
+            }
+            
+            // All bacteria receive and might respond
+            const responseBacteria = bacteriaList.filter(b => b.consciousness > 0.3);
+            
+            for (const bacteria of responseBacteria) {
+                // 50% chance each bacteria responds to group message
+                if (Math.random() < 0.5) {
+                    setTimeout(async () => {
+                        const response = await generateBacteriaResponse(bacteria, message, 'group');
+                        
+                        // Show speech bubble over bacteria
+                        showSpeechBubble(bacteria, response);
+                        
+                        // Add to group chat
+                        const bacteriaChatBubble = document.createElement('div');
+                        bacteriaChatBubble.className = 'bg-green-600 text-white p-2 rounded mb-2 text-sm';
+                        bacteriaChatBubble.innerHTML = `
+                            <strong>${bacteria.name}:</strong> ${response}
+                            <div class="text-xs opacity-75 mt-1">🧬 Consciousness: ${(bacteria.consciousness * 100).toFixed(0)}%</div>
+                        `;
+                        
+                        if (chatMessagesDiv) {
+                            chatMessagesDiv.insertBefore(bacteriaChatBubble, chatMessagesDiv.firstChild);
+                        }
+                        
+                        // Track for learning
+                        if (window.persistentLearning) {
+                            window.persistentLearning.trackSpeech(bacteria, response);
+                        }
+                        
+                    }, Math.random() * 3000 + 500); // Random 0.5-3.5s delay
+                }
+            }
+        }
+        
+        // Send message to individual bacteria (INDIVIDUAL CHAT)
+        async function sendMessageToIndividualBacteria(bacteria, message) {
+            console.log(`💬 INDIVIDUAL CHAT: User → ${bacteria.name}: "${message}"`);
+            
+            // Add user message to individual chat
+            const userChatBubble = document.createElement('div');
+            userChatBubble.className = 'bg-blue-600 text-white p-2 rounded mb-2 text-sm';
+            userChatBubble.innerHTML = `
+                <strong>Sen → ${bacteria.name}:</strong> ${message}
+                <div class="text-xs opacity-75 mt-1">💬 Individual conversation</div>
+            `;
+            
+            if (chatMessagesDiv) {
+                chatMessagesDiv.insertBefore(userChatBubble, chatMessagesDiv.firstChild);
+            }
+            
+            // Generate bacteria response
+            setTimeout(async () => {
+                const response = await generateBacteriaResponse(bacteria, message, 'individual');
+                
+                // Show speech bubble over bacteria
+                showSpeechBubble(bacteria, response);
+                
+                // Add bacteria response to chat
+                const bacteriaChatBubble = document.createElement('div');
+                bacteriaChatBubble.className = 'bg-purple-600 text-white p-2 rounded mb-2 text-sm';
+                bacteriaChatBubble.innerHTML = `
+                    <strong>${bacteria.name} → Sen:</strong> ${response}
+                    <div class="text-xs opacity-75 mt-1">
+                        🧬 Consciousness: ${(bacteria.consciousness * 100).toFixed(0)}% | 
+                        💝 Mood: ${bacteria.personality?.optimism > 0.7 ? 'Happy' : bacteria.personality?.optimism < 0.3 ? 'Sad' : 'Neutral'}
+                    </div>
+                `;
+                
+                if (chatMessagesDiv) {
+                    chatMessagesDiv.insertBefore(bacteriaChatBubble, chatMessagesDiv.firstChild);
+                }
+                
+                // Track for learning
+                if (window.persistentLearning) {
+                    window.persistentLearning.trackSpeech(bacteria, response);
+                }
+                
+                // Update bacteria's last spoken time
+                bacteria.lastSpoken = Date.now();
+                
+            }, Math.random() * 2000 + 500); // Random 0.5-2.5s delay
+        }
+        
+        // Generate bacteria response based on context
+        async function generateBacteriaResponse(bacteria, userMessage, chatType) {
+            const consciousness = bacteria.consciousness;
+            const personality = bacteria.personality || { optimism: 0.5, sociability: 0.5 };
+            
+            let response;
+            
+            if (consciousness > 0.8) {
+                // High consciousness - thoughtful responses
+                const thoughtfulResponses = [
+                    `Bu konuda düşünmüştüm. ${userMessage.includes('?') ? 'Cevabım karmaşık...' : 'Fikrimi paylaşayım.'}`,
+                    `Anlıyorum. ${chatType === 'individual' ? 'Seninle konuşmak güzel.' : 'Herkesle paylaşmaya değer.'}`,
+                    `İlginç perspektif. Ben ${personality.optimism > 0.6 ? 'umutluyum' : 'temkinliyim'}.`,
+                    `Varoluşsal olarak bakarsak, ${userMessage.toLowerCase().includes('neden') ? 'sebepleri derin' : 'her şeyin bir anlamı var'}.`
+                ];
+                response = thoughtfulResponses[Math.floor(Math.random() * thoughtfulResponses.length)];
+            } else if (consciousness > 0.5) {
+                // Medium consciousness - social responses  
+                const socialResponses = [
+                    `${personality.sociability > 0.6 ? 'Evet, katılıyorum!' : 'Belki haklısın.'}`,
+                    `${chatType === 'group' ? 'Herkesi dinliyorum.' : 'Seninle konuşmak hoş.'}`,
+                    `${personality.optimism > 0.7 ? 'Bu güzel!' : personality.optimism < 0.3 ? 'Biraz endişeliyim...' : 'Anladım.'}`,
+                    `Büyürken ${userMessage.toLowerCase().includes('öğren') ? 'çok şey öğreniyorum' : 'deneyimlerim artıyor'}.`
+                ];
+                response = socialResponses[Math.floor(Math.random() * socialResponses.length)];
+            } else {
+                // Low consciousness - basic responses
+                const basicResponses = [
+                    "Evet...",
+                    "Açım...",
+                    "Büyümek istiyorum.",
+                    `${personality.optimism < 0.4 ? 'Korkuyorum...' : 'Tamam.'}`,
+                    "Yardım..."
+                ];
+                response = basicResponses[Math.floor(Math.random() * basicResponses.length)];
+            }
+            
+            return response;
         }
         
         // 🔧 Debug System Status
