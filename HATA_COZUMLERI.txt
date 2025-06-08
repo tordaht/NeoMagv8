@@ -302,6 +302,37 @@ FORMAT: timestamp, bacterium_id, joke_text, context, consciousness_level, succes
 HATA ÇÖZÜMLERİ - mnBac Projesi
 =====================================
 
+[2025-06-08 19:20] - JOKE_CONFIG Hatası ve Konuşma Test Sistemi
+SORUN: 
+1. "ReferenceError: JOKE_CONFIG is not defined" hatası
+2. Bakteriler konuşmuyor ve kullanıcıya cevap vermiyor
+
+ÇÖZÜM:
+1. JOKE_CONFIG Tanımı Eklendi:
+   - PREDEFINED_JOKE_CHANCE: 0.7
+   - JOKE_COOLDOWN: 15000 ms
+   - MAX_JOKE_DISTANCE: 100px
+   - MIN_CONSCIOUSNESS_FOR_JOKES: 3
+
+2. Konuşma Test Sistemi:
+   - testBacteriaConversation() fonksiyonu
+   - Manual test button eklendi (🧪 Test Conversation)
+   - Debug output geliştirmesi
+   - Force conversation trigger
+
+3. Event Handler Güncellemesi:
+   - startBacteriaConversationBtn artık yeni sistemi kullanıyor
+   - Consciousness kontrolü eklendi (>40%)
+   - Kullanıcı friendly error mesajları
+
+DOSYALAR:
+- index.html: JOKE_CONFIG definition, test system, button handlers
+
+TEST:
+1. Simülasyonu başlat
+2. "🧪 Test Conversation" butonuna tık
+3. Speech bubble'ları ve console log'ları kontrol et
+
 [2025-06-08 18:45] - Bakteri Etkileşim Sistemi Geliştirmeleri
 SORUN: 
 1. Bakterilere tıklama Chrome'da çalışmıyor, sadece msgbox çıkıyor

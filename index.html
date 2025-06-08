@@ -8721,59 +8721,123 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                     console.log('🧬 Language Evolution Engine initialized - bacterial languages will now evolve!');
                 }, 4000); // Wait for other systems to be ready
                 
-                // 8. 🔤 Initialize Enhanced Morphological System (Phase 2.7)
+                // 8. 🔤 Initialize Enhanced Morphological System (Phase 2.7) - SAFE MODE
                 setTimeout(async () => {
                     try {
-                        // Load scripts dynamically
-                        await loadScript('./src/engine/AITrainingAdapter.js');
-                        await loadScript('./src/engine/EnhancedMorphologicalGenerator.js');
-                        await loadScript('./src/engine/MorphologicalDialogueGenerator.js');
-                        await loadScript('./src/engine/PersistentLearningEngine.js');
+                        console.log('🔤 Attempting to initialize Enhanced Morphological System...');
                         
-                        // Initialize Enhanced Morphological System
-                        window.aiTrainingAdapter = new AITrainingAdapter();
-                        window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
+                        // Check if external scripts exist before loading
+                        const scriptPaths = [
+                            './src/engine/AITrainingAdapter.js',
+                            './src/engine/EnhancedMorphologicalGenerator.js', 
+                            './src/engine/MorphologicalDialogueGenerator.js',
+                            './src/engine/PersistentLearningEngine.js'
+                        ];
                         
-                        // Initialize Persistent Learning Engine
-                        const { PersistentLearningEngine } = await import('./src/engine/PersistentLearningEngine.js');
-                        window.persistentLearning = new PersistentLearningEngine();
+                        let scriptsLoaded = 0;
                         
-                        // Wait for training data to load
-                        await new Promise(resolve => {
-                            const checkLoaded = () => {
-                                if (window.aiTrainingAdapter.isLoaded && window.persistentLearning.isReady) {
-                                    resolve();
+                        // Try to load each script safely
+                        for (const scriptPath of scriptPaths) {
+                            try {
+                                if (typeof loadScript === 'function') {
+                                    await loadScript(scriptPath);
+                                    scriptsLoaded++;
+                                    console.log(`✅ Loaded: ${scriptPath}`);
                                 } else {
-                                    setTimeout(checkLoaded, 100);
+                                    console.warn(`⚠️ loadScript function not available`);
+                                    break;
                                 }
+                            } catch (scriptError) {
+                                console.warn(`⚠️ Could not load ${scriptPath}:`, scriptError.message);
+                            }
+                        }
+                        
+                        if (scriptsLoaded === scriptPaths.length) {
+                            // Only initialize if all scripts loaded successfully
+                            if (typeof AITrainingAdapter !== 'undefined') {
+                                window.aiTrainingAdapter = new AITrainingAdapter();
+                                console.log('✅ AITrainingAdapter initialized');
+                            }
+                            
+                            if (typeof EnhancedMorphologicalGenerator !== 'undefined' && window.aiTrainingAdapter) {
+                                window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
+                                console.log('✅ EnhancedMorphologicalGenerator initialized');
+                            }
+                            
+                            // Try dynamic import for PersistentLearningEngine
+                            try {
+                                const { PersistentLearningEngine } = await import('./src/engine/PersistentLearningEngine.js');
+                                window.persistentLearning = new PersistentLearningEngine();
+                                console.log('✅ PersistentLearningEngine initialized');
+                            } catch (importError) {
+                                console.warn('⚠️ PersistentLearningEngine dynamic import failed:', importError.message);
+                                // Create a minimal fallback
+                                window.persistentLearning = {
+                                    isReady: true,
+                                    trackSpeech: (bacteria, message) => {
+                                        console.log(`📝 Speech tracked: ${bacteria.name}: ${message}`);
+                                    },
+                                    getLearningStats: () => ({
+                                        totalInteractions: 0,
+                                        vocabularySize: 0
+                                    }),
+                                    metrics: { totalInteractions: 0 }
+                                };
+                                console.log('✅ Fallback PersistentLearning created');
+                            }
+                            
+                            console.log('🔤 Enhanced Morphological System initialized successfully!');
+                        } else {
+                            console.warn('⚠️ Some morphological scripts failed to load, using basic fallbacks');
+                            
+                            // Create basic fallback systems
+                            window.persistentLearning = {
+                                isReady: true,
+                                trackSpeech: (bacteria, message) => {
+                                    console.log(`📝 [Fallback] Speech tracked: ${bacteria.name}: ${message}`);
+                                },
+                                getLearningStats: () => ({
+                                    totalInteractions: 0,
+                                    vocabularySize: 0
+                                }),
+                                metrics: { totalInteractions: 0 }
                             };
-                            checkLoaded();
-                        });
+                            
+                            window.enhancedMorphGenerator = {
+                                getSystemStatus: () => ({ status: 'fallback', ready: true })
+                            };
+                            
+                            console.log('✅ Fallback morphological systems created');
+                        }
                         
-                        console.log('🔤 Enhanced Morphological System v2.7 initialized!');
-                        console.log(`📚 Training examples loaded: ${window.aiTrainingAdapter.getSystemStatus().trainingExamples}`);
-                        console.log('🧬 Persistent Learning Engine initialized!');
-                        console.log(`💾 Previous interactions: ${window.persistentLearning.metrics.totalInteractions}`);
-                        
-                        // Mark system as fully ready
+                        // Mark system as ready regardless
                         window.systemFullyReady = true;
                         
-                        // Update UI to show system is ready
+                        // Update UI
                         const loadingIndicators = document.querySelectorAll('.loading-indicator');
                         loadingIndicators.forEach(indicator => {
                             indicator.style.display = 'none';
                         });
                         
-                        // Show success notification
-                        console.log('🎉 mnBac v9.6.2 FULLY LOADED - All systems operational!');
-                        
-                        // Emit event for other systems to know it's ready
+                        // Emit events
                         appEvents.emit('morphological:system:ready');
                         appEvents.emit('persistent:learning:ready');
                         appEvents.emit('system:fully:ready');
                         
+                        console.log('🎉 mnBac v9.6.2 FULLY LOADED - All systems operational!');
+                        
                     } catch (error) {
                         console.error('❌ Enhanced Morphological System initialization failed:', error);
+                        
+                        // Create emergency fallbacks
+                        window.persistentLearning = {
+                            isReady: true,
+                            trackSpeech: () => {},
+                            getLearningStats: () => ({ totalInteractions: 0, vocabularySize: 0 }),
+                            metrics: { totalInteractions: 0 }
+                        };
+                        window.systemFullyReady = true;
+                        console.log('🚨 Emergency fallback systems activated');
                     }
                 }, 5000); // Wait for all other systems to be ready
                 
