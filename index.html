@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title>mnBac v9.7.1 - Optimized Performance Edition</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- TensorFlow.js removed for better performance -->
-=======
     <title>mnBac v10.0.1 - Revolutionary Response System</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%230066cc'/%3E%3Ctext x='16' y='20' text-anchor='middle' fill='white' font-size='16' font-family='Arial'%3E🦠%3C/text%3E%3C/svg%3E">
+    <!-- Modern fonts for premium feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         // Suppress Tailwind CDN production warning for demo
@@ -24,9 +21,8 @@
     <!-- Note: Tailwind CDN is used for rapid prototyping. For production, use PostCSS or CLI installation -->
     <!-- TensorFlow.js -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0/dist/tf.min.js"></script>
->>>>>>> f16f066062b156d1043e143c923dd1af3564d0d2
     <style>
-        /* Optimized CSS Variables */
+        /* CSS Variables for better maintainability */
         :root {
             --color-primary: #3D5AFE;
             --color-secondary: #00C853;
@@ -45,30 +41,42 @@
             font-family: 'Inter', sans-serif;
             overscroll-behavior: none;
         }
-        
-        /* Simplified bacteria hover - no heavy transforms */
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+        }
+        header h1 {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        }
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 500;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+        }
         .bacteria {
-            transition: opacity 0.2s ease;
+            transition: all 0.5s ease-in-out;
             cursor: pointer;
         }
         .bacteria:hover {
-            opacity: 0.8;
+            transform: scale(1.1);
         }
-        
         .chat-bubble {
             max-width: 70%;
             word-wrap: break-word;
         }
         .chat-bubble-user {
-            background-color: #3b82f6;
+            background-color: #3b82f6; /* blue-500 */
             color: white;
         }
         .chat-bubble-bacteria {
-            background-color: #e5e7eb;
-            color: #1f2937;
+            background-color: #e5e7eb; /* gray-200 */
+            color: #1f2937; /* gray-800 */
         }
-        
-        /* Custom scrollbar */
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        /* Custom scrollbar for chat */
         #chatMessages::-webkit-scrollbar {
             width: 8px;
         }
@@ -80,8 +88,10 @@
             background: #888;
             border-radius: 10px;
         }
-        
-        /* Simple loading spinner */
+        #chatMessages::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Loading spinner */
         .loader {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #3498db;
@@ -96,26 +106,6 @@
             100% { transform: rotate(360deg); }
         }
             
-<<<<<<< HEAD
-        /* Simplified Speech Bubbles - click to select bacteria */
-        .speech-bubble {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: rgba(59, 130, 246, 0.9);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            max-width: 150px;
-            position: absolute;
-            z-index: 1000;
-            cursor: pointer;
-            border: 2px solid #60a5fa;
-            transition: transform 0.2s ease;
-        }
-
-        .speech-bubble:hover {
-            transform: scale(1.05);
-=======
         /* 🎭 Enhanced Speech Bubble System */
         @keyframes speechBubbleAnim {
             0% { 
@@ -160,37 +150,11 @@
             transform: scale(1.15) !important;
             box-shadow: 0 8px 25px rgba(0,0,0,0.8);
             animation: bubblePulse 0.8s ease-in-out infinite;
->>>>>>> f16f066062b156d1043e143c923dd1af3564d0d2
         }
 
         .speech-bubble:before {
             content: '';
             position: absolute;
-<<<<<<< HEAD
-            bottom: -8px;
-            left: 20px;
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 8px solid #60a5fa;
-        }
-
-        /* Bacteria selection highlight */
-        .bacteria-selected {
-            filter: drop-shadow(0 0 8px #00ff00);
-            animation: selectionPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes selectionPulse {
-            0%, 100% { filter: drop-shadow(0 0 8px #00ff00); }
-            50% { filter: drop-shadow(0 0 15px #00ff00); }
-        }
-
-        /* Performance optimized styles */
-        .smooth-scroll {
-            scroll-behavior: smooth;
-=======
             bottom: -10px;
             left: 20px;
             width: 0;
@@ -252,12 +216,27 @@
         }
 
         @keyframes glowPulse {
-            0%, 100% { 
+            0%, 100% {
                 filter: drop-shadow(0 0 10px #00ff00) drop-shadow(0 0 20px #00ff00);
             }
-            50% { 
+            50% {
                 filter: drop-shadow(0 0 15px #00ff00) drop-shadow(0 0 30px #00ff00) drop-shadow(0 0 40px #00ff00);
             }
+        }
+
+        .bacteria-tag {
+            background-color: #374151; /* gray-700 */
+            color: #e5e7eb; /* gray-200 */
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin: 2px;
+            transition: background-color 0.2s;
+        }
+
+        .bacteria-tag:hover {
+            background-color: #14b8a6; /* teal-600 */
         }
 
         /* Bacteria selection highlight */
@@ -270,32 +249,28 @@
         @keyframes selectionPulse {
             0%, 100% { outline-color: #00ff00; }
             50% { outline-color: #00ffff; }
->>>>>>> f16f066062b156d1043e143c923dd1af3564d0d2
         }
-        
-    </style>
-</head>
+
+        </style>
+    </head>
 <body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
 
     <!-- Header -->
     <header class="bg-gray-800 shadow-lg p-4 sticky top-0 z-50">
-        <div class="flex justify-between items-center">
-<<<<<<< HEAD
-            <h1 class="text-2xl font-bold text-teal-400">🧬 mnBac v9.7.1 - Optimized Performance Edition</h1>
-=======
-            <h1 class="text-2xl font-bold text-teal-400">🧬 mnBac v10.0.1 - Revolutionary Response System</h1>
->>>>>>> f16f066062b156d1043e143c923dd1af3564d0d2
-            <div class="flex gap-2 text-xs">
-                <div class="bg-green-600 text-white px-2 py-1 rounded" id="fpsDisplay">FPS: --</div>
-                <div class="bg-blue-600 text-white px-2 py-1 rounded" id="bacteriaCount">Bakteri: 0</div>
-                <div class="bg-purple-600 text-white px-2 py-1 rounded" id="dayDisplay">Gün: 0</div>
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-2">
+            <h1 class="text-3xl font-bold text-teal-400 text-center">🧬 mnBac v10.0.1 - Revolutionary Response System</h1>
+            <div class="flex gap-2 items-center">
+                <div class="badge bg-green-600 text-white" id="fpsDisplay">FPS: --</div>
+                <div class="badge bg-blue-600 text-white" id="bacteriaCount">Bakteri: 0</div>
+                <div class="badge bg-purple-600 text-white" id="dayDisplay">Gün: 0</div>
+                <button id="startSimulationBtn" data-action="start-simulation" class="ml-2 bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-lg font-semibold shadow">▶️ Başlat</button>
             </div>
         </div>
         <div class="text-center text-xs text-teal-300 mt-1">
-            ⚡ 60 FPS Optimized | 🧬 2000 Words Vocabulary | 💭 Click Speech Bubbles | 🎯 Simple AI System
+            📱 Mobile Ready TabPFN | 🎯 Smart Word Usage | ⚡ < 1 Second Predictions | 🧠 Single HTML Solution
         </div>
         <div id="buildInfo" class="text-center text-xs text-gray-400 mt-1">
-            Build: v9.7.1 - Performance Edition
+            Build: Loading...
         </div>
     </header>
 
@@ -335,7 +310,7 @@
                     <p><strong>Kişilik (İyimserlik):</strong> <span id="bacteriaOptimism" class="text-gray-300"></span></p>
                     <p><strong>Kişilik (Sosyallik):</strong> <span id="bacteriaSociability" class="text-gray-300"></span></p>
                     <p><strong>Dil Aşaması:</strong> <span id="bacteriaLanguageStage" class="text-gray-300"></span></p>
-                    <p><strong>Kelime Havuzu:</strong> <span id="bacteriaVocabulary" class="text-gray-300 break-all"></span></p>
+                    <p><strong>Kelime Haznesi:</strong> <span id="bacteriaVocabulary" class="text-gray-300 break-all"></span></p>
                 </div>
             </div>
         </div>
@@ -398,6 +373,9 @@
             <div class="mt-3 flex space-x-2">
                 <button id="showSpeechBubblesBtn" class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm transition">💭 Baloncukları Göster</button>
             </div>
+
+            <!-- Bacteria List -->
+            <div id="bacteriaListPanel" class="mt-4 flex flex-wrap gap-1"></div>
         </div>
     </main>
 
@@ -409,9 +387,6 @@
     <!-- Controls -->
     <div class="bg-gray-800 p-4 rounded-lg mb-4">
         <div class="flex flex-wrap gap-2 mb-4">
-            <button id="startSimulationBtn" data-action="start-simulation" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg text-lg font-bold">
-                ▶️ Simülasyonu Başlat
-            </button>
             <button data-action="pause-simulation" class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded">
                 ⏸️ Duraklat
             </button>
@@ -547,16 +522,6 @@
         // Initialize persistentDB early (null safety)
         var persistentDB = null;
         
-<<<<<<< HEAD
-        // 🎭 JOKE CONFIGURATION
-        const JOKE_CONFIG = {
-            PREDEFINED_JOKE_CHANCE: 0.7,
-            JOKE_COOLDOWN: 5000,
-            JOKE_MORALE_BOOST: 0.15,
-            MAX_JOKE_DISTANCE: 150,
-            MIN_CONSCIOUSNESS_FOR_JOKE: 1.5
-        };
-=======
         // 🎭 Chat System Functions
         function switchToGroupChat() {
             currentChatMode = 'group';
@@ -698,7 +663,6 @@
             messageDiv.appendChild(bubbleDiv);
             targetContainer.insertBefore(messageDiv, targetContainer.firstChild);
         }
->>>>>>> f16f066062b156d1043e143c923dd1af3564d0d2
         
         // 🎯 EVENT-DRIVEN INITIALIZATION SYSTEM
         class SimpleEventEmitter {
@@ -896,8 +860,6 @@
                 this.frameCount = 0;
                 this.fpsDisplay = document.getElementById('fpsDisplay');
                 this.gameLoop = this.gameLoop.bind(this);
-<<<<<<< HEAD
-=======
                 
                 // 🗣️ Enhanced Peer Communication System
                 this.stepCount = 0;
@@ -915,7 +877,6 @@
                     'kötü', 'üzgün', 'berbat', 'korkunç', 'başarısız', 'kayıp', 
                     'ağrı', 'acı', 'kırık', 'yalnız', 'depresif', 'karanlık'
                 ]);
->>>>>>> f16f066062b156d1043e143c923dd1af3564d0d2
             }
 
             gameLoop(timestamp) {
@@ -964,6 +925,7 @@
                 requestAnimationFrame(this.gameLoop);
                 systemStatus.simulation = true;
                 appEvents.emit('simulation:started');
+                startAutoConversations();
                 console.log('🚀 Simulation started with requestAnimationFrame');
             }
 
@@ -971,6 +933,7 @@
                 this.isRunning = false;
                 systemStatus.simulation = false;
                 appEvents.emit('simulation:paused');
+                stopAutoConversations();
                 console.log('⏸️ Simulation paused');
             }
 
@@ -988,12 +951,29 @@
 
             simulationStep() {
                 this.simulationDay++;
+                this.stepCount++; // 🗣️ Peer communication tracking
                 simulationDay = this.simulationDay; // Global ile senkronize
                 simulationTimeSpan.textContent = `Simülasyon Zamanı: ${this.simulationDay} gün`;
                 
                 // Auto-generate food for sustained ecosystem
                 if (Math.random() < CONFIG.SIMULATION.AUTO_FOOD_GENERATION_CHANCE) {
                     addRandomFood();
+                }
+                
+                // 🗣️ Enhanced Peer Communication System
+                if (bacteriaPopulation.length >= 2) {
+                    // Regular peer chats
+                    if (this.stepCount % this.CHAT_INTERVAL === 0) {
+                        this.runPeerChats();
+                    }
+                    
+                    // Group therapy sessions
+                    if (this.stepCount % this.GROUP_CHAT_INTERVAL === 0) {
+                        this.runGroupChat();
+                    }
+                    
+                    // Support for depressed bacteria
+                    this.checkDepressedBacteria();
                 }
                 
                 bacteriaPopulation.forEach((bacteria, index) => {
@@ -1032,6 +1012,31 @@
                 }
             }
             
+            // 🗣️ Enhanced Peer Communication Methods
+            
+            /**
+             * Her bakteri rastgele bir eş seçer ve sohbet eder
+             */
+            async runPeerChats() {
+                const socialBacteria = bacteriaPopulation.filter(b => 
+                    b.consciousness_level > 0.5 && b.personality_traits.sociability > 0.3
+                );
+                
+                if (socialBacteria.length < 2) return;
+                
+                // Her bakteriye partner bul ve konuş
+                for (const bacteria of socialBacteria) {
+                    if (Math.random() < 0.7) { // %70 şans ile konuşma
+                        const partner = this.getRandomNeighbor(bacteria, socialBacteria);
+                        if (partner) {
+                            await this.exchangeDialog(bacteria, partner);
+                        }
+                    }
+                }
+                
+                console.log(`🗣️ Peer chats completed: ${socialBacteria.length} bacteria participated`);
+            }
+            
             /**
              * Rastgele komşu bakteri seç (proximity veya random)
              */
@@ -1058,8 +1063,6 @@
             }
             
             /**
-<<<<<<< HEAD
-=======
              * İki bakteri arası çift yönlü diyalog
              */
             async exchangeDialog(bacteriaA, bacteriaB) {
@@ -1222,7 +1225,6 @@
             }
             
             /**
->>>>>>> f16f066062b156d1043e143c923dd1af3564d0d2
              * Grup sohbeti (3-4 bakteri)
              */
             async runGroupChat() {
@@ -1259,24 +1261,24 @@
             /**
              * Depresif bakterilere destek
              */
-            async checkDepressedBacteria() {
-                const depressedBacteria = bacteriaPopulation.filter(b => b.personality_traits.mood < 0.3);
+                         async checkDepressedBacteria() {
+                 const depressedBacteria = bacteriaPopulation.filter(b => b.personality_traits.mood < 0.3);
                 
                 for (const depressed of depressedBacteria) {
                     // Pozitif bakteri bul
-                    const supporter = bacteriaPopulation.find(b => 
-                        b !== depressed && 
-                        b.personality_traits.mood > 0.6 && 
-                        b.personality_traits.sociability > 0.5
-                    );
+                                         const supporter = bacteriaPopulation.find(b => 
+                         b !== depressed && 
+                         b.personality_traits.mood > 0.6 && 
+                         b.personality_traits.sociability > 0.5
+                     );
                     
                     if (supporter && Math.random() < 0.3) { // %30 şans ile destek
                         const supportMessage = await this.generatePeerMessage(supporter, 'supportive');
                         this.learnFromPeer(depressed, supportMessage, supporter);
                         this.renderSpeechBubble(supporter, `→ ${depressed.name}: ${supportMessage}`, 4000);
                         
-                        // Extra mood boost for support
-                        depressed.personality_traits.mood = Math.min(1, depressed.personality_traits.mood + 0.1);
+                                                 // Extra mood boost for support
+                         depressed.personality_traits.mood = Math.min(1, depressed.personality_traits.mood + 0.1);
                         
                         console.log(`💝 ${supporter.name} supported depressed ${depressed.name}`);
                     }
@@ -1383,8 +1385,13 @@
                 bubble.appendChild(messageDiv);
                 
                 // Pozisyon güncelle (bakterinin biraz üstünde)
-                bubble.style.left = `${bacteria.x - 20}px`;
-                bubble.style.top = `${bacteria.y - 35}px`;
+                const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+                const maxX = simulationArea.clientWidth - 150;
+                const maxY = simulationArea.clientHeight - 50;
+                const left = clamp(bacteria.x - 20, 0, maxX);
+                const top = clamp(bacteria.y - 35, 0, maxY);
+                bubble.style.left = `${left}px`;
+                bubble.style.top = `${top}px`;
                 bubble.style.display = 'block';
                 
                 // 🎭 Entrance animasyonu
@@ -1437,14 +1444,13 @@
         // Global simulation manager (will be initialized in mainInitialize)
         let simulationManager = null;
 
-        // 🚀 OPTIMIZED PERFORMANCE CONFIG v10.2.0
+        // Configuration Constants (centralized for better maintainability)
         const CONFIG = {
             SIMULATION: {
                 INITIAL_BACTERIA_COUNT: 10,
                 STEP_INTERVAL: 500, // ms - 6x faster simulation
-                MAX_BACTERIA_POPULATION: 15, // Reduced from 20
-                AUTO_FOOD_GENERATION_CHANCE: 0.7,
-                TARGET_FPS: 60 // FPS limit
+                MAX_BACTERIA_POPULATION: 20,
+                AUTO_FOOD_GENERATION_CHANCE: 0.7
             },
             BACTERIA: {
                 MAX_SIZE: 3.5,
@@ -1462,10 +1468,8 @@
             UI: {
                 MAX_VOCABULARY_DISPLAY: 10,
                 FOOD_SIZE: 8,
-                FPS_UPDATE_INTERVAL: 1000, // 1 saniyelik güncelleme
-                PERFORMANCE_LOG_INTERVAL: 10000,
-                SPEECH_BUBBLE_DURATION: 3000, // 3 saniye
-                REDUCED_ANIMATIONS: true // Ağır animasyonları kapat
+                FPS_UPDATE_INTERVAL: 1000,
+                PERFORMANCE_LOG_INTERVAL: 10000
             },
             PHYSICS: {
                 INTERACTION_RANGE: 50,
@@ -1486,13 +1490,11 @@
                 CONSCIOUSNESS_BOOST_RATE: 0.02
             },
             VOCABULARY: {
-                MAX_WORDS_TOTAL: 2000, // İstenen 2000 kelime limiti
-                MAX_WORDS_PER_BACTERIA: 150, // Her bakteri için maksimum
+                TABPFN_ACCELERATION: true,
                 CONTEXTUAL_LEARNING_RATE: 0.25,
                 PROGRESSIVE_UNLOCK_THRESHOLD: 0.8,
                 SOCIAL_LEARNING_MULTIPLIER: 1.5,
-                CONSCIOUSNESS_WORD_RATIO: 0.1, // Words per consciousness level
-                SIMPLE_AI: true // TabPFN yerine basit AI
+                CONSCIOUSNESS_WORD_RATIO: 0.1 // Words per consciousness level
             }
         };
 
@@ -1972,6 +1974,15 @@
                     ].filter(w => w);
                 }
 
+                // Enhanced TabPFN integration if available
+                if (this.vocabularySystem && typeof this.vocabularySystem.improveWordUsage === 'function') {
+                    const contexts = ['scientific', 'social', 'philosophical'];
+                    const contextWord = this.vocabularySystem.improveWordUsage(bacteria, contexts[Math.floor(Math.random() * contexts.length)]);
+                    if (contextWord && !jokeWords.includes(contextWord)) {
+                        jokeWords[2] = contextWord; // Replace last word with context-appropriate word
+                    }
+                }
+
                 // Create joke using mathematical template selection
                 const template = JOKE_TEMPLATES[Math.floor(Math.random() * JOKE_TEMPLATES.length)];
                 const jokeText = this.fillJokeTemplate(template, jokeWords, bacteria);
@@ -2103,42 +2114,39 @@
                 this.personalityLanguageTraits = new Map(); // Kişilik bazlı dil özellikleri
                 this.languageGeneration = 0; // Dil evrimi nesli
                 this.emergentGrammar = new Map(); // Ortaya çıkan gramer kuralları
+                
+                // 🆕 V8.9.0: ANTI-PATTERN FEATURES
+                this.bacteriaBigrams = new Map(); // Markov chains for each bacteria
+                this.metaTemplates = new Map(); // Meta-template system
+                this.absurdWords = ['mikrofon', 'güneş', 'hipopotam', 'kuantum', 'pizza', 'roket', 'dinozor', 'kristal']; // Shock elements
                 this.contextOverrides = new Map(); // Context breaking triggers
-                
-                // Initialize missing core properties
-                this.absurdWords = ['zımbır', 'cızbız', 'fokur', 'şıp', 'vız', 'pat', 'küt', 'şlop', 'fış', 'cık'];
-                this.bacteriaBigrams = new Map(); // Bacteria-specific bigram chains
-                this.metaTemplates = new Map(); // Meta-template patterns
-                
-                // Initialize context overrides
-                this.contextOverrides.set('high_stress', (bacteria) => bacteria.personality_traits.mood < 0.6);
-                this.contextOverrides.set('confusion', (bacteria) => bacteria.consciousness_level < 5 && bacteria.vocabulary.size > 3);
-                this.contextOverrides.set('creative_burst', (bacteria) => bacteria.personality_traits.creativity > 0.5);
-                this.contextOverrides.set('random_chaos', (bacteria) => Math.random() < 0.1);
-                
-                // Initialize meta templates
-                this.initializeMetaTemplates();
+                this.adaptiveSuccess = new Map(); // Success tracking for reinforcement
                 
                 console.log('🧬 Language Evolution Engine V8.9.1: ANTI-PATTERN TEST MODE!');
                 console.log('🔥 TEST MODE: Boosted probabilities for immediate visibility');
                 console.log('🎲 ε-greedy: 60% | 🎭 Meta-template: 70% | 🎪 Absurd: 48%');
                 this.initializeBasicPatterns();
+                this.initializeAntiPatternSystems();
             }
 
-            initializeMetaTemplates() {
-                // Basic meta-templates for fallback
-                this.metaTemplates.set('basic', [
-                    '{subject} {verb} {object}',
-                    '{emotion} {action}',
-                    '{greeting} {name}',
-                    '{reaction} + {discovery}'
+            // 🎯 Initialize Anti-Pattern Systems
+            initializeAntiPatternSystems() {
+                // Meta-templates for pattern-breaking conversations
+                this.metaTemplates.set('complex_mix', [
+                    "{greeting} {subTemplate1}; ama aslında {subTemplate2}.",
+                    "Önce {subTemplate1}, sonra {subTemplate2}, sonuç: {reaction}.",
+                    "{subject} der ki: \"{subTemplate1}?\" {subTemplate2}!",
+                    "{subTemplate1} + {shock_element} = {subTemplate2}",
+                    "İlginç: {subTemplate1}, çünkü {subTemplate2}..."
                 ]);
                 
-                this.metaTemplates.set('complex', [
-                    '{subject} {verb} çünkü {reason}',
-                    'eğer {condition} olursa {result}',
-                    '{subject1} ve {subject2} birlikte {action}'
-                ]);
+                // Context override triggers - 🔥 V8.9.1 TEST: EASIER CONDITIONS FOR VISIBILITY
+                this.contextOverrides.set('high_stress', (bacteria) => bacteria.personality_traits.mood < 0.6); // Lowered from 0.3
+                this.contextOverrides.set('confusion', (bacteria) => bacteria.consciousness_level < 5 && bacteria.vocabulary.size > 3); // Relaxed conditions
+                this.contextOverrides.set('creative_burst', (bacteria) => bacteria.personality_traits.creativity > 0.5); // Lowered from 0.8
+                this.contextOverrides.set('random_chaos', (bacteria) => Math.random() < 0.1); // 🆕 10% pure random chaos!
+                
+                console.log('🎭 Anti-Pattern systems initialized!');
             }
 
             initializeBasicPatterns() {
@@ -2430,11 +2438,6 @@
 
             // 🔗 Generate Markov Chain Response - Statistical Word Flow
             generateMarkovChainResponse(bacteria, vocabulary) {
-                // Ensure bacteria has bigram map
-                if (!this.bacteriaBigrams.has(bacteria.id)) {
-                    this.bacteriaBigrams.set(bacteria.id, new Map());
-                }
-                
                 const bigramMap = this.bacteriaBigrams.get(bacteria.id);
                 if (!bigramMap || bigramMap.size === 0) {
                     this.updateBigramMap(bacteria, vocabulary);
@@ -2462,13 +2465,7 @@
 
             // 🎭 Generate Meta-Template Response (Pattern within Pattern)
             generateMetaTemplateResponse(bacteria, context, vocabulary, trigger) {
-                // Ensure we have meta templates
-                if (!this.metaTemplates.has('complex') || this.metaTemplates.get('complex').length === 0) {
-                    // Fallback if meta templates not initialized
-                    return this.generateTraditionalResponse(bacteria, context, vocabulary, trigger);
-                }
-                
-                const metaTemplates = this.metaTemplates.get('complex') || this.metaTemplates.get('basic');
+                const metaTemplates = this.metaTemplates.get('complex_mix');
                 const selectedMeta = metaTemplates[Math.floor(Math.random() * metaTemplates.length)];
                 
                 // Generate sub-templates
@@ -2575,11 +2572,6 @@
 
             // 🧮 Update Bigram Map for Markov Chains
             updateBigramMap(bacteria, vocabulary) {
-                // Ensure bacteria has bigram map
-                if (!this.bacteriaBigrams.has(bacteria.id)) {
-                    this.bacteriaBigrams.set(bacteria.id, new Map());
-                }
-                
                 const bigramMap = this.bacteriaBigrams.get(bacteria.id);
                 
                 // Build bigrams from vocabulary and memory
@@ -2607,10 +2599,6 @@
 
             // 🎲 Utility: Get Random Choice
             getRandomChoice(array) {
-                // Null/undefined check
-                if (!array || !Array.isArray(array) || array.length === 0) {
-                    return ''; // Return empty string for safety
-                }
                 return array[Math.floor(Math.random() * array.length)];
             }
 
@@ -2883,6 +2871,20 @@
                 'düşünce', 'zihin', 'ruh', 'tin', 'psişe', 'ego', 'id', 'süperego', 'bilinçaltı', 'kolektif bilinçaltı',
                 'arketip', 'persona', 'gölge', 'anima', 'animus', 'bireyselleşme', 'transsendans', 'aşkınlık', 'içkinlik', 'absolute',
                 'göreceli', 'bağıl', 'mutlak', 'sonsuz', 'sonlu', 'sınır', 'sınırsız', 'paradoks', 'çelişki', 'tezat'
+            ],
+            
+            // Etik ve değerler (100 kelime)
+            ethics: [
+                'etik', 'ahlak', 'değer', 'norm', 'kural', 'ilke', 'prensip', 'ideal', 'virtue', 'erdem',
+                'iyilik', 'kötülük', 'doğru', 'yanlış', 'adalet', 'haksızlık', 'eşitlik', 'özgürlük', 'sorumluluk', 'görev',
+                'hak', 'ödev', 'yükümlülük', 'vicdan', 'ahlaki', 'vicdani', 'utilitarizm', 'deontoloji', 'virtue etiği', 'care etiği',
+                'feminist etik', 'çevre etiği', 'biyoetik', 'tıp etiği', 'mesleki etik', 'iş etiği', 'teknoloji etiği', 'yapay zeka etiği', 'robotik etik', 'sanal etik',
+                'dijital etik', 'sosyal medya etiği', 'gizlilik', 'mahremiyet', 'şeffaflık', 'hesap verebilirlik', 'güven', 'sadakat', 'doğruluk', 'dürüstlük',
+                'samimiyet', 'içtenlik', 'saygı', 'hoşgörü', 'tolerans', 'çokkültürlülük', 'farklılık', 'çeşitlilik', 'kapsayıcılık', 'ayrımcılık',
+                'önyargı', 'kalıpyargı', 'adil olmayan', 'eşitsizlik', 'yoksulluk', 'zenginlik', 'sosyal adalet', 'ekonomik adalet', 'dağıtıcı adalet', 'düzeltici adalet',
+                'insan hakları', 'temel haklar', 'sivil haklar', 'politik haklar', 'sosyal haklar', 'ekonomik haklar', 'kültürel haklar', 'çocuk hakları', 'kadın hakları', 'azınlık hakları',
+                'hayvan hakları', 'doğa hakları', 'gelecek nesiller', 'sürdürülebilir kalkınma', 'intergenerasyon adalet', 'küresel adalet', 'kozmopolit etik', 'milliyetçilik', 'vatanseverlik', 'barış',
+                'savaş', 'şiddet', 'şiddetsizlik', 'direniş', 'itaatsizlik', 'sivil itaatsizlik', 'demokrasi', 'otorite', 'güç', 'iktidar'
             ],
             
             // Estetik ve sanat felsefesi (100 kelime)
@@ -4875,12 +4877,7 @@
                     this.personality_traits = existingData.personality_traits;
                     this.consciousness_level = existingData.consciousness_level; // Unlimited!
                     this.language_stage = existingData.language_stage;
-                    // Ensure vocabulary is properly initialized
-                    if (existingData.vocabulary) {
-                        this.vocabulary = new Set(existingData.vocabulary);
-                    } else {
-                        this.vocabulary = new Set();
-                    }
+                    this.vocabulary = new Set(existingData.vocabulary);
                     this.memory_bank = existingData.memory_bank;
                     this.conversation_history = existingData.conversation_history;
                     this.x = existingData.position ? existingData.position.x : existingData.x || Math.random() * 400 + 50;
@@ -5278,10 +5275,16 @@
                 const bubble = document.createElement('div');
                 bubble.className = `speech-bubble speech-${context}`;
                 bubble.textContent = message;
+                const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
+                const maxX = simulationArea.clientWidth - 160;
+                const maxY = simulationArea.clientHeight - 60;
+                const left = clamp(this.x + 20, 0, maxX);
+                const top = clamp(this.y - 45, 0, maxY);
+
                 bubble.style.cssText = `
                     position: absolute;
-                    left: ${this.x + 20}px;
-                    top: ${this.y - 45}px;
+                    left: ${left}px;
+                    top: ${top}px;
                     padding: 8px 12px;
                     border-radius: 18px;
                     font-size: 12px;
@@ -6451,27 +6454,25 @@
                  const totalBacteria = bacteriaPopulation.length;
                  const responseBacteria = [];
                  
-                 bacteriaPopulation.forEach((bacteria, index) => {
-                     setTimeout(async () => {
-                         if (Math.random() < 0.7) { // 70% chance each bacteria responds
-                             const response = await generateBacteriaResponse(bacteria, message, 'user');
-                             bacteria.conversation_history.push({ user: message, bacteria: response });
-                             addChatMessage(response, 'bacteria', bacteria.name);
-                             responseBacteria.push(bacteria);
-                         }
-                         responseCount++;
-                         if (responseCount === totalBacteria) {
-                             // After all responses, bacteria learn from each other in group
-                             if (responseBacteria.length > 1) {
-                                 setTimeout(() => {
-                                     groupLearningSession(responseBacteria);
-                                 }, 1000);
-                             }
-                             showChatLoading(false);
-                         }
-                     }, (index + 1) * (500 + Math.random() * 1000));
-                 });
-             }
+                bacteriaPopulation.forEach((bacteria, index) => {
+                    setTimeout(async () => {
+                        const response = await generateBacteriaResponse(bacteria, message, 'user');
+                        bacteria.conversation_history.push({ user: message, bacteria: response });
+                        addChatMessage(response, 'bacteria', bacteria.name);
+                        responseBacteria.push(bacteria);
+                        responseCount++;
+                        if (responseCount === totalBacteria) {
+                            // After all responses, bacteria learn from each other in group
+                            if (responseBacteria.length > 1) {
+                                setTimeout(() => {
+                                    groupLearningSession(responseBacteria);
+                                }, 1000);
+                            }
+                            showChatLoading(false);
+                        }
+                    }, (index + 1) * (500 + Math.random() * 1000));
+                });
+            }
         }
 
         // v826: Natural conversation based on proximity and social needs
@@ -6731,7 +6732,7 @@
                 // Centralized button action mapping
                 const actionMap = {
                     '▶️ Başlat': () => this.startSimulation(),
-                    'Simülasyonu Başlat': () => this.startSimulation(),
+                    'Başlat': () => this.startSimulation(),
                     'Devam Et': () => this.startSimulation(),
                     'Durdur': () => this.pauseSimulation(),
                     '⏸️ Duraklat': () => this.pauseSimulation(),
@@ -6783,7 +6784,7 @@
                 foodParticles.length = 0;
                 selectedBacteria = null;
                 
-                if (this.startSimulationBtn) this.startSimulationBtn.textContent = 'Simülasyonu Başlat';
+                if (this.startSimulationBtn) this.startSimulationBtn.textContent = 'Başlat';
                 if (this.nextStepBtn) this.nextStepBtn.disabled = false;
                 
                 bacteriaDetailsDiv.classList.add('hidden');
@@ -6799,8 +6800,9 @@
                     document.body.removeChild(modal);
                 });
                 openChatWindows.clear();
-                
+
                 initializeBacteria();
+                updateBacteriaListPanel();
             }
         }
 
@@ -6972,7 +6974,7 @@
             foodParticles = [];
             selectedBacteria = null;
             
-            startSimulationBtn.textContent = 'Simülasyonu Başlat';
+            startSimulationBtn.textContent = 'Başlat';
             nextStepBtn.disabled = false;
             
             bacteriaDetailsDiv.classList.add('hidden');
@@ -6988,8 +6990,9 @@
                 document.body.removeChild(modal);
             });
             openChatWindows.clear();
-            
+
             initializeBacteria();
+            updateBacteriaListPanel();
         }
 
         // v826: Add new bacteria to simulation
@@ -6997,9 +7000,10 @@
             const newBacteria = new BacteriaEntity(bacteriaIdCounter++);
             bacteriaPopulation.push(newBacteria);
             bacteriaList.push(newBacteria); // v826 compatibility
-            
+
             console.log(`➕ Added new bacteria: ${newBacteria.name} (Total: ${bacteriaPopulation.length})`);
             renderBacteria();
+            updateBacteriaListPanel();
         }
 
         // v826: Toggle group chat (improved)
@@ -7119,6 +7123,7 @@
             // v829: Track render performance
             performanceMetrics.renderTime = performance.now() - startTime;
             updatePerformanceMetrics();
+            updateBacteriaListPanel();
         }
 
         function renderWithCanvas() {
@@ -7350,11 +7355,6 @@
             bacteriaSociabilitySpan.textContent = bacteria.personality_traits.sociability.toFixed(2);
             bacteriaLanguageStageSpan.textContent = `${bacteria.language_stage} - ${vocabularyStages[bacteria.language_stage]?.name || 'Bilinmiyor'}`;
             
-            // Ensure bacteria has vocabulary Set
-            if (!bacteria.vocabulary || !(bacteria.vocabulary instanceof Set)) {
-                bacteria.vocabulary = new Set();
-            }
-            
             const vocabArray = Array.from(bacteria.vocabulary);
                     const displayVocab = vocabArray.slice(0, CONFIG.UI.MAX_VOCABULARY_DISPLAY);
         const remainingCount = vocabArray.length - CONFIG.UI.MAX_VOCABULARY_DISPLAY;
@@ -7424,6 +7424,22 @@
             }
             
             console.log(`🎯 Bacteria highlighted: ${bacteria.name}`);
+        }
+
+        function updateBacteriaListPanel() {
+            const panel = document.getElementById('bacteriaListPanel');
+            if (!panel) return;
+            panel.innerHTML = '';
+            bacteriaPopulation.forEach(b => {
+                const tag = document.createElement('span');
+                tag.className = 'bacteria-tag';
+                tag.textContent = b.name;
+                tag.addEventListener('click', () => {
+                    selectBacteria(b);
+                    switchToIndividualChat(b);
+                });
+                panel.appendChild(tag);
+            });
         }
 
         function setupChat(bacteria) {
@@ -7727,21 +7743,30 @@
         // These elements no longer exist in the new chat system
 
         // v829: High-Frequency Auto Bacteria Conversations for Dynamic Experience
-        setInterval(() => {
-            if (bacteriaPopulation.length >= 2) {
-                // Very high frequency natural conversations for dynamic experience
-                const socialBacteria = bacteriaPopulation.filter(b => b.personality_traits.sociability > 0.3);
-                
-                if (socialBacteria.length >= 2 && Math.random() < 0.9) { // 90% chance for more interactions
-                    startNaturalBacteriaConversation(socialBacteria);
+        let autoConversationId = null;
+
+        function startAutoConversations() {
+            if (autoConversationId) return;
+            autoConversationId = setInterval(() => {
+                if (!simulationManager || !simulationManager.isRunning) return;
+                if (bacteriaPopulation.length >= 2) {
+                    const socialBacteria = bacteriaPopulation.filter(b => b.personality_traits.sociability > 0.3);
+                    if (socialBacteria.length >= 2 && Math.random() < 0.9) {
+                        startNaturalBacteriaConversation(socialBacteria);
+                    }
+                    if (bacteriaPopulation.length >= 3 && Math.random() < 0.4) {
+                        startGroupLearningSession();
+                    }
                 }
-                
-                // More frequent learning sessions
-                if (bacteriaPopulation.length >= 3 && Math.random() < 0.4) { // 40% chance
-                    startGroupLearningSession();
-                }
+            }, 2500);
+        }
+
+        function stopAutoConversations() {
+            if (autoConversationId) {
+                clearInterval(autoConversationId);
+                autoConversationId = null;
             }
-        }, 2500); // Every 2.5 seconds - even more frequent interactions
+        }
 
         // Initialize ML System
         async function initializeMLSystem() {
@@ -8021,10 +8046,11 @@ Consciousness Levels:
             bacteriaIdCounter++;
             
             console.log(`➕ New bacteria added: ${bacteria.name} (Total: ${bacteriaPopulation.length})`);
-            
+
             // Update displays
             updateBuildInfo();
             if (typeof renderBacteria === 'function') renderBacteria();
+            updateBacteriaListPanel();
         }
         
         // 🚀 CRITICAL MISSING FUNCTION  
@@ -8045,6 +8071,8 @@ Consciousness Levels:
             
             console.log(`✅ ${CONFIG.SIMULATION.INITIAL_BACTERIA_COUNT} bacteria initialized`);
             updateBuildInfo();
+            renderBacteria();
+            updateBacteriaListPanel();
         }
 
         function showLearningStats() {
@@ -8472,7 +8500,7 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                     
                     if (simulationManager.isRunning) {
                         simulationManager.pause();
-                        button.textContent = '▶️ Simülasyonu Başlat';
+                        button.textContent = '▶️ Başlat';
                         console.log('⏸️ Simulation paused');
                     } else {
                         simulationManager.start();
@@ -8710,38 +8738,6 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 // 8. 🔤 Initialize Enhanced Morphological System (Phase 2.7) - Optional
                 setTimeout(async () => {
                     try {
-<<<<<<< HEAD
-                        // Load scripts dynamically
-                        // await loadScript('./src/engine/AITrainingAdapter.js'); // File not found - commented out
-                        await loadScript('./src/engine/EnhancedMorphologicalGenerator.js');
-                        await loadScript('./src/engine/MorphologicalDialogueGenerator.js');
-                        await loadScript('./src/engine/PersistentLearningEngine.js');
-                        
-                        // Initialize Enhanced Morphological System
-                        // window.aiTrainingAdapter = new AITrainingAdapter(); // File not found
-                        window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(null); // No training adapter
-                        
-                        // Initialize Persistent Learning Engine
-                        const { PersistentLearningEngine } = await import('./src/engine/PersistentLearningEngine.js');
-                        window.persistentLearning = new PersistentLearningEngine();
-                        
-                        // Wait for training data to load
-                        await new Promise(resolve => {
-                            const checkLoaded = () => {
-                                if (window.persistentLearning && window.persistentLearning.isReady) {
-                                    resolve();
-                                } else {
-                                    setTimeout(checkLoaded, 100);
-                                }
-                            };
-                            checkLoaded();
-                        });
-                        
-                        console.log('🔤 Enhanced Morphological System v2.7 initialized!');
-                                                    console.log(`📚 Enhanced morphological system ready (no training adapter)`);
-                        console.log('🧬 Persistent Learning Engine initialized!');
-                        console.log(`💾 Previous interactions: ${window.persistentLearning.metrics.totalInteractions}`);
-=======
                         console.log('🔤 Attempting to load Enhanced Morphological System...');
                         
                         // Try to load scripts dynamically (optional)
@@ -8789,7 +8785,6 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                                 metrics: { totalInteractions: 0 }
                             };
                         }
->>>>>>> f16f066062b156d1043e143c923dd1af3564d0d2
                         
                         // Mark system as fully ready
                         window.systemFullyReady = true;
@@ -8821,6 +8816,13 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 }, 5000); // Wait for all other systems to be ready
                 
                 console.log('🎉 Event-driven initialization complete!');
+
+                // Auto-start simulation when all systems are ready
+                if (startSimulationBtn && typeof startSimulationBtn.click === 'function') {
+                    startSimulationBtn.click();
+                } else if (simulationManager && typeof simulationManager.start === 'function') {
+                    simulationManager.start();
+                }
                 
             } catch (error) {
                 console.error('❌ Initialization error:', error);
