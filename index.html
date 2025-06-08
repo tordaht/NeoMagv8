@@ -285,6 +285,9 @@
             <button data-action="peer-dialogue" class="bg-pink-600 hover:bg-pink-700 px-3 py-1 rounded text-sm">
                 🗣️ Peer Dialogue
             </button>
+            <button data-action="debug-system" class="bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded text-sm">
+                🔧 Debug System
+            </button>
         </div>
         
         <div class="text-xs text-gray-300">
@@ -8018,7 +8021,64 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 else if (action === 'reset-diversity') resetDiversitySystem();
                 else if (action === 'show-language-stats') showLanguageEvolutionStats();
                 else if (action === 'peer-dialogue') runPeerDialogue();
+                else if (action === 'debug-system') debugSystemStatus();
             });
+        }
+        
+        // 🔧 Debug System Status
+        function debugSystemStatus() {
+            console.log('🔧 DEBUGGING SYSTEM STATUS...');
+            
+            let debugInfo = '🔧 SYSTEM DEBUG INFO:\n\n';
+            
+            // Check bacteria
+            debugInfo += `🧬 Bacteria Count: ${bacteriaList.length}\n`;
+            debugInfo += `📊 Bacteria with consciousness >50%: ${bacteriaList.filter(b => b.consciousness > 0.5).length}\n\n`;
+            
+            // Check system components
+            debugInfo += `🔧 SYSTEM COMPONENTS:\n`;
+            debugInfo += `• systemFullyReady: ${!!window.systemFullyReady}\n`;
+            debugInfo += `• enhancedMorphGenerator: ${!!window.enhancedMorphGenerator}\n`;
+            debugInfo += `• languageEvolutionEngine: ${!!window.languageEvolutionEngine}\n`;
+            debugInfo += `• persistentLearning: ${!!window.persistentLearning}\n`;
+            debugInfo += `• learningEngine: ${!!learningEngine}\n\n`;
+            
+            // Test morphological system
+            debugInfo += `📚 MORPHOLOGICAL SYSTEM:\n`;
+            if (window.enhancedMorphGenerator) {
+                try {
+                    const morphStatus = window.enhancedMorphGenerator.getSystemStatus ? 
+                        window.enhancedMorphGenerator.getSystemStatus() : 'No status method';
+                    debugInfo += `• Status: ${JSON.stringify(morphStatus)}\n`;
+                } catch (e) {
+                    debugInfo += `• Error: ${e.message}\n`;
+                }
+            } else {
+                debugInfo += `• Not loaded yet\n`;
+            }
+            
+            debugInfo += `\n💾 PERSISTENT LEARNING:\n`;
+            if (window.persistentLearning && window.persistentLearning.isReady) {
+                const stats = window.persistentLearning.getLearningStats();
+                debugInfo += `• Total Interactions: ${stats.totalInteractions}\n`;
+                debugInfo += `• Vocabulary Size: ${stats.vocabularySize}\n`;
+            } else {
+                debugInfo += `• Not ready yet\n`;
+            }
+            
+            // Check if bacteria have spoken
+            debugInfo += `\n🗣️ RECENT BACTERIA ACTIVITY:\n`;
+            const recentlySpoken = bacteriaList.filter(b => b.lastSpoken && (Date.now() - b.lastSpoken) < 60000);
+            debugInfo += `• Recently spoken bacteria: ${recentlySpoken.length}\n`;
+            
+            if (bacteriaList.length > 0) {
+                const firstBacteria = bacteriaList[0];
+                debugInfo += `• Sample bacteria consciousness: ${firstBacteria.consciousness.toFixed(2)}\n`;
+                debugInfo += `• Sample bacteria vocabulary size: ${firstBacteria.vocabulary ? firstBacteria.vocabulary.size : 'No vocabulary'}\n`;
+            }
+            
+            alert(debugInfo);
+            console.log('🔧 Debug Info:', debugInfo);
         }
 
         // 🚀 MAIN INITIALIZATION - EVENT DRIVEN
