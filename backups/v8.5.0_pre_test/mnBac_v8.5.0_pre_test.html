@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mnBac v9.6.2 - System Readiness & GitHub Pages Fix</title>
+    <title>NeoMag v8.2.8 - Frontend TabPFN & Smart Word Usage (Mobile Ready)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Note: Tailwind CDN is used for rapid prototyping. For production, use PostCSS or CLI installation -->
     <!-- TensorFlow.js -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0/dist/tf.min.js"></script>
     <style>
@@ -140,7 +139,7 @@
     <!-- Header -->
     <header class="bg-gray-800 shadow-lg p-4 sticky top-0 z-50">
         <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-teal-400">🧬 mnBac v9.6.2 - System Readiness & GitHub Pages Fix</h1>
+            <h1 class="text-2xl font-bold text-teal-400">🧬 NeoMag v8.2.9 - AI Bakteri Simülasyonu</h1>
             <div class="flex gap-2 text-xs">
                 <div class="bg-green-600 text-white px-2 py-1 rounded" id="fpsDisplay">FPS: --</div>
                 <div class="bg-blue-600 text-white px-2 py-1 rounded" id="bacteriaCount">Bakteri: 0</div>
@@ -174,8 +173,9 @@
             <div class="mt-4 p-3 bg-gray-750 rounded-md">
                 <h3 class="text-lg font-semibold mb-2 text-teal-300">Kontrol Paneli</h3>
                 <div class="flex space-x-2">
-                    <!-- ESKİ BUTTONLAR KALDIRILDI - YENİ EVENT DElEGATİON SİSTEMİ KULLANILIYOR -->
-                    <p class="text-sm text-gray-400">Kontrol butonları aşağıda ⬇️</p>
+                    <button id="startSimulationBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 ease-in-out">Simülasyonu Başlat</button>
+                    <button id="nextStepBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 ease-in-out" disabled>Sonraki Adım</button>
+                    <button id="resetSimulationBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 ease-in-out">Sıfırla</button>
                 </div>
                 <p id="simulationTime" class="mt-2 text-sm text-gray-400">Simülasyon Zamanı: 0 gün</p>
             </div>
@@ -230,8 +230,8 @@
     <!-- Controls -->
     <div class="bg-gray-800 p-4 rounded-lg mb-4">
         <div class="flex flex-wrap gap-2 mb-4">
-            <button id="startSimulationBtn" data-action="start-simulation" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg text-lg font-bold">
-                ▶️ Simülasyonu Başlat
+            <button data-action="start-simulation" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">
+                ▶️ Başlat
             </button>
             <button data-action="pause-simulation" class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded">
                 ⏸️ Duraklat
@@ -269,21 +269,6 @@
             </button>
             <button data-action="show-learning-stats" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-sm">
                 🧠 AI Learning
-            </button>
-            <button data-action="clear-learning-db" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">
-                🧬 Clear Learning
-            </button>
-            <button data-action="show-diversity-stats" class="bg-teal-600 hover:bg-teal-700 px-3 py-1 rounded text-sm">
-                🎭 Word Diversity
-            </button>
-            <button data-action="reset-diversity" class="bg-orange-600 hover:bg-orange-700 px-3 py-1 rounded text-sm">
-                🔄 Reset Diversity
-            </button>
-            <button data-action="show-language-stats" class="bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded text-sm">
-                🧠 Language Stats
-            </button>
-            <button data-action="peer-dialogue" class="bg-pink-600 hover:bg-pink-700 px-3 py-1 rounded text-sm">
-                🗣️ Peer Dialogue
             </button>
         </div>
         
@@ -365,9 +350,6 @@
         
         // Global event system
         const appEvents = new SimpleEventEmitter();
-        
-        // Initialize AI Learning Engine globally
-        let learningEngine = null;
         
         // 🧠 SELF-IMPROVEMENT SYSTEM
         class SystemLearningEngine {
@@ -500,8 +482,8 @@
             }
             
             const ctx = canvas.getContext('2d');
-            // 🎯 STATİK SIZE ATAMASI KALDIRILDI - resizeCanvas() kullanılacak
-            // canvas.width ve canvas.height artık dinamik olarak ayarlanıyor
+            canvas.width = CONFIG.CANVAS.SIMULATION_AREA_WIDTH;
+            canvas.height = CONFIG.CANVAS.SIMULATION_AREA_HEIGHT;
             
             console.log('✅ Canvas system initialized');
         }
@@ -530,23 +512,6 @@
                 this.frameCount = 0;
                 this.fpsDisplay = document.getElementById('fpsDisplay');
                 this.gameLoop = this.gameLoop.bind(this);
-                
-                // 🗣️ Enhanced Peer Communication System
-                this.stepCount = 0;
-                this.CHAT_INTERVAL = 5; // Her 5 adımda peer chat
-                this.GROUP_CHAT_INTERVAL = 15; // Her 15 adımda grup sohbeti
-                this.speechBubbles = new Map(); // Konuşma balonları tracking
-                
-                // Mood-based vocabulary lists
-                this.POSITIVE_WORDS = new Set([
-                    'iyi', 'mutlu', 'hoş', 'güzel', 'harika', 'mükemmel', 'sevgi', 
-                    'dostluk', 'neşe', 'umut', 'başarı', 'kazanç', 'büyüme', 'gelişim'
-                ]);
-                
-                this.NEGATIVE_WORDS = new Set([
-                    'kötü', 'üzgün', 'berbat', 'korkunç', 'başarısız', 'kayıp', 
-                    'ağrı', 'acı', 'kırık', 'yalnız', 'depresif', 'karanlık'
-                ]);
             }
 
             gameLoop(timestamp) {
@@ -619,29 +584,12 @@
 
             simulationStep() {
                 this.simulationDay++;
-                this.stepCount++; // 🗣️ Peer communication tracking
                 simulationDay = this.simulationDay; // Global ile senkronize
                 simulationTimeSpan.textContent = `Simülasyon Zamanı: ${this.simulationDay} gün`;
                 
                 // Auto-generate food for sustained ecosystem
                 if (Math.random() < CONFIG.SIMULATION.AUTO_FOOD_GENERATION_CHANCE) {
                     addRandomFood();
-                }
-                
-                // 🗣️ Enhanced Peer Communication System
-                if (bacteriaPopulation.length >= 2) {
-                    // Regular peer chats
-                    if (this.stepCount % this.CHAT_INTERVAL === 0) {
-                        this.runPeerChats();
-                    }
-                    
-                    // Group therapy sessions
-                    if (this.stepCount % this.GROUP_CHAT_INTERVAL === 0) {
-                        this.runGroupChat();
-                    }
-                    
-                    // Support for depressed bacteria
-                    this.checkDepressedBacteria();
                 }
                 
                 bacteriaPopulation.forEach((bacteria, index) => {
@@ -679,425 +627,6 @@
                     updateBacteriaDetails(selectedBacteria);
                 }
             }
-            
-            // 🗣️ Enhanced Peer Communication Methods
-            
-            /**
-             * Her bakteri rastgele bir eş seçer ve sohbet eder
-             */
-            async runPeerChats() {
-                const socialBacteria = bacteriaPopulation.filter(b => 
-                    b.consciousness_level > 0.5 && b.personality_traits.sociability > 0.3
-                );
-                
-                if (socialBacteria.length < 2) return;
-                
-                // Her bakteriye partner bul ve konuş
-                for (const bacteria of socialBacteria) {
-                    if (Math.random() < 0.7) { // %70 şans ile konuşma
-                        const partner = this.getRandomNeighbor(bacteria, socialBacteria);
-                        if (partner) {
-                            await this.exchangeDialog(bacteria, partner);
-                        }
-                    }
-                }
-                
-                console.log(`🗣️ Peer chats completed: ${socialBacteria.length} bacteria participated`);
-            }
-            
-            /**
-             * Rastgele komşu bakteri seç (proximity veya random)
-             */
-            getRandomNeighbor(bacteria, pool = bacteriaPopulation) {
-                const others = pool.filter(x => x !== bacteria);
-                if (others.length === 0) return null;
-                
-                // Yakınlık bazlı seçim (%30 şans)
-                if (Math.random() < 0.3) {
-                    const nearby = others.filter(other => {
-                        const dx = bacteria.x - other.x;
-                        const dy = bacteria.y - other.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        return distance < 100; // 100px yakınlık
-                    });
-                    
-                    if (nearby.length > 0) {
-                        return nearby[Math.floor(Math.random() * nearby.length)];
-                    }
-                }
-                
-                // Random seçim
-                return others[Math.floor(Math.random() * others.length)];
-            }
-            
-            /**
-             * İki bakteri arası çift yönlü diyalog
-             */
-            async exchangeDialog(bacteriaA, bacteriaB) {
-                try {
-                    // A'dan B'ye mesaj
-                    const contextA = this.getBacteriaContext(bacteriaA);
-                    const messageA = await this.generatePeerMessage(bacteriaA, contextA);
-                    
-                    // B mesajı öğrenir ve mood etkilenir
-                    this.learnFromPeer(bacteriaB, messageA, bacteriaA);
-                    this.renderSpeechBubble(bacteriaA, messageA, 3000);
-                    
-                    // B'den A'ya cevap (kısa gecikme)
-                    setTimeout(async () => {
-                        const contextB = this.getBacteriaContext(bacteriaB);
-                        const messageB = await this.generatePeerMessage(bacteriaB, contextB);
-                        
-                        this.learnFromPeer(bacteriaA, messageB, bacteriaB);
-                        this.renderSpeechBubble(bacteriaB, messageB, 3000);
-                    }, 500 + Math.random() * 1000);
-                    
-                } catch (error) {
-                    console.warn('⚠️ Peer dialog failed:', error);
-                }
-            }
-            
-            /**
-             * Bakterinin mevcut context'ini belirle
-             */
-                         getBacteriaContext(bacteria) {
-                 // Mood'a göre context seç (personality_traits.mood kullan)
-                 if (bacteria.personality_traits.mood < 0.3) return 'sad';
-                 if (bacteria.personality_traits.mood > 0.7) return 'happy';
-                 if (bacteria.energy && bacteria.energy < 0.3) return 'hungry';
-                 if (bacteria.biological_state.energy < 0.3) return 'hungry';
-                 if (bacteria.consciousness_level > 2.0) return 'philosophical';
-                 if (bacteria.personality_traits.sociability > 0.7) return 'social';
-                 
-                 const contexts = ['general', 'friendly', 'curious', 'learning'];
-                 return contexts[Math.floor(Math.random() * contexts.length)];
-             }
-            
-            /**
-             * Peer mesajı üret (Enhanced Morphological System v2.7 veya fallback)
-             */
-            async generatePeerMessage(bacteria, context) {
-                // Enhanced Morphological System v2.7 kullan
-                if (window.generateEnhancedMorphSentence && bacteria.consciousness_level >= 0.8) {
-                    try {
-                        const mood = bacteria.personality_traits.mood || 0.5;
-                        const contextEmbed = { context: context };
-                        
-                        return await window.generateEnhancedMorphSentence(
-                            contextEmbed,
-                            'simple',
-                            {
-                                emotionalTone: mood > 0.7 ? 'mutlu' : mood < 0.3 ? 'hüzünlü' : 'normal',
-                                complexity: bacteria.consciousness_level > 1.5 ? 'complex' : 'simple',
-                                consciousness: bacteria.consciousness_level,
-                                enableStyle: mood > 0.4,
-                                enableComposition: mood > 0.6,
-                                mood: mood
-                            }
-                        );
-                    } catch (error) {
-                        console.warn('⚠️ Enhanced morphology failed, using fallback');
-                    }
-                }
-                
-                // Fallback - basit mesaj üretimi
-                return this.generateSimplePeerMessage(bacteria, context);
-            }
-            
-            /**
-             * Basit peer mesajı (fallback)
-             */
-            generateSimplePeerMessage(bacteria, context) {
-                                 const templates = {
-                     'sad': ['Moralim bozuk...', 'Kendimi kötü hissediyorum', 'Yardıma ihtiyacım var'],
-                     'happy': ['Harika hissediyorum!', 'Bu gün çok güzel!', 'Seninle konuşmak güzel'],
-                     'hungry': ['Acıktım...', 'Yemek arıyorum', 'Enerji lazım'],
-                     'philosophical': ['Varoluş hakkında düşünüyorum', 'Bilinç nedir?', 'Büyümek güzel'],
-                     'social': ['Merhaba arkadaş!', 'Nasılsın?', 'Birlikte takılalım'],
-                     'general': ['Selam!', 'Ne yapıyorsun?', 'Güzel gün'],
-                     'friendly': ['Arkadaşım!', 'Seni görmek güzel', 'Beraber olalım'],
-                     'curious': ['Bu nedir?', 'Öğrenmek istiyorum', 'Merak ediyorum'],
-                     'learning': ['Yeni şeyler öğreniyorum', 'Akıllanıyorum', 'Gelişiyorum'],
-                     'supportive': ['Üzülme arkadaş!', 'Her şey düzelecek', 'Yanındayım', 'Moralini bozma', 'Birlikte güçlüyüz'],
-                     'group_social': ['Herkese merhaba!', 'Güzel bir grup', 'Hep birlikte güzeliz', 'Bu sohbet çok hoş']
-                 };
-                
-                const contextTemplates = templates[context] || templates['general'];
-                const template = contextTemplates[Math.floor(Math.random() * contextTemplates.length)];
-                
-                // Vocabulary'den kelime ekle
-                if (bacteria.vocabulary && bacteria.vocabulary.size > 0) {
-                    const vocab = Array.from(bacteria.vocabulary);
-                    const randomWord = vocab[Math.floor(Math.random() * vocab.length)];
-                    return `${template} ${randomWord}!`;
-                }
-                
-                return template;
-            }
-            
-            /**
-             * Peer'den öğrenme ve mood etkileşimi
-             */
-            learnFromPeer(receiver, message, sender) {
-                // Kelimeleri çıkar ve öğren
-                const words = message.toLowerCase()
-                    .replace(/[^\wçğıöşüâîû\s]/g, ' ')
-                    .split(/\s+/)
-                    .filter(word => word.length > 2);
-                
-                // Yeni kelimeleri vocabulary'ye ekle
-                let newWordsLearned = 0;
-                words.forEach(word => {
-                    if (!receiver.vocabulary.has(word) && Math.random() < 0.4) { // %40 öğrenme şansı
-                        receiver.vocabulary.add(word);
-                        newWordsLearned++;
-                    }
-                });
-                
-                // Mood analizi ve güncelleme
-                let moodDelta = 0;
-                words.forEach(word => {
-                    if (this.POSITIVE_WORDS.has(word)) {
-                        moodDelta += 0.05;
-                    } else if (this.NEGATIVE_WORDS.has(word)) {
-                        moodDelta -= 0.03;
-                    }
-                });
-                
-                // Sosyal etkileşim bonus
-                moodDelta += 0.02; // Konuşmak genel olarak mood artırır
-                
-                                 // Mood güncelle (0-1 arası sınırla) - personality_traits.mood kullan
-                 receiver.personality_traits.mood = Math.max(0, Math.min(1, receiver.personality_traits.mood + moodDelta));
-                
-                // Consciousness artışı (peer learning bonus)
-                if (newWordsLearned > 0) {
-                    receiver.consciousness_level += newWordsLearned * 0.01;
-                }
-                
-                // Persistent Learning'e kaydet
-                if (window.persistentLearning) {
-                    window.persistentLearning.recordInteraction(
-                        message,
-                        `Learned from ${sender.name}`,
-                        'peer_learning',
-                        receiver.id
-                    );
-                }
-                
-                                 console.log(`🧠 ${receiver.name} learned ${newWordsLearned} words from ${sender.name}, mood: ${receiver.personality_traits.mood.toFixed(2)}`);
-            }
-            
-            /**
-             * Grup sohbeti (3-4 bakteri)
-             */
-            async runGroupChat() {
-                const activeBacteria = bacteriaPopulation.filter(b => 
-                    b.consciousness_level > 1.0 && b.personality_traits.sociability > 0.4
-                );
-                
-                if (activeBacteria.length < 3) return;
-                
-                // 3-4 bakteri seç
-                const groupSize = Math.min(4, activeBacteria.length);
-                const group = this.shuffleArray(activeBacteria).slice(0, groupSize);
-                
-                console.log(`👥 Group chat started with: ${group.map(b => b.name).join(', ')}`);
-                
-                // Her bakteri sırayla konuşur
-                for (let i = 0; i < group.length; i++) {
-                    const speaker = group[i];
-                    const context = 'group_social';
-                    
-                    const message = await this.generatePeerMessage(speaker, context);
-                    this.renderSpeechBubble(speaker, message, 4000);
-                    
-                    // Diğer grup üyeleri öğrenir
-                    group.filter(b => b !== speaker).forEach(listener => {
-                        this.learnFromPeer(listener, message, speaker);
-                    });
-                    
-                    // Kısa gecikme
-                    await new Promise(resolve => setTimeout(resolve, 800));
-                }
-            }
-            
-            /**
-             * Depresif bakterilere destek
-             */
-                         async checkDepressedBacteria() {
-                 const depressedBacteria = bacteriaPopulation.filter(b => b.personality_traits.mood < 0.3);
-                
-                for (const depressed of depressedBacteria) {
-                    // Pozitif bakteri bul
-                                         const supporter = bacteriaPopulation.find(b => 
-                         b !== depressed && 
-                         b.personality_traits.mood > 0.6 && 
-                         b.personality_traits.sociability > 0.5
-                     );
-                    
-                    if (supporter && Math.random() < 0.3) { // %30 şans ile destek
-                        const supportMessage = await this.generatePeerMessage(supporter, 'supportive');
-                        this.learnFromPeer(depressed, supportMessage, supporter);
-                        this.renderSpeechBubble(supporter, `→ ${depressed.name}: ${supportMessage}`, 4000);
-                        
-                                                 // Extra mood boost for support
-                         depressed.personality_traits.mood = Math.min(1, depressed.personality_traits.mood + 0.1);
-                        
-                        console.log(`💝 ${supporter.name} supported depressed ${depressed.name}`);
-                    }
-                }
-            }
-            
-            /**
-             * 🎯 ÖZELLİK 2: Konuşma balonu render (isim + mesaj)
-             */
-            renderSpeechBubble(bacteria, message, duration = 3000) {
-                // Previous bubble'ı temizle
-                if (this.speechBubbles.has(bacteria.id)) {
-                    clearTimeout(this.speechBubbles.get(bacteria.id).timeout);
-                }
-                
-                // Bubble element oluştur veya güncelle
-                let bubble = document.getElementById(`speech-${bacteria.id}`);
-                if (!bubble) {
-                    bubble = document.createElement('div');
-                    bubble.id = `speech-${bacteria.id}`;
-                    bubble.className = 'speech-bubble';
-                    bubble.style.cssText = `
-                        position: absolute;
-                        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.9));
-                        border: 1px solid #3b82f6;
-                        border-radius: 12px;
-                        padding: 6px 10px;
-                        font-size: 11px;
-                        max-width: 140px;
-                        word-wrap: break-word;
-                        z-index: 1000;
-                        pointer-events: auto;
-                        box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-                        cursor: pointer;
-                        transition: all 0.3s ease, opacity 0.8s ease, transform 0.8s ease;
-                        opacity: 1;
-                        transform: scale(1) translateY(0);
-                    `;
-                    
-                    // 🎯 Bubble'a tıklayınca bakteriyi seç
-                    bubble.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        selectedBacteria = bacteria;
-                        console.log(`🎯 Speech bubble'dan bakteri seçildi: ${bacteria.name}`);
-                        
-                        // UI'yi güncelle
-                        showBacteriaDetails(selectedBacteria);
-                        highlightSelectedBacteria(bacteria);
-                        
-                        // Chat modunu individual'a çevir
-                        if (chatMode !== 'individual') {
-                            chatMode = 'individual';
-                            updateChatModeButtons();
-                            updateChatUI();
-                        }
-                        
-                        // Görsel feedback
-                        bubble.style.transform = 'scale(1.1)';
-                        bubble.style.borderColor = '#22c55e';
-                        setTimeout(() => {
-                            bubble.style.transform = 'scale(1)';
-                            bubble.style.borderColor = '#3b82f6';
-                        }, 300);
-                    });
-                    
-                    // Hover efektleri
-                    bubble.addEventListener('mouseenter', () => {
-                        bubble.style.transform = 'scale(1.05)';
-                        bubble.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
-                    });
-                    
-                    bubble.addEventListener('mouseleave', () => {
-                        bubble.style.transform = 'scale(1)';
-                        bubble.style.boxShadow = '0 3px 8px rgba(0,0,0,0.15)';
-                    });
-                    
-                    simulationArea.appendChild(bubble);
-                }
-                
-                // 🎯 İsim + mesaj içeriğini oluştur
-                const nameDiv = document.createElement('div');
-                nameDiv.style.cssText = `
-                    font-weight: bold;
-                    color: #1e40af;
-                    font-size: 9px;
-                    margin-bottom: 2px;
-                    border-bottom: 1px solid rgba(59, 130, 246, 0.3);
-                    padding-bottom: 1px;
-                `;
-                nameDiv.textContent = bacteria.name;
-                
-                const messageDiv = document.createElement('div');
-                messageDiv.style.cssText = `
-                    color: #374151;
-                    line-height: 1.2;
-                `;
-                messageDiv.textContent = message.substring(0, 45) + (message.length > 45 ? '...' : '');
-                
-                // Bubble içeriğini temizle ve yeniden oluştur
-                bubble.innerHTML = '';
-                bubble.appendChild(nameDiv);
-                bubble.appendChild(messageDiv);
-                
-                // Pozisyon güncelle (bakterinin biraz üstünde)
-                bubble.style.left = `${bacteria.x - 20}px`;
-                bubble.style.top = `${bacteria.y - 35}px`;
-                bubble.style.display = 'block';
-                
-                // 🎭 Entrance animasyonu
-                bubble.style.opacity = '0';
-                bubble.style.transform = 'scale(0.5) translateY(10px)';
-                
-                // Hemen entrance animasyonunu başlat
-                setTimeout(() => {
-                    bubble.style.opacity = '1';
-                    bubble.style.transform = 'scale(1) translateY(0)';
-                }, 10);
-                
-                // 🎭 Güzel fade out animasyonu
-                const timeout = setTimeout(() => {
-                    if (bubble && bubble.parentNode) {
-                        // 1. Yukarı kaydırma ve fade out başlat
-                        bubble.style.opacity = '0';
-                        bubble.style.transform = 'scale(0.8) translateY(-10px)';
-                        bubble.style.pointerEvents = 'none';
-                        
-                        // 2. Animasyon tamamlandıktan sonra temizle
-                        setTimeout(() => {
-                            if (bubble && bubble.parentNode) {
-                                bubble.style.display = 'none';
-                                bubble.style.opacity = '1';
-                                bubble.style.transform = 'scale(1) translateY(0)';
-                                bubble.style.pointerEvents = 'auto';
-                            }
-                        }, 800); // Transition süresi kadar bekle
-                    }
-                    this.speechBubbles.delete(bacteria.id);
-                }, duration - 800); // Animasyon süresini duration'dan çıkar
-                
-                this.speechBubbles.set(bacteria.id, { bubble, timeout });
-            }
-            
-            /**
-             * Array karıştırma utility
-             */
-            shuffleArray(array) {
-                const shuffled = [...array];
-                for (let i = shuffled.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-                }
-                return shuffled;
-            }
         }
 
         // Global simulation manager (will be initialized in mainInitialize)
@@ -1120,9 +649,10 @@
                 REPRODUCTION_MIN_VOCABULARY: 5
             },
             CANVAS: {
-                // ✅ V8.7.4: ALL STATIC SIZES REMOVED - FULLY DYNAMIC NOW!
-                // No static width/height - canvas uses 100% responsive sizing
-                // SIMULATION_AREA_* COMPLETELY REMOVED - only DYNAMIC_BOUNDARIES used
+                WIDTH: 800,
+                HEIGHT: 600,
+                SIMULATION_AREA_WIDTH: 480,
+                SIMULATION_AREA_HEIGHT: 280
             },
             UI: {
                 MAX_VOCABULARY_DISPLAY: 10,
@@ -1157,8 +687,8 @@
             }
         };
 
-        // Version and Build Info (moved up to prevent hoisting issues)  
-        const VERSION = 'v9.6.2 GitHub Pages Fix';
+        // Version and Build Info (moved up to prevent hoisting issues)
+        const VERSION = 'v8.5.0';
         const BUILD_DATE = new Date().toISOString().slice(0,19);
         const FEATURES = [
             'Frontend-Only TabPFN (Mobile Compatible)',
@@ -1205,1171 +735,6 @@
         let geneticAlgorithm = null;
         let behaviourLearningSystem = null;
         let tabpfnVocabularySystem = null;
-
-        // 🎭 MATHEMATICAL COMEDY THEORY SYSTEM v8.6.1
-        // Based on Incongruity Theory + Surprisal + Sigmoid Modeling
-        const COMEDY_MATH_CONFIG = {
-            // Incongruity (Surprisal) Parameters
-            MIN_SURPRISAL: 1.0, // Minimum surprisal bits for comedy effect
-            MAX_SURPRISAL: 4.0, // Maximum useful surprisal
-            SURPRISAL_WEIGHT: 1.2, // α parameter for incongruity influence
-            
-            // Sigmoid Function Parameters for Joke Probability
-            MOOD_WEIGHT: 1.0, // γ parameter for mood influence  
-            SOCIABILITY_WEIGHT: 0.8, // δ parameter for social influence
-            CONSCIOUSNESS_THRESHOLD: 2.5,
-            MIN_MOOD_THRESHOLD: 0.6,
-            MIN_OPTIMISM_THRESHOLD: 0.6,
-            MIN_SOCIABILITY_THRESHOLD: 0.5,
-            
-            // Listener Reaction Parameters
-            LISTENER_ETA: 1.5, // η - how strongly listeners absorb incongruity
-            LISTENER_ZETA: 1.0, // ζ - stress dampening factor
-            UNDERSTANDING_THRESHOLD: 0.4, // Min probability to "understand" joke
-            
-            // Cultural Evolution
-            CULTURAL_PROMOTION_THRESHOLD: 0.8, // 80% success rate for cultural status
-            MIN_LISTENERS_FOR_CULTURE: 3, // Minimum audience for cultural promotion
-            CULTURAL_MEMORY_DECAY: 0.95, // How cultural jokes lose relevance over time
-            
-            // System Parameters
-            PREDEFINED_JOKE_CHANCE: 0.6,
-            DYNAMIC_JOKE_CHANCE: 0.4,
-            JOKE_COOLDOWN: 30000,
-            MAX_JOKE_DISTANCE: 150,
-            BASE_MORALE_BOOST: 0.05,
-            RITUAL_BONUS: 0.1
-        };
-
-        // 🧮 MATHEMATICAL COMEDY FUNCTIONS
-        class ComedyMath {
-            // Calculate surprisal value for word in context
-            static calculateSurprisal(word, context, bacteria) {
-                if (!bacteria.vocabulary || bacteria.vocabulary.size === 0) return 0;
-                
-                const vocabularySize = bacteria.vocabulary.size;
-                const wordFrequency = bacteria.wordFrequencies?.get(word) || 1;
-                const totalWords = Array.from(bacteria.wordFrequencies?.values() || [1]).reduce((a, b) => a + b, vocabularySize);
-                
-                // P(word | context) estimation
-                const probability = wordFrequency / totalWords;
-                
-                // Surprisal = -log2(P(word | context))
-                const surprisal = -Math.log2(Math.max(probability, 0.001)); // Avoid log(0)
-                
-                return Math.min(surprisal, COMEDY_MATH_CONFIG.MAX_SURPRISAL);
-            }
-            
-            // Sigmoid function for probability calculations
-            static sigmoid(x) {
-                return 1 / (1 + Math.exp(-x));
-            }
-            
-            // Calculate joke-telling probability using sigmoid model
-            static calculateJokeProbability(bacteria) {
-                if (!bacteria.vocabulary || bacteria.vocabulary.size < 3) return 0;
-                
-                // Sample words from vocabulary for surprisal calculation
-                const words = Array.from(bacteria.vocabulary);
-                const avgSurprisal = words.slice(0, 3).reduce((sum, word) => 
-                    sum + this.calculateSurprisal(word, 'joke_context', bacteria), 0) / 3;
-                
-                if (avgSurprisal < COMEDY_MATH_CONFIG.MIN_SURPRISAL) return 0;
-                
-                // Sigmoid calculation: P_joke = σ(α*(I-I_min) + γ*(M-M_min) + δ*(S-S_min))
-                const x = COMEDY_MATH_CONFIG.SURPRISAL_WEIGHT * (avgSurprisal - COMEDY_MATH_CONFIG.MIN_SURPRISAL) +
-                         COMEDY_MATH_CONFIG.MOOD_WEIGHT * (bacteria.personality_traits.mood - COMEDY_MATH_CONFIG.MIN_MOOD_THRESHOLD) +
-                         COMEDY_MATH_CONFIG.SOCIABILITY_WEIGHT * (bacteria.personality_traits.sociability - COMEDY_MATH_CONFIG.MIN_SOCIABILITY_THRESHOLD);
-                
-                return this.sigmoid(x);
-            }
-            
-            // Calculate listener's incongruity absorption (IA)
-            static calculateIncongruityAbsorption(joke, listener, jokeSuprisal) {
-                const stress = listener.stress || (1 - listener.personality_traits.mood); // Estimate stress from mood
-                
-                // IA = σ(η * I_joke - ζ * stress)
-                const x = COMEDY_MATH_CONFIG.LISTENER_ETA * jokeSuprisal - 
-                         COMEDY_MATH_CONFIG.LISTENER_ZETA * stress;
-                
-                return this.sigmoid(x);
-            }
-            
-            // Calculate laugh probability for a listener
-            static calculateLaughProbability(incongruityAbsorption, listener) {
-                // P_laugh = IA × S × M
-                return incongruityAbsorption * 
-                       listener.personality_traits.sociability * 
-                       listener.personality_traits.mood;
-            }
-            
-            // Determine if joke should be promoted to cultural status
-            static shouldPromoteToCulture(successRate, listenerCount) {
-                return successRate >= COMEDY_MATH_CONFIG.CULTURAL_PROMOTION_THRESHOLD &&
-                       listenerCount >= COMEDY_MATH_CONFIG.MIN_LISTENERS_FOR_CULTURE;
-            }
-            
-            // Calculate cultural value decay over time
-            static calculateCulturalDecay(joke, timeSinceCreation) {
-                const ageInDays = timeSinceCreation / (1000 * 60 * 60 * 24);
-                return Math.pow(COMEDY_MATH_CONFIG.CULTURAL_MEMORY_DECAY, ageInDays);
-            }
-        }
-
-        // 📚 Comprehensive Joke Database with Categories and Responses
-        const PREDEFINED_JOKES = new Map([
-            ["vur joker VUUĞRR", { 
-                responses: ["oyna oyna oyna! 🎮", "VUUĞRR! 🃏", "joker iyidir! 😄", "hahaha klasik! 🤣"], 
-                category: "rituel",
-                successRate: 0.9,
-                culturalValue: 1.0 // How "cultural" this joke is
-            }],
-            ["neden elektron mutsuzdu?", { 
-                responses: ["çünkü hep negatifti! ⚡", "pozitif düşünseydi! 😂", "anlamadım ama komik? 🤔"], 
-                category: "bilimsel_espri",
-                successRate: 0.7,
-                culturalValue: 0.6
-            }],
-            ["ATP ne der?", { 
-                responses: ["enerji veriyorum! ⚡", "yoruldum! 😴", "sentez yapalım! 🧬"], 
-                category: "biyokimya_mizahi",
-                successRate: 0.75,
-                culturalValue: 0.8
-            }],
-            ["mikroorganizma toplantısında", { 
-                responses: ["herkes çok küçük geldi! 😅", "büyütece ihtiyaç var! 🔍", "bölünelim mi? 😄"], 
-                category: "sosyal_mizah",
-                successRate: 0.6,
-                culturalValue: 0.7
-            }]
-        ]);
-
-        // 🎪 Dynamic Joke Generation Templates
-        const JOKE_TEMPLATES = [
-            "{scientific_word} + {emotion_word} = {silly_result}",
-            "Neden {organism} {action}? Çünkü {reason}!",
-            "{character} ne der? '{expression}!'",
-            "{process} yaparken {unexpected_thing} oldu!"
-        ];
-
-        // 🎭 JOKE MASTER V8.8.0 - CSV-Powered Kategorik Yatkınlık Sistemi
-        class JokeMaster {
-            constructor(vocabularySystem) {
-                this.vocabularySystem = vocabularySystem;
-                this.predefinedJokes = PREDEFINED_JOKES;
-                this.csvJokes = []; // SAKALAR.csv data
-                this.categoryAffinities = new Map(); // bacteria_id -> {category: affinity_score}
-                this.jokePopularity = new Map(); // joke_id -> popularity (1-100)
-                this.learnedJokes = new Map(); // Dynamic jokes learned from community
-                this.culturalJokes = new Map(); // Jokes that became cultural references
-                this.jokeHistory = []; // Track all told jokes for analysis
-                this.generation = 0; // Joke evolution generation
-                
-                this.initializeCSVJokes();
-                console.log('🎭 JokeMaster V8.8.0 initialized with CSV Comedy System!');
-            }
-
-            // 🎯 CSV Integration System
-            async initializeCSVJokes() {
-                try {
-                    const response = await fetch('./SAKALAR.csv');
-                    const csvText = await response.text();
-                    this.csvJokes = this.parseCSVJokes(csvText);
-                    
-                    // Initialize popularity scores (50-100 range)
-                    this.csvJokes.forEach(joke => {
-                        this.jokePopularity.set(joke.SakaID, 50 + Math.random() * 50);
-                    });
-                    
-                    console.log(`🎪 Loaded ${this.csvJokes.length} jokes from SAKALAR.csv`);
-                } catch (error) {
-                    console.warn('📁 SAKALAR.csv not found, using fallback system');
-                    this.initializeFallbackJokes();
-                }
-            }
-
-            parseCSVJokes(csvText) {
-                const lines = csvText.split('\n').slice(1); // Skip header
-                return lines.filter(line => line.trim()).map((line, index) => {
-                    const parts = line.split(',');
-                    return {
-                        SakaID: index + 1,
-                        Kategori: (parts[0] && parts[0].trim()) || 'Genel',
-                        SakaMetni: (parts[1] && parts[1].replace(/"/g, '').trim()) || '',
-                        TepkiMetinleri: (parts[2] && parts[2].split('|').map(r => r.trim())) || ['😄', '🤔', '😅'],
-                        UygunlukSeviyesi: parseInt(parts[3]) || 1,
-                        KaraMizahSeviyesi: parseInt(parts[4]) || 0
-                    };
-                }).filter(joke => joke.SakaMetni.length > 5);
-            }
-
-            initializeFallbackJokes() {
-                this.csvJokes = [
-                    {
-                        SakaID: 1,
-                        Kategori: 'Bilimsel_Espri',
-                        SakaMetni: 'ATP\'ye sordum, enerjim nasıl? O da: Sen çok potansiyellisin!',
-                        TepkiMetinleri: ['Hahaha! 😂', 'Bilimsel! 🧬', 'Çok zeki! 🤓'],
-                        UygunlukSeviyesi: 1,
-                        KaraMizahSeviyesi: 0
-                    },
-                    {
-                        SakaID: 2,
-                        Kategori: 'Soguk_Espri',
-                        SakaMetni: 'Bakteri neden üzgün? Çünkü kimse onu göremiyor!',
-                        TepkiMetinleri: ['Ayy! 😅', 'Kötü ama komik! 😄', 'Baba şakası! 👨'],
-                        UygunlukSeviyesi: 1,
-                        KaraMizahSeviyesi: 0
-                    },
-                    {
-                        SakaID: 3,
-                        Kategori: 'Sim_Ozel',
-                        SakaMetni: 'Vur joker vur!',
-                        TepkiMetinleri: ['OLEY! 🎉', 'Kültürel an! 🎭', 'Ritual! 🔥'],
-                        UygunlukSeviyesi: 2,
-                        KaraMizahSeviyesi: 0
-                    }
-                ];
-            }
-
-            // 🎯 MAIN METHOD V8.8.0: Kategorik Yatkınlık & Popülerlik Motoru
-            tryTellingJoke(bacteria, forced = false) {
-                if (!forced && !this.isEligibleForJoke(bacteria)) return null;
-
-                // Priority: CSV jokes > predefined > dynamic
-                if (this.csvJokes.length > 0) {
-                    return this.selectCSVJoke(bacteria);
-                } else {
-                    const jokeType = Math.random() < JOKE_CONFIG.PREDEFINED_JOKE_CHANCE ? 'predefined' : 'dynamic';
-                    return jokeType === 'predefined' ? this.getPredefinedJoke(bacteria) : this.generateDynamicJoke(bacteria);
-                }
-            }
-
-            // 🎪 Kategorik Yatkınlık & Popülerlik Selection Engine
-            selectCSVJoke(bacteria) {
-                this.updateCategoryAffinities(bacteria);
-                
-                let weightedJokePool = [];
-                
-                for (const joke of this.csvJokes) {
-                    // Skip inappropriate jokes based on bacteria's dark humor tolerance
-                    if (joke.KaraMizahSeviyesi > 0 && bacteria.personality_traits.dark_humor_tolerance < 0.5) {
-                        continue;
-                    }
-                    
-                    // Get personal affinity for this category
-                    const personalAffinity = this.getCategoryAffinity(bacteria.id, joke.Kategori);
-                    
-                    // Get cultural popularity
-                    const culturalPopularity = this.jokePopularity.get(joke.SakaID) || 50;
-                    
-                    // Calculate final weight: personal taste × cultural popularity
-                    const weight = personalAffinity * (culturalPopularity / 100);
-                    
-                    weightedJokePool.push({ joke, weight });
-                }
-                
-                if (weightedJokePool.length === 0) return null;
-                
-                // Weighted random selection
-                const totalWeight = weightedJokePool.reduce((sum, item) => sum + item.weight, 0);
-                let random = Math.random() * totalWeight;
-                
-                for (const item of weightedJokePool) {
-                    random -= item.weight;
-                    if (random <= 0) {
-                        console.log(`🎭 ${bacteria.name} selected ${item.joke.Kategori} joke with weight ${item.weight.toFixed(2)}`);
-                        return this.formatCSVJoke(item.joke, bacteria);
-                    }
-                }
-                
-                // Fallback
-                return this.formatCSVJoke(weightedJokePool[0].joke, bacteria);
-            }
-
-            // 🧮 Dynamic Category Affinity Updates Based on Personality
-            updateCategoryAffinities(bacteria) {
-                if (!this.categoryAffinities.has(bacteria.id)) {
-                    this.categoryAffinities.set(bacteria.id, {});
-                }
-                
-                const affinities = this.categoryAffinities.get(bacteria.id);
-                
-                // Bilimsel Espri - High consciousness & curiosity
-                affinities.Bilimsel_Espri = (bacteria.consciousness_level / 10) * 0.5 + 
-                                           bacteria.personality_traits.curiosity * 0.5;
-                
-                // Soğuk Espri - Low social skills but high humor attempts
-                affinities.Soguk_Espri = (1 - bacteria.personality_traits.sociability) * 0.6 + 
-                                        bacteria.personality_traits.humor_attempts * 0.4;
-                
-                // Kara Mizah - Dark humor tolerance + low optimism
-                affinities.Kara_Mizah = (bacteria.personality_traits.dark_humor_tolerance || 0) * 0.7 + 
-                                       (1 - bacteria.personality_traits.optimism) * 0.3;
-                
-                // Sim Özel (Rituals) - High sociability + cultural awareness
-                affinities.Sim_Ozel = bacteria.personality_traits.sociability * 0.6 + 
-                                     (bacteria.memory_bank.length / 100) * 0.4;
-                
-                // Other categories get balanced scoring
-                ['Absurt_Mizah', 'Kelime_Oyunu', 'Gundelik_Mizah', 'Sosyal_Mizah'].forEach(category => {
-                    affinities[category] = 0.3 + Math.random() * 0.4; // 0.3-0.7 range
-                });
-            }
-
-            getCategoryAffinity(bacteriaId, category) {
-                const affinities = this.categoryAffinities.get(bacteriaId) || {};
-                return affinities[category] || 0.5; // Default neutral affinity
-            }
-
-            formatCSVJoke(csvJoke, bacteria) {
-                return {
-                    type: 'csv',
-                    text: csvJoke.SakaMetni,
-                    responses: csvJoke.TepkiMetinleri,
-                    category: csvJoke.Kategori,
-                    originator: bacteria,
-                    culturalValue: Math.min(1.0, (this.jokePopularity.get(csvJoke.SakaID) || 50) / 100),
-                    expectedSuccess: 0.7,
-                    jokeId: csvJoke.SakaID
-                };
-            }
-
-            isEligibleForJoke(bacteria) {
-                // Mathematical eligibility check
-                const jokeProbability = ComedyMath.calculateJokeProbability(bacteria);
-                const baseEligibility = bacteria.consciousness_level >= COMEDY_MATH_CONFIG.CONSCIOUSNESS_THRESHOLD &&
-                       bacteria.personality_traits.optimism >= COMEDY_MATH_CONFIG.MIN_OPTIMISM_THRESHOLD &&
-                       bacteria.personality_traits.sociability >= COMEDY_MATH_CONFIG.MIN_SOCIABILITY_THRESHOLD &&
-                       bacteria.personality_traits.mood >= COMEDY_MATH_CONFIG.MIN_MOOD_THRESHOLD;
-                
-                // Add mathematical probability threshold
-                return baseEligibility && jokeProbability > 0.1; // 10% minimum joke probability
-            }
-
-            getPredefinedJoke(bacteria) {
-                const availableJokes = Array.from(this.predefinedJokes.keys());
-                if (availableJokes.length === 0) return null;
-
-                // Prefer jokes bacteria hasn't told recently or cultural jokes
-                let selectedJoke = availableJokes[Math.floor(Math.random() * availableJokes.length)];
-                
-                // Cultural bias: prefer ritual jokes if bacteria has high social traits
-                if (bacteria.personality_traits.sociability > 0.8) {
-                    const culturalJokes = availableJokes.filter(joke => 
-                        this.predefinedJokes.get(joke).category === 'rituel'
-                    );
-                    if (culturalJokes.length > 0) {
-                        selectedJoke = culturalJokes[Math.floor(Math.random() * culturalJokes.length)];
-                    }
-                }
-
-                const jokeData = this.predefinedJokes.get(selectedJoke);
-                return {
-                    type: 'predefined',
-                    text: selectedJoke,
-                    responses: jokeData.responses,
-                    category: jokeData.category,
-                    originator: bacteria,
-                    culturalValue: jokeData.culturalValue,
-                    expectedSuccess: jokeData.successRate
-                };
-            }
-
-            // TabPFN-Enhanced Dynamic Joke Generation
-            generateDynamicJoke(bacteria) {
-                const learnedWords = Array.from(bacteria.vocabulary);
-                if (learnedWords.length < 3) return null;
-
-                // Use TabPFN to get contextually interesting words
-                let jokeText = this.createDynamicJokeText(bacteria, learnedWords);
-                
-                if (!jokeText || jokeText.split(" ").length < 2) return null;
-
-                const dynamicResponses = [
-                    "hahaha! 😂", "çok yaratıcı! 🎨", "bu ne ya? 🤔", 
-                    "komik! 😄", "anlamadım ama güldüm! 😅", "daha fazla! 🎭",
-                    "absürt ama hoş! 🤪", "kelime ustası! 📚"
-                ];
-
-                return {
-                    type: 'dynamic',
-                    text: jokeText,
-                    responses: dynamicResponses,
-                    category: "yaratici_absurt",
-                    originator: bacteria,
-                    culturalValue: 0.3, // Dynamic jokes start with low cultural value
-                    expectedSuccess: 0.5
-                };
-            }
-
-            createDynamicJokeText(bacteria, learnedWords) {
-                // Mathematical word selection based on surprisal theory
-                let jokeWords = [];
-                
-                // Calculate surprisal for all learned words and select high-surprisal words
-                const wordSurprisals = learnedWords.map(word => ({
-                    word: word,
-                    surprisal: ComedyMath.calculateSurprisal(word, 'joke_context', bacteria)
-                }));
-                
-                // Sort by surprisal (descending) and take top words for comedy
-                wordSurprisals.sort((a, b) => b.surprisal - a.surprisal);
-                
-                // Select words with good surprisal values for incongruity
-                const highSurprisalWords = wordSurprisals
-                    .filter(ws => ws.surprisal >= COMEDY_MATH_CONFIG.MIN_SURPRISAL)
-                    .slice(0, 5); // Top 5 surprising words
-                
-                if (highSurprisalWords.length < 2) {
-                    // Fallback to random selection if no high-surprisal words
-                    jokeWords = learnedWords.slice(0, 3);
-                } else {
-                    // Use mathematical selection: mix of high surprisal and context
-                    jokeWords = [
-                        highSurprisalWords[0]?.word || learnedWords[0], // Most surprising
-                        highSurprisalWords[Math.floor(Math.random() * Math.min(3, highSurprisalWords.length))]?.word || learnedWords[1],
-                        learnedWords[Math.floor(Math.random() * learnedWords.length)] // Random for absurdity
-                    ].filter(w => w);
-                }
-
-                // Enhanced TabPFN integration if available
-                if (this.vocabularySystem && typeof this.vocabularySystem.improveWordUsage === 'function') {
-                    const contexts = ['scientific', 'social', 'philosophical'];
-                    const contextWord = this.vocabularySystem.improveWordUsage(bacteria, contexts[Math.floor(Math.random() * contexts.length)]);
-                    if (contextWord && !jokeWords.includes(contextWord)) {
-                        jokeWords[2] = contextWord; // Replace last word with context-appropriate word
-                    }
-                }
-
-                // Create joke using mathematical template selection
-                const template = JOKE_TEMPLATES[Math.floor(Math.random() * JOKE_TEMPLATES.length)];
-                const jokeText = this.fillJokeTemplate(template, jokeWords, bacteria);
-                
-                // Calculate final joke surprisal for quality control
-                const finalSurprisal = jokeWords.reduce((sum, word) => 
-                    sum + ComedyMath.calculateSurprisal(word, 'combined_joke', bacteria), 0) / jokeWords.length;
-                
-                console.log(`🧮 Dynamic joke created with avg surprisal: ${finalSurprisal.toFixed(2)} bits`);
-                
-                return jokeText;
-            }
-
-            fillJokeTemplate(template, words, bacteria) {
-                // Simple template filling - can be made more sophisticated
-                let joke = template;
-                
-                const wordTypes = {
-                    scientific_word: words.filter(w => ['ATP', 'DNA', 'protein', 'enzim'].includes(w))[0] || words[0] || 'molekül',
-                    emotion_word: words.filter(w => ['mutlu', 'üzgün', 'komik', 'neşeli'].includes(w))[0] || words[1] || 'garip',
-                    organism: 'bakteri',
-                    action: words[2] || 'hareket',
-                    reason: words.join(' '),
-                    character: bacteria.name,
-                    expression: words.slice(0,2).join(' ') || 'haha',
-                    process: 'öğrenme',
-                    unexpected_thing: words[words.length-1] || 'şaşırtıcı'
-                };
-
-                // Replace template variables
-                Object.keys(wordTypes).forEach(key => {
-                    joke = joke.replace(`{${key}}`, wordTypes[key]);
-                });
-
-                return joke;
-            }
-
-            // Mathematical joke outcome recording with cultural evolution
-            recordJokeOutcome(jokeText, wasSuccessful, listenerCount, avgSurprisal = 0) {
-                const jokeData = this.learnedJokes.get(jokeText) || { 
-                    count: 0, 
-                    successCount: 0, 
-                    listeners: new Set(),
-                    generation: this.generation,
-                    avgSurprisal: 0,
-                    culturalValue: 0.3,
-                    createdAt: Date.now()
-                };
-                
-                jokeData.count++;
-                if (wasSuccessful) jokeData.successCount++;
-                
-                // Update average surprisal for this joke
-                jokeData.avgSurprisal = (jokeData.avgSurprisal * (jokeData.count - 1) + avgSurprisal) / jokeData.count;
-                
-                this.learnedJokes.set(jokeText, jokeData);
-
-                // Mathematical popularity calculation
-                const successRate = jokeData.successCount / jokeData.count;
-                const surprisalBonus = Math.min(jokeData.avgSurprisal / COMEDY_MATH_CONFIG.MAX_SURPRISAL, 1);
-                const listenerBonus = Math.min(listenerCount / COMEDY_MATH_CONFIG.MIN_LISTENERS_FOR_CULTURE, 1);
-                
-                const mathematicalPopularity = successRate * 0.6 + surprisalBonus * 0.2 + listenerBonus * 0.2;
-                this.jokePopularity.set(jokeText, mathematicalPopularity);
-
-                // Mathematical cultural promotion check
-                if (ComedyMath.shouldPromoteToCulture(successRate, listenerCount) && 
-                    jokeData.avgSurprisal >= COMEDY_MATH_CONFIG.MIN_SURPRISAL) {
-                    this.promoteToculturalJoke(jokeText, jokeData);
-                }
-
-                // Enhanced tracking with mathematical metrics
-                this.jokeHistory.push({
-                    text: jokeText,
-                    successful: wasSuccessful,
-                    listeners: listenerCount,
-                    timestamp: Date.now(),
-                    surprisal: avgSurprisal,
-                    successRate: successRate,
-                    culturalValue: jokeData.culturalValue,
-                    mathematicalPopularity: mathematicalPopularity
-                });
-                
-                console.log(`📊 Joke metrics - Success: ${(successRate*100).toFixed(1)}%, Surprisal: ${avgSurprisal.toFixed(2)}, Popularity: ${(mathematicalPopularity*100).toFixed(1)}%`);
-            }
-
-            promoteToculturalJoke(jokeText, jokeData) {
-                if (!this.culturalJokes.has(jokeText)) {
-                    this.culturalJokes.set(jokeText, {
-                        ...jokeData,
-                        promotedAt: Date.now(),
-                        culturalValue: 0.9
-                    });
-                    
-                    console.log(`🏆 Joke promoted to cultural status: "${jokeText}"`);
-                    
-                    // Add to predefined jokes for future use
-                    this.predefinedJokes.set(jokeText, {
-                        responses: ["bu klasik! 😄", "biliyorum bunu! 🤣", "efsane şaka! 🏆"],
-                        category: "komunite_klasigi",
-                        successRate: jokeData.successCount / jokeData.count,
-                        culturalValue: 0.9
-                    });
-                }
-            }
-
-            // Get statistics for system analysis
-            getJokeStatistics() {
-                return {
-                    totalJokes: this.jokeHistory.length,
-                    culturalJokes: this.culturalJokes.size,
-                    learnedJokes: this.learnedJokes.size,
-                    averageSuccess: this.jokeHistory.reduce((acc, j) => acc + (j.successful ? 1 : 0), 0) / this.jokeHistory.length,
-                    generation: this.generation
-                };
-            }
-        }
-
-        // Global JokeMaster instance
-        let jokeMasterInstance = null;
-
-        // 🧬 DYNAMIC LANGUAGE EVOLUTION SYSTEM v8.7.0
-        // 🚀 V8.9.0: ANTI-PATTERN LANGUAGE EVOLUTION ENGINE - Revolutionary Language System
-        class LanguageEvolutionEngine {
-            constructor() {
-                this.globalLanguagePatterns = new Map(); // Tüm bakterilerde kullanılan dil kalıpları
-                this.wordMutations = new Map(); // Kelime mutasyonları/evrimleri
-                this.contextualPhrases = new Map(); // Bağlamsal ifade kalıpları
-                this.personalityLanguageTraits = new Map(); // Kişilik bazlı dil özellikleri
-                this.languageGeneration = 0; // Dil evrimi nesli
-                this.emergentGrammar = new Map(); // Ortaya çıkan gramer kuralları
-                
-                // 🆕 V8.9.0: ANTI-PATTERN FEATURES
-                this.bacteriaBigrams = new Map(); // Markov chains for each bacteria
-                this.metaTemplates = new Map(); // Meta-template system
-                this.absurdWords = ['mikrofon', 'güneş', 'hipopotam', 'kuantum', 'pizza', 'roket', 'dinozor', 'kristal']; // Shock elements
-                this.contextOverrides = new Map(); // Context breaking triggers
-                this.adaptiveSuccess = new Map(); // Success tracking for reinforcement
-                
-                console.log('🧬 Language Evolution Engine V8.9.1: ANTI-PATTERN TEST MODE!');
-                console.log('🔥 TEST MODE: Boosted probabilities for immediate visibility');
-                console.log('🎲 ε-greedy: 60% | 🎭 Meta-template: 70% | 🎪 Absurd: 48%');
-                this.initializeBasicPatterns();
-                this.initializeAntiPatternSystems();
-            }
-
-            // 🎯 Initialize Anti-Pattern Systems
-            initializeAntiPatternSystems() {
-                // Meta-templates for pattern-breaking conversations
-                this.metaTemplates.set('complex_mix', [
-                    "{greeting} {subTemplate1}; ama aslında {subTemplate2}.",
-                    "Önce {subTemplate1}, sonra {subTemplate2}, sonuç: {reaction}.",
-                    "{subject} der ki: \"{subTemplate1}?\" {subTemplate2}!",
-                    "{subTemplate1} + {shock_element} = {subTemplate2}",
-                    "İlginç: {subTemplate1}, çünkü {subTemplate2}..."
-                ]);
-                
-                // Context override triggers - 🔥 V8.9.1 TEST: EASIER CONDITIONS FOR VISIBILITY
-                this.contextOverrides.set('high_stress', (bacteria) => bacteria.personality_traits.mood < 0.6); // Lowered from 0.3
-                this.contextOverrides.set('confusion', (bacteria) => bacteria.consciousness_level < 5 && bacteria.vocabulary.size > 3); // Relaxed conditions
-                this.contextOverrides.set('creative_burst', (bacteria) => bacteria.personality_traits.creativity > 0.5); // Lowered from 0.8
-                this.contextOverrides.set('random_chaos', (bacteria) => Math.random() < 0.1); // 🆕 10% pure random chaos!
-                
-                console.log('🎭 Anti-Pattern systems initialized!');
-            }
-
-            initializeBasicPatterns() {
-                // Temel dil kalıpları - bunlar evrimleşecek
-                this.contextualPhrases.set('greeting', [
-                    "{subject} merhaba!",
-                    "{emotion} {subject}",
-                    "hey {target}!"
-                ]);
-                
-                this.contextualPhrases.set('learning', [
-                    "{subject} öğrendim: {learned_word}",
-                    "{surprise_word} + {learned_word} = {reaction}",
-                    "yeni keşif: {learned_word}"
-                ]);
-                
-                this.contextualPhrases.set('excitement', [
-                    "{emotion}! {discovery}!",
-                    "{learned_word} + {emotion} = harika!",
-                    "vay be, {surprise_word}!"
-                ]);
-                
-                this.contextualPhrases.set('confusion', [
-                    "{confusion_word}... {learned_word}?",
-                    "ne demek {unknown_word}?",
-                    "{learned_word} + ? = kafam karıştı"
-                ]);
-                
-                this.contextualPhrases.set('social', [
-                    "{friend_name}, {learned_word} paylaşalım!",
-                    "birlikte {activity} yapalım",
-                    "{emotion} arkadaşlık"
-                ]);
-            }
-
-            // 🎭 V8.9.0: ADVANCED PERSONALITY LANGUAGE GENERATOR
-            generatePersonalityLanguage(bacteria) {
-                if (!bacteria.personalLanguageStyle) {
-                    bacteria.personalLanguageStyle = {
-                        wordOrder: Math.random() > 0.5 ? 'normal' : 'inverted', // Kelime sırası
-                        emotionLevel: bacteria.personality_traits.optimism, // Duygusal yoğunluk
-                        complexityPreference: bacteria.consciousness_level / 10, // Karmaşıklık seviyesi
-                        uniqueWords: new Set(), // Kendine özgü kelimeler
-                        phrasePatterns: new Map(), // Kişisel ifade kalıpları
-                        mutationRate: bacteria.personality_traits.humor * 0.3, // Dil mutasyon oranı
-                        
-                        // 🆕 V8.9.1 TEST: BOOSTED ANTI-PATTERN TRAITS FOR VISIBILITY
-                        slangProbability: 0.4 + Math.random() * 0.4, // %40-80 argo/slang kullanma
-                        repetitionProbability: 0.2 + Math.random() * 0.3, // %20-50 kelime tekrar etme
-                        punctuationStyle: Math.random() < 0.5 ? '!!' : '?!', // Noktalama tarzı
-                        absurdTolerance: 0.3 + Math.random() * 0.5, // %30-80 absürt öğe kabulü
-                        patternBreakingTendency: 0.3 + Math.random() * 0.5, // %30-80 kalıp kırma eğilimi
-                        markovChainUsage: 0.4 + Math.random() * 0.5, // %40-90 Markov zinciri kullanım
-                        contextSwitchRate: 0.2 + Math.random() * 0.4, // %20-60 bağlam değiştirme
-                        metaTemplatePreference: Math.random() < 0.6 // %60 meta-template tercihi
-                    };
-                    
-                    // Initialize personal bigram map for Markov chains
-                    if (!this.bacteriaBigrams.has(bacteria.id)) {
-                        this.bacteriaBigrams.set(bacteria.id, new Map());
-                    }
-                }
-                return bacteria.personalLanguageStyle;
-            }
-
-            // Yeni kelime kombinasyonu yaratma (ML-enhanced)
-            createWordCombination(bacteria, context, baseWords) {
-                const style = this.generatePersonalityLanguage(bacteria);
-                const vocabulary = Array.from(bacteria.vocabulary);
-                
-                if (vocabulary.length < 2) return baseWords.join(' ');
-
-                // TabPFN-enhanced kelime seçimi
-                let enhancedWords = [];
-                for (let i = 0; i < 3; i++) {
-                    let word;
-                    
-                    // TabPFN kullanarak bağlamsal kelime öner
-                    if (tabpfnVocabularySystem && typeof tabpfnVocabularySystem.improveWordUsage === 'function') {
-                        word = tabpfnVocabularySystem.improveWordUsage(bacteria, context);
-                    }
-                    
-                    // Yoksa bakterinin kendi kelimelerinden seç
-                    if (!word) {
-                        word = vocabulary[Math.floor(Math.random() * vocabulary.length)];
-                    }
-                    
-                    enhancedWords.push(word);
-                }
-
-                // Kişilik bazlı kombinasyon
-                if (style.wordOrder === 'inverted') {
-                    enhancedWords.reverse();
-                }
-
-                // Duygusal yoğunluk ekle
-                if (style.emotionLevel > 0.7) {
-                    const emotions = ['!', '!! 😊', '✨', '🎉', '💫'];
-                    enhancedWords.push(emotions[Math.floor(Math.random() * emotions.length)]);
-                }
-
-                // Karmaşıklık seviyesine göre bağlaç ekle
-                if (style.complexityPreference > 0.6 && enhancedWords.length > 1) {
-                    const connectors = ['+', 've', 'ile', '→', '='];
-                    const connector = connectors[Math.floor(Math.random() * connectors.length)];
-                    return enhancedWords.slice(0, 2).join(` ${connector} `) + 
-                           (enhancedWords[2] ? ` ${enhancedWords[2]}` : '');
-                }
-
-                return enhancedWords.join(' ');
-            }
-
-            // 🧬 V8.9.0: ENHANCED WORD MUTATION with Noise Factor
-            mutateWord(bacteria, originalWord) {
-                const style = this.generatePersonalityLanguage(bacteria);
-                
-                // Enhanced mutation chance with random noise
-                const baseMutation = Math.random() < style.mutationRate;
-                const randomNoise = Math.random() < 0.1; // 10% extra chaos factor
-                
-                if (!baseMutation && !randomNoise) return originalWord;
-
-                const mutations = [
-                    // Ses değişimi
-                    () => originalWord.replace(/a/g, 'e').replace(/o/g, 'u'),
-                    // Ek ekleme
-                    () => originalWord + (Math.random() > 0.5 ? 'ik' : 'li'),
-                    // Kısaltma
-                    () => originalWord.length > 3 ? originalWord.slice(0, -1) : originalWord,
-                    // Tekrar
-                    () => originalWord + originalWord.slice(-2),
-                    // Emoji ekleme
-                    () => originalWord + ['✨', '🌟', '💫', '🔮'][Math.floor(Math.random() * 4)],
-                    // 🆕 V8.9.0: Anti-Pattern Mutations
-                    () => originalWord.split('').reverse().join(''), // Reverse letters
-                    () => originalWord + this.getRandomChoice(this.absurdWords).slice(0, 2), // Absurd suffix
-                    () => this.getRandomChoice(['yee', 'hmm', 'aaa']) + originalWord, // Sound prefix
-                    () => originalWord.replace(/./g, c => Math.random() < 0.3 ? c.toUpperCase() : c) // Random caps
-                ];
-
-                const mutationType = mutations[Math.floor(Math.random() * mutations.length)];
-                const mutatedWord = mutationType();
-
-                // Mutasyonu kaydet
-                if (!this.wordMutations.has(originalWord)) {
-                    this.wordMutations.set(originalWord, new Set());
-                }
-                this.wordMutations.get(originalWord).add(mutatedWord);
-
-                const noiseIndicator = randomNoise ? '🎲' : '🧬';
-                console.log(`${noiseIndicator} ${bacteria.name} word mutation: ${originalWord} → ${mutatedWord}`);
-                return mutatedWord;
-            }
-
-            // 📈 V8.9.0: Adaptive Style Reinforcement Learning
-            adaptLanguageStyle(bacteria, wasSuccessful, context) {
-                if (!bacteria.personalLanguageStyle) return;
-                
-                const style = bacteria.personalLanguageStyle;
-                const adaptationRate = 0.02;
-                
-                if (wasSuccessful) {
-                    // Reinforce successful traits
-                    style.mutationRate = Math.min(1, style.mutationRate + adaptationRate);
-                    style.slangProbability = Math.min(0.8, style.slangProbability + adaptationRate);
-                    style.markovChainUsage = Math.min(1, style.markovChainUsage + adaptationRate);
-                    
-                    // Track success
-                    const stats = this.adaptiveSuccess.get(bacteria.id);
-                    if (stats) {
-                        stats.successfulResponses++;
-                        if (stats.contexts.has(context)) {
-                            stats.contexts.get(context).successes++;
-                        }
-                    }
-                    
-                    console.log(`📈 ${bacteria.name} language style reinforced (success rate: ${((stats?.successfulResponses || 0) / (stats?.totalResponses || 1) * 100).toFixed(1)}%)`);
-                } else {
-                    // Reduce unsuccessful traits
-                    style.mutationRate = Math.max(0, style.mutationRate - adaptationRate);
-                    style.repetitionProbability = Math.max(0, style.repetitionProbability - adaptationRate);
-                    style.absurdTolerance = Math.max(0, style.absurdTolerance - adaptationRate * 0.5);
-                }
-                
-                // Update bigram map periodically
-                if (Math.random() < 0.1) { // 10% chance to rebuild
-                    this.updateBigramMap(bacteria, Array.from(bacteria.vocabulary));
-                }
-            }
-
-            // 🚀 V8.9.0: REVOLUTIONARY ANTI-PATTERN CONTEXTUAL RESPONSE GENERATOR
-            generateContextualResponse(bacteria, context, trigger = null) {
-                const style = this.generatePersonalityLanguage(bacteria);
-                const vocabulary = Array.from(bacteria.vocabulary);
-                
-                // 🎯 STEP 1: CHECK CONTEXT OVERRIDES (Anti-Pattern Mechanism)
-                const overrideResult = this.checkContextOverrides(bacteria, context);
-                if (overrideResult) {
-                    console.log(`🔄 ${bacteria.name} context override: ${context} → ${overrideResult.newContext}`);
-                    context = overrideResult.newContext;
-                    return overrideResult.response;
-                }
-                
-                // 🎯 STEP 2: ε-GREEDY PATTERN SELECTION (Randomness Layer)
-                let selectedResponse;
-                const epsilonGreedy = 0.6; // 🔥 V8.9.1 TEST: 60% chance for anti-pattern visibility
-                
-                if (Math.random() < epsilonGreedy) {
-                    // 🎲 60% CHANCE: COMPLETELY RANDOM, PATTERN-FREE RESPONSE
-                    selectedResponse = this.generateRandomMarkovResponse(bacteria, vocabulary);
-                    console.log(`🎲 ANTI-PATTERN: ${bacteria.name} ε-greedy random response: ${selectedResponse}`);
-                    console.log(`🔥 PATTERN BREAKING ACHIEVED! Traditional templates bypassed.`);
-                } else if (style.metaTemplatePreference && Math.random() < 0.7) {
-                    // 🎭 70% CHANCE: META-TEMPLATE RESPONSE (Pattern within Pattern) - BOOSTED FOR VISIBILITY
-                    selectedResponse = this.generateMetaTemplateResponse(bacteria, context, vocabulary, trigger);
-                    console.log(`🎭 META-TEMPLATE: ${bacteria.name} complex pattern-within-pattern response`);
-                    console.log(`🔥 ADVANCED ANTI-PATTERN: Multi-layered response generated!`);
-                } else if (style.markovChainUsage > 0.3 && Math.random() < style.markovChainUsage) {
-                    // 🔗 MARKOV CHAIN RESPONSE (Statistical Word Flow)
-                    selectedResponse = this.generateMarkovChainResponse(bacteria, vocabulary);
-                    console.log(`🔗 MARKOV CHAIN: ${bacteria.name} statistical word flow response`);
-                    console.log(`🧮 PATTERN-FREE: Using bigram probabilities instead of templates!`);
-                } else {
-                    // 🎯 TRADITIONAL TEMPLATE-BASED (Enhanced with mutations)
-                    selectedResponse = this.generateTraditionalResponse(bacteria, context, vocabulary, trigger);
-                }
-                
-                // 🎨 STEP 3: APPLY PERSONALITY MUTATIONS
-                selectedResponse = this.applyPersonalityMutations(selectedResponse, bacteria, style);
-                
-                // 🎪 STEP 4: ADD ABSURD ELEMENTS (Shock Factor)
-                if (Math.random() < style.absurdTolerance * 0.8) { // 🔥 V8.9.1 TEST: Up to 48% chance for visibility
-                    selectedResponse = this.addAbsurdElement(selectedResponse, bacteria);
-                }
-                
-                // 📈 STEP 5: ADAPTIVE LEARNING (Success Tracking)
-                this.trackResponseForAdaptation(bacteria, context, selectedResponse);
-                
-                return selectedResponse;
-            }
-
-            // 🔄 Context Override System - Breaking Patterns Based on State
-            checkContextOverrides(bacteria, context) {
-                for (const [overrideType, checkFunction] of this.contextOverrides.entries()) {
-                    if (checkFunction(bacteria)) {
-                        switch (overrideType) {
-                            case 'high_stress':
-                                return {
-                                    newContext: 'stress_break',
-                                    response: 'bu ne ya? ' + this.getRandomChoice(["hmm", "belki değil", "bilmiyorum", "kafam karıştı"]) + '...'
-                                };
-                            case 'confusion':
-                                return {
-                                    newContext: 'absurd_confusion',
-                                    response: this.getRandomChoice(this.absurdWords) + ' ne demek? ' + this.getRandomChoice(Array.from(bacteria.vocabulary)) + '?!'
-                                };
-                            case 'creative_burst':
-                                return {
-                                    newContext: 'creative_explosion',
-                                    response: this.generateRandomMarkovResponse(bacteria, Array.from(bacteria.vocabulary)) + ' ✨🎨'
-                                };
-                            case 'random_chaos':
-                                return {
-                                    newContext: 'pure_chaos',
-                                    response: this.getRandomChoice(this.absurdWords) + ' ' + 
-                                             this.getRandomChoice(this.absurdWords) + ' ' +
-                                             this.getRandomChoice(['!!!', '???', '!?!', '...']) + ' 🤪'
-                                };
-                        }
-                    }
-                }
-                return null;
-            }
-
-            // 🎲 Generate Completely Random Markov-style Response
-            generateRandomMarkovResponse(bacteria, vocabulary) {
-                if (vocabulary.length < 2) return "yeni kelime öğrenmeliyim!";
-                
-                const responseLength = 2 + Math.floor(Math.random() * 3); // 2-4 words
-                let response = [];
-                
-                for (let i = 0; i < responseLength; i++) {
-                    const word = vocabulary[Math.floor(Math.random() * vocabulary.length)];
-                    response.push(this.mutateWord(bacteria, word));
-                }
-                
-                return response.join(' ');
-            }
-
-            // 🔗 Generate Markov Chain Response - Statistical Word Flow
-            generateMarkovChainResponse(bacteria, vocabulary) {
-                const bigramMap = this.bacteriaBigrams.get(bacteria.id);
-                if (!bigramMap || bigramMap.size === 0) {
-                    this.updateBigramMap(bacteria, vocabulary);
-                    return this.generateRandomMarkovResponse(bacteria, vocabulary);
-                }
-                
-                // Start with random word
-                const startWords = Array.from(bigramMap.keys());
-                let currentWord = startWords[Math.floor(Math.random() * startWords.length)];
-                let sentence = [currentWord];
-                
-                // Generate 2-4 words using bigram probabilities
-                for (let i = 0; i < 2 + Math.floor(Math.random() * 2); i++) {
-                    const nextWords = bigramMap.get(currentWord);
-                    if (!nextWords || nextWords.length === 0) {
-                        nextWords = vocabulary; // Fallback to random vocabulary
-                    }
-                    const nextWord = nextWords[Math.floor(Math.random() * nextWords.length)];
-                    sentence.push(nextWord);
-                    currentWord = nextWord;
-                }
-                
-                return sentence.join(' ');
-            }
-
-            // 🎭 Generate Meta-Template Response (Pattern within Pattern)
-            generateMetaTemplateResponse(bacteria, context, vocabulary, trigger) {
-                const metaTemplates = this.metaTemplates.get('complex_mix');
-                const selectedMeta = metaTemplates[Math.floor(Math.random() * metaTemplates.length)];
-                
-                // Generate sub-templates
-                const subTemplate1 = this.generateTraditionalResponse(bacteria, context, vocabulary, trigger);
-                const subTemplate2 = this.generateRandomMarkovResponse(bacteria, vocabulary);
-                
-                const replacements = {
-                    '{greeting}': this.getRandomChoice(['merhaba', 'selam', 'hey', bacteria.name]),
-                    '{subTemplate1}': subTemplate1,
-                    '{subTemplate2}': subTemplate2,
-                    '{subject}': bacteria.name,
-                    '{reaction}': this.getRandomChoice(['ilginç', 'garip', 'harika', 'şaşırtıcı']),
-                    '{shock_element}': this.getRandomChoice(this.absurdWords)
-                };
-                
-                let result = selectedMeta;
-                Object.keys(replacements).forEach(placeholder => {
-                    result = result.replace(new RegExp(placeholder, 'g'), replacements[placeholder]);
-                });
-                
-                return result;
-            }
-
-            // 🎯 Generate Traditional Response (Enhanced)
-            generateTraditionalResponse(bacteria, context, vocabulary, trigger) {
-                const style = this.generatePersonalityLanguage(bacteria);
-                
-                // Bağlamsal kalıp seç
-                const patterns = this.contextualPhrases.get(context) || ["{learned_word} {emotion}"];
-                let selectedPattern = patterns[Math.floor(Math.random() * patterns.length)];
-
-                // Kişisel kalıpları kontrol et
-                if (style.phrasePatterns.has(context)) {
-                    const personalPatterns = Array.from(style.phrasePatterns.get(context));
-                    if (personalPatterns.length > 0 && Math.random() < 0.6) {
-                        selectedPattern = personalPatterns[Math.floor(Math.random() * personalPatterns.length)];
-                    }
-                }
-
-                return this.fillDynamicPattern(selectedPattern, bacteria, vocabulary, trigger);
-            }
-
-            // 🎨 Apply Personality Mutations to Response
-            applyPersonalityMutations(response, bacteria, style) {
-                let mutatedResponse = response;
-                
-                // Add slang/informal words
-                if (Math.random() < style.slangProbability) {
-                    const slangs = ['yaa', 'hadiiii', 'of be', 'valla', 'ama ya', 'işte'];
-                    mutatedResponse = this.getRandomChoice(slangs) + ' ' + mutatedResponse;
-                }
-                
-                // Add word repetition
-                if (Math.random() < style.repetitionProbability) {
-                    const words = mutatedResponse.split(' ');
-                    if (words.length > 1) {
-                        const idx = Math.floor(Math.random() * words.length);
-                        words.splice(idx, 0, words[idx]); // Duplicate word
-                        mutatedResponse = words.join(' ');
-                    }
-                }
-                
-                // Add punctuation style
-                mutatedResponse += style.punctuationStyle;
-                
-                return mutatedResponse;
-            }
-
-            // 🎪 Add Absurd Element (Shock Factor)
-            addAbsurdElement(response, bacteria) {
-                const words = response.split(' ');
-                const absurdWord = this.getRandomChoice(this.absurdWords);
-                
-                if (words.length >= 2) {
-                    // Insert absurd word in the middle
-                    const insertPos = 1 + Math.floor(Math.random() * (words.length - 1));
-                    words.splice(insertPos, 0, absurdWord);
-                    console.log(`🎪 ${bacteria.name} added absurd element: ${absurdWord}`);
-                }
-                
-                return words.join(' ');
-            }
-
-            // 📈 Track Response for Adaptive Learning
-            trackResponseForAdaptation(bacteria, context, response) {
-                if (!this.adaptiveSuccess.has(bacteria.id)) {
-                    this.adaptiveSuccess.set(bacteria.id, { 
-                        totalResponses: 0, 
-                        successfulResponses: 0,
-                        contexts: new Map()
-                    });
-                }
-                
-                const stats = this.adaptiveSuccess.get(bacteria.id);
-                stats.totalResponses++;
-                
-                if (!stats.contexts.has(context)) {
-                    stats.contexts.set(context, { attempts: 0, successes: 0 });
-                }
-                stats.contexts.get(context).attempts++;
-                
-                // Success will be updated by reaction system
-            }
-
-            // 🧮 Update Bigram Map for Markov Chains
-            updateBigramMap(bacteria, vocabulary) {
-                const bigramMap = this.bacteriaBigrams.get(bacteria.id);
-                
-                // Build bigrams from vocabulary and memory
-                for (let i = 0; i < vocabulary.length - 1; i++) {
-                    const word1 = vocabulary[i];
-                    const word2 = vocabulary[i + 1];
-                    
-                    if (!bigramMap.has(word1)) {
-                        bigramMap.set(word1, []);
-                    }
-                    bigramMap.get(word1).push(word2);
-                }
-                
-                // Add some random connections for diversity
-                vocabulary.forEach(word => {
-                    if (Math.random() < 0.1) { // 10% chance
-                        const randomWord = vocabulary[Math.floor(Math.random() * vocabulary.length)];
-                        if (!bigramMap.has(word)) {
-                            bigramMap.set(word, []);
-                        }
-                        bigramMap.get(word).push(randomWord);
-                    }
-                });
-            }
-
-            // 🎲 Utility: Get Random Choice
-            getRandomChoice(array) {
-                return array[Math.floor(Math.random() * array.length)];
-            }
-
-            fillDynamicPattern(pattern, bacteria, vocabulary, trigger) {
-                const style = this.generatePersonalityLanguage(bacteria);
-                
-                const replacements = {
-                    '{subject}': bacteria.name,
-                    '{emotion}': this.getPersonalityEmotion(bacteria),
-                    '{learned_word}': vocabulary[Math.floor(Math.random() * vocabulary.length)] || 'kelime',
-                    '{surprise_word}': this.mutateWord(bacteria, vocabulary[Math.floor(Math.random() * vocabulary.length)] || 'şaşırtıcı'),
-                    '{reaction}': ['waow', 'süper', 'ilginç', 'harika', 'vay be'][Math.floor(Math.random() * 5)],
-                    '{confusion_word}': ['hmm', 'ne', 'nasıl', 'niye', 'acaba'][Math.floor(Math.random() * 5)],
-                    '{unknown_word}': vocabulary[Math.floor(Math.random() * vocabulary.length)] || 'bilinmeyen',
-                    '{friend_name}': trigger?.name || 'arkadaş',
-                    '{activity}': vocabulary.filter(w => ['hareket', 'öğrenme', 'keşif', 'oyun'].includes(w))[0] || 'aktivite',
-                    '{target}': trigger?.name || 'sen',
-                    '{discovery}': vocabulary[Math.floor(Math.random() * vocabulary.length)] || 'keşif'
-                };
-
-                let result = pattern;
-                Object.keys(replacements).forEach(placeholder => {
-                    result = result.replace(new RegExp(placeholder, 'g'), replacements[placeholder]);
-                });
-
-                return result;
-            }
-
-            getPersonalityEmotion(bacteria) {
-                const emotions = {
-                    high_optimism: ['😊', '🎉', '✨', 'harika', 'süper'],
-                    medium_optimism: ['😌', '👍', 'güzel', 'iyi'],
-                    low_optimism: ['😐', 'hmm', 'şey'],
-                    high_humor: ['😂', '🤣', 'haha', 'komik'],
-                    high_social: ['🤗', '💫', 'arkadaş', 'birlikte']
-                };
-
-                if (bacteria.personality_traits.optimism > 0.7) {
-                    return emotions.high_optimism[Math.floor(Math.random() * emotions.high_optimism.length)];
-                } else if (bacteria.personality_traits.humor > 0.7) {
-                    return emotions.high_humor[Math.floor(Math.random() * emotions.high_humor.length)];
-                } else if (bacteria.personality_traits.sociability > 0.7) {
-                    return emotions.high_social[Math.floor(Math.random() * emotions.high_social.length)];
-                } else if (bacteria.personality_traits.optimism > 0.4) {
-                    return emotions.medium_optimism[Math.floor(Math.random() * emotions.medium_optimism.length)];
-                } else {
-                    return emotions.low_optimism[Math.floor(Math.random() * emotions.low_optimism.length)];
-                }
-            }
-
-            // Yeni kalıp öğrenme
-            learnNewPattern(bacteria, context, newPattern) {
-                const style = this.generatePersonalityLanguage(bacteria);
-                
-                if (!style.phrasePatterns.has(context)) {
-                    style.phrasePatterns.set(context, new Set());
-                }
-                
-                // Basitleştirilmiş kalıp çıkarma
-                const generalizedPattern = newPattern
-                    .replace(bacteria.name, '{subject}')
-                    .replace(/😊|🎉|✨|😂|🤣|😐|hmm/g, '{emotion}')
-                    .replace(/\b[a-zçğıöşü]+\b/gi, (match) => {
-                        if (bacteria.vocabulary.has(match)) return '{learned_word}';
-                        return match;
-                    });
-
-                style.phrasePatterns.get(context).add(generalizedPattern);
-                
-                console.log(`🧠 ${bacteria.name} learned new pattern for ${context}: ${generalizedPattern}`);
-            }
-
-            // Sosyal dil öğrenimi - bakteriler birbirinden öğrenir
-            shareLinguisticFeature(speaker, listener, phrase) {
-                if (!speaker.personalLanguageStyle || !listener.personalLanguageStyle) return;
-
-                // %20 şansla dinleyici konuşmacının tarzını benimser
-                if (Math.random() < 0.2) {
-                    const speakerStyle = speaker.personalLanguageStyle;
-                    const listenerStyle = listener.personalLanguageStyle;
-
-                    // Kelime sırası etkileşimi
-                    if (speakerStyle.wordOrder !== listenerStyle.wordOrder && Math.random() < 0.5) {
-                        listenerStyle.wordOrder = speakerStyle.wordOrder;
-                        console.log(`🔄 ${listener.name} adopted word order from ${speaker.name}: ${speakerStyle.wordOrder}`);
-                    }
-
-                    // Mutasyon oranı etkileşimi
-                    listenerStyle.mutationRate = (listenerStyle.mutationRate + speakerStyle.mutationRate) / 2;
-
-                    // Benzersiz kelime paylaşımı
-                    if (speakerStyle.uniqueWords.size > 0) {
-                        const sharedWord = Array.from(speakerStyle.uniqueWords)[0];
-                        listenerStyle.uniqueWords.add(sharedWord);
-                        listener.vocabulary.add(sharedWord);
-                    }
-                }
-            }
-
-            // Dil evrimi istatistikleri
-            getLanguageEvolutionStats() {
-                return {
-                    totalMutations: this.wordMutations.size,
-                    uniquePatterns: Array.from(this.contextualPhrases.values()).flat().length,
-                    generation: this.languageGeneration,
-                    emergentGrammarRules: this.emergentGrammar.size
-                };
-            }
-        }
-
-        // Global Language Evolution Engine
-        let languageEvolutionEngine = null;
 
         // 📚 1500 Kelimelik Kategorize Şablon + TabPFN Hızlandırma
         const MASTER_VOCABULARY = {
@@ -3871,7 +2236,7 @@
 
             async saveTrainingDataToDB(record) {
                 try {
-                    if (persistentDB && persistentDB.db) {
+                    if (persistentDB.db) {
                         const transaction = persistentDB.db.transaction(['tabpfn_data'], 'readwrite');
                         const store = transaction.objectStore('tabpfn_data');
                         await store.put(record);
@@ -3883,23 +2248,19 @@
 
             async loadTrainingData() {
                 try {
-                    // Wait for persistentDB to be ready
-                    if (!persistentDB || !persistentDB.db) {
-                        console.log('⏳ Database not ready yet, skipping training data load');
-                        return;
+                    if (persistentDB.db) {
+                        const transaction = persistentDB.db.transaction(['tabpfn_data'], 'readonly');
+                        const store = transaction.objectStore('tabpfn_data');
+                        const request = store.getAll();
+                        
+                        const existingData = await new Promise((resolve, reject) => {
+                            request.onsuccess = () => resolve(request.result);
+                            request.onerror = () => reject(request.error);
+                        });
+                        
+                        this.trainingData = existingData;
+                        console.log(`📚 Loaded ${existingData.length} existing training records`);
                     }
-                    
-                    const transaction = persistentDB.db.transaction(['tabpfn_data'], 'readonly');
-                    const store = transaction.objectStore('tabpfn_data');
-                    const request = store.getAll();
-                    
-                    const existingData = await new Promise((resolve, reject) => {
-                        request.onsuccess = () => resolve(request.result);
-                        request.onerror = () => reject(request.error);
-                    });
-                    
-                    this.trainingData = existingData;
-                    console.log(`📚 Loaded ${existingData.length} existing training records`);
                 } catch (error) {
                     console.error('❌ Failed to load training data:', error);
                 }
@@ -3990,8 +2351,8 @@
             }
         }
 
-        // Initialize real AI training system (will be initialized after DB ready)
-        let realAI = null;
+        // Initialize real AI training system  
+        const realAI = new RealAITrainingSystem();
 
         // v829 Enhanced Performance Monitoring + Canvas Support
         let performanceMetrics = {
@@ -4005,21 +2366,12 @@
             frameCount: 0
         };
 
-        // Canvas support variables (DYNAMIC BOUNDARIES FIX)
+        // Canvas support variables
         let canvas = null;
         let ctx = null;
         let canvasWidth = 0;
         let canvasHeight = 0;
         let useCanvas = false;
-        
-        // 🎯 DYNAMIC CANVAS BOUNDARIES (v8.7.3 BÜYÜK İNİTİAL VALUES)
-        let DYNAMIC_BOUNDARIES = {
-            maxX: 1200,  // ❌ SABİT 480 KALDIRILDI! Başlangıç büyük değer
-            maxY: 800,   // ❌ SABİT 280 KALDIRILDI! Başlangıç büyük değer
-            minX: 20,
-            minY: 20,
-            padding: 20
-        };
 
         // Molecular Dynamics Constants (based on research)
         const MD_CONSTANTS = {
@@ -4071,38 +2423,14 @@
             if (dayDisplayElement) dayDisplayElement.textContent = `Gün: ${simulationDay}`;
         }
 
-        // v8.7.1: Enhanced Canvas Initialization with Guaranteed Boundary Update
+        // v829: Canvas Initialization and Management
         function initializeCanvas() {
             canvas = document.getElementById('simCanvas');
             if (canvas) {
                 ctx = canvas.getContext('2d');
-                
-                // 🎯 MULTIPLE BOUNDARY UPDATE ATTEMPTS (v8.7.1 FIX)
-                // Try immediately
                 resizeCanvas();
-                
-                // Try after DOM ready
-                if (document.readyState !== 'complete') {
-                    window.addEventListener('DOMContentLoaded', () => {
-                        resizeCanvas();
-                        console.log('🔧 Boundary update on DOMContentLoaded');
-                    });
-                }
-                
-                // Try after a short delay
-                setTimeout(() => {
-                    resizeCanvas();
-                    console.log('🔧 Boundary update after 100ms delay');
-                }, 100);
-                
-                // Try after a longer delay for insurance
-                setTimeout(() => {
-                    resizeCanvas();
-                    console.log('🔧 Boundary update after 500ms delay - guaranteed!');
-                }, 500);
-                
                 useCanvas = true;
-                console.log('🎨 Canvas initialized with multiple boundary update attempts');
+                console.log('🎨 Canvas initialized for enhanced rendering');
                 
                 // Add resize listener
                 window.addEventListener('resize', resizeCanvas);
@@ -4118,41 +2446,19 @@
         }
 
         function resizeCanvas() {
-            if (!canvas) {
-                console.warn('⚠️ resizeCanvas called but canvas is null!');
-                return;
-            }
+            if (!canvas) return;
             
             const container = canvas.parentElement;
-            if (!container) {
-                console.warn('⚠️ Canvas parent element not found!');
-                return;
-            }
-            
             const rect = container.getBoundingClientRect();
-            console.log(`🔍 Canvas container found, getting rect...`);
             
-            // 🔧 CSS-AWARE DYNAMIC PADDING CALCULATION (v8.7.1 FIX)
-            const style = window.getComputedStyle(container);
-            const paddingX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
-            const paddingY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
-            
-            // Set canvas size with dynamic padding calculation
-            canvasWidth = Math.max(400, rect.width - paddingX); // Minimum 400px width
-            canvasHeight = Math.max(300, rect.height - paddingY); // Minimum 300px height
+            // Set canvas size (avoiding the CSS sizing bug from HATA ÇÖZÜMLERİ.txt)
+            canvasWidth = rect.width - 32; // Account for padding
+            canvasHeight = rect.height - 32;
             
             canvas.width = canvasWidth;
             canvas.height = canvasHeight;
             
-            // 🎯 UPDATE DYNAMIC BOUNDARIES (E031 FIX)
-            DYNAMIC_BOUNDARIES.maxX = canvasWidth - DYNAMIC_BOUNDARIES.padding;
-            DYNAMIC_BOUNDARIES.maxY = canvasHeight - DYNAMIC_BOUNDARIES.padding;
-            DYNAMIC_BOUNDARIES.minX = DYNAMIC_BOUNDARIES.padding;
-            DYNAMIC_BOUNDARIES.minY = DYNAMIC_BOUNDARIES.padding;
-            
-            console.log(`🔧 Canvas resized: ${canvasWidth}x${canvasHeight} (padding: ${paddingX}x${paddingY})`);
-            console.log(`🎯 Dynamic boundaries updated:`, DYNAMIC_BOUNDARIES);
-            console.log(`📏 Container rect:`, {width: rect.width, height: rect.height, left: rect.left, top: rect.top});
+            console.log(`🔧 Canvas resized: ${canvasWidth}x${canvasHeight}`);
         }
         let nextTokenId = 1;
 
@@ -4353,50 +2659,66 @@
             return newWordsLearned;
         }
 
-        // 🔧 V8.9.1: FIXED Promise Issue - Generate new words (synchronous)
-        function generateNewWord(bacteria) {
+        // Generate new words using TabPFN vocabulary analysis
+        async function generateNewWord(bacteria) {
             if (!bacteria || !bacteria.vocabulary) return null;
             
-            // Skip async TabPFN for now - causing [object Promise] issue
-            // Direct fallback to traditional word generation
+            try {
+                // Try TabPFN vocabulary analysis first
+                if (tabPFNAdapter && tabPFNAdapter.isReady && tabPFNAdapter.analyzeVocabulary) {
+                    const vocabAnalysis = await tabPFNAdapter.analyzeVocabulary(bacteria);
+                    if (vocabAnalysis && vocabAnalysis.suggested_next_words && vocabAnalysis.suggested_next_words.length > 0) {
+                        const suggestedWords = vocabAnalysis.suggested_next_words;
+                        const newWord = suggestedWords[Math.floor(Math.random() * suggestedWords.length)];
+                        
+                        if (newWord && !bacteria.vocabulary.has(newWord)) {
+                            bacteria.vocabulary.add(newWord);
+                            if (!wordTokenizer.has(newWord)) {
+                                wordTokenizer.set(newWord, nextTokenId++);
+                            }
+                            console.log(`🎯 TabPFN suggested word "${newWord}" for ${bacteria.name}`);
+                            return newWord;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('TabPFN word generation error:', error);
+                // Continue to fallback
+            }
+            
+            // Fallback to traditional word generation
             const vocabArray = Array.from(bacteria.vocabulary);
             if (vocabArray.length < 2) {
                 // Basic starter words for new bacteria
-                const starterWords = ['merhaba', 'yaşam', 'büyümek', 'öğrenmek', 'enerji', 'yemek', 'ATP', 'hücre'];
+                const starterWords = ['hello', 'life', 'grow', 'learn', 'energy', 'food'];
                 const newWord = starterWords[Math.floor(Math.random() * starterWords.length)];
                 bacteria.vocabulary.add(newWord);
-                console.log(`🎯 Basic word "${newWord}" for ${bacteria.name}`);
                 return newWord;
             }
 
-            // Simple word combination for compound words
+            // Simple word combination for fallback
             const word1 = vocabArray[Math.floor(Math.random() * vocabArray.length)];
             const word2 = vocabArray[Math.floor(Math.random() * vocabArray.length)];
             
             if (word1 === word2) return null;
 
-            // Create compound words with Turkish patterns
+            // Create compound words
             const combinations = [
                 word1 + word2,
                 word1.slice(0, -1) + word2.slice(1),
                 word1.slice(0, 2) + word2.slice(-2),
-                word1[0] + word2,
-                word1 + '-' + word2 // Turkish compound style
+                word1[0] + word2
             ];
 
             const newWord = combinations[Math.floor(Math.random() * combinations.length)];
             
             // Add to vocabulary and tokenizer
-            if (newWord && newWord.length > 2) {
-                bacteria.vocabulary.add(newWord);
-                if (!wordTokenizer.has(newWord)) {
-                    wordTokenizer.set(newWord, nextTokenId++);
-                }
-                console.log(`🎯 Compound word "${newWord}" created by ${bacteria.name}`);
-                return newWord;
+            bacteria.vocabulary.add(newWord);
+            if (!wordTokenizer.has(newWord)) {
+                wordTokenizer.set(newWord, nextTokenId++);
             }
 
-            return null;
+            return newWord;
         }
 
         // v8.2.7: TabPFN-powered behavior prediction 
@@ -4470,10 +2792,10 @@
             }
         }
 
-        // Add random food particle to simulation area (DYNAMIC BOUNDARIES FIX)
+        // Add random food particle to simulation area
         function addRandomFood() {
-            const x = Math.random() * (DYNAMIC_BOUNDARIES.maxX - DYNAMIC_BOUNDARIES.minX) + DYNAMIC_BOUNDARIES.minX;
-            const y = Math.random() * (DYNAMIC_BOUNDARIES.maxY - DYNAMIC_BOUNDARIES.minY) + DYNAMIC_BOUNDARIES.minY;
+            const x = Math.random() * (CONFIG.CANVAS.SIMULATION_AREA_WIDTH - 20) + 10;
+            const y = Math.random() * (CONFIG.CANVAS.SIMULATION_AREA_HEIGHT - 20) + 10;
             addFood(x, y);
         }
 
@@ -4517,25 +2839,17 @@
                         growth_rate: parseFloat((Math.random() * 0.5 + 0.5).toFixed(2)), // 0.5-1.0
                         division_potential: 0, // When it reaches 1, it can divide
                     };
-                                    this.personality_traits = {
-                    optimism: parseFloat(Math.random().toFixed(2)), // 0-1
-                    sociability: parseFloat(Math.random().toFixed(2)), // 0-1
-                    humor: parseFloat(Math.random().toFixed(2)), // 0-1 🎭 Comedy level
-                    mood: parseFloat((Math.random() * 0.5 + 0.5).toFixed(2)), // 0.5-1.0 Current mood
-                    dark_humor_tolerance: parseFloat(Math.random().toFixed(2)), // V8.8.0: Dark humor filtering
-                    humor_attempts: parseFloat((Math.random() * 0.5).toFixed(2)), // How often they try to be funny
-                    curiosity: parseFloat(Math.random().toFixed(2)) // For scientific jokes
-                };
+                    this.personality_traits = {
+                        optimism: parseFloat(Math.random().toFixed(2)), // 0-1
+                        sociability: parseFloat(Math.random().toFixed(2)), // 0-1
+                    };
                     this.consciousness_level = 0; // Start at 0, can grow infinitely!
                     this.language_stage = 0; // 0-5
                     this.vocabulary = new Set();
                     this.memory_bank = []; // Store significant events or learned concepts
                     this.conversation_history = []; // For context in chat
-                    // 🎯 DYNAMIC POSITION INITIALIZATION (E031 FIX)
-                    console.log(`🦠 Creating bacteria #${id} with boundaries:`, DYNAMIC_BOUNDARIES);
-                    this.x = Math.random() * (DYNAMIC_BOUNDARIES.maxX - DYNAMIC_BOUNDARIES.minX) + DYNAMIC_BOUNDARIES.minX;
-                    this.y = Math.random() * (DYNAMIC_BOUNDARIES.maxY - DYNAMIC_BOUNDARIES.minY) + DYNAMIC_BOUNDARIES.minY;
-                    console.log(`📍 Bacteria #${id} positioned at (${this.x.toFixed(0)}, ${this.y.toFixed(0)})`);
+                    this.x = Math.random() * 400 + 50; // Position within simulation area
+                    this.y = Math.random() * 300 + 50;
                     this.z = Math.random() * 100 + 50; // Z-depth: 50-150 (pseudo-3D depth)
                     this.vx = (Math.random() - 0.5) * 12; // Velocity (increased to 12 for high-speed dynamic movement)
                     this.vy = (Math.random() - 0.5) * 12;
@@ -4566,28 +2880,6 @@
                 this.lastDecision = null;
                 this.aiExperiences = [];
                 this.behaviorPattern = 'explorer'; // Will be learned
-                
-                // v8.6.0: Advanced Comedy Culture System
-                this.lastJokeTime = 0;
-                this.canTellJoke = true;
-                this.knownJokes = new Set(); // Learned dynamic jokes
-                this.jokePreferences = { // What types of jokes this bacteria likes
-                    rituel: Math.random(),
-                    bilimsel_espri: Math.random() * this.consciousness_level / 10,
-                    yaratici_absurt: this.personality_traits.humor,
-                    sosyal_mizah: this.personality_traits.sociability
-                };
-                
-                // v8.6.1: Mathematical Comedy Theory
-                this.wordFrequencies = new Map(); // Track word usage frequency for surprisal calculations
-                this.comedyMetrics = {
-                    jokesTold: 0,
-                    jokesHeard: 0,
-                    jokesUnderstood: 0,
-                    averageSurprisal: 0,
-                    totalLaughs: 0,
-                    comedyRating: 0 // Overall comedy performance
-                };
             }
 
             generateColor() {
@@ -4759,112 +3051,13 @@
                 return 'neutral';
             }
 
-            // 🧬 DYNAMIC LANGUAGE EVOLUTION SPEECH SYSTEM v8.7.0
-            speak(message, context = 'general', trigger = null) {
-                if (!message || typeof message !== 'string') return;
-                
-                let dynamicMessage = message;
-                
-                // 1. Dil evrimi motoru ile dinamik cevap oluştur
-                if (languageEvolutionEngine && this.vocabulary.size >= 3) {
-                    // %70 şansla evrimleşmiş dil kullan
-                    if (Math.random() < 0.7) {
-                        const evolvedResponse = languageEvolutionEngine.generateContextualResponse(this, context, trigger);
-                        if (evolvedResponse && evolvedResponse.length > 5) {
-                            dynamicMessage = evolvedResponse;
-                            console.log(`🧬 ${this.name} evolved speech: "${dynamicMessage}"`);
-                        }
-                    }
-                    
-                    // Kelime mutasyonu uygula
-                    const words = dynamicMessage.split(' ');
-                    const mutatedWords = words.map(word => {
-                        if (this.vocabulary.has(word.toLowerCase()) && Math.random() < 0.2) {
-                            return languageEvolutionEngine.mutateWord(this, word);
-                        }
-                        return word;
-                    });
-                    dynamicMessage = mutatedWords.join(' ');
-                }
-                
-                // 2. TabPFN Enhanced Word Usage (eski sistem ile birlikte)
-                if (tabpfnVocabularySystem && typeof tabpfnVocabularySystem.improveWordUsage === 'function') {
-                    try {
-                        const suggestedWord = tabpfnVocabularySystem.improveWordUsage(this, context);
-                        if (suggestedWord && Math.random() < 0.3) { // %30 şansla TabPFN önerisini ekle
-                            dynamicMessage = `${dynamicMessage} + ${suggestedWord}`;
-                        }
-                    } catch (error) {
-                        console.warn('TabPFN word usage error:', error);
-                    }
-                }
-                
-                // 3. Kişilik bazlı stil uygula
-                if (languageEvolutionEngine) {
-                    const style = languageEvolutionEngine.generatePersonalityLanguage(this);
-                    
-                    // Duygusal yoğunluk ekle
-                    if (style.emotionLevel > 0.8 && !dynamicMessage.includes('!') && Math.random() < 0.5) {
-                        const emotions = ['!', '✨', '🌟', '💫'];
-                        dynamicMessage += emotions[Math.floor(Math.random() * emotions.length)];
-                    }
-                    
-                    // Karmaşıklık seviyesine göre ek bilgi
-                    if (style.complexityPreference > 0.7 && Math.random() < 0.3) {
-                        const additionalInfo = languageEvolutionEngine.createWordCombination(this, context, []);
-                        if (additionalInfo) {
-                            dynamicMessage = `${dynamicMessage} (${additionalInfo})`;
-                        }
-                    }
-                }
-                
-                // 4. Gelişmiş kelime öğrenimi
-                const words = dynamicMessage.split(' ').filter(word => 
-                    word.length > 2 && !word.includes('[') && !word.includes(']') && !word.includes('(') && !word.includes(')')
-                );
-                words.forEach(word => {
-                    const cleanWord = word.toLowerCase().replace(/[^\w\u00C0-\u024F\u1E00-\u1EFF]/g, '');
-                    if (cleanWord.length > 2) {
-                        this.vocabulary.add(cleanWord);
-                        
-                        // Kelime frekansını güncelle (surprisal hesaplamaları için)
-                        if (!this.wordFrequencies.has(cleanWord)) {
-                            this.wordFrequencies.set(cleanWord, 0);
-                        }
-                        this.wordFrequencies.set(cleanWord, this.wordFrequencies.get(cleanWord) + 1);
-                        
-                        // Kişisel benzersiz kelimeler
-                        if (this.personalLanguageStyle && Math.random() < 0.1) {
-                            this.personalLanguageStyle.uniqueWords.add(cleanWord);
-                        }
-                    }
-                });
-                
-                // 5. Sosyal dil öğrenimi - yakındaki bakteriler dinler ve öğrenir
-                if (languageEvolutionEngine) {
-                    const allBacteria = bacteriaPopulation && bacteriaPopulation.length > 0 ? bacteriaPopulation : (bacteriaList || []);
-                    allBacteria.forEach(other => {
-                        if (other && other.id !== this.id) {
-                            const distance = Math.sqrt(
-                                Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2)
-                            );
-                            
-                            if (distance < 100) { // 100 piksel mesafede
-                                languageEvolutionEngine.shareLinguisticFeature(this, other, dynamicMessage);
-                            }
-                        }
-                    });
-                }
-                
-                // Store conversation with evolution info
+            // 💬 Enhanced speaking with TabPFN
+            speak(message, context = 'general') {
                 this.conversation_history.push({
-                    message: dynamicMessage,
-                    originalMessage: message,
+                    message: message,
                     context: context,
                     timestamp: Date.now(),
-                    consciousness: this.consciousness_level,
-                    evolved: dynamicMessage !== message,
-                    mutationApplied: dynamicMessage.includes('✨') || dynamicMessage.includes('🌟')
+                    consciousness: this.consciousness_level
                 });
                 
                 // Keep last 50 conversations
@@ -4872,22 +3065,12 @@
                     this.conversation_history.splice(0, 1);
                 }
                 
-                this.createSpeechBubble(dynamicMessage, context);
-                
-                console.log(`🧬 ${this.name} evolved speech: "${dynamicMessage}" (Context: ${context}, Original: "${message}")`);
-                
-                // Return the evolved message for other systems to use
-                return dynamicMessage;
+                this.createSpeechBubble(message, context);
+                console.log(`💬 ${this.name} (C:${this.consciousness_level.toFixed(1)}): "${message}" [${context}]`);
             }
 
             // 🎭 Create speech bubble with context styling
             createSpeechBubble(message, context) {
-                // 🛡️ SAFETY CHECK: Ensure canvas and parentElement exist
-                if (!canvas || !canvas.parentElement) {
-                    console.warn('⚠️ Canvas or parentElement not found, skipping speech bubble');
-                    return;
-                }
-                
                 const bubble = document.createElement('div');
                 bubble.className = `speech-bubble speech-${context}`;
                 bubble.textContent = message;
@@ -4909,17 +3092,13 @@
                     animation: speechBubbleAnim 4s ease-in-out;
                 `;
                 
-                try {
-                    canvas.parentElement.appendChild(bubble);
-                    
-                    setTimeout(() => {
-                        if (bubble && bubble.parentElement) {
-                            bubble.parentElement.removeChild(bubble);
-                        }
-                    }, 4000);
-                } catch (error) {
-                    console.error('❌ Speech bubble creation error:', error);
-                }
+                canvas.parentElement.appendChild(bubble);
+                
+                setTimeout(() => {
+                    if (bubble.parentElement) {
+                        bubble.parentElement.removeChild(bubble);
+                    }
+                }, 4000);
             }
 
             // 🎨 Context-based bubble colors
@@ -5173,33 +3352,22 @@
                 this.y += this.vy * efficiencyFactor;
                 this.z += this.vz * efficiencyFactor; // Z-axis movement
                 
-                // 🎯 DYNAMIC BOUNDARY CHECKING (E031 FIX) - Uses real canvas size!
-                if (this.x <= DYNAMIC_BOUNDARIES.minX || this.x >= DYNAMIC_BOUNDARIES.maxX) {
-                    // DEBUG: Log boundary collision
-                    if (Math.random() < 0.01) { // 1% chance to avoid spam
-                        console.log(`🔥 ${this.name} X boundary hit! x=${this.x.toFixed(0)}, bounds=[${DYNAMIC_BOUNDARIES.minX}, ${DYNAMIC_BOUNDARIES.maxX}]`);
-                    }
+                // Boundary checking with elastic collision (3D) - using CONFIG
+                if (this.x <= 20 || this.x >= CONFIG.CANVAS.SIMULATION_AREA_WIDTH) {
                     this.vx *= -CONFIG.PHYSICS.BOUNDARY_ENERGY_LOSS;
-                    this.x = Math.max(DYNAMIC_BOUNDARIES.minX, Math.min(DYNAMIC_BOUNDARIES.maxX, this.x));
+                    this.x = Math.max(20, Math.min(CONFIG.CANVAS.SIMULATION_AREA_WIDTH, this.x));
                 }
-                if (this.y <= DYNAMIC_BOUNDARIES.minY || this.y >= DYNAMIC_BOUNDARIES.maxY) {
-                    // DEBUG: Log boundary collision  
-                    if (Math.random() < 0.01) { // 1% chance to avoid spam
-                        console.log(`🔥 ${this.name} Y boundary hit! y=${this.y.toFixed(0)}, bounds=[${DYNAMIC_BOUNDARIES.minY}, ${DYNAMIC_BOUNDARIES.maxY}]`);
-                    }
+                if (this.y <= 20 || this.y >= CONFIG.CANVAS.SIMULATION_AREA_HEIGHT) {
                     this.vy *= -CONFIG.PHYSICS.BOUNDARY_ENERGY_LOSS;
-                    this.y = Math.max(DYNAMIC_BOUNDARIES.minY, Math.min(DYNAMIC_BOUNDARIES.maxY, this.y));
+                    this.y = Math.max(20, Math.min(CONFIG.CANVAS.SIMULATION_AREA_HEIGHT, this.y));
                 }
                 if (this.z <= CONFIG.PHYSICS.Z_DEPTH_MIN || this.z >= CONFIG.PHYSICS.Z_DEPTH_MAX) {
                     this.vz *= -(CONFIG.PHYSICS.BOUNDARY_ENERGY_LOSS - 0.1); // Slightly less Z energy loss
                     this.z = Math.max(CONFIG.PHYSICS.Z_DEPTH_MIN, Math.min(CONFIG.PHYSICS.Z_DEPTH_MAX, this.z));
                 }
 
-                            // Look for nearby food with increased range when hungry
-            this.lookForFood();
-            
-            // 🎭 COMEDY SYSTEM: Sometimes tell jokes if mood is good!
-            this.checkForJokeTime();
+                // Look for nearby food with increased range when hungry
+                this.lookForFood();
             }
 
             // Molecular Dynamics: Van der Waals and Electrostatic Forces
@@ -5452,350 +3620,10 @@
                     }, 100);
                 }
             }
-
-            // 🧠 AI DECISION APPLICATION SYSTEM (E030 FIX)
-            applyAIDecision(decision) {
-                if (!decision) {
-                    console.warn(`⚠️ ${this.name} için AI kararı alınamadı veya geçersiz.`);
-                    return;
-                }
-
-                try {
-                    // 🎯 Hareket kararlarını uygula
-                    if (decision.moveDirection) {
-                        const moveSpeed = CONFIG.PHYSICS.INTERACTION_RANGE * 0.1; // Use CONFIG
-                        const randomFactor = Math.random() * 0.5 + 0.75; // 0.75-1.25 çarpanı
-                        
-                        this.vx += decision.moveDirection.x * moveSpeed * randomFactor;
-                        this.vy += decision.moveDirection.y * moveSpeed * randomFactor;
-                        this.vz = (this.vz || 0) + (decision.moveDirection.z || 0) * moveSpeed * 0.5;
-                    }
-
-                    // 🍯 Yemek arama davranışını tetikle
-                    if (decision.seekFood && this.hunger > 0.3) {
-                        let closestFood = null;
-                        let minDistance = Infinity;
-                        
-                        foodParticles.forEach(food => {
-                            const distance = Math.sqrt(
-                                Math.pow(this.x - food.x, 2) + 
-                                Math.pow(this.y - food.y, 2)
-                            );
-                            if (distance < minDistance) {
-                                minDistance = distance;
-                                closestFood = food;
-                            }
-                        });
-                        
-                        if (closestFood && minDistance > 0) {
-                            const attractionForce = 3 * (this.hunger + 0.5); // Hunger increases attraction
-                            this.vx += (closestFood.x - this.x) / minDistance * attractionForce;
-                            this.vy += (closestFood.y - this.y) / minDistance * attractionForce;
-                        }
-                    }
-
-                    // 👫 Sosyalleşme davranışını tetikle
-                    if (decision.socialize && this.personality_traits.sociability > 0.3) {
-                        // Yakındaki bakterilerle etkileşim başlat
-                        bacteriaPopulation.forEach(otherBacteria => {
-                            if (otherBacteria.id !== this.id) {
-                                const distance = Math.sqrt(
-                                    Math.pow(this.x - otherBacteria.x, 2) + 
-                                    Math.pow(this.y - otherBacteria.y, 2)
-                                );
-                                
-                                if (distance < CONFIG.PHYSICS.INTERACTION_RANGE && Math.random() < 0.2) {
-                                    // Bakteriye doğru hafif yönelim
-                                    const socialForce = this.personality_traits.sociability * 2;
-                                    this.vx += (otherBacteria.x - this.x) / distance * socialForce;
-                                    this.vy += (otherBacteria.y - this.y) / distance * socialForce;
-                                    
-                                    // Rastgele konuşma başlat
-                                    if (typeof this.speak === "function" && Math.random() < 0.15) {
-                                        const socialWords = ['merhaba', 'arkadaş', 'dostluk', 'beraber', 'konuşma'];
-                                        const randomWord = socialWords[Math.floor(Math.random() * socialWords.length)];
-                                        this.speak(`${this.name} ${randomWord} diyor!`, "social_interaction");
-                                    }
-                                }
-                            }
-                        });
-                    }
-
-                    // 👶 Üreme davranışını tetikle
-                    if (decision.reproduce && typeof this.checkForReproduction === 'function') {
-                        if (Math.random() < 0.4) { // AI kararıyla üreme şansını artır
-                            this.checkForReproduction();
-                        }
-                    }
-
-                    // 🎓 Öğrenme davranışını tetikle
-                    if (decision.learn) {
-                        if (Math.random() < 0.6) {
-                            this.learnRandomWord();
-                            this.consciousness_level += CONFIG.AI.CONSCIOUSNESS_BOOST_RATE;
-                        }
-                    }
-
-                    // 🗣️ Konuşma davranışını tetikle
-                    if (decision.speak && typeof this.speak === 'function' && Math.random() < 0.3) {
-                        const context = this.determineCurrentContext();
-                        const emotion = this.getEmotionalState();
-                        this.speak(`AI kararıyla ${emotion} hissediyorum!`, context);
-                    }
-
-                    // 📊 SystemLearningEngine için AI karar takibi
-                    if (learningEngine && this._lastDecisionLog) {
-                        learningEngine.logDecision(
-                            'bacteria_ai_decision', 
-                            { bacteriaId: this.id, decisionType: Object.keys(decision) },
-                            'applied',
-                            0.8, // Confidence level
-                            {
-                                hunger: this.hunger,
-                                energy: this.energy,
-                                consciousness: this.consciousness_level,
-                                timestamp: Date.now()
-                            }
-                        );
-                    }
-
-                    // DEBUG: AI karar uygulama logu
-                    console.log(`🧠 ${this.name} AI kararını uyguladı:`, {
-                        moveDirection: !!decision.moveDirection,
-                        seekFood: !!decision.seekFood,
-                        socialize: !!decision.socialize,
-                        reproduce: !!decision.reproduce,
-                        learn: !!decision.learn,
-                        speak: !!decision.speak,
-                        vx: this.vx.toFixed(2),
-                        vy: this.vy.toFixed(2)
-                    });
-
-                } catch (error) {
-                    console.error(`❌ AI karar uygulama hatası (${this.name}):`, error);
-                    
-                    // Error tracking for SystemLearningEngine
-                    if (learningEngine) {
-                        learningEngine.logDecision(
-                            'bacteria_ai_decision_error',
-                            { bacteriaId: this.id, error: error.message },
-                            'failure',
-                            0.1, // Low confidence due to error
-                            { errorType: 'applyAIDecision', timestamp: Date.now() }
-                        );
-                    }
-                }
-            }
-            
-            // 🎭 COMEDY SYSTEM V8.8.0: EMERGENCY FIX + CSV INTEGRATION
-            checkForJokeTime() {
-                // Check for manual joke triggers first
-                if (this.checkForJokeTriggers()) return;
-                
-                // Mathematical comedy timing with sigmoid probability
-                if (!this.canTellJoke || !jokeMasterInstance) return;
-                
-                const timeSinceLastJoke = Date.now() - (this.lastJokeTime || 0);
-                
-                // Mathematical joke probability calculation
-                if (timeSinceLastJoke > COMEDY_MATH_CONFIG.JOKE_COOLDOWN && 
-                    jokeMasterInstance.isEligibleForJoke(this)) {
-                    
-                    // Use mathematical sigmoid model for joke probability
-                    const jokeProbability = ComedyMath.calculateJokeProbability(this);
-                    const randomThreshold = Math.random();
-                    
-                    // 🔥 CRITICAL FIX: Increased from 0.001 to 0.1 (10% base chance)
-                    if (randomThreshold < jokeProbability * 0.1) {
-                        this.attemptToTellJoke();
-                        console.log(`🧮 ${this.name} tells joke with probability: ${(jokeProbability*100).toFixed(1)}%`);
-                    }
-                }
-            }
-
-            // 🎭 NEW: Manual joke trigger detection
-            checkForJokeTriggers() {
-                // Check recent messages for joke triggers
-                const recentMessages = this.memory_bank.slice(-3);
-                const allRecent = recentMessages.join(' ').toLowerCase();
-                
-                if (allRecent.includes('vur joker vur') || allRecent.includes('şaka yap') || allRecent.includes('komik söyle')) {
-                    console.log(`🎪 ${this.name} detected joke trigger!`);
-                    this.attemptToTellJoke(true); // Force joke
-                    return true;
-                }
-                return false;
-            }
-            
-            attemptToTellJoke(forced = false) {
-                if (!jokeMasterInstance) return;
-
-                const joke = jokeMasterInstance.tryTellingJoke(this, forced);
-                if (joke) {
-                    this.lastJokeTime = Date.now();
-                    this.canTellJoke = false;
-                    
-                    // Cooldown with some randomness
-                    setTimeout(() => { 
-                        this.canTellJoke = true; 
-                    }, JOKE_CONFIG.JOKE_COOLDOWN + Math.random() * 10000);
-
-                    // Enhanced mood boost for telling jokes
-                    const moodBoost = joke.culturalValue * JOKE_CONFIG.JOKE_MORALE_BOOST;
-                    this.personality_traits.mood = Math.min(1.0, this.personality_traits.mood + moodBoost);
-                    
-                    // Learn comedy words
-                    this.vocabulary.add('şaka');
-                    this.vocabulary.add('komedi');
-                    if (joke.category === 'rituel') {
-                        this.vocabulary.add('kültür');
-                        this.vocabulary.add('gelenek');
-                    }
-                    
-                    this.memory_bank.push(`${joke.category} kategorisinde şaka söyledim: "${joke.text}"`);
-                    
-                    console.log(`🎭 ${this.name} (${joke.category}) şaka söylüyor: ${joke.text}`);
-                    
-                    // Emit joke event for advanced reaction system
-                    if (typeof appEvents !== 'undefined') {
-                        appEvents.emit('joke:told', { jokeData: joke, originator: this });
-                    } else {
-                        // Fallback to direct method
-                        this.broadcastJokeToNearby(joke);
-                    }
-                    
-                    return joke;
-                }
-            }
-            
-            broadcastJokeToNearby(joke) {
-                let listenerCount = 0;
-                let successCount = 0;
-                
-                bacteriaPopulation.forEach(other => {
-                    if (other.id === this.id) return;
-                    
-                    const distance = Math.sqrt(
-                        Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2)
-                    );
-                    
-                    if (distance < JOKE_CONFIG.MAX_JOKE_DISTANCE) {
-                        listenerCount++;
-                        const reactionResult = other.reactToAdvancedJoke(joke);
-                        if (reactionResult.understood && reactionResult.laughed) {
-                            successCount++;
-                        }
-                    }
-                });
-                
-                // Record outcome in JokeMaster
-                if (jokeMasterInstance) {
-                    const wasSuccessful = successCount > 0 && (successCount / Math.max(1, listenerCount)) > 0.5;
-                    jokeMasterInstance.recordJokeOutcome(joke.text, wasSuccessful, listenerCount);
-                }
-            }
-            
-            // 🎭 V8.8.0: CSV-Powered Personality-Based Reaction System
-            reactToAdvancedJoke(jokeData) {
-                const jokerName = jokeData.originator ? jokeData.originator.name : 'someone';
-                const joke = jokeData.text;
-                
-                // Mathematical reaction calculation using incongruity absorption
-                
-                // Calculate joke surprisal from listener's perspective
-                const words = joke.split(' ').filter(w => w.length > 2);
-                const jokeSuprisal = words.reduce((sum, word) => 
-                    sum + ComedyMath.calculateSurprisal(word, 'listener_context', this), 0) / Math.max(words.length, 1);
-                
-                // Calculate incongruity absorption (IA) using mathematical model
-                const incongruityAbsorption = ComedyMath.calculateIncongruityAbsorption(joke, this, jokeSuprisal);
-                
-                // Understanding threshold based on mathematical model
-                const understood = incongruityAbsorption >= COMEDY_MATH_CONFIG.UNDERSTANDING_THRESHOLD;
-                
-                // Calculate laugh probability using mathematical formula
-                const laughProbability = ComedyMath.calculateLaughProbability(incongruityAbsorption, this);
-                
-                // Mathematical reaction selection
-                let reactionText = "";
-                const actuallyLaughed = Math.random() < laughProbability;
-                
-                if (understood) {
-                    if (actuallyLaughed) {
-                        // Positive reactions for understood + laughed
-                        const positiveReactions = jokeData.responses.filter(r => 
-                            r.includes('haha') || r.includes('komik') || r.includes('😂') || r.includes('😄'));
-                        reactionText = positiveReactions.length > 0 ? 
-                            positiveReactions[Math.floor(Math.random() * positiveReactions.length)] :
-                            jokeData.responses[Math.floor(Math.random() * jokeData.responses.length)];
-                    } else {
-                        // Understood but didn't laugh
-                        reactionText = ["anlıyorum ama... 🤔", "hmm 😐", "ilginç 🧐"][Math.floor(Math.random() * 3)];
-                    }
-                    
-                    // Mathematical mood boost calculation
-                    let moodBoost = COMEDY_MATH_CONFIG.BASE_MORALE_BOOST * incongruityAbsorption;
-                    if (jokeData.category === 'rituel') moodBoost += COMEDY_MATH_CONFIG.RITUAL_BONUS;
-                    if (actuallyLaughed) moodBoost *= 1.5; // Extra boost for actual laughter
-                    
-                    this.personality_traits.mood = Math.min(1.0, this.personality_traits.mood + moodBoost);
-                    this.personality_traits.optimism = Math.min(1.0, this.personality_traits.optimism + moodBoost * 0.5);
-                    
-                    // Learn from joke
-                    this.vocabulary.add('komik');
-                    this.vocabulary.add('eğlenceli');
-                    if (jokeData.category === 'rituel') {
-                        this.vocabulary.add('kültür');
-                        this.memory_bank.push(`${jokerName} ile kültürel bir anı paylaştık: "${joke}"`);
-                    }
-                    
-                } else {
-                    // Confused reactions
-                    const confusedReactions = ["?", "Ne dedi?", "Anlamadım... 🤔", "Bu da ne?", "Hmm... 😕"];
-                    reactionText = confusedReactions[Math.floor(Math.random() * confusedReactions.length)];
-                    
-                    // Slight mood decrease for not understanding
-                    this.personality_traits.mood = Math.max(0, this.personality_traits.mood - 0.01);
-                }
-                
-                // Display reaction
-                console.log(`${understood ? '😂' : '🤔'} ${this.name} ${jokerName}'in şakasına: "${reactionText}"`);
-                
-                // Add to memory
-                this.memory_bank.push(`${jokerName}'in şakası: "${joke}" - ${understood ? 'Anladım ve güldüm' : 'Anlamadım'}`);
-                
-                // Social bonding for successful jokes
-                if (understood && laughed && Math.random() < 0.4) {
-                    this.vocabulary.add('arkadaş');
-                    this.memory_bank.push(`${jokerName} ile şaka üzerinden bağ kurduk!`);
-                }
-                
-                return { understood, laughed, reactionText };
-            }
         }
 
-        // 🎭 V8.9.1: MISSING JOKE TRIGGER DETECTION FUNCTION
-        function checkForJokeTriggers(message, bacteria) {
-            if (!message || !bacteria || !jokeMasterInstance) return null;
-            
-            // Check for explicit joke triggers
-            const messageText = message.toLowerCase();
-            if (messageText.includes('vur joker vur') || messageText.includes('şaka yap') || messageText.includes('komik söyle')) {
-                console.log(`🎪 ${bacteria.name} detected joke trigger in message: ${message}`);
-                
-                // Force bacteria to tell a joke
-                const joke = jokeMasterInstance.tryTellingJoke(bacteria, true);
-                if (joke) {
-                    console.log(`🎭 ${bacteria.name} tells forced joke: ${joke.text}`);
-                    return joke.text;
-                }
-            }
-            
-            return null;
-        }
-
-        // 🚀 V8.9.1: REVOLUTIONARY ANTI-PATTERN LANGUAGE EVOLUTION RESPONSE GENERATOR
-        async function generateBacteriaResponse(bacteria, message, context = 'user') {
+        // v8.2.8: TabPFN-Enhanced Chat System with Smart Word Usage
+        function generateBacteriaResponse(bacteria, message, context = 'user') {
             const age = bacteria.biological_state.age;
             const consciousness = bacteria.consciousness_level;
             const vocabularySize = bacteria.vocabulary.size;
@@ -5810,79 +3638,34 @@
                 }
             }
             
-            // 🎭 V8.9.1: CHECK FOR JOKE TRIGGERS FIRST
-            const jokeResponse = checkForJokeTriggers(message, bacteria);
-            if (jokeResponse) {
-                console.log(`🎭 ${bacteria.name} joke triggered: ${jokeResponse.substring(0, 50)}...`);
-                return jokeResponse;
+            // Predict behavior using TabPFN
+            const behaviorMode = predictBehavior(bacteria);
+            
+            // SMART WORD USAGE: Use learned vocabulary contextually
+            const availableWords = Array.from(bacteria.vocabulary);
+            
+            // Determine conversation context for smart word selection
+            let conversationContext = 'general';
+            if (message && message.toLowerCase().includes('merhaba')) conversationContext = 'greeting';
+            else if (message && (message.includes('öğren') || message.includes('bil'))) conversationContext = 'learning';
+            else if (message && (message.includes('arkadaş') || message.includes('dostluk'))) conversationContext = 'social';
+            else if (message && (message.includes('ATP') || message.includes('hücre'))) conversationContext = 'science';
+            
+            // Use TabPFN to get contextual words
+            let smartWord = null;
+            if (tabPFNAdapter && tabPFNAdapter.isReady) {
+                smartWord = tabPFNAdapter.improveWordUsage(bacteria, conversationContext);
             }
             
-            // 🧬 v9.5.0: ULTRA-AGGRESSIVE ANTI-MONOTONY LANGUAGE EVOLUTION ENGINE (PRIMARY SYSTEM)
-            if (languageEvolutionEngine && consciousness >= 0.5) {
-                // Determine conversation context for morphological generation
-                let conversationContext = 'general';
-                if (message && message.toLowerCase().includes('merhaba')) conversationContext = 'social';
-                else if (message && (message.includes('öğren') || message.includes('bil'))) conversationContext = 'learning';
-                else if (message && (message.includes('arkadaş') || message.includes('dostluk'))) conversationContext = 'social';
-                else if (message && (message.includes('ATP') || message.includes('hücre'))) conversationContext = 'scientific';
-                else if (message && message.includes('vur joker vur')) conversationContext = 'creative';
-                else if (message && (message.includes('niye') || message.includes('niçin'))) conversationContext = 'philosophical';
-                
-                try {
-                    // Map context to available contexts in v9.5.0 system
-                    if (conversationContext === 'scientific') conversationContext = 'biological';
-                    if (conversationContext === 'creative') conversationContext = 'creative';
-                    if (conversationContext === 'social') conversationContext = 'social';
-                    if (conversationContext === 'philosophical') conversationContext = 'philosophical';
-                    
-                    // Get v9.5.0 Ultra-Aggressive Anti-Monotony response
-                    const morphResponse = await languageEvolutionEngine.generateContextualResponse(bacteria, conversationContext, message);
-                    
-                    // 🧬 Record interaction for persistent learning
-                    if (window.persistentLearning && context === 'user') {
-                        await window.persistentLearning.recordInteraction(
-                            message || '',
-                            morphResponse,
-                            conversationContext,
-                            bacteria.id
-                        );
-                        
-                        // Apply learned word success rates to enhance response
-                        const words = morphResponse.split(' ');
-                        const enhancedWords = words.map(word => {
-                            const successRate = window.persistentLearning.getWordSuccessRate(word);
-                            // Optionally modify word based on success rate
-                            return successRate > 0.7 ? word : word; // Keep for now, can be enhanced
-                        });
-                    }
-                    
-                    console.log(`🧬 ${bacteria.name} v9.5.0 ULTRA-AGGRESSIVE ANTI-MONOTONY response (context: ${conversationContext})`);
-                    return morphResponse;
-                } catch (error) {
-                    console.warn(`⚠️ v9.5.0 Language Evolution failed for ${bacteria.name}:`, error);
-                    // Fall through to legacy system
+            // Generate new words occasionally
+            if (consciousness > 2 && Math.random() < 0.1) {
+                const newWord = generateNewWord(bacteria);
+                if (newWord) {
+                    bacteria.memory_bank.push(`"${newWord}" kelimesini icat ettim!`);
                 }
             }
             
-            // 🔧 v9.5.0: LEGACY FALLBACK (for very low consciousness bacteria)
-            if (languageEvolutionEngine && consciousness >= 0.3) {
-                // Determine conversation context for smart evolution
-                let conversationContext = 'general';
-                if (message && message.toLowerCase().includes('merhaba')) conversationContext = 'greeting';
-                else if (message && (message.includes('öğren') || message.includes('bil'))) conversationContext = 'learning';
-                else if (message && (message.includes('arkadaş') || message.includes('dostluk'))) conversationContext = 'social';
-                else if (message && (message.includes('ATP') || message.includes('hücre'))) conversationContext = 'science';
-                else if (message && message.includes('vur joker vur')) conversationContext = 'comedy';
-                
-                // Get v9.5.0 fallback response
-                const evolvedResponse = await languageEvolutionEngine.generateContextualResponse(bacteria, conversationContext, message);
-                
-                console.log(`🔧 ${bacteria.name} v9.5.0 FALLBACK response (context: ${conversationContext})`);
-                return evolvedResponse;
-            }
-            
-            // 🔧 FALLBACK: Basic consciousness responses for very young bacteria
-            const availableWords = Array.from(bacteria.vocabulary);
+            // Response templates enhanced with ML behavior prediction
             let responseTemplates = [];
             
             if (consciousness < 1) {
@@ -5891,13 +3674,67 @@
                     `*${bacteria.name} hareket ediyor*`,
                     `${Math.random() > 0.5 ? 'ağrı' : 'aç'}...`
                 ];
-            } else {
-                // Even basic consciousness uses language evolution
+            } else if (consciousness < 2) {
                 responseTemplates = [
                     `Ben ${bacteria.name}! ${optimism > 0.7 ? 'Mutluyum!' : optimism < 0.3 ? 'Üzgünüm...' : 'İyiyim.'}`,
                     `${sociability > 0.7 ? 'Seninle konuşmak güzel!' : 'Merhaba...'}`,
                     `${vocabularySize > 3 ? availableWords.slice(0,3).join(' ') : 'aç yardım'}!`
                 ];
+            } else if (consciousness < 3) {
+                responseTemplates = [
+                    `Merhaba! Ben ${bacteria.name}, ${age} günlük bir bakteriyim. ${optimism > 0.6 ? 'Bugün harika!' : 'Nasılsın?'}`,
+                    `${sociability > 0.5 ? 'Seninle sohbet etmeyi seviyorum!' : 'Konuşuyoruz işte...'}`,
+                    `Bugün ${bacteria.memory_bank.length > 0 ? bacteria.memory_bank[bacteria.memory_bank.length-1] : 'yeni şeyler öğreniyorum'}!`
+                ];
+            } else {
+                // Advanced consciousness with TabPFN behavior modes + Smart Word Usage
+                const baseTemplates = [
+                    `Selam dostum! ${bacteria.name} burada. ${optimism > 0.7 ? 'Hayat güzel!' : optimism < 0.3 ? 'Biraz melankolik hissediyorum...' : 'Düşünceliyim.'} Sen nasılsın?`,
+                    `${sociability > 0.7 ? 'Bu sohbeti çok seviyorum! Daha fazla konuşalım!' : sociability < 0.3 ? 'Konuşmak iyi ama biraz sessiz kalmayı da severim...' : 'Güzel bir sohbet bu.'}`,
+                    `Biliyorsun, ${vocabularySize} kelime biliyorum artık. ${bacteria.memory_bank.length > 0 ? 'Son zamanlarda ' + bacteria.memory_bank[bacteria.memory_bank.length-1] : 'Sürekli öğreniyorum'}.`
+                ];
+
+                // TabPFN-enhanced responses with smart word integration
+                const behaviorTemplates = {
+                    'creative': [
+                        `Yeni bir ${smartWord || 'kelime'} icat etmeyi düşünüyorum... ${availableWords.slice(-2).join('')} nasıl?`,
+                        `Hayal gücüm gelişiyor! ${smartWord ? `"${smartWord}" kelimesini kullanarak ` : ''}${availableWords.length > 5 ? availableWords.slice(-3).join(' ') + ' kombinasyonu' : 'Yaratıcı hissediyorum'}.`,
+                        `${smartWord ? `"${smartWord}" hakkında düşünüyordum... ` : ''}Kelimeler birleşince yeni anlamlar doğuyor!`
+                    ],
+                    'social': [
+                        `Diğer bakterilerle ${smartWord || (availableWords.includes('arkadaş') ? 'arkadaşlık' : 'konuşmak')} istiyorum!`,
+                        `Sen de ${smartWord || 'öğrenmeyi'} seviyor musun? Ben ${bacteria.memory_bank.filter(m => m.includes('öğrendim')).length} kez yeni şeyler öğrendim!`,
+                        `${smartWord ? `"${smartWord}" ile ilgili ` : ''}Birlikte ${availableWords.slice(-2).join(' ve ')} hakkında konuşalım!`
+                    ],
+                    'social_social': [
+                        `Arkadaşlarımla ${smartWord || 'paylaşım'} yapmayı seviyorum! Sosyal bir bakteriyim!`,
+                        `${smartWord ? `"${smartWord}" deyince aklıma ` : ''}Dostluk çok önemli, değil mi?`,
+                        `Grup halinde ${smartWord || 'birlikte'} olmak harika!`
+                    ],
+                    'learner': [
+                        `${smartWord ? `"${smartWord}" kelimesini öğrenince ` : ''}Her gün ${Math.floor(Math.random() * 3) + 1} yeni kelime öğrenmeye çalışıyorum!`,
+                        `${smartWord ? `Özellikle "${smartWord}" konusunda ` : ''}Sen bana yeni kelimeler öğretebilir misin?`,
+                        `${smartWord ? `"${smartWord}" fascinant! ` : ''}Öğrenme sürecim harika! ${bacteria.vocabulary.size > 10 ? 'Artık çok kelime biliyorum' : 'Daha çok öğrenmek istiyorum'}.`
+                    ],
+                    'learner_enhanced': [
+                        `Gelişmiş ${smartWord || 'öğrenme'} modundayım! Bilinç seviyem ${consciousness.toFixed(1)}`,
+                        `${smartWord ? `"${smartWord}" üzerine derinlemesine ` : ''}Analitik düşünmeyi seviyorum!`,
+                        `Superior ${smartWord || 'intelligence'} developing... Çok heyecanlıyım!`
+                    ],
+                    'creative_enhanced': [
+                        `Ultra-creative mode! ${smartWord ? `"${smartWord}" ile ` : ''}Yepyeni kavramlar yaratıyorum!`,
+                        `${smartWord ? `"${smartWord}" inspirasyonuyla ` : ''}Artistik gen mutasyonlarım var!`,
+                        `Dimensional ${smartWord || 'creativity'} unlocked! Evrensel sanat anlayışım gelişiyor!`
+                    ],
+                    'explorer': [
+                        `${smartWord ? `"${smartWord}" arayışındayım! ` : ''}Keşfetmek istiyorum!`,
+                        `Bu ortamda ${smartWord || 'yeni yerler'} bulmaya çalışıyorum`,
+                        `Macera dolu ${smartWord || 'yolculuk'} istiyorum!`
+                    ],
+                    'basic': baseTemplates
+                };
+
+                responseTemplates = behaviorTemplates[behaviorMode] || baseTemplates;
             }
             
             let response = responseTemplates[Math.floor(Math.random() * responseTemplates.length)];
@@ -5907,7 +3744,6 @@
                 response = response.replace('Merhaba!', 'Hey arkadaş!').replace('Selam!', 'Ey bakteri kardeş!');
             }
             
-            console.log(`🔧 ${bacteria.name} fallback response (consciousness: ${consciousness.toFixed(2)})`);
             return response;
         }
 
@@ -5927,8 +3763,8 @@
 
             if (chatMode === 'individual') {
                 // Individual chat with selected bacteria
-                setTimeout(async () => {
-                    const response = await generateBacteriaResponse(selectedBacteria, message, 'user');
+                setTimeout(() => {
+                    const response = generateBacteriaResponse(selectedBacteria, message, 'user');
                     selectedBacteria.conversation_history.push({ user: message, bacteria: response });
                     addChatMessage(response, 'bacteria', selectedBacteria.name);
                     showChatLoading(false);
@@ -5940,9 +3776,9 @@
                  const responseBacteria = [];
                  
                  bacteriaPopulation.forEach((bacteria, index) => {
-                     setTimeout(async () => {
+                     setTimeout(() => {
                          if (Math.random() < 0.7) { // 70% chance each bacteria responds
-                             const response = await generateBacteriaResponse(bacteria, message, 'user');
+                             const response = generateBacteriaResponse(bacteria, message, 'user');
                              bacteria.conversation_history.push({ user: message, bacteria: response });
                              addChatMessage(response, 'bacteria', bacteria.name);
                              responseBacteria.push(bacteria);
@@ -6010,8 +3846,8 @@
             };
             
             // Start natural conversation
-            setTimeout(async () => {
-                const message1 = await generateBacteriaResponse(bacteria1, topic, 'bacteria');
+            setTimeout(() => {
+                const message1 = generateBacteriaResponse(bacteria1, topic, 'bacteria');
                 conversation.messages.push({ speaker: bacteria1.name, message: message1, time: Date.now() });
                 
                 // Save to individual chat histories
@@ -6022,8 +3858,8 @@
                 bacteria2.chatHistory.push({type: 'received', from: bacteria1.name, message: message1, time: Date.now()});
                 
                 // Second bacteria responds
-                setTimeout(async () => {
-                    const message2 = await generateBacteriaResponse(bacteria2, message1, 'bacteria');
+                setTimeout(() => {
+                    const message2 = generateBacteriaResponse(bacteria2, message1, 'bacteria');
                     conversation.messages.push({ speaker: bacteria2.name, message: message2, time: Date.now() });
                     
                     bacteria2.chatHistory.push({type: 'sent', to: bacteria1.name, message: message2, time: Date.now()});
@@ -6138,46 +3974,8 @@
             
             if (sender === 'bacteria' && bacteriaName) {
                 const nameSpan = document.createElement('div');
-                nameSpan.className = 'text-xs font-semibold mb-1 opacity-75 cursor-pointer hover:text-blue-400 hover:underline';
+                nameSpan.className = 'text-xs font-semibold mb-1 opacity-75';
                 nameSpan.textContent = bacteriaName;
-                nameSpan.title = `${bacteriaName}'e tıklayarak seç`;
-                
-                // 🎯 ÖZELLİK 1: Chat'te bakterinin adını tıklayınca o bakteriyi seç
-                nameSpan.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    // Bakteriyi ismine göre bul
-                    const targetBacteria = bacteriaPopulation.find(b => b.name === bacteriaName);
-                    if (targetBacteria) {
-                        selectedBacteria = targetBacteria;
-                        console.log(`🎯 Chat'ten bakteri seçildi: ${bacteriaName}`);
-                        
-                        // UI'yi güncelle
-                        showBacteriaDetails(selectedBacteria);
-                        
-                        // Canvas'ta bakteriyi highlight et
-                        highlightSelectedBacteria(targetBacteria);
-                        
-                        // Chat modunu individual'a çevir
-                        if (chatMode !== 'individual') {
-                            chatMode = 'individual';
-                            updateChatModeButtons();
-                            updateChatUI();
-                        }
-                        
-                        // Görsel feedback
-                        nameSpan.style.color = '#22c55e';
-                        nameSpan.style.fontWeight = 'bold';
-                        setTimeout(() => {
-                            nameSpan.style.color = '';
-                            nameSpan.style.fontWeight = '';
-                        }, 1000);
-                    } else {
-                        console.warn(`⚠️ Bakteri bulunamadı: ${bacteriaName}`);
-                    }
-                });
-                
                 bubbleDiv.appendChild(nameSpan);
                 
                 const messageSpan = document.createElement('div');
@@ -6323,7 +4121,7 @@
         // Initialize AI systems and UIManager after DOM is ready
         let uiManager = null;
 
-                    // v9.0.0: Initialize Enhanced Persistent Learning Systems
+        // v8.5.0: Initialize Advanced AI/ML Systems
         function initializeAISystems() {
             console.log('🧠 Initializing Advanced AI/ML Systems...');
             
@@ -6416,7 +4214,14 @@
             ];
         }
         
-        // ESKİ FONKSİYONLAR KALDIRILDI - SIMÜLASYON ARTİK SİMULATİONMANAGER ÜZERİNDEN YÖNETİLİYOR
+        // Legacy function wrappers for backward compatibility
+        function startSimulation() {
+            if (uiManager) uiManager.startSimulation();
+        }
+
+        function pauseSimulation() {
+            if (uiManager) uiManager.pauseSimulation();
+        }
 
         function simulationStep() {
             simulationDay++;
@@ -6516,81 +4321,11 @@
         function initializeBacteria() {
             bacteriaPopulation = [];
             bacteriaList = []; // v826 compatibility
-            
-            // 🎯 EXTREME BOUNDARY UPDATE (v8.7.3 NUCLEAR OPTION)
-            console.log('🔍 Checking boundary status before initialization...');
-            console.log('📊 Current DYNAMIC_BOUNDARIES:', DYNAMIC_BOUNDARIES);
-            
-            // 🚨 NUCLEAR OPTION: ABSOLUTE FORCE RESIZE!!!
-            if (canvas) {
-                console.log('🔧 NUCLEAR FORCE RESIZE - EXTREME BOUNDARY UPDATE!');
-                // Force resize 10 times with different delays!
-                for (let i = 0; i < 10; i++) {
-                    setTimeout(() => {
-                        resizeCanvas();
-                        console.log(`🔧 Force resize attempt #${i + 1}:`, DYNAMIC_BOUNDARIES);
-                    }, i * 25);
-                }
-                
-                // Additional heavy artillery
-                setTimeout(() => {
-                    resizeCanvas();
-                    console.log('🔧 Heavy artillery resize 1:', DYNAMIC_BOUNDARIES);
-                }, 300);
-                setTimeout(() => {
-                    resizeCanvas();
-                    console.log('🔧 Heavy artillery resize 2:', DYNAMIC_BOUNDARIES);
-                }, 600);
-                setTimeout(() => {
-                    resizeCanvas();
-                    console.log('🔧 Heavy artillery resize 3:', DYNAMIC_BOUNDARIES);
-                }, 1000);
-            }
-            
-            // ✅ V8.7.4: FALLBACK NOW LOGGING-ONLY - NO STATIC VALUES!
-            if (!canvas) {
-                console.error('❌ CRITICAL: Canvas not available - cannot determine boundaries!');
-                console.error('🚨 System may not work properly without canvas sizing');
-                const container = document.getElementById('simulationArea');
-                if (container) {
-                    const rect = container.getBoundingClientRect();
-                    console.log(`📏 Container size detected: ${rect.width}x${rect.height}`);
-                    if (rect.width > 100 && rect.height > 100) {
-                        DYNAMIC_BOUNDARIES.maxX = rect.width - 40;
-                        DYNAMIC_BOUNDARIES.maxY = rect.height - 40;
-                        DYNAMIC_BOUNDARIES.minX = DYNAMIC_BOUNDARIES.padding;
-                        DYNAMIC_BOUNDARIES.minY = DYNAMIC_BOUNDARIES.padding;
-                        console.log('🔧 Emergency: Using container dimensions for boundaries');
-                    } else {
-                        console.error('💥 TOTAL FAILURE: Container too small, boundaries not set!');
-                    }
-                } else {
-                    console.error('💥 TOTAL FAILURE: No container found - boundaries not set!');
-                    console.error('🆘 Bacteria movement may fail completely!');
-                }
-            }
-            
-            // ✅ V8.7.4: FINAL VERIFICATION - PURELY DIAGNOSTIC
-            setTimeout(() => {
-                console.log('🎯 V8.7.4 Final Dynamic Boundary Verification:');
-                console.log(`📐 X: ${DYNAMIC_BOUNDARIES.minX} → ${DYNAMIC_BOUNDARIES.maxX} (width: ${DYNAMIC_BOUNDARIES.maxX - DYNAMIC_BOUNDARIES.minX})`);
-                console.log(`📐 Y: ${DYNAMIC_BOUNDARIES.minY} → ${DYNAMIC_BOUNDARIES.maxY} (height: ${DYNAMIC_BOUNDARIES.maxY - DYNAMIC_BOUNDARIES.minY})`);
-                
-                if (DYNAMIC_BOUNDARIES.maxX <= DYNAMIC_BOUNDARIES.padding * 2 || DYNAMIC_BOUNDARIES.maxY <= DYNAMIC_BOUNDARIES.padding * 2) {
-                    console.error('💥 CRITICAL: Dynamic boundaries failed to initialize properly!');
-                    console.error('🚨 Bacteria will be confined to tiny area or not move at all!');
-                } else {
-                    console.log('✅ SUCCESS: Dynamic boundaries properly initialized - bacteria can roam freely!');
-                    console.log(`🦠 Available area: ${(DYNAMIC_BOUNDARIES.maxX - DYNAMIC_BOUNDARIES.minX) * (DYNAMIC_BOUNDARIES.maxY - DYNAMIC_BOUNDARIES.minY)} pixels`);
-                }
-            }, 300);
-            
             for (let i = 0; i < CONFIG.SIMULATION.INITIAL_BACTERIA_COUNT; i++) {
                 const bacteria = new BacteriaEntity(i + 1);
                 bacteriaPopulation.push(bacteria);
                 bacteriaList.push(bacteria); // v826 compatibility
             }
-            console.log(`🦠 Initialized ${bacteriaPopulation.length} bacteria with bounds:`, DYNAMIC_BOUNDARIES);
             renderBacteria();
         }
 
@@ -6846,69 +4581,6 @@
             bacteriaDetailsDiv.classList.remove('hidden');
         }
 
-        // 🎯 ÖZELLİK 1 & 2: Eksik fonksiyonlar
-        function showBacteriaDetails(bacteria) {
-            selectedBacteria = bacteria;
-            updateBacteriaDetails(bacteria);
-            
-            // Chat sistemini güncelle
-            setupChat(bacteria);
-            
-            console.log(`🎯 Bacteria details shown for: ${bacteria.name}`);
-        }
-
-        function highlightSelectedBacteria(bacteria) {
-            // Canvas'ta tüm bakterileri çiz ve seçili olanı vurgula
-            if (canvas && ctx) {
-                // Redraw bacteria to remove old highlights
-                drawBacteria();
-                
-                // Draw highlight circle around selected bacteria
-                ctx.save();
-                ctx.strokeStyle = '#22c55e'; // Green highlight
-                ctx.lineWidth = 3;
-                ctx.setLineDash([5, 5]); // Dashed line
-                ctx.beginPath();
-                ctx.arc(bacteria.x, bacteria.y, bacteria.biological_state.size * 12 + 8, 0, 2 * Math.PI);
-                ctx.stroke();
-                ctx.setLineDash([]); // Reset dash
-                ctx.restore();
-                
-                // Add pulsing selection indicator
-                let pulseOpacity = 0.7;
-                let pulseDirection = -0.02;
-                
-                const pulseInterval = setInterval(() => {
-                    pulseOpacity += pulseDirection;
-                    if (pulseOpacity <= 0.3) pulseDirection = 0.02;
-                    if (pulseOpacity >= 0.7) pulseDirection = -0.02;
-                    
-                    // Redraw bacteria
-                    drawBacteria();
-                    
-                    // Draw pulsing highlight
-                    ctx.save();
-                    ctx.globalAlpha = pulseOpacity;
-                    ctx.strokeStyle = '#22c55e';
-                    ctx.lineWidth = 3;
-                    ctx.setLineDash([5, 5]);
-                    ctx.beginPath();
-                    ctx.arc(bacteria.x, bacteria.y, bacteria.biological_state.size * 12 + 8, 0, 2 * Math.PI);
-                    ctx.stroke();
-                    ctx.setLineDash([]);
-                    ctx.restore();
-                }, 50);
-                
-                // Clear pulse after 3 seconds
-                setTimeout(() => {
-                    clearInterval(pulseInterval);
-                    drawBacteria(); // Final redraw without highlight
-                }, 3000);
-            }
-            
-            console.log(`🎯 Bacteria highlighted: ${bacteria.name}`);
-        }
-
         function setupChat(bacteria) {
             chatMode = 'individual';
             selectedBacteria = bacteria;
@@ -7055,29 +4727,8 @@
             }`;
             
             const nameSpan = document.createElement('div');
-            nameSpan.className = 'text-xs opacity-75 mb-1 cursor-pointer hover:bg-blue-600 hover:text-white px-2 py-1 rounded transition-colors';
+            nameSpan.className = 'text-xs opacity-75 mb-1';
             nameSpan.textContent = senderName;
-            
-            // 🎯 CHAT'TE BAKTERİ SEÇİMİ - İsme tıklayınca bakteriyi seç
-            if (sender === 'bacteria') {
-                nameSpan.addEventListener('click', () => {
-                    const bacteria = bacteriaPopulation.find(b => b.name === senderName);
-                    if (bacteria) {
-                        selectBacteria(bacteria);
-                        console.log(`🎯 Selected bacteria ${senderName} from chat`);
-                        
-                        // Visual feedback
-                        nameSpan.style.background = '#10B981';
-                        nameSpan.style.color = 'white';
-                        setTimeout(() => {
-                            nameSpan.style.background = '';
-                            nameSpan.style.color = '';
-                        }, 1000);
-                    }
-                });
-                
-                nameSpan.title = `${senderName} bakterisini seçmek için tıklayın`;
-            }
             
             const messageSpan = document.createElement('div');
             messageSpan.textContent = message;
@@ -7102,8 +4753,8 @@
             bacteria.conversation_history = bacteria.conversation_history || [];
             
             // Generate bacteria response
-            setTimeout(async () => {
-                const response = await generateBacteriaResponse(bacteria, message, 'user');
+            setTimeout(() => {
+                const response = generateBacteriaResponse(bacteria, message, 'user');
                 addMessageToWindow(messagesArea, response, 'bacteria', bacteria.name);
                 
                 // Save conversation
@@ -7181,8 +4832,10 @@
             }
         }
 
-        // ESKİ EVENT LİSTENERLAR KALDIRILDI - YEŞİ EVENT DELEGATİON SİSTEMİ KULLANILIYOR
-        // nextStepBtn ve resetSimulationBtn artık yok, data-action ile yönetiliyor
+        // Event listeners
+        startSimulationBtn.addEventListener('click', startSimulation);
+        nextStepBtn.addEventListener('click', simulationStep);
+        resetSimulationBtn.addEventListener('click', resetSimulation);
 
         // Add food on click
         simulationArea.addEventListener('click', (e) => {
@@ -7385,13 +5038,13 @@
             // Update version to show AI integration
             const versionDisplay = document.querySelector('h1');
             if (versionDisplay && aiSuccess) {
-                versionDisplay.innerHTML = '🧬 mnBac v9.6.2 - System Readiness & GitHub Pages Fix';
+                versionDisplay.innerHTML = '🧬 NeoMag v8.5.0 - AI/ML Bakteriler';
             }
         }
 
         // Initialize simulation (v826)
         async function initializeV826() {
-            console.log('🚀 Initializing mnBac v9.6.2 - System Readiness & GitHub Pages Fix...');
+            console.log('🚀 Initializing NeoMag v8.2.6...');
             
             // Initialize ML models first (placeholder)
             console.log('🧠 ML models loading skipped for now');
@@ -7500,105 +5153,7 @@ Consciousness Levels:
             alert(stats);
         }
 
-        // Missing Event Handler Functions
-        function toggleGroupChat() {
-            chatMode = chatMode === 'individual' ? 'group' : 'individual';
-            console.log(`💬 Chat mode switched to: ${chatMode}`);
-        }
-        
-        function exportCSV() {
-            console.log('📊 CSV Export triggered');
-            // Functionality implemented elsewhere
-        }
-        
-        function exportEnhancedData() {
-            console.log('📈 JSON Export triggered');
-            // Functionality implemented elsewhere
-        }
-        
-        // 🧬 CRITICAL MISSING FUNCTION
-        function addBacteria() {
-            if (bacteriaPopulation.length >= CONFIG.SIMULATION.MAX_BACTERIA_POPULATION) {
-                alert(`⚠️ Maximum ${CONFIG.SIMULATION.MAX_BACTERIA_POPULATION} bacteria limit reached!`);
-                return;
-            }
-            
-            const bacteria = new BacteriaEntity(bacteriaIdCounter, `Bakteri-${bacteriaIdCounter}`);
-            bacteriaPopulation.push(bacteria);
-            bacteriaList.push(bacteria); // v826 compatibility
-            bacteriaIdCounter++;
-            
-            console.log(`➕ New bacteria added: ${bacteria.name} (Total: ${bacteriaPopulation.length})`);
-            
-            // Update displays
-            updateBuildInfo();
-            if (typeof renderBacteria === 'function') renderBacteria();
-        }
-        
-        // 🚀 CRITICAL MISSING FUNCTION  
-        function initializeBacteria() {
-            console.log('🚀 Initializing bacteria population...');
-            
-            // Clear existing populations
-            bacteriaPopulation = [];
-            bacteriaList = [];
-            
-            // Create initial bacteria
-            for (let i = 0; i < CONFIG.SIMULATION.INITIAL_BACTERIA_COUNT; i++) {
-                const bacteria = new BacteriaEntity(bacteriaIdCounter, `Bakteri-${bacteriaIdCounter}`);
-                bacteriaPopulation.push(bacteria);
-                bacteriaList.push(bacteria); // v826 compatibility
-                bacteriaIdCounter++;
-            }
-            
-            console.log(`✅ ${CONFIG.SIMULATION.INITIAL_BACTERIA_COUNT} bacteria initialized`);
-            updateBuildInfo();
-        }
-
         function showLearningStats() {
-            console.log('🧠 SHOWING LEARNING STATS...');
-            
-            // Check if learning engine exists
-            if (!learningEngine) {
-                alert('⚠️ AI Learning Engine is not initialized yet. Please wait for system to fully load.');
-                return;
-            }
-            
-            let fullStats = '';
-            
-            // 🧬 Enhanced Persistent Learning Stats
-            if (window.persistentLearning && window.persistentLearning.isReady) {
-                const persistentStats = window.persistentLearning.getLearningStats();
-                
-                let topWordsText = '📚 Top Learned Words:\n';
-                persistentStats.topWords.slice(0, 8).forEach(({word, successRate}) => {
-                    const percentage = (successRate * 100).toFixed(0);
-                    const emoji = successRate > 0.8 ? '🌟' : successRate > 0.6 ? '✅' : '📖';
-                    topWordsText += `${emoji} ${word}: ${percentage}% success\n`;
-                });
-                
-                let topContextsText = '\n🎯 Top Context Patterns:\n';
-                persistentStats.topContexts.forEach(({context, effectiveness}) => {
-                    const percentage = (effectiveness * 100).toFixed(0);
-                    const emoji = effectiveness > 0.8 ? '🚀' : effectiveness > 0.6 ? '✅' : '📊';
-                    topContextsText += `${emoji} ${context}: ${percentage}% effective\n`;
-                });
-                
-                fullStats += `🧬 Persistent Learning Engine Stats:
-
-💾 Total Interactions: ${persistentStats.totalInteractions}
-📚 Vocabulary Size: ${persistentStats.vocabularySize} words
-📈 Average Success Rate: ${(persistentStats.averageSuccessRate * 100).toFixed(1)}%
-📊 Learning Trend: ${(persistentStats.learningTrend * 100).toFixed(0)}%
-
-${topWordsText}${topContextsText}
-
-───────────────────────────────
-
-`;
-            }
-            
-            // 🧠 Original AI Learning Stats
             const stats = learningEngine.getStats();
             const recentDecisions = learningEngine.decisionLog.slice(-10);
             
@@ -7606,7 +5161,7 @@ ${topWordsText}${topContextsText}
             recentDecisions.forEach((log, i) => {
                 const outcome = log.outcome || 'pending';
                 const emoji = outcome === 'success' ? '✅' : outcome === 'failure' ? '❌' : '⏳';
-                recentSummary += `${emoji} ${log.source}: ${log.output.substring(0, 30)}... (${(log.confidence * 100).toFixed(0)}%)\n`;
+                recentSummary += `${emoji} ${log.source}: ${log.output} (${(log.confidence * 100).toFixed(0)}%)\n`;
             });
             
             const errorPatterns = Array.from(learningEngine.errorPatterns.entries()).slice(0, 3);
@@ -7616,7 +5171,7 @@ ${topWordsText}${topContextsText}
                 errorSummary += `• ${p.source} confidence ${p.confidenceRange}: ${data.count} failures\n`;
             });
             
-            fullStats += `🧠 AI Self-Learning Stats:
+            const fullStats = `🧠 AI Self-Learning Stats:
 
 📈 Total Decisions: ${stats.totalDecisions}
 🎯 Recent Success Rate: ${(stats.recentSuccessRate * 100).toFixed(1)}%
@@ -7625,270 +5180,9 @@ ${topWordsText}${topContextsText}
 
 ${recentSummary}${errorSummary}
 
-🔬 The AI is continuously learning from decision outcomes and user interactions to improve future predictions.`;
+🔬 The AI is continuously learning from decision outcomes to improve future predictions and avoid repeated mistakes.`;
             
             alert(fullStats);
-        }
-
-        // 🧬 Clear Persistent Learning Database
-        async function clearLearningDatabase() {
-            if (!window.persistentLearning || !window.persistentLearning.isReady) {
-                alert('⚠️ Persistent Learning Engine is not ready yet.');
-                return;
-            }
-            
-            const confirmed = confirm(
-                '🚨 Are you sure you want to clear all learning data?\n\n' +
-                'This will delete:\n' +
-                '• All user interactions\n' +
-                '• Learned vocabulary with success rates\n' +
-                '• Context patterns\n' +
-                '• Learning metrics\n\n' +
-                'This action cannot be undone!'
-            );
-            
-            if (confirmed) {
-                try {
-                    await window.persistentLearning.clearDatabase();
-                    alert('✅ Learning database cleared successfully!\n\nThe system will start learning fresh from your next interactions.');
-                    console.log('🧬 Persistent Learning Database cleared by user');
-                } catch (error) {
-                    console.error('❌ Failed to clear learning database:', error);
-                    alert('❌ Failed to clear learning database. Please check the console for details.');
-                }
-            }
-        }
-
-        // 🛡️ System Readiness Checker
-        function isSystemReady() {
-            // Priority 1: Check if system is fully ready
-            if (window.systemFullyReady) {
-                return true;
-            }
-            
-            // Priority 2: Check if basic simulation is ready (bacteria exist)
-            if (bacteriaList && bacteriaList.length > 0) {
-                return true;
-            }
-            
-            // Priority 3: Check if any critical system is available
-            const checks = {
-                enhancedMorphGenerator: window.enhancedMorphGenerator || window.morphGenerator,
-                languageEvolutionEngine: window.languageEvolutionEngine,
-                simulationManager: window.simulationManager
-            };
-            
-            return Object.values(checks).some(check => check);
-        }
-        
-        // 📊 Get System Status for User Info
-        function getSystemStatus() {
-            const status = {
-                fullyReady: !!window.systemFullyReady,
-                bacteriaCount: bacteriaList ? bacteriaList.length : 0,
-                systemsLoaded: 0,
-                totalSystems: 4,
-                readyTime: window.systemFullyReady ? 'Ready!' : 'Loading...'
-            };
-            
-            if (window.enhancedMorphGenerator) status.systemsLoaded++;
-            if (window.languageEvolutionEngine) status.systemsLoaded++;
-            if (window.simulationManager) status.systemsLoaded++;
-            if (bacteriaList && bacteriaList.length > 0) status.systemsLoaded++;
-            
-            return status;
-        }
-
-        // 🎭 Show Word Diversity Stats
-        function showDiversityStats() {
-            console.log('🎭 SHOWING DIVERSITY STATS...');
-            
-            // Check if any system is ready, show detailed status
-            if (!isSystemReady()) {
-                const status = getSystemStatus();
-                alert(`⚠️ System is still initializing...\n\n📊 Status: ${status.systemsLoaded}/${status.totalSystems} systems loaded\n🧬 Bacteria: ${status.bacteriaCount}\n⏱️ ${status.readyTime}\n\nPlease wait a few more seconds and try again.\nFull initialization takes about 5-10 seconds.`);
-                return;
-            }
-            
-            try {
-                // Import the diversity function dynamically
-                import('./src/engine/MorphologicalDialogueGenerator.js').then(module => {
-                    const { showDiversityStats } = module;
-                    const stats = showDiversityStats();
-                    
-                    // Format the stats nicely
-                    let displayText = `🎭 WORD DIVERSITY ANALYSIS:
-
-📝 Recent Words Used:
-${stats.recentWords.map(word => `• ${word}`).join('\n')}
-
-🔁 Most Repeated Words:
-${stats.topRepeated.map(([word, count]) => `• ${word}: ${count} times`).join('\n')}
-
-🚫 Currently Banned Words:
-${stats.bannedWords.length > 0 ? stats.bannedWords.map(word => `• ${word}`).join('\n') : '• None (Good!)'}
-
-🎯 Current Context: ${stats.currentContext}
-📊 Sentences Generated: ${stats.sentenceCount}
-📚 Total Vocabulary Used: ${stats.totalWordUsage} unique words
-
-🔍 ANALYSIS:
-${stats.bannedWords.length > 0 ? 
-  `⚠️ ${stats.bannedWords.length} words are temporarily banned due to overuse.` :
-  '✅ No words are banned - good diversity!'
-}
-
-${stats.topRepeated.length > 0 && stats.topRepeated[0][1] > 3 ?
-  `🔄 Word "${stats.topRepeated[0][0]}" has been used ${stats.topRepeated[0][1]} times recently.` :
-  '✅ No excessive word repetition detected.'
-}
-
-Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 sentences trigger a context change.`;
-                    
-                    alert(displayText);
-                }).catch(error => {
-                    console.error('❌ Failed to load diversity stats:', error);
-                    alert('❌ Failed to load diversity stats. Check console for details.');
-                });
-                
-            } catch (error) {
-                console.error('❌ Error showing diversity stats:', error);
-                alert('❌ Error showing diversity stats. The Enhanced Morphological System might not be fully loaded yet.');
-            }
-        }
-
-        // 🔄 Reset Diversity System
-        function resetDiversitySystem() {
-            console.log('🔄 RESETTING DIVERSITY SYSTEM...');
-            
-            if (!isSystemReady()) {
-                const status = getSystemStatus();
-                alert(`⚠️ System is still initializing...\n\n📊 Status: ${status.systemsLoaded}/${status.totalSystems} systems loaded\n🧬 Bacteria: ${status.bacteriaCount}\n⏱️ ${status.readyTime}\n\nPlease wait a few more seconds and try again.\nFull initialization takes about 5-10 seconds.`);
-                return;
-            }
-            
-            const confirmed = confirm(
-                '🔄 Reset Word Diversity System?\n\n' +
-                'This will:\n' +
-                '• Clear recent word history\n' +
-                '• Remove all banned words\n' +
-                '• Reset word usage counters\n' +
-                '• Reset context rotation\n\n' +
-                'This can help if bacteria are stuck in repetitive patterns.'
-            );
-            
-            if (confirmed) {
-                try {
-                    import('./src/engine/MorphologicalDialogueGenerator.js').then(module => {
-                        const { resetDiversityEngine } = module;
-                        resetDiversityEngine();
-                        
-                        alert('✅ Diversity system reset successfully!\n\nBacteria will now have access to fresh vocabulary patterns.');
-                        console.log('🔄 Diversity system reset by user');
-                    }).catch(error => {
-                        console.error('❌ Failed to reset diversity system:', error);
-                        alert('❌ Failed to reset diversity system. Check console for details.');
-                    });
-                    
-                } catch (error) {
-                    console.error('❌ Error resetting diversity system:', error);
-                    alert('❌ Error resetting diversity system. The Enhanced Morphological System might not be fully loaded yet.');
-                }
-            }
-        }
-
-        // 🧠 Language Evolution Stats Function
-        function showLanguageEvolutionStats() {
-            console.log('📊 LANGUAGE EVOLUTION STATS...');
-            
-            if (!isSystemReady()) {
-                const status = getSystemStatus();
-                alert(`⚠️ System is still initializing...\n\n📊 Status: ${status.systemsLoaded}/${status.totalSystems} systems loaded\n🧬 Bacteria: ${status.bacteriaCount}\n⏱️ ${status.readyTime}\n\nPlease wait a few more seconds and try again.\nFull initialization takes about 5-10 seconds.`);
-                return;
-            }
-            
-            try {
-                const stats = {
-                    totalGenerations: bacteriaList.reduce((sum, b) => sum + (b.languageGeneration || 0), 0),
-                    avgVocabularySize: bacteriaList.reduce((sum, b) => sum + (b.vocabulary ? b.vocabulary.size : 0), 0) / bacteriaList.length,
-                    totalWords: bacteriaList.reduce((sum, b) => sum + (b.vocabulary ? b.vocabulary.size : 0), 0),
-                    activeBacteria: bacteriaList.length,
-                    languageEvolutionRate: bacteriaList.filter(b => b.consciousness > 0.5).length / bacteriaList.length
-                };
-                
-                const message = `🧠 Language Evolution Statistics\n\n` +
-                    `📈 Total Language Generations: ${stats.totalGenerations}\n` +
-                    `📚 Average Vocabulary Size: ${stats.avgVocabularySize.toFixed(1)} words\n` +
-                    `🔤 Total Words in System: ${stats.totalWords}\n` +
-                    `🧬 Active Bacteria: ${stats.activeBacteria}\n` +
-                    `⚡ Language Evolution Rate: ${(stats.languageEvolutionRate * 100).toFixed(1)}%\n\n` +
-                    `💡 High-consciousness bacteria (>50%) are actively evolving language patterns.`;
-                
-                alert(message);
-                console.log('📊 Language Evolution Stats:', stats);
-                
-            } catch (error) {
-                console.error('❌ Error getting language evolution stats:', error);
-                alert('❌ Error retrieving language evolution statistics. Check console for details.');
-            }
-        }
-
-        // 🗣️ Peer Dialogue Function  
-        function runPeerDialogue() {
-            console.log('🗣️ PEER DIALOGUE...');
-            
-            if (bacteriaList.length < 2) {
-                alert('⚠️ Peer Dialogue requires at least 2 bacteria.\n\nPlease add more bacteria to the simulation.');
-                return;
-            }
-            
-            try {
-                // Select two random bacteria with highest consciousness
-                const conscientBacteria = bacteriaList
-                    .filter(b => b.consciousness > 0.3)
-                    .sort((a, b) => b.consciousness - a.consciousness);
-                
-                if (conscientBacteria.length < 2) {
-                    alert('⚠️ Need at least 2 conscious bacteria (consciousness > 30%).\n\nWait for bacteria to develop more consciousness.');
-                    return;
-                }
-                
-                const bacteria1 = conscientBacteria[0];
-                const bacteria2 = conscientBacteria[1];
-                
-                // Generate peer dialogue
-                const topics = ['science', 'art', 'emotion', 'discovery', 'mystery', 'friendship', 'evolution', 'creativity'];
-                const topic = topics[Math.floor(Math.random() * topics.length)];
-                
-                console.log(`🗣️ Peer dialogue between ${bacteria1.name} and ${bacteria2.name} about ${topic}`);
-                
-                // Generate responses using language evolution engine
-                if (window.languageEvolutionEngine && window.languageEvolutionEngine.generateCrossBacteriaDialogue) {
-                    window.languageEvolutionEngine.generateCrossBacteriaDialogue(bacteria1, bacteria2, topic)
-                        .then(dialogue => {
-                            alert(`🗣️ Peer Dialogue: ${topic}\n\n${dialogue}`);
-                            
-                            // Add to chat
-                            addChatMessage(`🗣️ ${bacteria1.name} ↔ ${bacteria2.name}`, dialogue, 'peer-dialogue');
-                        })
-                        .catch(error => {
-                            console.error('❌ Peer dialogue generation failed:', error);
-                            
-                            // Fallback simple dialogue
-                            const fallbackDialogue = `${bacteria1.name}: "Bu ${topic} konusu çok ilginç..."\n${bacteria2.name}: "Evet, ben de öyle düşünüyorum!"`;
-                            alert(`🗣️ Peer Dialogue (Simple): ${topic}\n\n${fallbackDialogue}`);
-                        });
-                } else {
-                    // Simple fallback without language evolution engine
-                    const simpleDialogue = `${bacteria1.name}: "Merhaba ${bacteria2.name}!"\n${bacteria2.name}: "Selam ${bacteria1.name}! Nasılsın?"`;
-                    alert(`🗣️ Simple Peer Dialogue\n\n${simpleDialogue}`);
-                    addChatMessage(`🗣️ ${bacteria1.name} ↔ ${bacteria2.name}`, simpleDialogue, 'simple-dialogue');
-                }
-                
-            } catch (error) {
-                console.error('❌ Error in peer dialogue:', error);
-                alert('❌ Error running peer dialogue. Check console for details.');
-            }
         }
 
         // v825: Auto-restore on page load
@@ -7939,24 +5233,6 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
             }
         }
 
-        // Dynamic Script Loader Utility
-        function loadScript(src) {
-            return new Promise((resolve, reject) => {
-                // Check if script already loaded
-                if (document.querySelector(`script[src="${src}"]`)) {
-                    resolve();
-                    return;
-                }
-                
-                const script = document.createElement('script');
-                script.src = src;
-                script.type = 'module';
-                script.onload = resolve;
-                script.onerror = reject;
-                document.head.appendChild(script);
-            });
-        }
-
         // Global Event Delegation System (Modern Approach)
         function initializeEventDelegation() {
             document.addEventListener('click', function(event) {
@@ -7968,39 +5244,17 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 
                 // Ana kontrol paneli
                 if (action === 'start-simulation') {
-                    console.log('🔥 START-SIMULATION CLICKED!', { simulationManager: !!simulationManager });
-                    
-                    if (!simulationManager) {
-                        console.error('❌ SimulationManager not ready yet - creating emergency instance');
-                        alert('⚠️ Sistem henüz hazır değil! Lütfen biraz bekleyin ve tekrar deneyin.');
-                        
-                        // Emergency initialization
-                        try {
-                            simulationManager = new SimulationManager();
-                            console.log('✅ Emergency SimulationManager created');
-                        } catch (e) {
-                            console.error('❌ Emergency SimulationManager creation failed:', e);
-                            return;
-                        }
-                    }
-                    
-                    console.log('🔥 SimulationManager isRunning:', simulationManager.isRunning);
-                    
                     if (simulationManager.isRunning) {
                         simulationManager.pause();
-                        button.textContent = '▶️ Simülasyonu Başlat';
-                        console.log('⏸️ Simulation paused');
+                        button.textContent = '▶️ Başlat';
                     } else {
                         simulationManager.start();
-                        button.textContent = '⏸️ Simülasyonu Duraklat';
-                        console.log('▶️ Simulation started');
+                        button.textContent = '⏸️ Duraklat';
                     }
                 }
-                else if (action === 'pause-simulation') {
-                    if (simulationManager) simulationManager.pause();
-                }
+                else if (action === 'pause-simulation') simulationManager.pause();
                 else if (action === 'reset-simulation') {
-                    if (simulationManager) simulationManager.reset();
+                    simulationManager.reset();
                 }
                 else if (action === 'add-bacteria') addBacteria();
                 else if (action === 'toggle-group-chat') toggleGroupChat();
@@ -8013,17 +5267,12 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 else if (action === 'clear-db') clearDatabase();
                 else if (action === 'show-db-stats') showDatabaseStats();
                 else if (action === 'show-learning-stats') showLearningStats();
-                else if (action === 'clear-learning-db') clearLearningDatabase();
-                else if (action === 'show-diversity-stats') showDiversityStats();
-                else if (action === 'reset-diversity') resetDiversitySystem();
-                else if (action === 'show-language-stats') showLanguageEvolutionStats();
-                else if (action === 'peer-dialogue') runPeerDialogue();
             });
         }
 
         // 🚀 MAIN INITIALIZATION - EVENT DRIVEN
         async function mainInitialize() {
-            console.log('🚀 mnBac v9.6.2 - System Readiness & GitHub Pages Fix - Final Initialization Complete!');
+            console.log('🚀 NeoMag v8.5.0 Event-Driven Initialization...');
             
             // 1. Setup event listeners first
             initializeEventListeners();
@@ -8043,13 +5292,7 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 
                 // AI systems parallel (they don't depend on each other)
                 const tabPFNAdapter = new TabPFNAdapter();
-                realAI = new RealAITrainingSystem(); // Use global realAI variable
-                
-                // Initialize Learning Engine
-                if (!learningEngine) {
-                    learningEngine = new SystemLearningEngine();
-                    console.log('✅ AI Learning Engine initialized');
-                }
+                const realAI = new RealAITrainingSystem();
                 
                 await Promise.all([
                     tabPFNAdapter.initialize(),
@@ -8065,79 +5308,6 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 
                 // 5. Start simulation manager
                 simulationManager = new SimulationManager();
-                
-                // 6. 🎭 Initialize Advanced Comedy Culture System
-                setTimeout(() => {
-                    if (typeof tabpfnVocabularySystem !== 'undefined' && tabpfnVocabularySystem) {
-                        jokeMasterInstance = new JokeMaster(tabpfnVocabularySystem);
-                        console.log('🎭 JokeMaster initialized with TabPFN integration');
-                    } else {
-                        jokeMasterInstance = new JokeMaster(null);
-                        console.log('🎭 JokeMaster initialized without TabPFN integration');
-                    }
-                }, 3000); // Wait for TabPFN to be ready
-                
-                // 7. 🧬 Initialize Dynamic Language Evolution System
-                setTimeout(() => {
-                    languageEvolutionEngine = new LanguageEvolutionEngine();
-                    console.log('🧬 Language Evolution Engine initialized - bacterial languages will now evolve!');
-                }, 4000); // Wait for other systems to be ready
-                
-                // 8. 🔤 Initialize Enhanced Morphological System (Phase 2.7)
-                setTimeout(async () => {
-                    try {
-                        // Load scripts dynamically
-                        await loadScript('./src/engine/AITrainingAdapter.js');
-                        await loadScript('./src/engine/EnhancedMorphologicalGenerator.js');
-                        await loadScript('./src/engine/MorphologicalDialogueGenerator.js');
-                        await loadScript('./src/engine/PersistentLearningEngine.js');
-                        
-                        // Initialize Enhanced Morphological System
-                        window.aiTrainingAdapter = new AITrainingAdapter();
-                        window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
-                        
-                        // Initialize Persistent Learning Engine
-                        const { PersistentLearningEngine } = await import('./src/engine/PersistentLearningEngine.js');
-                        window.persistentLearning = new PersistentLearningEngine();
-                        
-                        // Wait for training data to load
-                        await new Promise(resolve => {
-                            const checkLoaded = () => {
-                                if (window.aiTrainingAdapter.isLoaded && window.persistentLearning.isReady) {
-                                    resolve();
-                                } else {
-                                    setTimeout(checkLoaded, 100);
-                                }
-                            };
-                            checkLoaded();
-                        });
-                        
-                        console.log('🔤 Enhanced Morphological System v2.7 initialized!');
-                        console.log(`📚 Training examples loaded: ${window.aiTrainingAdapter.getSystemStatus().trainingExamples}`);
-                        console.log('🧬 Persistent Learning Engine initialized!');
-                        console.log(`💾 Previous interactions: ${window.persistentLearning.metrics.totalInteractions}`);
-                        
-                        // Mark system as fully ready
-                        window.systemFullyReady = true;
-                        
-                        // Update UI to show system is ready
-                        const loadingIndicators = document.querySelectorAll('.loading-indicator');
-                        loadingIndicators.forEach(indicator => {
-                            indicator.style.display = 'none';
-                        });
-                        
-                        // Show success notification
-                        console.log('🎉 mnBac v9.6.2 FULLY LOADED - All systems operational!');
-                        
-                        // Emit event for other systems to know it's ready
-                        appEvents.emit('morphological:system:ready');
-                        appEvents.emit('persistent:learning:ready');
-                        appEvents.emit('system:fully:ready');
-                        
-                    } catch (error) {
-                        console.error('❌ Enhanced Morphological System initialization failed:', error);
-                    }
-                }, 5000); // Wait for all other systems to be ready
                 
                 console.log('🎉 Event-driven initialization complete!');
                 

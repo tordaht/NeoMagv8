@@ -1,0 +1,95 @@
+{
+  "dataset_info": {
+    "name": "NeoMag Error Solutions Database",
+    "version": "1.0.0",
+    "created_date": "2024-12-28",
+    "total_records": 21,
+    "use_case": "Predictive error prevention and solution recommendation",
+    "target_model": "TabPFN"
+  },
+  "categories": {
+    "Basic_Errors": {
+      "description": "Temel fonksiyonellik ve UI güncellemesi hataları",
+      "severity_range": "Low-High",
+      "typical_fix_time": "10-30 minutes",
+      "recurrence_rate": "Low"
+    },
+    "Performance_Errors": {
+      "description": "Performans, memory ve rendering sorunları",
+      "severity_range": "Medium-Critical",
+      "typical_fix_time": "25-60 minutes",
+      "recurrence_rate": "Medium"
+    },
+    "UI_UX_Errors": {
+      "description": "Kullanıcı arayüzü ve etkileşim problemleri",
+      "severity_range": "Low-Medium",
+      "typical_fix_time": "40-50 minutes",
+      "recurrence_rate": "Low"
+    },
+    "Initialization_Errors": {
+      "description": "Sistem başlatma ve bağımlılık sorunları",
+      "severity_range": "Medium-Critical",
+      "typical_fix_time": "15-120 minutes",
+      "recurrence_rate": "Low"
+    },
+    "Function_Errors": {
+      "description": "Fonksiyon tanımı ve async handling hataları",
+      "severity_range": "Medium-High",
+      "typical_fix_time": "35-40 minutes",
+      "recurrence_rate": "Low-Medium"
+    },
+    "Architecture_Errors": {
+      "description": "Sistem mimarisi ve coupling problemleri",
+      "severity_range": "High",
+      "typical_fix_time": "90-180 minutes",
+      "recurrence_rate": "Low"
+    },
+    "AI_ML_Errors": {
+      "description": "Yapay zeka ve makine öğrenmesi sorunları",
+      "severity_range": "Medium",
+      "typical_fix_time": "75-100 minutes",
+      "recurrence_rate": "Low"
+    },
+    "Data_Errors": {
+      "description": "Veri formatı ve database şema sorunları",
+      "severity_range": "Low-Medium",
+      "typical_fix_time": "30-45 minutes",
+      "recurrence_rate": "Low-Medium"
+    }
+  },
+  "feature_definitions": {
+    "Category": "Main error classification",
+    "Problem_Type": "Specific problem subcategory",
+    "Priority": "Business impact level (Low, Medium, High, Critical)",
+    "Time_To_Fix": "Resolution duration in minutes",
+    "Recurrence_Risk": "Probability of same error happening again",
+    "Project_Component": "Affected system component",
+    "Root_Cause": "Underlying reason for the error",
+    "TabPFN_Input_Features": "Relevant features for ML prediction"
+  },
+  "prediction_targets": [
+    "Time_To_Fix",
+    "Recurrence_Risk", 
+    "Priority",
+    "Solution_Effectiveness"
+  ],
+  "tabpfn_configuration": {
+    "classification_mode": true,
+    "regression_mode": true,
+    "max_features": 15,
+    "recommended_split": "80/20 train/test",
+    "feature_engineering_suggestions": [
+      "One-hot encode categorical variables",
+      "Normalize time_to_fix values",
+      "Create composite features from root_cause + component",
+      "Use priority as ordinal encoding"
+    ]
+  },
+  "usage_instructions": {
+    "data_ingestion": "Load CSV into pandas DataFrame",
+    "preprocessing": "Handle categorical encoding and normalization",
+    "tabpfn_input": "Use processed features for few-shot learning",
+    "prediction": "Predict time_to_fix and recurrence_risk for new errors",
+    "continuous_learning": "Add new resolved errors to improve model"
+  }
+} 

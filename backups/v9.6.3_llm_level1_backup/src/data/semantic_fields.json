@@ -1,0 +1,58 @@
+{
+  "biological": [
+    "atp", "enzim", "dna", "protein", "hücre", "metabolizma", "mitokondri", 
+    "ribozom", "çekirdek", "sitoplazma", "membran", "gen", "kromozom", 
+    "amino asit", "glikoz", "oksijen", "karbon dioksit", "bakteri", 
+    "virüs", "organizma", "evolüsyon", "adaptasyon", "seleksiyon"
+  ],
+  "emotional": [
+    "mutlu", "üzgün", "korku", "öfkeli", "heyecanlı", "şaşkın", "sakin", 
+    "gergin", "endişeli", "rahat", "umutlu", "hayal kırıklığı", "gurur", 
+    "utanç", "özlem", "sevgi", "nefret", "kıskançlık", "merhamet", 
+    "empati", "coşku", "hüzün", "öfke", "neşe"
+  ],
+  "social": [
+    "arkadaş", "yardım", "paylaşım", "topluluk", "birlik", "iletişim", 
+    "konuşma", "dinleme", "anlayış", "işbirliği", "destek", "güven", 
+    "saygı", "hoşgörü", "sevgi", "çatışma", "barış", "dayanışma", 
+    "rekabet", "liderlik", "takip", "örnek", "rol model"
+  ],
+  "scientific": [
+    "kuantum", "elektron", "foton", "enerji", "entropi", "matris", 
+    "algoritma", "veri", "analiz", "hipotez", "deney", "gözlem", 
+    "teori", "kanun", "formül", "hesaplama", "istatistik", "grafik", 
+    "model", "simülasyon", "tahmin", "ölçüm", "kalibrasyon"
+  ],
+  "absurd": [
+    "hipopotam peyniri", "uçan patates", "dans eden mikroskop", 
+    "şarkı söyleyen termometre", "koşan kalem", "ağlayan bilgisayar", 
+    "gülen saat", "düşünen tava", "konuşan bardak", "yürüyen masa", 
+    "uçan sandalye", "ışık tutan karanlık", "sessiz çığlık", 
+    "donmuş ateş", "sıvı taş", "transparan metal", "kare daire", 
+    "yumuşak çelik", "sert su", "ağır hava", "hafif kurşun"
+  ],
+  "creative": [
+    "hayal", "inovasyon", "sanat", "fikir", "yaratıcı", "ürün", 
+    "tasarım", "stil", "estetik", "güzellik", "renk", "şekil", 
+    "melodi", "ritim", "harmoni", "kompozisyon", "hikaye", "şiir", 
+    "dans", "müzik", "resim", "heykel", "mimari", "edebiyat"
+  ],
+  "neutral": [
+    "günaydın", "selam", "evet", "hayır", "belki", "tabii", "tamam", 
+    "peki", "anladık", "biliyorum", "bilmiyorum", "düşünüyorum", 
+    "sanırım", "galiba", "muhtemelen", "kesinlikle", "asla", "her zaman", 
+    "bazen", "nadiren", "sık sık", "hep", "hiç"
+  ],
+  "technical": [
+    "algoritma", "fonksiyon", "değişken", "döngü", "koşul", "dizi", 
+    "nesne", "sınıf", "metod", "özellik", "parametre", "argüman", 
+    "dönüş değeri", "hata", "istisna", "debug", "test", "optimizasyon", 
+    "performans", "bellek", "işlemci", "ağ", "veritabanı"
+  ],
+  "philosophical": [
+    "varoluş", "anlam", "amaç", "bilinç", "düşünce", "felsefe", 
+    "mantık", "akıl", "sezgi", "gerçek", "hakikat", "illüzyon", 
+    "rüya", "zaman", "mekân", "sonsuzluk", "yokluk", "var olmak", 
+    "bilgi", "bilim", "sanat", "ahlak", "etik", "değer"
+  ]
+} 

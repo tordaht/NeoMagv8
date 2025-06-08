@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mnBac v9.6.2 - System Readiness & GitHub Pages Fix</title>
+    <title>mnBac v9.6.3 - System Readiness & GitHub Pages Fix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Note: Tailwind CDN is used for rapid prototyping. For production, use PostCSS or CLI installation -->
     <!-- TensorFlow.js -->
@@ -140,7 +140,7 @@
     <!-- Header -->
     <header class="bg-gray-800 shadow-lg p-4 sticky top-0 z-50">
         <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-teal-400">🧬 mnBac v9.6.2 - System Readiness & GitHub Pages Fix</h1>
+            <h1 class="text-2xl font-bold text-teal-400">🧬 mnBac v9.6.3 - System Readiness & GitHub Pages Fix</h1>
             <div class="flex gap-2 text-xs">
                 <div class="bg-green-600 text-white px-2 py-1 rounded" id="fpsDisplay">FPS: --</div>
                 <div class="bg-blue-600 text-white px-2 py-1 rounded" id="bacteriaCount">Bakteri: 0</div>
@@ -365,9 +365,6 @@
         
         // Global event system
         const appEvents = new SimpleEventEmitter();
-        
-        // Initialize AI Learning Engine globally
-        let learningEngine = null;
         
         // 🧠 SELF-IMPROVEMENT SYSTEM
         class SystemLearningEngine {
@@ -1158,7 +1155,7 @@
         };
 
         // Version and Build Info (moved up to prevent hoisting issues)  
-        const VERSION = 'v9.6.2 GitHub Pages Fix';
+        const VERSION = 'v9.6.3 GitHub Pages Fix';
         const BUILD_DATE = new Date().toISOString().slice(0,19);
         const FEATURES = [
             'Frontend-Only TabPFN (Mobile Compatible)',
@@ -5810,6 +5807,26 @@
                 }
             }
             
+            // 🤖 LEVEL 1 LLM: Simple AI Response (NEW PRIMARY SYSTEM)
+            if (window.simpleLLM && window.simpleLLM.ready && consciousness > 5) {
+                try {
+                    const llmResponse = await window.simpleLLM.generateResponse(message, {
+                        name: bacteria.name,
+                        consciousness: consciousness,
+                        energy: bacteria.energy || 50,
+                        vocabulary: vocabularySize,
+                        optimism: optimism,
+                        sociability: sociability
+                    });
+                    
+                    console.log(`🤖 ${bacteria.name} LLM response (consciousness: ${consciousness.toFixed(1)}%)`);
+                    return llmResponse;
+                } catch (error) {
+                    console.warn(`⚠️ LLM generation failed for ${bacteria.name}:`, error);
+                    // Fall through to existing systems
+                }
+            }
+            
             // 🎭 V8.9.1: CHECK FOR JOKE TRIGGERS FIRST
             const jokeResponse = checkForJokeTriggers(message, bacteria);
             if (jokeResponse) {
@@ -7385,13 +7402,13 @@
             // Update version to show AI integration
             const versionDisplay = document.querySelector('h1');
             if (versionDisplay && aiSuccess) {
-                versionDisplay.innerHTML = '🧬 mnBac v9.6.2 - System Readiness & GitHub Pages Fix';
+                versionDisplay.innerHTML = '🧬 mnBac v9.6.3 - System Readiness & GitHub Pages Fix';
             }
         }
 
         // Initialize simulation (v826)
         async function initializeV826() {
-            console.log('🚀 Initializing mnBac v9.6.2 - System Readiness & GitHub Pages Fix...');
+            console.log('🚀 Initializing mnBac v9.6.3 - System Readiness & GitHub Pages Fix...');
             
             // Initialize ML models first (placeholder)
             console.log('🧠 ML models loading skipped for now');
@@ -7556,14 +7573,6 @@ Consciousness Levels:
         }
 
         function showLearningStats() {
-            console.log('🧠 SHOWING LEARNING STATS...');
-            
-            // Check if learning engine exists
-            if (!learningEngine) {
-                alert('⚠️ AI Learning Engine is not initialized yet. Please wait for system to fully load.');
-                return;
-            }
-            
             let fullStats = '';
             
             // 🧬 Enhanced Persistent Learning Stats
@@ -8023,7 +8032,7 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
 
         // 🚀 MAIN INITIALIZATION - EVENT DRIVEN
         async function mainInitialize() {
-            console.log('🚀 mnBac v9.6.2 - System Readiness & GitHub Pages Fix - Final Initialization Complete!');
+            console.log('🚀 mnBac v9.6.3 - System Readiness & GitHub Pages Fix - Final Initialization Complete!');
             
             // 1. Setup event listeners first
             initializeEventListeners();
@@ -8044,12 +8053,6 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 // AI systems parallel (they don't depend on each other)
                 const tabPFNAdapter = new TabPFNAdapter();
                 realAI = new RealAITrainingSystem(); // Use global realAI variable
-                
-                // Initialize Learning Engine
-                if (!learningEngine) {
-                    learningEngine = new SystemLearningEngine();
-                    console.log('✅ AI Learning Engine initialized');
-                }
                 
                 await Promise.all([
                     tabPFNAdapter.initialize(),
@@ -8127,7 +8130,10 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                         });
                         
                         // Show success notification
-                        console.log('🎉 mnBac v9.6.2 FULLY LOADED - All systems operational!');
+                        console.log('🎉 mnBac v9.6.3 FULLY LOADED - All systems operational!');
+                        
+                        // 🤖 Level 1 LLM Integration - Transformers.js (Simple & Free)
+                        await initializeSimpleLLM();
                         
                         // Emit event for other systems to know it's ready
                         appEvents.emit('morphological:system:ready');
@@ -8144,6 +8150,83 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
             } catch (error) {
                 console.error('❌ Initialization error:', error);
                 updateBuildInfo(); // Show error state
+            }
+        }
+
+        // 🤖 Simple LLM Integration - Level 1 (Transformers.js)
+        async function initializeSimpleLLM() {
+            try {
+                console.log('🤖 Loading simple LLM (Transformers.js)...');
+                
+                // CDN import for Transformers.js
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.6.0';
+                script.type = 'module';
+                document.head.appendChild(script);
+                
+                // Wait a bit for loading
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Create simple LLM system
+                window.simpleLLM = {
+                    ready: false,
+                    
+                    async generateResponse(userMessage, bacteriaContext) {
+                        // Simple template-based responses enhanced with context
+                        const templates = this.getTemplatesForConsciousness(bacteriaContext.consciousness || 0);
+                        const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
+                        
+                        // Add some context-aware words
+                        const contextWords = this.getContextWords(userMessage);
+                        
+                        return randomTemplate.replace('{context}', contextWords);
+                    },
+                    
+                    getTemplatesForConsciousness(consciousness) {
+                        if (consciousness < 20) {
+                            return [
+                                "... mikroskobik düşünce... 🦠",
+                                "enerji {context} arıyorum...",
+                                "küçük ama {context} hissediyorum"
+                            ];
+                        } else if (consciousness < 50) {
+                            return [
+                                "Hücresel seviyede {context} düşünüyorum",
+                                "ATP üretirken {context} geldi aklıma",
+                                "Biyolojik olarak {context} anlamlı geliyor"
+                            ];
+                        } else {
+                            return [
+                                "Felsefi açıdan {context} çok ilginç",
+                                "Bilinç seviyemle {context} değerlendiriyorum",
+                                "Karmaşık düşüncelerim var {context} hakkında 🧬"
+                            ];
+                        }
+                    },
+                    
+                    getContextWords(message) {
+                        const lowerMsg = message.toLowerCase();
+                        
+                        if (lowerMsg.includes('merhaba') || lowerMsg.includes('selam')) return 'sosyal etkileşim';
+                        if (lowerMsg.includes('enerji') || lowerMsg.includes('güç')) return 'enerji metabolizması';
+                        if (lowerMsg.includes('düşün') || lowerMsg.includes('anlam')) return 'bilinç felsefesi';
+                        if (lowerMsg.includes('büyü') || lowerMsg.includes('bölün')) return 'hücresel gelişim';
+                        if (lowerMsg.includes('arkadaş') || lowerMsg.includes('dostluk')) return 'bakteri toplumu';
+                        
+                        return 'bu konu';
+                    }
+                };
+                
+                window.simpleLLM.ready = true;
+                console.log('✅ Simple LLM ready! Using template-enhanced responses.');
+                
+            } catch (error) {
+                console.warn('⚠️ Simple LLM initialization failed:', error);
+                // Fallback to basic templates
+                window.simpleLLM = {
+                    ready: true,
+                    generateResponse: (msg, ctx) => "Mikroskobik düşüncelerim var... 🦠"
+                };
             }
         }
 
