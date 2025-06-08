@@ -327,6 +327,9 @@
             <button data-action="debug-system" class="bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded text-sm">
                 🔧 Debug System
             </button>
+            <button data-action="test-conversation" class="bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-sm">
+                🧪 Test Conversation
+            </button>
         </div>
         
         <div class="text-xs text-gray-300">
@@ -1247,6 +1250,16 @@
         let geneticAlgorithm = null;
         let behaviourLearningSystem = null;
         let tabpfnVocabularySystem = null;
+
+        // 🎭 JOKE SYSTEM CONFIGURATION
+        const JOKE_CONFIG = {
+            PREDEFINED_JOKE_CHANCE: 0.7,      // 70% chance for predefined jokes
+            JOKE_COOLDOWN: 15000,              // 15 seconds cooldown between jokes
+            JOKE_MORALE_BOOST: 0.1,            // 10% morale boost from jokes
+            MAX_JOKE_DISTANCE: 100,            // Maximum distance to hear jokes
+            MIN_CONSCIOUSNESS_FOR_JOKES: 3,    // Minimum consciousness to tell jokes
+            JOKE_SUCCESS_THRESHOLD: 0.5        // Minimum success rate for joke attempts
+        };
 
         // 🎭 MATHEMATICAL COMEDY THEORY SYSTEM v8.6.1
         // Based on Incongruity Theory + Surprisal + Sigmoid Modeling
@@ -7338,16 +7351,21 @@
         });
 
         document.getElementById('startBacteriaConversationBtn').addEventListener('click', () => {
-            // v826: Manual trigger for natural conversation
-            if (bacteriaPopulation.length >= 2) {
-                const socialBacteria = bacteriaPopulation.filter(b => b.personality_traits.sociability > 0.3);
-                if (socialBacteria.length >= 2) {
-                    startNaturalBacteriaConversation(socialBacteria);
+            console.log('🎯 Manual bacteria conversation button clicked');
+            
+            // Use the new conversation system
+            if (bacteriaList.length >= 2) {
+                const consciousBacteria = bacteriaList.filter(b => b.consciousness > 0.4);
+                if (consciousBacteria.length >= 2) {
+                    console.log(`🤝 Found ${consciousBacteria.length} conscious bacteria, starting conversation...`);
+                    initiateBacteriaConversation();
                 } else {
-                    console.log('⚠️ Not enough social bacteria for conversation');
+                    console.log('⚠️ Not enough conscious bacteria for conversation (need consciousness > 40%)');
+                    alert(`⚠️ Need bacteria with >40% consciousness. Current: ${bacteriaList.map(b => `${b.name}: ${(b.consciousness*100).toFixed(0)}%`).join(', ')}`);
                 }
             } else {
                 console.log('⚠️ Need at least 2 bacteria for conversation');
+                alert('⚠️ Need at least 2 bacteria for conversation');
             }
         });
 
@@ -8136,6 +8154,7 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 else if (action === 'show-language-stats') showLanguageEvolutionStats();
                 else if (action === 'peer-dialogue') runPeerDialogue();
                 else if (action === 'debug-system') debugSystemStatus();
+                else if (action === 'test-conversation') testBacteriaConversation();
             });
         }
         
@@ -8562,7 +8581,9 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
             
             // Check bacteria
             debugInfo += `🧬 Bacteria Count: ${bacteriaList.length}\n`;
-            debugInfo += `📊 Bacteria with consciousness >50%: ${bacteriaList.filter(b => b.consciousness > 0.5).length}\n\n`;
+            debugInfo += `📊 Bacteria with consciousness >50%: ${bacteriaList.filter(b => b.consciousness > 0.5).length}\n`;
+            debugInfo += `🤝 Auto conversation running: ${autoConversationInterval !== null}\n`;
+            debugInfo += `📡 Simulation running: ${simulationRunning}\n\n`;
             
             // Check system components
             debugInfo += `🔧 SYSTEM COMPONENTS:\n`;
@@ -8608,6 +8629,34 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
             
             alert(debugInfo);
             console.log('🔧 Debug Info:', debugInfo);
+        }
+        
+        // 🧪 TEST CONVERSATION SYSTEM
+        function testBacteriaConversation() {
+            console.log('🧪 TESTING BACTERIA CONVERSATION SYSTEM...');
+            
+            if (bacteriaList.length < 2) {
+                alert('❌ Need at least 2 bacteria for conversation test');
+                return;
+            }
+            
+            // Force a conversation between first two bacteria
+            const bacteria1 = bacteriaList[0];
+            const bacteria2 = bacteriaList[1];
+            
+            console.log(`🧪 Testing conversation: ${bacteria1.name} → ${bacteria2.name}`);
+            console.log(`Consciousness: ${bacteria1.name}=${(bacteria1.consciousness*100).toFixed(0)}%, ${bacteria2.name}=${(bacteria2.consciousness*100).toFixed(0)}%`);
+            
+            // Force generate conversation
+            generateBacteriaToBacteriaConversation(bacteria1, bacteria2);
+            
+            // Test user message to bacteria
+            setTimeout(() => {
+                console.log('🧪 Testing user → bacteria conversation');
+                sendMessageToIndividualBacteria(bacteria1, 'Test message: Nasılsın?');
+            }, 2000);
+            
+            alert('🧪 Conversation test started! Check console and watch for speech bubbles.');
         }
 
         // 🚀 MAIN INITIALIZATION - EVENT DRIVEN
