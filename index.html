@@ -8180,25 +8180,46 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 <div class="speech-arrow"></div>
             `;
             
-            // Position above bacteria - SAFE MODE
+            // FIXED POSITIONING - Canvas Relative Coordinates
             let bubbleX = 100; // Default position
             let bubbleY = 100;
             
             try {
-                if (canvas && typeof canvas.getBoundingClientRect === 'function') {
-                    const rect = canvas.getBoundingClientRect();
-                    bubbleX = rect.left + bacteria.x - 75; // Center bubble
-                    bubbleY = rect.top + bacteria.y - 80; // Above bacteria
+                // Get canvas element (multiple ways)
+                const canvasElement = canvas || document.querySelector('canvas') || document.getElementById('canvas') || simulationArea?.querySelector('canvas');
+                
+                if (canvasElement && typeof canvasElement.getBoundingClientRect === 'function') {
+                    const canvasRect = canvasElement.getBoundingClientRect();
+                    const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    // Calculate absolute position on page
+                    bubbleX = canvasRect.left + scrollX + (bacteria.x || 0) - 75; // Center bubble (150px width / 2)
+                    bubbleY = canvasRect.top + scrollY + (bacteria.y || 0) - 80; // Above bacteria
+                    
+                    console.log(`💬 Bubble position: canvas(${canvasRect.left}, ${canvasRect.top}) + bacteria(${bacteria.x}, ${bacteria.y}) = bubble(${bubbleX}, ${bubbleY})`);
                 } else {
-                    // Fallback positioning relative to viewport
-                    bubbleX = (bacteria.x || 200) - 75;
-                    bubbleY = (bacteria.y || 200) - 80;
-                    console.warn('⚠️ Canvas not available, using fallback positioning');
+                    // Advanced fallback: Find simulation area
+                    const simArea = simulationArea || document.getElementById('simulationArea') || document.querySelector('[data-simulation-area]');
+                    if (simArea) {
+                        const simRect = simArea.getBoundingClientRect();
+                        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+                        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                        
+                        bubbleX = simRect.left + scrollX + (bacteria.x || 0) - 75;
+                        bubbleY = simRect.top + scrollY + (bacteria.y || 0) - 80;
+                        console.log(`💬 Using simulation area fallback positioning`);
+                    } else {
+                        // Last resort fallback
+                        bubbleX = (bacteria.x || 200) + 100; // Offset from bacteria coords
+                        bubbleY = (bacteria.y || 200) + 50;
+                        console.warn('⚠️ No canvas or simulation area found, using basic positioning');
+                    }
                 }
             } catch (error) {
-                console.warn('⚠️ Error getting canvas position:', error.message);
-                bubbleX = (bacteria.x || 200) - 75;
-                bubbleY = (bacteria.y || 200) - 80;
+                console.warn('⚠️ Error calculating bubble position:', error.message);
+                bubbleX = (bacteria.x || 200) + 100;
+                bubbleY = (bacteria.y || 200) + 50;
             }
             
             bubble.style.position = 'fixed';
@@ -8235,15 +8256,15 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 clearInterval(autoConversationInterval);
             }
             
-            // Every 3-8 seconds, bacteria might talk to each other (MORE FREQUENT)
+            // Every 2-4 seconds, bacteria might talk to each other (MUCH MORE FREQUENT)
             autoConversationInterval = setInterval(() => {
                 if (bacteriaList.length >= 2 && simulationRunning) {
-                    // 50% chance of conversation (HIGHER CHANCE)
-                    if (Math.random() < 0.5) {
+                    // 70% chance of conversation (VERY HIGH CHANCE)
+                    if (Math.random() < 0.7) {
                         initiateBacteriaConversation();
                     }
                 }
-            }, Math.random() * 5000 + 3000); // 3-8 seconds (FASTER)
+            }, Math.random() * 2000 + 2000); // 2-4 seconds (MUCH FASTER)
             
             console.log('🤝 Auto-bacteria conversations started - FREQUENT MODE');
         }
@@ -8498,7 +8519,7 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 bacteriaChatBubble.innerHTML = `
                     <strong>${bacteria.name} → Sen:</strong> ${response}
                     <div class="text-xs opacity-75 mt-1">
-                        🧬 Consciousness: ${(bacteria.consciousness * 100).toFixed(0)}% | 
+                        🧬 Consciousness: ${((bacteria.consciousness || bacteria.consciousness_level || 0) * 100).toFixed(0)}% | 
                         💝 Mood: ${bacteria.personality?.optimism > 0.7 ? 'Happy' : bacteria.personality?.optimism < 0.3 ? 'Sad' : 'Neutral'}
                     </div>
                 `;
@@ -8520,7 +8541,7 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
         
         // Generate bacteria response based on context
         async function generateBacteriaResponse(bacteria, userMessage, chatType) {
-            const consciousness = bacteria.consciousness;
+            const consciousness = bacteria.consciousness || bacteria.consciousness_level || 0;
             const personality = bacteria.personality || { optimism: 0.5, sociability: 0.5 };
             
             let response;
