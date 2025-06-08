@@ -6454,27 +6454,25 @@
                  const totalBacteria = bacteriaPopulation.length;
                  const responseBacteria = [];
                  
-                 bacteriaPopulation.forEach((bacteria, index) => {
-                     setTimeout(async () => {
-                         if (Math.random() < 0.7) { // 70% chance each bacteria responds
-                             const response = await generateBacteriaResponse(bacteria, message, 'user');
-                             bacteria.conversation_history.push({ user: message, bacteria: response });
-                             addChatMessage(response, 'bacteria', bacteria.name);
-                             responseBacteria.push(bacteria);
-                         }
-                         responseCount++;
-                         if (responseCount === totalBacteria) {
-                             // After all responses, bacteria learn from each other in group
-                             if (responseBacteria.length > 1) {
-                                 setTimeout(() => {
-                                     groupLearningSession(responseBacteria);
-                                 }, 1000);
-                             }
-                             showChatLoading(false);
-                         }
-                     }, (index + 1) * (500 + Math.random() * 1000));
-                 });
-             }
+                bacteriaPopulation.forEach((bacteria, index) => {
+                    setTimeout(async () => {
+                        const response = await generateBacteriaResponse(bacteria, message, 'user');
+                        bacteria.conversation_history.push({ user: message, bacteria: response });
+                        addChatMessage(response, 'bacteria', bacteria.name);
+                        responseBacteria.push(bacteria);
+                        responseCount++;
+                        if (responseCount === totalBacteria) {
+                            // After all responses, bacteria learn from each other in group
+                            if (responseBacteria.length > 1) {
+                                setTimeout(() => {
+                                    groupLearningSession(responseBacteria);
+                                }, 1000);
+                            }
+                            showChatLoading(false);
+                        }
+                    }, (index + 1) * (500 + Math.random() * 1000));
+                });
+            }
         }
 
         // v826: Natural conversation based on proximity and social needs
@@ -8818,6 +8816,13 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 }, 5000); // Wait for all other systems to be ready
                 
                 console.log('🎉 Event-driven initialization complete!');
+
+                // Auto-start simulation when all systems are ready
+                if (startSimulationBtn && typeof startSimulationBtn.click === 'function') {
+                    startSimulationBtn.click();
+                } else if (simulationManager && typeof simulationManager.start === 'function') {
+                    simulationManager.start();
+                }
                 
             } catch (error) {
                 console.error('❌ Initialization error:', error);
