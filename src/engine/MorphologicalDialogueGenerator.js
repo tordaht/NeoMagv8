@@ -473,7 +473,7 @@ class DiversityEngine {
         const probs = exps.map(e => e / sumExp);
         
         // 4) Weighted random selection
-        let random = Math.random();
+        const random = Math.random();
         let acc = 0;
         for (let i = 0; i < probs.length; i++) {
             acc += probs[i];

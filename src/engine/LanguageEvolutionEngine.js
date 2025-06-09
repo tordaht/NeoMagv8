@@ -284,7 +284,7 @@ export class LanguageEvolutionEngine {
         let words = [];
 
         // 1. Çekirdek kelime seçimi (adjusted style ile)
-        let coreWord = await this._selectCoreWord(bacteria, context, adjustedStyle);
+        const coreWord = await this._selectCoreWord(bacteria, context, adjustedStyle);
         if (coreWord) {
             words.push(coreWord);
         }

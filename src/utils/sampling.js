@@ -39,7 +39,7 @@ export function sampleFrom(items, probabilities) {
         return items[Math.floor(Math.random() * items.length)];
     }
     
-    let random = Math.random();
+    const random = Math.random();
     let accumulator = 0;
     
     for (let i = 0; i < items.length; i++) {

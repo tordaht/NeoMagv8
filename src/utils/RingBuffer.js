@@ -35,7 +35,7 @@ export class RingBuffer {
         if (this.size === 0) return [];
         
         const result = [];
-        let index = this.isFull ? this.head : 0;
+        const index = this.isFull ? this.head : 0;
         
         for (let i = 0; i < this.size; i++) {
             const pos = this.isFull ? 
