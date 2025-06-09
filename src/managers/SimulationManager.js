@@ -48,6 +48,9 @@ export class SimulationManager {
             
             // Initial bacteria population oluştur
             this.createInitialPopulation();
+
+            // İlk etkileşimi hemen başlat
+            await this.triggerRandomInteractions();
             
             this.initialized = true;
             console.log('✅ SimulationManager hazır!');
@@ -370,10 +373,8 @@ export class SimulationManager {
             await this.updateBacteria(bacteria);
         }
         
-        // Otomatik etkileşimler
-        if (this.simulationStepCount % 3 === 0) {
-            await this.triggerRandomInteractions();
-        }
+        // Otomatik etkileşimler (her adımda daha sık konuşma)
+        await this.triggerRandomInteractions();
         
         // Canvas çizimi
         this.render();
