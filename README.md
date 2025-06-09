@@ -199,6 +199,17 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosy
 - **TensorFlow.js**: Machine learning framework
 - **Tailwind CSS**: Utility-first CSS framework
 
+## ✅ Testler
+
+Projeyi klonladıktan sonra bağımlılıkları kurup testleri çalıştırabilirsiniz:
+
+```bash
+npm install  # internet bağlantısı gerektirir
+npm test
+```
+
+`npm install` komutu ağ erişimi gerektirdiğinden Codex ortamında çalışmayabilir. Bu durumda yerel makinenizde kurulum yapmanız gerekir.
+
 ## 📞 İletişim
 
 - **GitHub Issues**: Bug raporları ve feature istekleri

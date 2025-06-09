@@ -1392,6 +1392,17 @@
                 const top = clamp(bacteria.y - 35, 0, maxY);
                 bubble.style.left = `${left}px`;
                 bubble.style.top = `${top}px`;
+
+                // Extra clamp to handle resize or overflow
+                const clampBubblePosition = () => {
+                    const curLeft = parseFloat(bubble.style.left);
+                    const curTop = parseFloat(bubble.style.top);
+                    const maxX2 = simulationArea.clientWidth - bubble.offsetWidth;
+                    const maxY2 = simulationArea.clientHeight - bubble.offsetHeight;
+                    bubble.style.left = `${clamp(curLeft, 0, maxX2)}px`;
+                    bubble.style.top = `${clamp(curTop, 0, maxY2)}px`;
+                };
+                clampBubblePosition();
                 bubble.style.display = 'block';
                 
                 // 🎭 Entrance animasyonu
@@ -8823,6 +8834,13 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 } else if (simulationManager && typeof simulationManager.start === 'function') {
                     simulationManager.start();
                 }
+
+                // Fallback auto-start after delay (ensures conversations begin)
+                setTimeout(() => {
+                    if (simulationManager && !simulationManager.isRunning) {
+                        simulationManager.start();
+                    }
+                }, 2000);
                 
             } catch (error) {
                 console.error('❌ Initialization error:', error);
