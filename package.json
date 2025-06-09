@@ -6,7 +6,7 @@
   "main": "index.html",
   "scripts": {
     "start": "npx serve .",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "node scripts/runJestIfAvailable.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "test:performance": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testNamePattern=\"Performance Tests\"",
