@@ -241,17 +241,18 @@ export class TurkceDialogueGenerator {
      */
     generateSentence(bacteria, contextKey = 'creative', triggerInfo = null) {
         const field = this.semanticFields[contextKey] || this.semanticFields.creative;
-        
+
         // Template seç
         const templates = field.templates || ["{subj} {obj_acc} {verb_yor}."];
         const template = this.weightedPick(templates, contextKey, 'template');
-        
+
         if (!template) {
             return `${bacteria?.name || 'Birisi'} bir şeyler düşünüyor...`;
         }
-        
-        // Template'i doldur
-        let sentence = this.fillTemplate(template, field, bacteria);
+
+        // Template'i doldur - ağırlıklı seçim fonksiyonunu ilet
+        const weightedSelection = (arr) => this.weightedPick(arr, contextKey);
+        let sentence = this.fillTemplate(template, field, bacteria, weightedSelection);
         
         // Noktalama kontrol
         if (!sentence.match(/[.!?]$/)) {
