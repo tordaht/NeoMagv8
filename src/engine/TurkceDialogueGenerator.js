@@ -5,6 +5,7 @@
 
 import { morphologyEngine } from '@/engine/MorphologyEngine.js';
 import { SEMANTIC_FIELDS } from '@/utils/semanticFields.js';
+import { wordSuccessTracker } from './WordSuccessTracker.js';
 
 export class TurkceDialogueGenerator {
     constructor() {
@@ -120,9 +121,14 @@ export class TurkceDialogueGenerator {
      */
     weightedPick(arr, contextKey, wordType) {
         if (!arr || arr.length === 0) return null;
-        
-        // Şimdilik rastgele, ileride WordSuccessTracker entegrasyonu
-        // TODO: Kelime başarı oranlarına göre ağırlıklandırma
+
+        // WordSuccessTracker ile ağırlıklı seçim yap (template hariç)
+        if (wordType !== 'template' && typeof wordSuccessTracker?.getWeightedRandomWord === 'function') {
+            const weighted = wordSuccessTracker.getWeightedRandomWord(contextKey, arr);
+            if (weighted) return weighted;
+        }
+
+        // Fallback: rastgele seçim
         return arr[Math.floor(Math.random() * arr.length)];
     }
 
@@ -235,17 +241,18 @@ export class TurkceDialogueGenerator {
      */
     generateSentence(bacteria, contextKey = 'creative', triggerInfo = null) {
         const field = this.semanticFields[contextKey] || this.semanticFields.creative;
-        
+
         // Template seç
         const templates = field.templates || ["{subj} {obj_acc} {verb_yor}."];
         const template = this.weightedPick(templates, contextKey, 'template');
-        
+
         if (!template) {
             return `${bacteria?.name || 'Birisi'} bir şeyler düşünüyor...`;
         }
-        
-        // Template'i doldur
-        let sentence = this.fillTemplate(template, field, bacteria);
+
+        // Template'i doldur - ağırlıklı seçim fonksiyonunu ilet
+        const weightedSelection = (arr) => this.weightedPick(arr, contextKey);
+        let sentence = this.fillTemplate(template, field, bacteria, weightedSelection);
         
         // Noktalama kontrol
         if (!sentence.match(/[.!?]$/)) {
