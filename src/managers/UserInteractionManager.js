@@ -19,14 +19,14 @@ export default class UserInteractionManager {
         
         // Intent patterns
         this.intentPatterns = {
-            question: /\b(ne|nasıl|neden|kim|where|what|how|why|when|sence|düşünüyorsun|\?)/i,
-            biological: /\b(enerji|yaşam|büyüme|beslenme|metabolizma|hücre|evrim|dna|gen)/i,
-            social: /\b(merhaba|selam|dostum|arkadaş|birlikte|sosyal|grup|iletişim|konuşma)/i,
-            creative: /\b(sanat|yaratıcı|hayal|rüya|dans|müzik|renk|güzel|estetik)/i,
-            philosophical: /\b(anlam|felsefe|varoluş|bilinç|düşünce|mantık|gerçek|hakikat)/i,
-            technical: /\b(teknoloji|bilgisayar|algoritma|kod|program|sistem|hesaplama)/i,
-            emotional: /\b(mutlu|üzgün|korku|sevgi|öfke|heyecan|sakin|duygusal|hissediyor)/i,
-            absurd: /\b(garip|tuhaf|saçma|komik|acayip|sürreal|absürt|anlamsız)/i
+            question: /\b(ne|nasıl|neden|niçin|kim|where|what|how|why|when|sence|düşünüyorsun|\?)/i,
+            biological: /\b(enerji|yaşam|büyüme|beslenme|metabolizma|hücre|evrim|dna|gen|protein|enzim)/i,
+            social: /\b(merhaba|selam|dostum|arkadaş|birlikte|sosyal|grup|iletişim|konuşma|nasılsın|günaydın)/i,
+            creative: /\b(sanat|yaratıcı|hayal|rüya|dans|müzik|renk|güzel|estetik|şiir|metafor)/i,
+            philosophical: /\b(anlam|felsefe|varoluş|bilinç|düşünce|mantık|gerçek|hakikat|ideoloji|ahlak)/i,
+            technical: /\b(teknoloji|bilgisayar|algoritma|kod|program|sistem|hesaplama|veri|yapay zeka)/i,
+            emotional: /\b(mutlu|üzgün|korku|sevgi|öfke|heyecan|sakin|duygusal|hissediyor|sevinç|neşe)/i,
+            absurd: /\b(garip|tuhaf|saçma|komik|acayip|sürreal|absürt|anlamsız|uçarı)/i
         };
     }
 
@@ -383,8 +383,8 @@ export default class UserInteractionManager {
         if (!bacteria) return;
         
         const words = userMsg.toLowerCase()
-            .replace(/[^\w\s]/g, '')
-            .split(' ')
+            .replace(/[^\p{L}\p{N}\s]/gu, '')
+            .split(/\s+/)
             .filter(word => word.length > 2);
         
         words.forEach(word => {
