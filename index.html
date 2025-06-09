@@ -8774,7 +8774,9 @@ Conscious bacteria: ${bacteriaList.filter(b => (b.consciousness || b.consciousne
                             './src/engine/AITrainingAdapter.js',
                             './src/engine/EnhancedMorphologicalGenerator.js', 
                             './src/engine/MorphologicalDialogueGenerator.js',
-                            './src/engine/PersistentLearningEngine.js'
+                            './src/engine/PersistentLearningEngine.js',
+                            './src/engine/TabPFGenAdapter.js',
+                            './src/engine/TabPFNFineTuner.js'
                         ];
                         
                         let scriptsLoaded = 0;
@@ -8805,6 +8807,15 @@ Conscious bacteria: ${bacteriaList.filter(b => (b.consciousness || b.consciousne
                             if (typeof EnhancedMorphologicalGenerator !== 'undefined' && window.aiTrainingAdapter) {
                                 window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
                                 console.log('✅ EnhancedMorphologicalGenerator initialized');
+                            }
+
+                            if (typeof TabPFGenAdapter !== 'undefined') {
+                                window.tabpfGen = new TabPFGenAdapter();
+                                await window.tabpfGen.init();
+                            }
+
+                            if (typeof TabPFNFineTuner !== 'undefined') {
+                                window.tabpfnFineTuner = new TabPFNFineTuner();
                             }
                             
                             // Try dynamic import for PersistentLearningEngine

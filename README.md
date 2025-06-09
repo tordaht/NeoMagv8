@@ -65,6 +65,8 @@ GitHub_mnBac_Project/
 ├── src/
 │   ├── engine/
 │   │   ├── TabPFNAdapter.js           # TabPFN entegrasyonu
+│   │   ├── TabPFGenAdapter.js         # TabPFGen tabular veri üretimi
+│   │   ├── TabPFNFineTuner.js         # TabPFN ince ayar modülü
 │   │   ├── WordSuccessTracker.js      # Kelime başarı takibi
 │   │   └── LanguageEvolutionEngine.js # Dil evrimi motoru
 │   ├── managers/
@@ -120,6 +122,8 @@ Kelimeler 9 ana kategoride organize edilir:
 - TabPFN önerilerini önceliklendirir
 - Markov chain fallback sistemi
 - Absurd element injection
+- TabPFGen ile sentetik veri üretimi
+- TabPFN Fine Tuner ile model iyileştirmesi
 - Personality-based mutations
 - Context-aware generation
 
