@@ -1,0 +1,5 @@
+Category,Problem_Type,Error_Description,Solution_Applied,Date_Fixed,Priority,Status,Project_Component,Root_Cause,Prevention_Method,Time_To_Fix,Recurrence_Risk,TabPFN_Input_Features
+[SELECT: Basic_Errors|Performance_Errors|UI_UX_Errors|Initialization_Errors|Function_Errors|Architecture_Errors|AI_ML_Errors|Data_Errors],[Specific_Problem_Type],[Detailed_Error_Description],[Solution_Details],[YYYY-MM-DD],[Low|Medium|High|Critical],[Fixed|In_Progress|Pending],[Component_Name],[Root_Cause_Analysis],[Prevention_Strategy],[XYmin],[Low|Medium|High],"feature1,feature2,feature3"
+
+# ÖRNEK YENİ HATA GİRİŞİ:
+# Performance_Errors,Canvas_Lag,Canvas rendering 30 FPS'in altına düşüyor,requestAnimationFrame optimizasyonu ve dirty rectangles,2024-12-29,High,Fixed,RenderEngine,Inefficient redraw cycles,Optimized rendering pipeline,45min,Low,"canvas_fps,redraw_frequency,optimization_level" 

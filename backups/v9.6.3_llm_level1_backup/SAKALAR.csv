@@ -1,0 +1,15 @@
+timestamp,bacterium_id,joke_text,context,consciousness_level,success_rate
+2024-12-19T10:00:00Z,bacteria_1,"Aç mısın? Ben de aç-ılmışım!",food_seeking,1.2,0.8
+2024-12-19T10:01:00Z,bacteria_2,"Niye hareket ediyorsun? Çünkü mikroskobik koşucuyum!",exploration,2.1,0.75
+2024-12-19T10:02:00Z,bacteria_3,"Bölünmek istiyorum ama yarıya indirimli değil!",reproduction,3.4,0.9
+2024-12-19T10:03:00Z,bacteria_4,"Felsefi düşünüyorum, varım... mikroskobik olarak!",philosophical,5.6,0.85
+2024-12-19T10:04:00Z,bacteria_5,"Arkadaş arıyorum, sosyal mesafe 1 mikron!",social_interaction,2.8,0.7
+Bilimsel_Espri,"ATP'ye sordum, enerjim nasıl? O da: Sen çok potansiyellisin!","Hahaha! 😂|Bilimsel! 🧬|Çok zeki! 🤓",1,0
+Soguk_Espri,"Bakteri neden üzgün? Çünkü kimse onu göremiyor!","Ayy! 😅|Kötü ama komik! 😄|Baba şakası! 👨",1,0
+Sim_Ozel,"Vur joker vur! Bu bakteriyel komedi zamanı!","OLEY! 🎉|Kültürel an! 🎭|Ritual! 🔥",2,0
+Bilimsel_Espri,"Ribozomuma dedim ki: Sen çok üretkensin! O da: Protein sentezlerim ben!","Çok bilimsel! 🧬|Moleküler mizah! ⚗️|Gen-ius! 🤓",1,0
+Absurt_Mizah,"Mitokondrim kaybolmuş, enerji bulamıyorum!","Ne? 😅|Absürt! 🤪|Hücresel kriz! 😱",2,1
+Kelime_Oyunu,"Kromozomların dans ediyor, gen-eğlence başladı!","Kelime oyunu! 🎭|Gen-ius! 😄|Dans! 💃",1,0
+Gundelik_Mizah,"Bugün çok mutasyona uğradım, yeni modelim nasıl?","Harika! ✨|Evrimsel! 🦋|Şık! 😍",1,0
+Sosyal_Mizah,"Bakteriler buluştuğunda: Merhaba, nasıl çoğalıyorsun?","Sosyal! 🤝|Çoğalma komedisi! 👥|Samimi! 😊",1,0
+Kara_Mizah,"Antibiyotik geldi, son sözlerim: Dirençliyim!","Koyu! 😅|Survival! ��|Karanlık! 🖤",3,2

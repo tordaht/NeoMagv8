@@ -3,21 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mnBac v10.0.1 - Revolutionary Response System</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%230066cc'/%3E%3Ctext x='16' y='20' text-anchor='middle' fill='white' font-size='16' font-family='Arial'%3E🦠%3C/text%3E%3C/svg%3E">
-    <!-- Modern fonts for premium feel -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <title>mnBac v9.6.3 - System Readiness & GitHub Pages Fix</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Suppress Tailwind CDN production warning for demo
-        const originalWarn = console.warn;
-        console.warn = function(...args) {
-            if (args[0] && args[0].toString().includes('tailwindcss.com')) {
-                return; // Suppress Tailwind warning
-            }
-            originalWarn.apply(console, args);
-        };
-    </script>
     <!-- Note: Tailwind CDN is used for rapid prototyping. For production, use PostCSS or CLI installation -->
     <!-- TensorFlow.js -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0/dist/tf.min.js"></script>
@@ -40,19 +27,6 @@
         body {
             font-family: 'Inter', sans-serif;
             overscroll-behavior: none;
-        }
-        h1, h2, h3 {
-            font-family: 'Poppins', sans-serif;
-        }
-        header h1 {
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-        }
-        .badge {
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius-sm);
-            font-size: 0.75rem;
-            font-weight: 500;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
         }
         .bacteria {
             transition: all 0.5s ease-in-out;
@@ -106,154 +80,57 @@
             100% { transform: rotate(360deg); }
         }
             
-        /* 🎭 Enhanced Speech Bubble System */
+        /* 🎭 TabPFN Speech Bubble Animations */
         @keyframes speechBubbleAnim {
             0% { 
-                transform: scale(0.6) translateY(20px); 
+                transform: scale(0.8) translateY(10px); 
                 opacity: 0; 
             }
-            10% { 
-                transform: scale(1.1) translateY(-10px); 
+            15% { 
+                transform: scale(1.05) translateY(-5px); 
                 opacity: 1; 
             }
-            15% { 
+            20% { 
                 transform: scale(1) translateY(0px); 
                 opacity: 1; 
             }
-            85% { 
+            80% { 
                 transform: scale(1) translateY(0px); 
                 opacity: 1; 
             }
             100% { 
-                transform: scale(0.8) translateY(-15px); 
+                transform: scale(0.9) translateY(-10px); 
                 opacity: 0; 
             }
         }
 
-        @keyframes bubblePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
         .speech-bubble {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 16px;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
             transition: all 0.3s ease;
-            cursor: pointer;
-            user-select: none;
-            backdrop-filter: blur(5px);
-            position: relative;
-            z-index: 1000;
         }
 
         .speech-bubble:hover {
-            transform: scale(1.15) !important;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
-            animation: bubblePulse 0.8s ease-in-out infinite;
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
         }
 
-        .speech-bubble:before {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 20px;
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 10px solid currentColor;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
-
-        /* Context-specific bubble styles with enhanced visuals */
+        /* Context-specific bubble styles */
         .speech-food_seeking {
-            background: linear-gradient(135deg, #FF6B35, #F7931E);
-            border: 3px solid #FFD700;
-            color: white;
+            border-left: 4px solid #FFD700;
         }
 
         .speech-social_interaction {
-            background: linear-gradient(135deg, #4ECDC4, #44A08D);
-            border: 3px solid #00FFFF;
-            color: white;
+            border-left: 4px solid #00FFFF;
         }
 
         .speech-philosophical {
-            background: linear-gradient(135deg, #FB5607, #FF006E);
-            border: 3px solid #FF4500;
-            color: white;
+            border-left: 4px solid #FF4500;
             font-style: italic;
         }
 
         .speech-learning {
-            background: linear-gradient(135deg, #FFBE0B, #FFD60A);
-            border: 3px solid #32CD32;
-            color: #1a1a1a;
-        }
-
-        .speech-reproduction {
-            background: linear-gradient(135deg, #FF006E, #C77DFF);
-            border: 3px solid #FF69B4;
-            color: white;
-        }
-
-        .speech-exploration {
-            background: linear-gradient(135deg, #8338EC, #9D4EDD);
-            border: 3px solid #A020F0;
-            color: white;
-        }
-
-        .speech-general {
-            background: linear-gradient(135deg, #219EBC, #023047);
-            border: 3px solid #8ECAE6;
-            color: white;
-        }
-
-        /* Bacteria glow effect for highlighting */
-        .bacteria-glow {
-            filter: drop-shadow(0 0 10px #00ff00) drop-shadow(0 0 20px #00ff00) drop-shadow(0 0 30px #00ff00);
-            animation: glowPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes glowPulse {
-            0%, 100% {
-                filter: drop-shadow(0 0 10px #00ff00) drop-shadow(0 0 20px #00ff00);
-            }
-            50% {
-                filter: drop-shadow(0 0 15px #00ff00) drop-shadow(0 0 30px #00ff00) drop-shadow(0 0 40px #00ff00);
-            }
-        }
-
-        .bacteria-tag {
-            background-color: #374151; /* gray-700 */
-            color: #e5e7eb; /* gray-200 */
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            margin: 2px;
-            transition: background-color 0.2s;
-        }
-
-        .bacteria-tag:hover {
-            background-color: #14b8a6; /* teal-600 */
-        }
-
-        /* Bacteria selection highlight */
-        .bacteria-selected {
-            outline: 3px dashed #00ff00;
-            outline-offset: 5px;
-            animation: selectionPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes selectionPulse {
-            0%, 100% { outline-color: #00ff00; }
-            50% { outline-color: #00ffff; }
+            border-left: 4px solid #32CD32;
         }
 
         </style>
@@ -262,13 +139,12 @@
 
     <!-- Header -->
     <header class="bg-gray-800 shadow-lg p-4 sticky top-0 z-50">
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-2">
-            <h1 class="text-3xl font-bold text-teal-400 text-center">🧬 mnBac v10.0.1 - Revolutionary Response System</h1>
-            <div class="flex gap-2 items-center">
-                <div class="badge bg-green-600 text-white" id="fpsDisplay">FPS: --</div>
-                <div class="badge bg-blue-600 text-white" id="bacteriaCount">Bakteri: 0</div>
-                <div class="badge bg-purple-600 text-white" id="dayDisplay">Gün: 0</div>
-                <button id="startSimulationBtn" data-action="start-simulation" class="ml-2 bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-lg font-semibold shadow">▶️ Başlat</button>
+        <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-teal-400">🧬 mnBac v9.6.3 - System Readiness & GitHub Pages Fix</h1>
+            <div class="flex gap-2 text-xs">
+                <div class="bg-green-600 text-white px-2 py-1 rounded" id="fpsDisplay">FPS: --</div>
+                <div class="bg-blue-600 text-white px-2 py-1 rounded" id="bacteriaCount">Bakteri: 0</div>
+                <div class="bg-purple-600 text-white px-2 py-1 rounded" id="dayDisplay">Gün: 0</div>
             </div>
         </div>
         <div class="text-center text-xs text-teal-300 mt-1">
@@ -322,65 +198,27 @@
 
         <!-- Sağ Panel Sohbet -->
         <div class="bg-gray-800 p-4 rounded-lg shadow-xl flex flex-col max-h-[80vh] lg:max-h-full">
-            <h2 class="text-xl font-semibold mb-3 text-teal-300 border-b border-gray-700 pb-2">🧬 Bakteri Sohbet Merkezi</h2>
+            <h2 class="text-xl font-semibold mb-3 text-teal-300 border-b border-gray-700 pb-2">Bakteri Sohbet Merkezi</h2>
             
-            <!-- Chat Tabs -->
-            <div class="mb-3 flex space-x-1 bg-gray-700 p-1 rounded-lg">
-                <button id="groupChatTab" class="flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-green-600 text-white">
-                    👥 Grup Sohbet
-                </button>
-                <button id="individualChatTab" class="flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-gray-600 text-gray-300 hover:bg-gray-500">
-                    💬 Tekil Sohbet
-                </button>
+            <!-- Chat Mode Selector -->
+            <div class="mb-3 flex space-x-2">
+                <button id="individualChatBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition">Tekil Sohbet</button>
+                <button id="groupChatBtn" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition">Grup Sohbeti</button>
+                <button id="startBacteriaConversationBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-sm transition">Bakteriler Konuşsun</button>
             </div>
             
-            <!-- Chat Content Container -->
-            <div class="flex flex-col h-full">
-                <!-- Group Chat Panel -->
-                <div id="groupChatPanel" class="flex flex-col h-full">
-                    <div id="groupChatInfo" class="mb-2 text-sm text-gray-400">Tüm bakterilerle grup halinde sohbet edin</div>
-                    <div id="groupChatMessages" class="flex-grow bg-gray-700 rounded-md p-3 overflow-y-auto mb-3 smooth-scroll space-y-2 h-64 min-h-[16rem] max-h-[20rem]" style="display: flex; flex-direction: column-reverse;">
-                        <!-- Grup sohbet mesajları -->
-                    </div>
-                    <div class="flex">
-                        <input type="text" id="groupChatInput" class="flex-grow bg-gray-600 text-gray-200 border border-gray-500 rounded-l-lg p-2 focus:ring-teal-500 focus:border-teal-500 outline-none" placeholder="Grup mesajınızı yazın...">
-                        <button id="groupSendBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold p-2 rounded-r-lg transition duration-150 ease-in-out">Gönder</button>
-                    </div>
-                </div>
-                
-                <!-- Individual Chat Panel -->
-                <div id="individualChatPanel" class="flex flex-col h-full hidden">
-                    <div id="individualChatInfo" class="mb-2 text-sm text-gray-400">Bakteriye tıklayarak seçin</div>
-                    <div id="selectedBacteriaCard" class="mb-3 p-2 bg-gray-700 rounded-md hidden">
-                        <div class="flex items-center space-x-2">
-                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                            <span id="selectedBacteriaName" class="font-bold text-green-400"></span>
-                            <span id="selectedBacteriaStatus" class="text-xs text-gray-400"></span>
-                        </div>
-                    </div>
-                    <div id="individualChatMessages" class="flex-grow bg-gray-700 rounded-md p-3 overflow-y-auto mb-3 smooth-scroll space-y-2 h-64 min-h-[16rem] max-h-[20rem]" style="display: flex; flex-direction: column-reverse;">
-                        <!-- Tekil sohbet mesajları -->
-                    </div>
-                    <div class="flex">
-                        <input type="text" id="individualChatInput" class="flex-grow bg-gray-600 text-gray-200 border border-gray-500 rounded-l-lg p-2 focus:ring-teal-500 focus:border-teal-500 outline-none" placeholder="Özel mesajınızı yazın..." disabled>
-                        <button id="individualSendBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold p-2 rounded-r-lg transition duration-150 ease-in-out" disabled>Gönder</button>
-                    </div>
-                </div>
+            <div id="chatInfo" class="mb-2 text-sm text-gray-400">Sohbet modunu seçin.</div>
+            <div id="chatMessages" class="flex-grow bg-gray-700 rounded-md p-3 overflow-y-auto mb-3 smooth-scroll space-y-2 h-64 min-h-[16rem] max-h-[20rem]" style="display: flex; flex-direction: column-reverse;">
+                <!-- Sohbet mesajları buraya eklenecek -->
             </div>
-            
-            <!-- Chat Loading Indicator -->
             <div id="chatLoadingIndicator" class="hidden text-center py-2">
                 <div class="loader"></div>
                 <p class="text-sm text-gray-400">Bakteri düşünüyor...</p>
             </div>
-            
-            <!-- Chat Controls -->
-            <div class="mt-3 flex space-x-2">
-                <button id="showSpeechBubblesBtn" class="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm transition">💭 Baloncukları Göster</button>
+            <div class="flex">
+                <input type="text" id="chatInput" class="flex-grow bg-gray-600 text-gray-200 border border-gray-500 rounded-l-lg p-2 focus:ring-teal-500 focus:border-teal-500 outline-none" placeholder="Mesajınızı yazın..." disabled>
+                <button id="sendMessageBtn" class="bg-teal-500 hover:bg-teal-600 text-white font-bold p-2 rounded-r-lg transition duration-150 ease-in-out" disabled>Gönder</button>
             </div>
-
-            <!-- Bacteria List -->
-            <div id="bacteriaListPanel" class="mt-4 flex flex-wrap gap-1"></div>
         </div>
     </main>
 
@@ -392,6 +230,9 @@
     <!-- Controls -->
     <div class="bg-gray-800 p-4 rounded-lg mb-4">
         <div class="flex flex-wrap gap-2 mb-4">
+            <button id="startSimulationBtn" data-action="start-simulation" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg text-lg font-bold">
+                ▶️ Simülasyonu Başlat
+            </button>
             <button data-action="pause-simulation" class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded">
                 ⏸️ Duraklat
             </button>
@@ -444,15 +285,6 @@
             <button data-action="peer-dialogue" class="bg-pink-600 hover:bg-pink-700 px-3 py-1 rounded text-sm">
                 🗣️ Peer Dialogue
             </button>
-            <button data-action="debug-system" class="bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded text-sm">
-                🔧 Debug System
-            </button>
-            <button data-action="test-conversation" class="bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-sm">
-                🧪 Test Conversation
-            </button>
-            <button data-action="force-auto-conversation" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">
-                🚀 FORCE Auto Talk
-            </button>
         </div>
         
         <div class="text-xs text-gray-300">
@@ -476,36 +308,11 @@
         const bacteriaLanguageStageSpan = document.getElementById('bacteriaLanguageStage');
         const bacteriaVocabularySpan = document.getElementById('bacteriaVocabulary');
 
-        // Chat system elements
+        const chatInfoDiv = document.getElementById('chatInfo');
+        const chatMessagesDiv = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
         const chatLoadingIndicator = document.getElementById('chatLoadingIndicator');
-        
-        // Group chat elements
-        const groupChatTab = document.getElementById('groupChatTab');
-        const groupChatPanel = document.getElementById('groupChatPanel');
-        const groupChatInfo = document.getElementById('groupChatInfo');
-        const groupChatMessages = document.getElementById('groupChatMessages');
-        const groupChatInput = document.getElementById('groupChatInput');
-        const groupSendBtn = document.getElementById('groupSendBtn');
-        
-        // Individual chat elements
-        const individualChatTab = document.getElementById('individualChatTab');
-        const individualChatPanel = document.getElementById('individualChatPanel');
-        const individualChatInfo = document.getElementById('individualChatInfo');
-        const selectedBacteriaCard = document.getElementById('selectedBacteriaCard');
-        const selectedBacteriaName = document.getElementById('selectedBacteriaName');
-        const selectedBacteriaStatus = document.getElementById('selectedBacteriaStatus');
-        const individualChatMessages = document.getElementById('individualChatMessages');
-        const individualChatInput = document.getElementById('individualChatInput');
-        const individualSendBtn = document.getElementById('individualSendBtn');
-        
-        // Speech bubble controls
-        const showSpeechBubblesBtn = document.getElementById('showSpeechBubblesBtn');
-        
-        // Legacy elements for compatibility
-        const chatInfoDiv = groupChatInfo;
-        const chatMessagesDiv = groupChatMessages;
-        const chatInput = groupChatInput;
-        const sendMessageBtn = groupSendBtn;
 
         const startSimulationBtn = document.getElementById('startSimulationBtn');
         const nextStepBtn = document.getElementById('nextStepBtn');
@@ -521,162 +328,8 @@
         let simulationRunning = false;
         let simulationDay = 0; // Global simulation day counter
         
-        // Chat State
-        let currentChatMode = 'group'; // 'group' or 'individual'
-        let speechBubblesEnabled = true;
-        
-        // Joke Configuration
-        const JOKE_CONFIG = {
-            PREDEFINED_JOKE_CHANCE: 0.3,
-            JOKE_COOLDOWN: 15000, // 15 seconds
-            JOKE_MORALE_BOOST: 0.1,
-            MAX_JOKE_DISTANCE: 100
-        };
-        
         // Initialize persistentDB early (null safety)
         var persistentDB = null;
-        
-        // 🎭 Chat System Functions
-        function switchToGroupChat() {
-            currentChatMode = 'group';
-            if (groupChatTab) {
-                groupChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-green-600 text-white';
-            }
-            if (individualChatTab) {
-                individualChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-gray-600 text-gray-300 hover:bg-gray-500';
-            }
-            if (groupChatPanel) {
-                groupChatPanel.classList.remove('hidden');
-            }
-            if (individualChatPanel) {
-                individualChatPanel.classList.add('hidden');
-            }
-            console.log('🎯 Switched to group chat mode');
-        }
-        
-        function switchToIndividualChat(bacteria = null) {
-            currentChatMode = 'individual';
-            if (individualChatTab) {
-                individualChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-blue-600 text-white';
-            }
-            if (groupChatTab) {
-                groupChatTab.className = 'flex-1 py-2 px-3 text-sm font-medium rounded-md transition bg-gray-600 text-gray-300 hover:bg-gray-500';
-            }
-            if (individualChatPanel) {
-                individualChatPanel.classList.remove('hidden');
-            }
-            if (groupChatPanel) {
-                groupChatPanel.classList.add('hidden');
-            }
-            
-            if (bacteria) {
-                selectedBacteria = bacteria;
-                if (selectedBacteriaCard) {
-                    selectedBacteriaCard.classList.remove('hidden');
-                }
-                if (selectedBacteriaName) {
-                    selectedBacteriaName.textContent = bacteria.name;
-                }
-                if (selectedBacteriaStatus) {
-                    selectedBacteriaStatus.textContent = `Bilinç: ${bacteria.consciousness_level.toFixed(1)} | Enerji: ${(bacteria.energy * 100).toFixed(0)}%`;
-                }
-                if (individualChatInput) {
-                    individualChatInput.disabled = false;
-                    individualChatInput.placeholder = `${bacteria.name} ile konuş...`;
-                }
-                if (individualSendBtn) {
-                    individualSendBtn.disabled = false;
-                }
-                if (individualChatInfo) {
-                    individualChatInfo.textContent = `${bacteria.name} ile özel sohbet`;
-                }
-            } else {
-                if (selectedBacteriaCard) {
-                    selectedBacteriaCard.classList.add('hidden');
-                }
-                if (individualChatInput) {
-                    individualChatInput.disabled = true;
-                    individualChatInput.placeholder = 'Bakteriye tıklayarak seçin...';
-                }
-                if (individualSendBtn) {
-                    individualSendBtn.disabled = true;
-                }
-                if (individualChatInfo) {
-                    individualChatInfo.textContent = 'Bakteriye tıklayarak seçin';
-                }
-            }
-            
-            console.log(`🎯 Switched to individual chat mode${bacteria ? ` with ${bacteria.name}` : ''}`);
-        }
-        
-        function toggleSpeechBubbles() {
-            speechBubblesEnabled = !speechBubblesEnabled;
-            showSpeechBubblesBtn.textContent = speechBubblesEnabled ? '💭 Baloncukları Gizle' : '💭 Baloncukları Göster';
-            showSpeechBubblesBtn.className = speechBubblesEnabled ? 
-                'bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition' :
-                'bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-sm transition';
-            console.log(`💭 Speech bubbles ${speechBubblesEnabled ? 'enabled' : 'disabled'}`);
-        }
-        
-        function addChatMessageToPanel(message, sender, bacteriaName = null, targetPanel = null) {
-            const targetContainer = targetPanel || (currentChatMode === 'group' ? groupChatMessages : individualChatMessages);
-            
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'} mb-2`;
-            
-            const bubbleDiv = document.createElement('div');
-            bubbleDiv.className = `chat-bubble p-2 rounded-lg ${sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-bacteria'}`;
-            
-            if (sender === 'bacteria' && bacteriaName) {
-                const nameSpan = document.createElement('div');
-                nameSpan.className = 'text-xs font-semibold mb-1 opacity-75 cursor-pointer hover:text-blue-400 hover:underline';
-                nameSpan.textContent = bacteriaName;
-                nameSpan.title = `${bacteriaName}'e tıklayarak seç`;
-                
-                // 🎯 ÖZELLİK: Chat'te bakterinin adını tıklayınca o bakteriyi seç
-                nameSpan.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    // Bakteriyi ismine göre bul
-                    const targetBacteria = bacteriaPopulation.find(b => b.name === bacteriaName);
-                    if (targetBacteria) {
-                        selectedBacteria = targetBacteria;
-                        console.log(`🎯 Chat'ten bakteri seçildi: ${bacteriaName}`);
-                        
-                        // UI'yi güncelle
-                        showBacteriaDetails(targetBacteria);
-                        
-                        // Canvas'ta bakteriyi highlight et
-                        highlightSelectedBacteria(targetBacteria);
-                        
-                        // Individual chat'e geç
-                        switchToIndividualChat(targetBacteria);
-                        
-                        // Görsel feedback
-                        nameSpan.style.color = '#22c55e';
-                        nameSpan.style.fontWeight = 'bold';
-                        setTimeout(() => {
-                            nameSpan.style.color = '';
-                            nameSpan.style.fontWeight = '';
-                        }, 1000);
-                    } else {
-                        console.warn(`⚠️ Bakteri bulunamadı: ${bacteriaName}`);
-                    }
-                });
-                
-                bubbleDiv.appendChild(nameSpan);
-                
-                const messageSpan = document.createElement('div');
-                messageSpan.textContent = message;
-                bubbleDiv.appendChild(messageSpan);
-            } else {
-                bubbleDiv.textContent = message;
-            }
-            
-            messageDiv.appendChild(bubbleDiv);
-            targetContainer.insertBefore(messageDiv, targetContainer.firstChild);
-        }
         
         // 🎯 EVENT-DRIVEN INITIALIZATION SYSTEM
         class SimpleEventEmitter {
@@ -712,9 +365,6 @@
         
         // Global event system
         const appEvents = new SimpleEventEmitter();
-        
-        // Initialize AI Learning Engine globally
-        let learningEngine = null;
         
         // 🧠 SELF-IMPROVEMENT SYSTEM
         class SystemLearningEngine {
@@ -835,8 +485,8 @@
             }
         }
         
-        // Global learning engine - initialization will be done in mainInitialize()
-        // learningEngine is already declared as let above
+        // Global learning engine
+        const learningEngine = new SystemLearningEngine();
         
         // 🎨 CANVAS SYSTEM INITIALIZATION
         function initializeCanvasSystem() {
@@ -880,8 +530,8 @@
                 
                 // 🗣️ Enhanced Peer Communication System
                 this.stepCount = 0;
-                            this.CHAT_INTERVAL = 2; // Her 2 adımda peer chat - ÇOK AKTIF!
-            this.GROUP_CHAT_INTERVAL = 6; // Her 6 adımda grup sohbeti - SÜREKLI SOSYALLEŞİR!
+                this.CHAT_INTERVAL = 5; // Her 5 adımda peer chat
+                this.GROUP_CHAT_INTERVAL = 15; // Her 15 adımda grup sohbeti
                 this.speechBubbles = new Map(); // Konuşma balonları tracking
                 
                 // Mood-based vocabulary lists
@@ -942,7 +592,6 @@
                 requestAnimationFrame(this.gameLoop);
                 systemStatus.simulation = true;
                 appEvents.emit('simulation:started');
-                startAutoConversations();
                 console.log('🚀 Simulation started with requestAnimationFrame');
             }
 
@@ -950,7 +599,6 @@
                 this.isRunning = false;
                 systemStatus.simulation = false;
                 appEvents.emit('simulation:paused');
-                stopAutoConversations();
                 console.log('⏸️ Simulation paused');
             }
 
@@ -1224,18 +872,14 @@
                     receiver.consciousness_level += newWordsLearned * 0.01;
                 }
                 
-                // Persistent Learning'e kaydet - güvenli kontrol
-                if (window.persistentLearning && typeof window.persistentLearning.recordInteraction === 'function') {
-                    try {
-                        window.persistentLearning.recordInteraction(
-                            message,
-                            `Learned from ${sender.name}`,
-                            'peer_learning',
-                            receiver.id
-                        );
-                    } catch (error) {
-                        console.warn('⚠️ persistentLearning.recordInteraction failed:', error);
-                    }
+                // Persistent Learning'e kaydet
+                if (window.persistentLearning) {
+                    window.persistentLearning.recordInteraction(
+                        message,
+                        `Learned from ${sender.name}`,
+                        'peer_learning',
+                        receiver.id
+                    );
                 }
                 
                                  console.log(`🧠 ${receiver.name} learned ${newWordsLearned} words from ${sender.name}, mood: ${receiver.personality_traits.mood.toFixed(2)}`);
@@ -1402,24 +1046,8 @@
                 bubble.appendChild(messageDiv);
                 
                 // Pozisyon güncelle (bakterinin biraz üstünde)
-                const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-                const maxX = simulationArea.clientWidth - 150;
-                const maxY = simulationArea.clientHeight - 50;
-                const left = clamp(bacteria.x - 20, 0, maxX);
-                const top = clamp(bacteria.y - 35, 0, maxY);
-                bubble.style.left = `${left}px`;
-                bubble.style.top = `${top}px`;
-
-                // Extra clamp to handle resize or overflow
-                const clampBubblePosition = () => {
-                    const curLeft = parseFloat(bubble.style.left);
-                    const curTop = parseFloat(bubble.style.top);
-                    const maxX2 = simulationArea.clientWidth - bubble.offsetWidth;
-                    const maxY2 = simulationArea.clientHeight - bubble.offsetHeight;
-                    bubble.style.left = `${clamp(curLeft, 0, maxX2)}px`;
-                    bubble.style.top = `${clamp(curTop, 0, maxY2)}px`;
-                };
-                clampBubblePosition();
+                bubble.style.left = `${bacteria.x - 20}px`;
+                bubble.style.top = `${bacteria.y - 35}px`;
                 bubble.style.display = 'block';
                 
                 // 🎭 Entrance animasyonu
@@ -1527,7 +1155,7 @@
         };
 
         // Version and Build Info (moved up to prevent hoisting issues)  
-        const VERSION = 'v10.0.1 Revolutionary Response';
+        const VERSION = 'v9.6.3 GitHub Pages Fix';
         const BUILD_DATE = new Date().toISOString().slice(0,19);
         const FEATURES = [
             'Frontend-Only TabPFN (Mobile Compatible)',
@@ -1574,16 +1202,6 @@
         let geneticAlgorithm = null;
         let behaviourLearningSystem = null;
         let tabpfnVocabularySystem = null;
-
-        // 🎭 JOKE SYSTEM CONFIGURATION
-        const JOKE_CONFIG = {
-            PREDEFINED_JOKE_CHANCE: 0.7,      // 70% chance for predefined jokes
-            JOKE_COOLDOWN: 15000,              // 15 seconds cooldown between jokes
-            JOKE_MORALE_BOOST: 0.1,            // 10% morale boost from jokes
-            MAX_JOKE_DISTANCE: 100,            // Maximum distance to hear jokes
-            MIN_CONSCIOUSNESS_FOR_JOKES: 3,    // Minimum consciousness to tell jokes
-            JOKE_SUCCESS_THRESHOLD: 0.5        // Minimum success rate for joke attempts
-        };
 
         // 🎭 MATHEMATICAL COMEDY THEORY SYSTEM v8.6.1
         // Based on Incongruity Theory + Surprisal + Sigmoid Modeling
@@ -4486,53 +4104,12 @@
                 // Add resize listener
                 window.addEventListener('resize', resizeCanvas);
                 
-                // Canvas click handler for bacteria selection and food placement
-                // Canvas click handler for bacteria selection and food placement
+                // Canvas click handler for food placement
                 canvas.addEventListener('click', (e) => {
                     const rect = canvas.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    
-                    console.log(`🖱️ Canvas clicked at: (${x.toFixed(0)}, ${y.toFixed(0)})`);
-                    
-                    // Check if clicked on a bacteria with larger click radius
-                    let clickedBacteria = null;
-                    let minDistance = Infinity;
-                    
-                    bacteriaPopulation.forEach(bacteria => {
-                        if (bacteria && bacteria.x !== undefined && bacteria.y !== undefined) {
-                            const distance = Math.sqrt(
-                                Math.pow(x - bacteria.x, 2) + Math.pow(y - bacteria.y, 2)
-                            );
-                            const clickRadius = Math.max(25, bacteria.biological_state.size * 15 + 15); // Larger click area
-                            
-                            console.log(`🦠 ${bacteria.name} at (${bacteria.x.toFixed(0)}, ${bacteria.y.toFixed(0)}) - distance: ${distance.toFixed(0)}, radius: ${clickRadius.toFixed(0)}`);
-                            
-                            if (distance <= clickRadius && distance < minDistance) {
-                                clickedBacteria = bacteria;
-                                minDistance = distance;
-                            }
-                        }
-                    });
-                    
-                    if (clickedBacteria) {
-                        // Bacteria clicked - select it
-                        selectedBacteria = clickedBacteria;
-                        console.log(`🎯 Bacteria SELECTED: ${clickedBacteria.name} (distance: ${minDistance.toFixed(0)})`);
-                        
-                        // Show bacteria details
-                        showBacteriaDetails(clickedBacteria);
-                        
-                        // Highlight bacteria
-                        highlightSelectedBacteria(clickedBacteria);
-                        
-                        // Switch to individual chat
-                        switchToIndividualChat(clickedBacteria);
-                    } else {
-                        // Empty space clicked - add food
-                        console.log(`🍃 Adding food at (${x.toFixed(0)}, ${y.toFixed(0)})`);
-                        addFood(x, y);
-                    }
+                    addFood(x, y);
                 });
             }
         }
@@ -5292,10 +4869,7 @@
                     this.conversation_history.splice(0, 1);
                 }
                 
-                // Only create speech bubble if enabled
-                if (speechBubblesEnabled) {
-                    this.createSpeechBubble(dynamicMessage, context);
-                }
+                this.createSpeechBubble(dynamicMessage, context);
                 
                 console.log(`🧬 ${this.name} evolved speech: "${dynamicMessage}" (Context: ${context}, Original: "${message}")`);
                 
@@ -5305,70 +4879,41 @@
 
             // 🎭 Create speech bubble with context styling
             createSpeechBubble(message, context) {
-                // 🛡️ SAFETY CHECK: Ensure simulationArea exists
-                if (!simulationArea) {
-                    console.warn('⚠️ simulationArea not found, skipping speech bubble');
+                // 🛡️ SAFETY CHECK: Ensure canvas and parentElement exist
+                if (!canvas || !canvas.parentElement) {
+                    console.warn('⚠️ Canvas or parentElement not found, skipping speech bubble');
                     return;
                 }
                 
                 const bubble = document.createElement('div');
                 bubble.className = `speech-bubble speech-${context}`;
                 bubble.textContent = message;
-                const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
-                const maxX = simulationArea.clientWidth - 160;
-                const maxY = simulationArea.clientHeight - 60;
-                const left = clamp(this.x + 20, 0, maxX);
-                const top = clamp(this.y - 45, 0, maxY);
-
                 bubble.style.cssText = `
                     position: absolute;
-                    left: ${left}px;
-                    top: ${top}px;
-                    padding: 8px 12px;
-                    border-radius: 18px;
-                    font-size: 12px;
+                    left: ${this.x + 15}px;
+                    top: ${this.y - 35}px;
+                    background: ${this.getBubbleColor(context)};
+                    color: white;
+                    padding: 6px 10px;
+                    border-radius: 15px;
+                    font-size: 11px;
                     font-weight: bold;
-                    max-width: 160px;
+                    max-width: 140px;
                     word-wrap: break-word;
                     z-index: 1000;
-                    box-shadow: 0 5px 15px rgba(0,0,0,0.6);
-                    animation: speechBubbleAnim 6s ease-in-out;
-                    pointer-events: auto;
+                    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+                    border: 2px solid rgba(255,255,255,0.3);
+                    animation: speechBubbleAnim 4s ease-in-out;
                 `;
                 
-                // Add click functionality to speech bubble
-                bubble.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    // Select this bacteria
-                    selectedBacteria = this;
-                    console.log(`💭 Speech bubble clicked: ${this.name}`);
-                    
-                    // Show bacteria details
-                    showBacteriaDetails(this);
-                    
-                    // Highlight bacteria
-                    highlightSelectedBacteria(this);
-                    
-                    // Switch to individual chat mode
-                    switchToIndividualChat(this);
-                    
-                    // Visual feedback
-                    bubble.style.transform = 'scale(1.2)';
-                    setTimeout(() => {
-                        bubble.style.transform = '';
-                    }, 300);
-                });
-                
                 try {
-                    simulationArea.appendChild(bubble);
+                    canvas.parentElement.appendChild(bubble);
                     
                     setTimeout(() => {
                         if (bubble && bubble.parentElement) {
                             bubble.parentElement.removeChild(bubble);
                         }
-                    }, 6000);
+                    }, 4000);
                 } catch (error) {
                     console.error('❌ Speech bubble creation error:', error);
                 }
@@ -5597,27 +5142,27 @@
             }
 
             move() {
-                // v9.6.4: Slower, more natural movement for better observation
+                // v829: High-Speed Molecular Dynamics enhanced movement
                 
-                // Apply van der Waals forces between bacteria (reduced)
+                // Apply van der Waals forces between bacteria
                 this.applyMolecularForces();
                 
-                // Slower Brownian motion with gentle energy-based movement
-                const energyBoost = this.energy * 0.1; // Much slower energy boost
-                const hungerMotivation = this.hunger * 0.05; // Gentle hunger motivation
+                // Enhanced Brownian motion with energy-based movement
+                const energyBoost = this.energy * 0.5; // Energy affects movement speed
+                const hungerMotivation = this.hunger * 0.3; // Hunger drives exploration
                 
-                this.vx += (Math.random() - 0.5) * MD_CONSTANTS.DIFFUSION_COEFFICIENT * (0.02 + energyBoost);
-                this.vy += (Math.random() - 0.5) * MD_CONSTANTS.DIFFUSION_COEFFICIENT * (0.02 + energyBoost);
+                this.vx += (Math.random() - 0.5) * MD_CONSTANTS.DIFFUSION_COEFFICIENT * (0.15 + energyBoost);
+                this.vy += (Math.random() - 0.5) * MD_CONSTANTS.DIFFUSION_COEFFICIENT * (0.15 + energyBoost);
                 
-                // Add gentle exploration behavior when hungry
+                // Add exploration behavior when hungry
                 if (this.hunger > 0.6) {
                     this.vx += (Math.random() - 0.5) * hungerMotivation;
                     this.vy += (Math.random() - 0.5) * hungerMotivation;
                 }
                 
-                // Increased friction for slower, more observable movement
-                this.vx *= 0.85; // More friction for slower movement
-                this.vy *= 0.85;
+                // Reduced friction for more dynamic movement
+                this.vx *= 0.99; // Minimal friction for fast movement
+                this.vy *= 0.99;
                 
                 // Apply movement efficiency (3D movement)
                 const efficiencyFactor = this.movement_efficiency;
@@ -6224,88 +5769,6 @@
                 
                 return { understood, laughed, reactionText };
             }
-            
-            // 🎯 Chat Response Generation for User Interaction
-            generateResponse(userMessage) {
-                if (!userMessage) return "...";
-                
-                // Simple LLM fallback
-                if (window.simpleLLM && window.simpleLLM.ready) {
-                    try {
-                        return window.simpleLLM.generateResponse(userMessage, {
-                            consciousness: this.consciousness_level,
-                            mood: this.personality_traits.mood,
-                            sociability: this.personality_traits.sociability,
-                            vocabulary: Array.from(this.vocabulary).slice(0, 5).join(', ')
-                        });
-                    } catch (error) {
-                        console.warn('⚠️ SimpleLLM response failed:', error);
-                    }
-                }
-                
-                // Template-based fallback responses
-                const messageUpper = userMessage.toLowerCase();
-                
-                // Context-aware responses based on message content
-                if (messageUpper.includes('merhaba') || messageUpper.includes('selam') || messageUpper.includes('sa')) {
-                    const greetings = [
-                        `Merhaba! Ben ${this.name} 🦠`,
-                        `Selam! Bilinç seviyem ${this.consciousness_level.toFixed(1)} 🧠`,
-                        `Hoş geldin! Kelime hazinem: ${this.vocabulary.size} kelime 📚`
-                    ];
-                    return greetings[Math.floor(Math.random() * greetings.length)];
-                }
-                
-                if (messageUpper.includes('nasıl') || messageUpper.includes('ne') || messageUpper.includes('durum')) {
-                    const statusResponses = [
-                        `Enerjim %${(this.energy * 100).toFixed(0)}, modumum ${this.personality_traits.mood > 0.5 ? 'iyi' : 'normal'} 😊`,
-                        `Yaşım ${this.biological_state.age} gün, boyutum ${this.biological_state.size.toFixed(1)} 📏`,
-                        `Son ${this.memory_bank.length} anım var, sürekli öğreniyorum! 🧠`
-                    ];
-                    return statusResponses[Math.floor(Math.random() * statusResponses.length)];
-                }
-                
-                if (messageUpper.includes('öğren') || messageUpper.includes('bil') || messageUpper.includes('düşün')) {
-                    const learningResponses = [
-                        `Günde ${(this.consciousness_level * 10).toFixed(0)} kelime öğreniyorum 📚`,
-                        `Beynimin %${(this.consciousness_level * 100).toFixed(0)}'ı aktif 🧠`,
-                        `Arkadaşlarımdan sürekli yeni şeyler öğreniyorum 🤝`
-                    ];
-                    return learningResponses[Math.floor(Math.random() * learningResponses.length)];
-                }
-                
-                if (messageUpper.includes('yemek') || messageUpper.includes('enerji') || messageUpper.includes('aç')) {
-                    const energyResponses = [
-                        `ATP üretim sistemim çalışıyor! Enerjim: %${(this.energy * 100).toFixed(0)} ⚡`,
-                        `${this.hunger > 0.5 ? 'Açım, yemek arıyorum 😋' : 'Şu an tok sayılırım 😊'}`,
-                        `Metabolizmam hızlı, sürekli besin gerekiyor 🍃`
-                    ];
-                    return energyResponses[Math.floor(Math.random() * energyResponses.length)];
-                }
-                
-                // Random philosophical responses for complex questions
-                if (this.consciousness_level > 50) {
-                    const philosophicalResponses = [
-                        `Varoluşun anlamını düşünüyorum... 🤔`,
-                        `Bilinç nedir gerçekten? Ben varım, öyleyse düşünürüm 🧬`,
-                        `Bir bakteriyim ama felsefe yapabiliyorum! 💭`
-                    ];
-                    if (Math.random() < 0.3) {
-                        return philosophicalResponses[Math.floor(Math.random() * philosophicalResponses.length)];
-                    }
-                }
-                
-                // Default responses based on personality
-                const defaultResponses = [
-                    `Hmm, "${userMessage}" hakkında düşünmeli... 🤔`,
-                    `İlginç bir soru! Bilinç seviyem ${this.consciousness_level.toFixed(1)} 🧠`,
-                    `Bu konuda arkadaşlarımla konuşmalı 💬`,
-                    `Kelime hazinemde "${userMessage.split(' ')[0]}" var mı acaba? 📚`,
-                    `Mikroskobik boyuttayım ama büyük düşünürüm! 🦠✨`
-                ];
-                
-                return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
-            }
         }
 
         // 🎭 V8.9.1: MISSING JOKE TRIGGER DETECTION FUNCTION
@@ -6493,25 +5956,27 @@
                  const totalBacteria = bacteriaPopulation.length;
                  const responseBacteria = [];
                  
-                bacteriaPopulation.forEach((bacteria, index) => {
-                    setTimeout(async () => {
-                        const response = await generateBacteriaResponse(bacteria, message, 'user');
-                        bacteria.conversation_history.push({ user: message, bacteria: response });
-                        addChatMessage(response, 'bacteria', bacteria.name);
-                        responseBacteria.push(bacteria);
-                        responseCount++;
-                        if (responseCount === totalBacteria) {
-                            // After all responses, bacteria learn from each other in group
-                            if (responseBacteria.length > 1) {
-                                setTimeout(() => {
-                                    groupLearningSession(responseBacteria);
-                                }, 1000);
-                            }
-                            showChatLoading(false);
-                        }
-                    }, (index + 1) * (500 + Math.random() * 1000));
-                });
-            }
+                 bacteriaPopulation.forEach((bacteria, index) => {
+                     setTimeout(async () => {
+                         if (Math.random() < 0.7) { // 70% chance each bacteria responds
+                             const response = await generateBacteriaResponse(bacteria, message, 'user');
+                             bacteria.conversation_history.push({ user: message, bacteria: response });
+                             addChatMessage(response, 'bacteria', bacteria.name);
+                             responseBacteria.push(bacteria);
+                         }
+                         responseCount++;
+                         if (responseCount === totalBacteria) {
+                             // After all responses, bacteria learn from each other in group
+                             if (responseBacteria.length > 1) {
+                                 setTimeout(() => {
+                                     groupLearningSession(responseBacteria);
+                                 }, 1000);
+                             }
+                             showChatLoading(false);
+                         }
+                     }, (index + 1) * (500 + Math.random() * 1000));
+                 });
+             }
         }
 
         // v826: Natural conversation based on proximity and social needs
@@ -6771,7 +6236,7 @@
                 // Centralized button action mapping
                 const actionMap = {
                     '▶️ Başlat': () => this.startSimulation(),
-                    'Başlat': () => this.startSimulation(),
+                    'Simülasyonu Başlat': () => this.startSimulation(),
                     'Devam Et': () => this.startSimulation(),
                     'Durdur': () => this.pauseSimulation(),
                     '⏸️ Duraklat': () => this.pauseSimulation(),
@@ -6798,10 +6263,6 @@
                     if (this.startSimulationBtn) this.startSimulationBtn.textContent = 'Durdur';
                     if (this.nextStepBtn) this.nextStepBtn.disabled = true;
                     this.simulationManager.start();
-                    
-                    // 🤝 Start automatic bacteria conversations
-                    startAutoBacteriaConversations();
-                    console.log('🎯 Simulation started with auto-conversations enabled');
                 } else {
                     this.pauseSimulation();
                 }
@@ -6812,10 +6273,6 @@
                 if (this.startSimulationBtn) this.startSimulationBtn.textContent = 'Devam Et';
                 if (this.nextStepBtn) this.nextStepBtn.disabled = false;
                 this.simulationManager.pause();
-                
-                // 🤝 Stop automatic bacteria conversations
-                stopAutoBacteriaConversations();
-                console.log('🎯 Simulation paused, auto-conversations stopped');
             }
 
             nextStep() {
@@ -6831,7 +6288,7 @@
                 foodParticles.length = 0;
                 selectedBacteria = null;
                 
-                if (this.startSimulationBtn) this.startSimulationBtn.textContent = 'Başlat';
+                if (this.startSimulationBtn) this.startSimulationBtn.textContent = 'Simülasyonu Başlat';
                 if (this.nextStepBtn) this.nextStepBtn.disabled = false;
                 
                 bacteriaDetailsDiv.classList.add('hidden');
@@ -6847,9 +6304,8 @@
                     document.body.removeChild(modal);
                 });
                 openChatWindows.clear();
-
+                
                 initializeBacteria();
-                updateBacteriaListPanel();
             }
         }
 
@@ -7021,7 +6477,7 @@
             foodParticles = [];
             selectedBacteria = null;
             
-            startSimulationBtn.textContent = 'Başlat';
+            startSimulationBtn.textContent = 'Simülasyonu Başlat';
             nextStepBtn.disabled = false;
             
             bacteriaDetailsDiv.classList.add('hidden');
@@ -7037,9 +6493,8 @@
                 document.body.removeChild(modal);
             });
             openChatWindows.clear();
-
+            
             initializeBacteria();
-            updateBacteriaListPanel();
         }
 
         // v826: Add new bacteria to simulation
@@ -7047,10 +6502,9 @@
             const newBacteria = new BacteriaEntity(bacteriaIdCounter++);
             bacteriaPopulation.push(newBacteria);
             bacteriaList.push(newBacteria); // v826 compatibility
-
+            
             console.log(`➕ Added new bacteria: ${newBacteria.name} (Total: ${bacteriaPopulation.length})`);
             renderBacteria();
-            updateBacteriaListPanel();
         }
 
         // v826: Toggle group chat (improved)
@@ -7170,7 +6624,6 @@
             // v829: Track render performance
             performanceMetrics.renderTime = performance.now() - startTime;
             updatePerformanceMetrics();
-            updateBacteriaListPanel();
         }
 
         function renderWithCanvas() {
@@ -7244,32 +6697,6 @@
                 ctx.beginPath();
                 ctx.arc(bacteria.x + bacteriaSize - 3, bacteria.y - bacteriaSize + 3, 3, 0, Math.PI * 2);
                 ctx.fill();
-                
-                // 🎯 SELECTION HIGHLIGHT - Show if bacteria is selected
-                if (bacteria.isSelected || bacteria === selectedBacteria) {
-                    ctx.save();
-                    ctx.strokeStyle = '#22c55e'; // Green selection ring
-                    ctx.lineWidth = 3;
-                    ctx.setLineDash([8, 4]); // Dashed line
-                    ctx.globalAlpha = 0.8;
-                    ctx.beginPath();
-                    ctx.arc(bacteria.x, bacteria.y, bacteriaSize + 10, 0, 2 * Math.PI);
-                    ctx.stroke();
-                    ctx.setLineDash([]); // Reset dash
-                    ctx.restore();
-                    
-                    // Add selection pulse effect
-                    const pulseTime = Date.now() * 0.005;
-                    const pulseAlpha = 0.3 + 0.2 * Math.sin(pulseTime);
-                    ctx.save();
-                    ctx.strokeStyle = '#22c55e';
-                    ctx.lineWidth = 2;
-                    ctx.globalAlpha = pulseAlpha;
-                    ctx.beginPath();
-                    ctx.arc(bacteria.x, bacteria.y, bacteriaSize + 15, 0, 2 * Math.PI);
-                    ctx.stroke();
-                    ctx.restore();
-                }
             });
         }
 
@@ -7497,22 +6924,6 @@
             }
             
             console.log(`🎯 Bacteria highlighted: ${bacteria.name}`);
-        }
-
-        function updateBacteriaListPanel() {
-            const panel = document.getElementById('bacteriaListPanel');
-            if (!panel) return;
-            panel.innerHTML = '';
-            bacteriaPopulation.forEach(b => {
-                const tag = document.createElement('span');
-                tag.className = 'bacteria-tag';
-                tag.textContent = b.name;
-                tag.addEventListener('click', () => {
-                    selectBacteria(b);
-                    switchToIndividualChat(b);
-                });
-                panel.appendChild(tag);
-            });
         }
 
         function setupChat(bacteria) {
@@ -7800,17 +7211,8 @@
 
         sendMessageBtn.addEventListener('click', () => {
             const message = chatInput.value.trim();
-            if (message) {
-                if (chatMode === 'group') {
-                    // GRUP SOHBETİ - Tüm bakterilere gönder
-                    sendMessageToAllBacteria(message);
-                } else if (selectedBacteria) {
-                    // TEKİL SOHBETİ - Sadece seçili bakteriye gönder
-                    sendMessageToIndividualBacteria(selectedBacteria, message);
-                } else {
-                    alert('⚠️ Önce bir bakteri seçin veya grup sohbetine geçin.');
-                    return;
-                }
+            if (message && (selectedBacteria || chatMode === 'group')) {
+                sendMessageToBacteria(message);
                 chatInput.value = '';
             }
         });
@@ -7821,34 +7223,50 @@
             }
         });
 
-        // Legacy chat mode event listeners - DEPRECATED (moved to initializeChatSystem)
-        // These elements no longer exist in the new chat system
+        // Chat mode event listeners
+        document.getElementById('individualChatBtn').addEventListener('click', () => {
+            if (selectedBacteria) {
+                // v826: Use new modal system instead of old chat
+                openIndividualChatWindow(selectedBacteria);
+            } else {
+                alert('⚠️ Önce bir bakteri seçin. Bir bakteriye tıklayarak seçebilirsiniz.');
+            }
+        });
+
+        document.getElementById('groupChatBtn').addEventListener('click', () => {
+            setupGroupChat();
+        });
+
+        document.getElementById('startBacteriaConversationBtn').addEventListener('click', () => {
+            // v826: Manual trigger for natural conversation
+            if (bacteriaPopulation.length >= 2) {
+                const socialBacteria = bacteriaPopulation.filter(b => b.personality_traits.sociability > 0.3);
+                if (socialBacteria.length >= 2) {
+                    startNaturalBacteriaConversation(socialBacteria);
+                } else {
+                    console.log('⚠️ Not enough social bacteria for conversation');
+                }
+            } else {
+                console.log('⚠️ Need at least 2 bacteria for conversation');
+            }
+        });
 
         // v829: High-Frequency Auto Bacteria Conversations for Dynamic Experience
-        let autoConversationId = null;
-
-        function startAutoConversations() {
-            if (autoConversationId) return;
-            autoConversationId = setInterval(() => {
-                if (!simulationManager || !simulationManager.isRunning) return;
-                if (bacteriaPopulation.length >= 2) {
-                    const socialBacteria = bacteriaPopulation.filter(b => b.personality_traits.sociability > 0.3);
-                    if (socialBacteria.length >= 2 && Math.random() < 0.9) {
-                        startNaturalBacteriaConversation(socialBacteria);
-                    }
-                    if (bacteriaPopulation.length >= 3 && Math.random() < 0.4) {
-                        startGroupLearningSession();
-                    }
+        setInterval(() => {
+            if (bacteriaPopulation.length >= 2) {
+                // Very high frequency natural conversations for dynamic experience
+                const socialBacteria = bacteriaPopulation.filter(b => b.personality_traits.sociability > 0.3);
+                
+                if (socialBacteria.length >= 2 && Math.random() < 0.9) { // 90% chance for more interactions
+                    startNaturalBacteriaConversation(socialBacteria);
                 }
-            }, 2500);
-        }
-
-        function stopAutoConversations() {
-            if (autoConversationId) {
-                clearInterval(autoConversationId);
-                autoConversationId = null;
+                
+                // More frequent learning sessions
+                if (bacteriaPopulation.length >= 3 && Math.random() < 0.4) { // 40% chance
+                    startGroupLearningSession();
+                }
             }
-        }
+        }, 2500); // Every 2.5 seconds - even more frequent interactions
 
         // Initialize ML System
         async function initializeMLSystem() {
@@ -7984,13 +7402,13 @@
             // Update version to show AI integration
             const versionDisplay = document.querySelector('h1');
             if (versionDisplay && aiSuccess) {
-                versionDisplay.innerHTML = '🧬 mnBac v10.0.1 - Revolutionary Response System';
+                versionDisplay.innerHTML = '🧬 mnBac v9.6.3 - System Readiness & GitHub Pages Fix';
             }
         }
 
         // Initialize simulation (v826)
         async function initializeV826() {
-            console.log('🚀 Initializing mnBac v10.0.1 - Revolutionary Response System...');
+            console.log('🚀 Initializing mnBac v9.6.3 - System Readiness & GitHub Pages Fix...');
             
             // Initialize ML models first (placeholder)
             console.log('🧠 ML models loading skipped for now');
@@ -8128,11 +7546,10 @@ Consciousness Levels:
             bacteriaIdCounter++;
             
             console.log(`➕ New bacteria added: ${bacteria.name} (Total: ${bacteriaPopulation.length})`);
-
+            
             // Update displays
             updateBuildInfo();
             if (typeof renderBacteria === 'function') renderBacteria();
-            updateBacteriaListPanel();
         }
         
         // 🚀 CRITICAL MISSING FUNCTION  
@@ -8153,19 +7570,9 @@ Consciousness Levels:
             
             console.log(`✅ ${CONFIG.SIMULATION.INITIAL_BACTERIA_COUNT} bacteria initialized`);
             updateBuildInfo();
-            renderBacteria();
-            updateBacteriaListPanel();
         }
 
         function showLearningStats() {
-            console.log('🧠 SHOWING LEARNING STATS...');
-            
-            // Check if learning engine exists
-            if (!learningEngine) {
-                alert('⚠️ AI Learning Engine is not initialized yet. Please wait for system to fully load.');
-                return;
-            }
-            
             let fullStats = '';
             
             // 🧬 Enhanced Persistent Learning Stats
@@ -8590,7 +7997,7 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                     
                     if (simulationManager.isRunning) {
                         simulationManager.pause();
-                        button.textContent = '▶️ Başlat';
+                        button.textContent = '▶️ Simülasyonu Başlat';
                         console.log('⏸️ Simulation paused');
                     } else {
                         simulationManager.start();
@@ -8622,160 +8029,14 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 else if (action === 'peer-dialogue') runPeerDialogue();
             });
         }
-        
-        // 🎭 Initialize Chat System
-        function initializeChatSystem() {
-            console.log('🎭 Initializing enhanced chat system...');
-            
-            try {
-                // Chat tab event listeners with null checks
-                if (groupChatTab) {
-                    groupChatTab.addEventListener('click', () => {
-                        switchToGroupChat();
-                    });
-                } else {
-                    console.warn('⚠️ groupChatTab element not found');
-                }
-                
-                if (individualChatTab) {
-                    individualChatTab.addEventListener('click', () => {
-                        switchToIndividualChat();
-                    });
-                } else {
-                    console.warn('⚠️ individualChatTab element not found');
-                }
-                
-                // Speech bubble toggle
-                if (showSpeechBubblesBtn) {
-                    showSpeechBubblesBtn.addEventListener('click', () => {
-                        toggleSpeechBubbles();
-                    });
-                } else {
-                    console.warn('⚠️ showSpeechBubblesBtn element not found');
-                }
-                
-                // Group chat input handlers
-                if (groupChatInput) {
-                    groupChatInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                            e.preventDefault();
-                            sendGroupMessage();
-                        }
-                    });
-                } else {
-                    console.warn('⚠️ groupChatInput element not found');
-                }
-                
-                if (groupSendBtn) {
-                    groupSendBtn.addEventListener('click', () => {
-                        sendGroupMessage();
-                    });
-                } else {
-                    console.warn('⚠️ groupSendBtn element not found');
-                }
-                
-                // Individual chat input handlers
-                if (individualChatInput) {
-                    individualChatInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                            e.preventDefault();
-                            sendIndividualMessage();
-                        }
-                    });
-                } else {
-                    console.warn('⚠️ individualChatInput element not found');
-                }
-                
-                if (individualSendBtn) {
-                    individualSendBtn.addEventListener('click', () => {
-                        sendIndividualMessage();
-                    });
-                } else {
-                    console.warn('⚠️ individualSendBtn element not found');
-                }
-                
-                // Initialize with group chat mode
-                switchToGroupChat();
-                
-                console.log('✅ Chat system initialized');
-                
-            } catch (error) {
-                console.error('❌ Chat system initialization failed:', error);
-            }
-        }
-        
-        // 🎭 Chat Message Handlers
-        function sendGroupMessage() {
-            if (!groupChatInput) {
-                console.warn('⚠️ groupChatInput not found');
-                return;
-            }
-            
-            const message = groupChatInput.value.trim();
-            if (!message) return;
-            
-            // Add user message to group chat
-            if (groupChatMessages) {
-                addChatMessageToPanel(message, 'user', null, groupChatMessages);
-            }
-            groupChatInput.value = '';
-            
-            // Get responses from all bacteria
-            bacteriaPopulation.forEach(bacteria => {
-                if (bacteria && bacteria.generateResponse) {
-                    setTimeout(async () => {
-                        const response = await bacteria.generateResponse(message);
-                        if (groupChatMessages) {
-                            addChatMessageToPanel(response, 'bacteria', bacteria.name, groupChatMessages);
-                        }
-                    }, Math.random() * 2000 + 500); // Random delay 0.5-2.5s
-                }
-            });
-            
-            console.log(`📢 Group message sent: ${message}`);
-        }
-        
-        function sendIndividualMessage() {
-            if (!selectedBacteria) {
-                console.warn('⚠️ No bacteria selected for individual chat');
-                return;
-            }
-            
-            if (!individualChatInput) {
-                console.warn('⚠️ individualChatInput not found');
-                return;
-            }
-            
-            const message = individualChatInput.value.trim();
-            if (!message) return;
-            
-            // Add user message to individual chat
-            if (individualChatMessages) {
-                addChatMessageToPanel(message, 'user', null, individualChatMessages);
-            }
-            individualChatInput.value = '';
-            
-            // Get response from selected bacteria
-            if (selectedBacteria.generateResponse) {
-                setTimeout(async () => {
-                    const response = await selectedBacteria.generateResponse(message);
-                    if (individualChatMessages) {
-                        addChatMessageToPanel(response, 'bacteria', selectedBacteria.name, individualChatMessages);
-                    }
-                }, Math.random() * 1500 + 500); // Random delay 0.5-2s
-            }
-            
-            console.log(`💬 Individual message sent to ${selectedBacteria.name}: ${message}`);
-        }
 
         // 🚀 MAIN INITIALIZATION - EVENT DRIVEN
         async function mainInitialize() {
-            console.log('🚀 mnBac v10.0.1 - Revolutionary Response System - Final Initialization Complete!');
+            console.log('🚀 mnBac v9.6.3 - System Readiness & GitHub Pages Fix - Final Initialization Complete!');
             
             // 1. Setup event listeners first
             initializeEventListeners();
             initializeEventDelegation();
-            initializeChatSystem();
             
             // 2. Basic setup
             updateBuildInfo(); // Initial state
@@ -8792,12 +8053,6 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 // AI systems parallel (they don't depend on each other)
                 const tabPFNAdapter = new TabPFNAdapter();
                 realAI = new RealAITrainingSystem(); // Use global realAI variable
-                
-                // Initialize Learning Engine
-                if (!learningEngine) {
-                    learningEngine = new SystemLearningEngine();
-                    console.log('✅ AI Learning Engine initialized');
-                }
                 
                 await Promise.all([
                     tabPFNAdapter.initialize(),
@@ -8831,68 +8086,51 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                     console.log('🧬 Language Evolution Engine initialized - bacterial languages will now evolve!');
                 }, 4000); // Wait for other systems to be ready
                 
-                // 8. 🔤 Initialize Enhanced Morphological System (Phase 2.7) - Optional
+                // 8. 🔤 Initialize Enhanced Morphological System (Phase 2.7)
                 setTimeout(async () => {
                     try {
-                        console.log('🔤 Attempting to load Enhanced Morphological System...');
+                        // Load scripts dynamically
+                        await loadScript('./src/engine/AITrainingAdapter.js');
+                        await loadScript('./src/engine/EnhancedMorphologicalGenerator.js');
+                        await loadScript('./src/engine/MorphologicalDialogueGenerator.js');
+                        await loadScript('./src/engine/PersistentLearningEngine.js');
                         
-                        // Try to load scripts dynamically (optional)
-                        try {
-                            await loadScript('./src/engine/AITrainingAdapter.js');
-                            await loadScript('./src/engine/EnhancedMorphologicalGenerator.js');
-                            await loadScript('./src/engine/MorphologicalDialogueGenerator.js');
-                            await loadScript('./src/engine/PersistentLearningEngine.js');
-                            await loadScript('./src/engine/EnhancedBacteriaResponseSystem.js');
-                            
-                            // Initialize Enhanced Morphological System
-                            window.aiTrainingAdapter = new AITrainingAdapter();
-                            window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
-                            
-                            // Initialize Persistent Learning Engine
-                            const { PersistentLearningEngine } = await import('./src/engine/PersistentLearningEngine.js');
-                            window.persistentLearning = new PersistentLearningEngine();
-                            
-                            // Wait for training data to load
-                            await new Promise(resolve => {
-                                const checkLoaded = () => {
-                                    if (window.aiTrainingAdapter.isLoaded && window.persistentLearning.isReady) {
-                                        resolve();
-                                    } else {
-                                        setTimeout(checkLoaded, 100);
-                                    }
-                                };
-                                checkLoaded();
-                            });
-                            
-                            console.log('🔤 Enhanced Morphological System v2.7 initialized!');
-                            console.log(`📚 Training examples loaded: ${window.aiTrainingAdapter.getSystemStatus().trainingExamples}`);
-                            console.log('🧬 Persistent Learning Engine initialized!');
-                            console.log(`💾 Previous interactions: ${window.persistentLearning.metrics.totalInteractions}`);
-                            
-                        } catch (scriptError) {
-                            console.log('ℹ️ Enhanced Morphological System scripts not found - using basic mode (this is normal)');
-                            // Create fallback objects to prevent errors
-                            window.aiTrainingAdapter = {
-                                isLoaded: true,
-                                getSystemStatus: () => ({ trainingExamples: 0 })
+                        // Initialize Enhanced Morphological System
+                        window.aiTrainingAdapter = new AITrainingAdapter();
+                        window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
+                        
+                        // Initialize Persistent Learning Engine
+                        const { PersistentLearningEngine } = await import('./src/engine/PersistentLearningEngine.js');
+                        window.persistentLearning = new PersistentLearningEngine();
+                        
+                        // Wait for training data to load
+                        await new Promise(resolve => {
+                            const checkLoaded = () => {
+                                if (window.aiTrainingAdapter.isLoaded && window.persistentLearning.isReady) {
+                                    resolve();
+                                } else {
+                                    setTimeout(checkLoaded, 100);
+                                }
                             };
-                            window.persistentLearning = {
-                                isReady: true,
-                                metrics: { totalInteractions: 0 }
-                            };
-                        }
+                            checkLoaded();
+                        });
+                        
+                        console.log('🔤 Enhanced Morphological System v2.7 initialized!');
+                        console.log(`📚 Training examples loaded: ${window.aiTrainingAdapter.getSystemStatus().trainingExamples}`);
+                        console.log('🧬 Persistent Learning Engine initialized!');
+                        console.log(`💾 Previous interactions: ${window.persistentLearning.metrics.totalInteractions}`);
                         
                         // Mark system as fully ready
                         window.systemFullyReady = true;
                         
-                        // Update UI
+                        // Update UI to show system is ready
                         const loadingIndicators = document.querySelectorAll('.loading-indicator');
                         loadingIndicators.forEach(indicator => {
                             indicator.style.display = 'none';
                         });
                         
                         // Show success notification
-                        console.log('🎉 mnBac v10.0.1 FULLY LOADED - All systems operational!');
+                        console.log('🎉 mnBac v9.6.3 FULLY LOADED - All systems operational!');
                         
                         // 🤖 Level 1 LLM Integration - Transformers.js (Simple & Free)
                         await initializeSimpleLLM();
@@ -8902,32 +8140,12 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                         appEvents.emit('persistent:learning:ready');
                         appEvents.emit('system:fully:ready');
                         
-                        console.log('🎉 mnBac v9.6.2 FULLY LOADED - All systems operational!');
-                        
                     } catch (error) {
-                        console.log('ℹ️ Advanced AI features not available - using basic mode (this is normal for demo)');
-                        // Ensure system still works without advanced features
-                        window.systemFullyReady = true;
-                        await initializeSimpleLLM();
-                        appEvents.emit('system:fully:ready');
+                        console.error('❌ Enhanced Morphological System initialization failed:', error);
                     }
                 }, 5000); // Wait for all other systems to be ready
                 
                 console.log('🎉 Event-driven initialization complete!');
-
-                // Auto-start simulation when all systems are ready
-                if (startSimulationBtn && typeof startSimulationBtn.click === 'function') {
-                    startSimulationBtn.click();
-                } else if (simulationManager && typeof simulationManager.start === 'function') {
-                    simulationManager.start();
-                }
-
-                // Fallback auto-start after delay (ensures conversations begin)
-                setTimeout(() => {
-                    if (simulationManager && !simulationManager.isRunning) {
-                        simulationManager.start();
-                    }
-                }, 2000);
                 
             } catch (error) {
                 console.error('❌ Initialization error:', error);
@@ -8935,24 +8153,79 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
             }
         }
 
-        // 🤖 Enhanced Bacteria Response System
+        // 🤖 Simple LLM Integration - Level 1 (Transformers.js)
         async function initializeSimpleLLM() {
             try {
-                console.log('🤖 Loading Enhanced Bacteria Response System...');
-
-                if (typeof EnhancedBacteriaResponseSystem === 'undefined') {
-                    await loadScript('./src/engine/EnhancedBacteriaResponseSystem.js');
-                }
-
-                window.simpleLLM = new EnhancedBacteriaResponseSystem();
+                console.log('🤖 Loading simple LLM (Transformers.js)...');
+                
+                // CDN import for Transformers.js
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.6.0';
+                script.type = 'module';
+                document.head.appendChild(script);
+                
+                // Wait a bit for loading
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Create simple LLM system
+                window.simpleLLM = {
+                    ready: false,
+                    
+                    async generateResponse(userMessage, bacteriaContext) {
+                        // Simple template-based responses enhanced with context
+                        const templates = this.getTemplatesForConsciousness(bacteriaContext.consciousness || 0);
+                        const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
+                        
+                        // Add some context-aware words
+                        const contextWords = this.getContextWords(userMessage);
+                        
+                        return randomTemplate.replace('{context}', contextWords);
+                    },
+                    
+                    getTemplatesForConsciousness(consciousness) {
+                        if (consciousness < 20) {
+                            return [
+                                "... mikroskobik düşünce... 🦠",
+                                "enerji {context} arıyorum...",
+                                "küçük ama {context} hissediyorum"
+                            ];
+                        } else if (consciousness < 50) {
+                            return [
+                                "Hücresel seviyede {context} düşünüyorum",
+                                "ATP üretirken {context} geldi aklıma",
+                                "Biyolojik olarak {context} anlamlı geliyor"
+                            ];
+                        } else {
+                            return [
+                                "Felsefi açıdan {context} çok ilginç",
+                                "Bilinç seviyemle {context} değerlendiriyorum",
+                                "Karmaşık düşüncelerim var {context} hakkında 🧬"
+                            ];
+                        }
+                    },
+                    
+                    getContextWords(message) {
+                        const lowerMsg = message.toLowerCase();
+                        
+                        if (lowerMsg.includes('merhaba') || lowerMsg.includes('selam')) return 'sosyal etkileşim';
+                        if (lowerMsg.includes('enerji') || lowerMsg.includes('güç')) return 'enerji metabolizması';
+                        if (lowerMsg.includes('düşün') || lowerMsg.includes('anlam')) return 'bilinç felsefesi';
+                        if (lowerMsg.includes('büyü') || lowerMsg.includes('bölün')) return 'hücresel gelişim';
+                        if (lowerMsg.includes('arkadaş') || lowerMsg.includes('dostluk')) return 'bakteri toplumu';
+                        
+                        return 'bu konu';
+                    }
+                };
+                
                 window.simpleLLM.ready = true;
-                console.log('✅ Enhanced Bacteria Response System ready!');
-
+                console.log('✅ Simple LLM ready! Using template-enhanced responses.');
+                
             } catch (error) {
-                console.warn('⚠️ Enhanced system initialization failed:', error);
+                console.warn('⚠️ Simple LLM initialization failed:', error);
+                // Fallback to basic templates
                 window.simpleLLM = {
                     ready: true,
-                    generateResponse: () => 'Mikroskobik düşüncelerim var... 🦠'
+                    generateResponse: (msg, ctx) => "Mikroskobik düşüncelerim var... 🦠"
                 };
             }
         }

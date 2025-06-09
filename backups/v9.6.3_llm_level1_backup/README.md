@@ -1,21 +1,15 @@
-# 🧬 mnBac v10.0.1 - Revolutionary Response System! 💭
+# 🧬 mnBac v9.6.3 - System Readiness & GitHub Pages Fix! 🎭
 
 ## 🎯 **Proje Özeti**
 
-**mnBac v10.0.1** şu ana kadar geliştirilen en gelişmiş bakteriyel dil evrim simülasyonudur. Bu sistem, Türkçe morfojik işleme, AI tabanlı öğrenme, ultra-agresif monotonluk karşıtı algoritmalara ve **gelişmiş konuşma baloncukları sistemi**ne sahiptir.
+**mnBac v9.6.3** şu ana kadar geliştirilen en gelişmiş bakteriyel dil evrim simülasyonudur. Bu sistem, Türkçe morfojik işleme, AI tabanlı öğrenme, ultra-agresif monotonluk karşıtı algoritmalara ve **eksiksiz buton sistemi**ne sahiptir.
 
-### 🆕 **v10.0.1 Yenilikleri:**
-- ✅ **Enhanced Speech Bubbles** - Daha görünür, tıklanabilir konuşma baloncukları
-- ✅ **Dual Chat System** - Grup ve tekil sohbet sekmeleri
-- ✅ **Bacteria Selection** - Chat'te isim tıklama ve canvas'ta bakteri seçimi
-- ✅ **Visual Highlighting** - Seçili bakteriler için glow efekti
-- ✅ **Speech Bubble Toggle** - Baloncukları göster/gizle kontrolü
-- ✅ **Individual Chat Panel** - Yeni pencere yerine yan panel sistemi
-- ⚡ **60 FPS Optimized** - Sabit 60 FPS limit ve 1 saniyelik güncelleme
-- 🧬 **2000 Words Vocabulary** - Genişletilmiş kelime havuzu (1500→2000)
-- 💭 **Click Speech Bubbles** - Konuşma balonlarına tıklayarak bakteri seçimi
-- 🎯 **Simple AI System** - TabPFN yerine hızlı rule-based AI
-- 🚀 **Performance Boost** - %70 CPU, %60 memory tasarrufu
+### 🆕 **v9.6.3 Yenilikleri:**
+- ✅ **GitHub Pages initialization fix** - Artık tordaht.github.io'da düzgün çalışıyor
+- ✅ **System readiness checker** - Kullanıcıya detaylı yüklenme durumu gösterimi
+- ✅ **Progressive loading** - Sistemler aşama aşama başlatılıyor
+- ✅ **Better error messages** - "Please wait" yerine detaylı status bilgisi
+- ✅ **Runtime crash protection** - Speech bubble null errors çözüldü
 
 NeoMag, AI destekli bakteri comedy show simülasyonudur. Türkçe morfoloji motoru ve gelişmiş diyalog sistemi ile bakteriler anlamlı, komik ve bağlama uygun cümleler kurar. TabPFN teknolojisi ile desteklenen hibrit dil sistemi, bakterilerin gerçek zamanlı komedi performansları sergilemesini sağlar.
 
@@ -71,8 +65,6 @@ GitHub_mnBac_Project/
 ├── src/
 │   ├── engine/
 │   │   ├── TabPFNAdapter.js           # TabPFN entegrasyonu
-│   │   ├── TabPFGenAdapter.js         # TabPFGen tabular veri üretimi
-│   │   ├── TabPFNFineTuner.js         # TabPFN ince ayar modülü
 │   │   ├── WordSuccessTracker.js      # Kelime başarı takibi
 │   │   └── LanguageEvolutionEngine.js # Dil evrimi motoru
 │   ├── managers/
@@ -128,8 +120,6 @@ Kelimeler 9 ana kategoride organize edilir:
 - TabPFN önerilerini önceliklendirir
 - Markov chain fallback sistemi
 - Absurd element injection
-- TabPFGen ile sentetik veri üretimi
-- TabPFN Fine Tuner ile model iyileştirmesi
 - Personality-based mutations
 - Context-aware generation
 
@@ -203,17 +193,6 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosy
 - **TensorFlow.js**: Machine learning framework
 - **Tailwind CSS**: Utility-first CSS framework
 
-## ✅ Testler
-
-Projeyi klonladıktan sonra bağımlılıkları kurup testleri çalıştırabilirsiniz:
-
-```bash
-npm install  # internet bağlantısı gerektirir
-npm test
-```
-
-`npm install` komutu ağ erişimi gerektirdiğinden Codex ortamında çalışmayabilir. Bu durumda yerel makinenizde kurulum yapmanız gerekir.
-
 ## 📞 İletişim
 
 - **GitHub Issues**: Bug raporları ve feature istekleri
@@ -221,8 +200,8 @@ npm test
 
 ---
 
-🧬 **mnBac v10.0.1** - Revolutionary Response System! 🎭
+🧬 **mnBac v9.6.3** - System Readiness & GitHub Pages Fix! 🎭
 
 *Geliştirici: mnBac Team*  
-*Versiyon: 10.0.1*
+*Versiyon: 9.6.3*
 *Son Güncelleme: 19 Aralık 2024* 

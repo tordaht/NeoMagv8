@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoMag v8.2.1 - Bakteri Simülasyonu with ML</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0/dist/tf.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overscroll-behavior: none;
+        }
+        .bacteria {
+            transition: all 0.5s ease-in-out;
+            cursor: pointer;
+        }
+        .bacteria:hover {
+            transform: scale(1.1);
+        }
+        .chat-bubble {
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        .chat-bubble-user {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+        }
+        .chat-bubble-bacteria {
+            background-color: #e5e7eb; /* gray-200 */
+            color: #1f2937; /* gray-800 */
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        /* Custom scrollbar for chat */
+        #chatMessages::-webkit-scrollbar {
+            width: 8px;
+        }
+        #chatMessages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        #chatMessages::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        #chatMessages::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Loading spinner */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 5px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-gray-800 shadow-lg p-4 sticky top-0 z-50">
+        <h1 class="text-2xl font-bold text-center text-teal-400">NeoMag v8.2.1 - AI Bakteri Simülasyonu</h1>
+        <div class="text-center text-xs text-teal-300 mt-1">
+            🧠 TensorFlow.js Neural Network | 🤝 Cross-Bacteria Learning | 👥 Group Chat
+        </div>
+        <div id="buildInfo" class="text-center text-xs text-gray-400 mt-1">
+            Build: Loading...
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto p-2 sm:p-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
+        
+        <!-- Sol Panel Simülasyon ve Detaylar -->
+        <div class="lg:col-span-2 bg-gray-800 p-4 rounded-lg shadow-xl flex flex-col">
+            <h2 class="text-xl font-semibold mb-3 text-teal-300 border-b border-gray-700 pb-2">Simülasyon Alanı</h2>
+            <div id="simulationArea" class="flex-grow bg-gray-700 rounded-md p-4 relative min-h-[300px] sm:min-h-[400px] overflow-hidden cursor-crosshair">
+                <!-- Bakteriler ve yemekler buraya eklenecek -->
+                <div class="absolute top-2 left-2 text-xs text-teal-300 bg-gray-800 bg-opacity-75 px-2 py-1 rounded">
+                    🍎 Yemek eklemek için tıklayın
+                </div>
+            </div>
+            <div class="mt-4 p-3 bg-gray-750 rounded-md">
+                <h3 class="text-lg font-semibold mb-2 text-teal-300">Kontrol Paneli</h3>
+                <div class="flex space-x-2">
+                    <button id="startSimulationBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 ease-in-out">Simülasyonu Başlat</button>
+                    <button id="nextStepBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 ease-in-out" disabled>Sonraki Adım</button>
+                    <button id="resetSimulationBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-150 ease-in-out">Sıfırla</button>
+                </div>
+                <p id="simulationTime" class="mt-2 text-sm text-gray-400">Simülasyon Zamanı: 0 gün</p>
+            </div>
+            <div id="bacteriaDetails" class="mt-4 p-3 bg-gray-750 rounded-md hidden">
+                <h3 class="text-lg font-semibold mb-2 text-teal-300" id="detailsHeader">Bakteri Detayları</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                    <p><strong>ID:</strong> <span id="bacteriaId" class="text-gray-300"></span></p>
+                    <p><strong>İsim:</strong> <span id="bacteriaName" class="text-gray-300"></span></p>
+                    <p><strong>Boyut:</strong> <span id="bacteriaSize" class="text-gray-300"></span> µm</p>
+                    <p><strong>Yaş:</strong> <span id="bacteriaAge" class="text-gray-300"></span> gün</p>
+                    <p><strong>Büyüme Hızı:</strong> <span id="bacteriaGrowthRate" class="text-gray-300"></span></p>
+                    <p><strong>Bilinç Seviyesi:</strong> <span id="bacteriaConsciousness" class="text-gray-300"></span></p>
+                    <p><strong>Kişilik (İyimserlik):</strong> <span id="bacteriaOptimism" class="text-gray-300"></span></p>
+                    <p><strong>Kişilik (Sosyallik):</strong> <span id="bacteriaSociability" class="text-gray-300"></span></p>
+                    <p><strong>Dil Aşaması:</strong> <span id="bacteriaLanguageStage" class="text-gray-300"></span></p>
+                    <p><strong>Kelime Haznesi:</strong> <span id="bacteriaVocabulary" class="text-gray-300 break-all"></span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sağ Panel Sohbet -->
+        <div class="bg-gray-800 p-4 rounded-lg shadow-xl flex flex-col max-h-[80vh] lg:max-h-full">
+            <h2 class="text-xl font-semibold mb-3 text-teal-300 border-b border-gray-700 pb-2">Bakteri Sohbet Merkezi</h2>
+            
+            <!-- Chat Mode Selector -->
+            <div class="mb-3 flex space-x-2">
+                <button id="individualChatBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition">Tekil Sohbet</button>
+                <button id="groupChatBtn" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition">Grup Sohbeti</button>
+                <button id="startBacteriaConversationBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-sm transition">Bakteriler Konuşsun</button>
+            </div>
+            
+            <div id="chatInfo" class="mb-2 text-sm text-gray-400">Sohbet modunu seçin.</div>
+            <div id="chatMessages" class="flex-grow bg-gray-700 rounded-md p-3 overflow-y-auto mb-3 smooth-scroll space-y-2">
+                <!-- Sohbet mesajları buraya eklenecek -->
+            </div>
+            <div id="chatLoadingIndicator" class="hidden text-center py-2">
+                <div class="loader"></div>
+                <p class="text-sm text-gray-400">Bakteri düşünüyor...</p>
+            </div>
+            <div class="flex">
+                <input type="text" id="chatInput" class="flex-grow bg-gray-600 text-gray-200 border border-gray-500 rounded-l-lg p-2 focus:ring-teal-500 focus:border-teal-500 outline-none" placeholder="Mesajınızı yazın..." disabled>
+                <button id="sendMessageBtn" class="bg-teal-500 hover:bg-teal-600 text-white font-bold p-2 rounded-r-lg transition duration-150 ease-in-out" disabled>Gönder</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-center p-3 text-sm text-gray-500">
+        NeoMag v8.0.0 - Simülasyon Arayüzü Prototipi
+    </footer>
+
+    <script>
+        // DOM Elements
+        const simulationArea = document.getElementById('simulationArea');
+        const bacteriaDetailsDiv = document.getElementById('bacteriaDetails');
+        const detailsHeader = document.getElementById('detailsHeader');
+        const bacteriaIdSpan = document.getElementById('bacteriaId');
+        const bacteriaNameSpan = document.getElementById('bacteriaName');
+        const bacteriaSizeSpan = document.getElementById('bacteriaSize');
+        const bacteriaAgeSpan = document.getElementById('bacteriaAge');
+        const bacteriaGrowthRateSpan = document.getElementById('bacteriaGrowthRate');
+        const bacteriaConsciousnessSpan = document.getElementById('bacteriaConsciousness');
+        const bacteriaOptimismSpan = document.getElementById('bacteriaOptimism');
+        const bacteriaSociabilitySpan = document.getElementById('bacteriaSociability');
+        const bacteriaLanguageStageSpan = document.getElementById('bacteriaLanguageStage');
+        const bacteriaVocabularySpan = document.getElementById('bacteriaVocabulary');
+
+        const chatInfoDiv = document.getElementById('chatInfo');
+        const chatMessagesDiv = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const chatLoadingIndicator = document.getElementById('chatLoadingIndicator');
+
+        const startSimulationBtn = document.getElementById('startSimulationBtn');
+        const nextStepBtn = document.getElementById('nextStepBtn');
+        const resetSimulationBtn = document.getElementById('resetSimulationBtn');
+        const simulationTimeSpan = document.getElementById('simulationTime');
+
+        // Simulation State
+        let bacteriaPopulation = [];
+        let foodParticles = [];
+        let selectedBacteria = null;
+        let simulationRunning = false;
+        let simulationTimer = null;
+        let simulationDay = 0;
+        const SIMULATION_STEP_INTERVAL = 3000; // ms
+
+        const INITIAL_BACTERIA_COUNT = 5;
+        const MAX_VOCABULARY_DISPLAY = 10;
+        const FOOD_SIZE = 8;
+        const FOOD_NUTRITION = 0.5;
+
+        // Chat State
+        let chatMode = 'individual'; // 'individual', 'group'
+        let bacteriaConversationTimer = null;
+        let lastBacteriaConversationTime = 0;
+
+        // ML State
+        let wordEmbeddingModel = null;
+        let behaviorPredictionModel = null;
+        let isMLReady = false;
+        let wordTokenizer = new Map();
+        let nextTokenId = 1;
+
+        // Version and Build Info
+        const VERSION = 'v8.2.1';
+        const BUILD_DATE = new Date().toISOString().slice(0,19);
+        const FEATURES = [
+            'TensorFlow.js Neural Networks',
+            'Cross-Bacteria Learning',
+            'Group Chat System', 
+            'Dynamic Word Generation',
+            'ML Behavior Prediction',
+            'Real-time Vocabulary Expansion'
+        ];
+
+        function updateBuildInfo() {
+            const buildInfo = document.getElementById('buildInfo');
+            if (buildInfo) {
+                buildInfo.innerHTML = `
+                    Build: ${BUILD_DATE} | Features: ${FEATURES.length} | 
+                    Chat Mode: <span class="text-yellow-400">${chatMode.toUpperCase()}</span> | 
+                    ML: <span class="text-${isMLReady ? 'green' : 'red'}-400">${isMLReady ? 'READY' : 'LOADING'}</span>
+                `;
+            }
+        }
+
+        // Vocabulary Stages (Simplified from FUNCTION_ROADMAP.md)
+        const vocabularyStages = [
+            { stage: 0, name: "Temel İhtiyaçlar", words: ["aç", "yardım", "ağrı"], threshold: 0 },
+            { stage: 1, name: "Basit Duygular", words: ["mutlu", "üzgün", "korku"], threshold: 3 },
+            { stage: 2, name: "Çevresel Kavramlar", words: ["sıcak", "soğuk", "yemek"], threshold: 6 },
+            { stage: 3, name: "Sosyal Kavramlar", words: ["arkadaş", "konuşmak", "birlikte"], threshold: 10 },
+            { stage: 4, name: "Soyut Kavramlar", words: ["gelecek", "hafıza", "rüya"], threshold: 15 },
+            { stage: 5, name: "Felsefi Düşünce", words: ["varoluş", "amaç", "bilinç"], threshold: 20 }
+        ];
+        
+        const allPossibleWords = vocabularyStages.reduce((acc, stage) => acc.concat(stage.words), []);
+
+        // Initialize word tokenizer with base vocabulary
+        function initializeTokenizer() {
+            allPossibleWords.forEach(word => {
+                if (!wordTokenizer.has(word)) {
+                    wordTokenizer.set(word, nextTokenId++);
+                }
+            });
+            console.log('🧠 Tokenizer initialized with', wordTokenizer.size, 'words');
+        }
+
+        // Create mini neural network for word learning
+        async function createWordEmbeddingModel() {
+            const model = tf.sequential({
+                layers: [
+                    tf.layers.dense({ inputShape: [50], units: 32, activation: 'relu' }),
+                    tf.layers.dropout({ rate: 0.2 }),
+                    tf.layers.dense({ units: 16, activation: 'relu' }),
+                    tf.layers.dense({ units: 8, activation: 'softmax' })
+                ]
+            });
+
+            model.compile({
+                optimizer: tf.train.adam(0.001),
+                loss: 'categoricalCrossentropy',
+                metrics: ['accuracy']
+            });
+
+            return model;
+        }
+
+        // Create behavior prediction model
+        async function createBehaviorModel() {
+            const model = tf.sequential({
+                layers: [
+                    tf.layers.dense({ inputShape: [12], units: 24, activation: 'relu' }),
+                    tf.layers.dropout({ rate: 0.1 }),
+                    tf.layers.dense({ units: 12, activation: 'relu' }),
+                    tf.layers.dense({ units: 6, activation: 'softmax' })
+                ]
+            });
+
+            model.compile({
+                optimizer: tf.train.adam(0.001),
+                loss: 'categoricalCrossentropy',
+                metrics: ['accuracy']
+            });
+
+            return model;
+        }
+
+        // Extract and learn new words from user input
+        function learnFromUserInput(message, bacteria) {
+            const words = message.toLowerCase().split(/\s+/);
+            let newWordsLearned = 0;
+
+            words.forEach(word => {
+                // Clean word
+                word = word.replace(/[^\w]/g, '');
+                if (word.length < 2) return;
+
+                // Add to tokenizer if new
+                if (!wordTokenizer.has(word)) {
+                    wordTokenizer.set(word, nextTokenId++);
+                    console.log(`🆕 ${bacteria.name} learned new word: "${word}"`);
+                    newWordsLearned++;
+                }
+
+                // Add to bacteria vocabulary if consciousness allows
+                if (bacteria.consciousness_level > 1.5 && Math.random() < 0.6) {
+                    bacteria.vocabulary.add(word);
+                }
+            });
+
+            // Update bacteria memory about learning
+            if (newWordsLearned > 0) {
+                bacteria.memory_bank.push(`${newWordsLearned} yeni kelime öğrendim: "${words.join(' ')}"`);
+            }
+
+            return newWordsLearned;
+        }
+
+        // Generate new words using ML-inspired combinations
+        function generateNewWord(bacteria) {
+            const vocabArray = Array.from(bacteria.vocabulary);
+            if (vocabArray.length < 2) return null;
+
+            // Simple word combination for now (will be enhanced with true ML)
+            const word1 = vocabArray[Math.floor(Math.random() * vocabArray.length)];
+            const word2 = vocabArray[Math.floor(Math.random() * vocabArray.length)];
+            
+            if (word1 === word2) return null;
+
+            // Create compound words
+            const combinations = [
+                word1 + word2,
+                word1.slice(0, -1) + word2.slice(1),
+                word1.slice(0, 2) + word2.slice(-2),
+                word1[0] + word2
+            ];
+
+            const newWord = combinations[Math.floor(Math.random() * combinations.length)];
+            
+            // Add to vocabulary and tokenizer
+            bacteria.vocabulary.add(newWord);
+            if (!wordTokenizer.has(newWord)) {
+                wordTokenizer.set(newWord, nextTokenId++);
+            }
+
+            return newWord;
+        }
+
+        // Predict bacteria behavior using features
+        function predictBehavior(bacteria) {
+            if (!isMLReady) return 'normal';
+
+            // Feature vector: [age, size, consciousness, optimism, sociability, vocabulary_size, memory_count, growth_rate, hunger, energy, social_interactions, recent_learning]
+            const features = [
+                bacteria.biological_state.age / 100,
+                bacteria.biological_state.size / 5,
+                bacteria.consciousness_level / 5,
+                bacteria.personality_traits.optimism,
+                bacteria.personality_traits.sociability,
+                bacteria.vocabulary.size / 50,
+                bacteria.memory_bank.length / 20,
+                bacteria.biological_state.growth_rate,
+                0.5, // hunger placeholder
+                0.7, // energy placeholder  
+                bacteria.conversation_history.length / 10,
+                (bacteria.memory_bank.filter(m => m.includes('öğrendim')).length) / 5
+            ];
+
+            // For now return simple prediction (will use real ML model later)
+            const score = features.reduce((sum, f) => sum + f, 0) / features.length;
+            
+            if (score > 0.7) return 'creative';
+            if (score > 0.5) return 'social';
+            if (score > 0.3) return 'learning';
+            return 'basic';
+        }
+
+        // Food Particle Class
+        class FoodParticle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = FOOD_SIZE;
+                this.nutrition = FOOD_NUTRITION;
+                this.color = '#90EE90'; // Light green
+            }
+        }
+
+        // --- Core Bacteria Logic (Simplified from System Architecture) ---
+        class BacteriaEntity {
+            constructor(id, name) {
+                this.id = id;
+                this.name = name || `Bakteri-${id}`;
+                this.biological_state = {
+                    size: parseFloat((Math.random() * 2 + 1).toFixed(2)), // 1-3 µm
+                    age: 0,
+                    growth_rate: parseFloat((Math.random() * 0.5 + 0.5).toFixed(2)), // 0.5-1.0
+                    division_potential: 0, // When it reaches 1, it can divide
+                };
+                this.personality_traits = {
+                    optimism: parseFloat(Math.random().toFixed(2)), // 0-1
+                    sociability: parseFloat(Math.random().toFixed(2)), // 0-1
+                };
+                this.consciousness_level = 0; // 0-5
+                this.language_stage = 0; // 0-5
+                this.vocabulary = new Set();
+                this.memory_bank = []; // Store significant events or learned concepts
+                this.conversation_history = []; // For context in chat
+                this.x = Math.random() * 400 + 50; // Position within simulation area
+                this.y = Math.random() * 300 + 50;
+                this.vx = (Math.random() - 0.5) * 2; // Velocity
+                this.vy = (Math.random() - 0.5) * 2;
+                this.color = this.generateColor();
+            }
+
+            generateColor() {
+                const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            // Simulated daily update
+            updateDaily() {
+                this.biological_state.age++;
+                
+                // Growth simulation
+                this.biological_state.size += this.biological_state.growth_rate * 0.1;
+                this.biological_state.division_potential += this.biological_state.growth_rate * 0.2;
+                
+                // Consciousness development
+                if (this.biological_state.age > 5) {
+                    this.consciousness_level = Math.min(5, this.consciousness_level + 0.1);
+                }
+                
+                // Language development
+                this.updateLanguageStage();
+                this.learnNewWords();
+                
+                // Movement
+                this.move();
+            }
+
+            updateLanguageStage() {
+                const currentVocabSize = this.vocabulary.size;
+                for (let i = vocabularyStages.length - 1; i >= 0; i--) {
+                    if (currentVocabSize >= vocabularyStages[i].threshold) {
+                        this.language_stage = vocabularyStages[i].stage;
+                        break;
+                    }
+                }
+            }
+
+            learnNewWords() {
+                const currentStage = vocabularyStages[this.language_stage];
+                if (currentStage && Math.random() < 0.3) { // 30% chance to learn
+                    const wordsToLearn = currentStage.words.filter(word => !this.vocabulary.has(word));
+                    if (wordsToLearn.length > 0) {
+                        const randomWord = wordsToLearn[Math.floor(Math.random() * wordsToLearn.length)];
+                        this.vocabulary.add(randomWord);
+                    }
+                }
+            }
+
+            move() {
+                // Simple movement with boundary checking
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                if (this.x <= 20 || this.x >= 480) this.vx *= -1;
+                if (this.y <= 20 || this.y >= 280) this.vy *= -1;
+                
+                this.x = Math.max(20, Math.min(480, this.x));
+                this.y = Math.max(20, Math.min(280, this.y));
+
+                // Look for nearby food
+                this.lookForFood();
+            }
+
+            lookForFood() {
+                for (let i = foodParticles.length - 1; i >= 0; i--) {
+                    const food = foodParticles[i];
+                    const distance = Math.sqrt(
+                        Math.pow(this.x - food.x, 2) + Math.pow(this.y - food.y, 2)
+                    );
+                    
+                    // If close enough to eat food
+                    if (distance < this.biological_state.size * 8 + food.size) {
+                        this.eatFood(food);
+                        foodParticles.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+
+            eatFood(food) {
+                // Increase size and growth rate
+                this.biological_state.size += food.nutrition * 0.2;
+                this.biological_state.growth_rate = Math.min(1.5, this.biological_state.growth_rate + 0.1);
+                
+                // Increase consciousness slightly
+                this.consciousness_level = Math.min(5, this.consciousness_level + 0.05);
+                
+                // Add to memory
+                this.memory_bank.push(`Yemek buldum! Artık daha büyüyüm.`);
+                
+                // Learn food-related words
+                if (Math.random() < 0.7) {
+                    const foodWords = ['lezzetli', 'tok', 'yemek', 'beslenme'];
+                    const randomWord = foodWords[Math.floor(Math.random() * foodWords.length)];
+                    this.vocabulary.add(randomWord);
+                }
+            }
+        }
+
+        // ML-Enhanced Chat System
+        function generateBacteriaResponse(bacteria, message, context = 'user') {
+            const age = bacteria.biological_state.age;
+            const consciousness = bacteria.consciousness_level;
+            const vocabularySize = bacteria.vocabulary.size;
+            const optimism = bacteria.personality_traits.optimism;
+            const sociability = bacteria.personality_traits.sociability;
+            
+            // Learn from user input
+            if (context === 'user') {
+                const newWords = learnFromUserInput(message, bacteria);
+                if (newWords > 0) {
+                    bacteria.consciousness_level = Math.min(5, bacteria.consciousness_level + 0.02);
+                }
+            }
+            
+            // Predict behavior using ML features
+            const behaviorMode = predictBehavior(bacteria);
+            
+            // Vocabulary based on bacteria's development
+            const availableWords = Array.from(bacteria.vocabulary);
+            
+            // Generate new words occasionally
+            if (consciousness > 2 && Math.random() < 0.1) {
+                const newWord = generateNewWord(bacteria);
+                if (newWord) {
+                    bacteria.memory_bank.push(`"${newWord}" kelimesini icat ettim!`);
+                }
+            }
+            
+            // Response templates enhanced with ML behavior prediction
+            let responseTemplates = [];
+            
+            if (consciousness < 1) {
+                responseTemplates = [
+                    `${availableWords[0] || 'aç'}... ${availableWords[1] || 'yardım'}...`,
+                    `*${bacteria.name} hareket ediyor*`,
+                    `${Math.random() > 0.5 ? 'ağrı' : 'aç'}...`
+                ];
+            } else if (consciousness < 2) {
+                responseTemplates = [
+                    `Ben ${bacteria.name}! ${optimism > 0.7 ? 'Mutluyum!' : optimism < 0.3 ? 'Üzgünüm...' : 'İyiyim.'}`,
+                    `${sociability > 0.7 ? 'Seninle konuşmak güzel!' : 'Merhaba...'}`,
+                    `${vocabularySize > 3 ? availableWords.slice(0,3).join(' ') : 'aç yardım'}!`
+                ];
+            } else if (consciousness < 3) {
+                responseTemplates = [
+                    `Merhaba! Ben ${bacteria.name}, ${age} günlük bir bakteriyim. ${optimism > 0.6 ? 'Bugün harika!' : 'Nasılsın?'}`,
+                    `${sociability > 0.5 ? 'Seninle sohbet etmeyi seviyorum!' : 'Konuşuyoruz işte...'}`,
+                    `Bugün ${bacteria.memory_bank.length > 0 ? bacteria.memory_bank[bacteria.memory_bank.length-1] : 'yeni şeyler öğreniyorum'}!`
+                ];
+            } else {
+                // Advanced consciousness with ML behavior modes
+                const baseTemplates = [
+                    `Selam dostum! ${bacteria.name} burada. ${optimism > 0.7 ? 'Hayat güzel!' : optimism < 0.3 ? 'Biraz melankolik hissediyorum...' : 'Düşünceliyim.'} Sen nasılsın?`,
+                    `${sociability > 0.7 ? 'Bu sohbeti çok seviyorum! Daha fazla konuşalım!' : sociability < 0.3 ? 'Konuşmak iyi ama biraz sessiz kalmayı da severim...' : 'Güzel bir sohbet bu.'}`,
+                    `Biliyorsun, ${vocabularySize} kelime biliyorum artık. ${bacteria.memory_bank.length > 0 ? 'Son zamanlarda ' + bacteria.memory_bank[bacteria.memory_bank.length-1] : 'Sürekli öğreniyorum'}.`
+                ];
+
+                // ML-enhanced responses based on behavior prediction
+                const behaviorTemplates = {
+                    'creative': [
+                        `Yeni bir kelime icat etmeyi düşünüyorum... ${availableWords.slice(-2).join('')} nasıl?`,
+                        `Hayal gücüm gelişiyor! ${availableWords.length > 5 ? availableWords.slice(-3).join(' ') + ' kombinasyonu' : 'Yaratıcı hissediyorum'}.`,
+                        `Biliyorsun, kelimeler birleşince yeni anlamlar doğuyor. Bu çok heyecan verici!`
+                    ],
+                    'social': [
+                        `Diğer bakterilerle ${availableWords.includes('arkadaş') ? 'arkadaşlık' : 'konuşmak'} istiyorum!`,
+                        `Sen de öğrenmeyi seviyor musun? Ben ${bacteria.memory_bank.filter(m => m.includes('öğrendim')).length} kez yeni şeyler öğrendim!`,
+                        `Birlikte ${availableWords.slice(-2).join(' ve ')} hakkında konuşalım!`
+                    ],
+                    'learning': [
+                        `Her gün ${Math.floor(Math.random() * 3) + 1} yeni kelime öğrenmeye çalışıyorum!`,
+                        `Sen bana yeni kelimeler öğretebilir misin? Merak ediyorum: ${availableWords.slice(-1)[0] || 'yeni şeyler'}...`,
+                        `Öğrenme sürecim fascinant! ${bacteria.vocabulary.size > 10 ? 'Artık çok kelime biliyorum' : 'Daha çok öğrenmek istiyorum'}.`
+                    ],
+                    'basic': baseTemplates
+                };
+
+                responseTemplates = behaviorTemplates[behaviorMode] || baseTemplates;
+            }
+            
+            let response = responseTemplates[Math.floor(Math.random() * responseTemplates.length)];
+            
+            // Add context-specific modifications
+            if (context === 'bacteria' && sociability > 0.5) {
+                response = response.replace('Merhaba!', 'Hey arkadaş!').replace('Selam!', 'Ey bakteri kardeş!');
+            }
+            
+            return response;
+        }
+
+        async function sendMessageToBacteria(message) {
+            if (chatMode === 'individual' && !selectedBacteria) {
+                console.log('❌ Individual chat requires selected bacteria');
+                return;
+            }
+            if (chatMode === 'group' && bacteriaPopulation.length === 0) {
+                console.log('❌ Group chat requires bacteria population');
+                return;
+            }
+
+            console.log(`💬 Sending message in ${chatMode} mode: "${message}"`);
+            showChatLoading(true);
+            addChatMessage(message, 'user');
+
+            if (chatMode === 'individual') {
+                // Individual chat with selected bacteria
+                setTimeout(() => {
+                    const response = generateBacteriaResponse(selectedBacteria, message, 'user');
+                    selectedBacteria.conversation_history.push({ user: message, bacteria: response });
+                    addChatMessage(response, 'bacteria', selectedBacteria.name);
+                    showChatLoading(false);
+                }, 1000 + Math.random() * 1000);
+                         } else if (chatMode === 'group') {
+                 // Group chat - all bacteria respond
+                 let responseCount = 0;
+                 const totalBacteria = bacteriaPopulation.length;
+                 const responseBacteria = [];
+                 
+                 bacteriaPopulation.forEach((bacteria, index) => {
+                     setTimeout(() => {
+                         if (Math.random() < 0.7) { // 70% chance each bacteria responds
+                             const response = generateBacteriaResponse(bacteria, message, 'user');
+                             bacteria.conversation_history.push({ user: message, bacteria: response });
+                             addChatMessage(response, 'bacteria', bacteria.name);
+                             responseBacteria.push(bacteria);
+                         }
+                         responseCount++;
+                         if (responseCount === totalBacteria) {
+                             // After all responses, bacteria learn from each other in group
+                             if (responseBacteria.length > 1) {
+                                 setTimeout(() => {
+                                     groupLearningSession(responseBacteria);
+                                 }, 1000);
+                             }
+                             showChatLoading(false);
+                         }
+                     }, (index + 1) * (500 + Math.random() * 1000));
+                 });
+             }
+        }
+
+        function startBacteriaConversation() {
+            if (bacteriaPopulation.length < 2) return;
+            
+            const bacteria1 = bacteriaPopulation[Math.floor(Math.random() * bacteriaPopulation.length)];
+            let bacteria2 = bacteriaPopulation[Math.floor(Math.random() * bacteriaPopulation.length)];
+            while (bacteria2 === bacteria1) {
+                bacteria2 = bacteriaPopulation[Math.floor(Math.random() * bacteriaPopulation.length)];
+            }
+            
+            const topics = [
+                'Bu ortam nasıl?', 'Bugün nasılsın?', 'Yemek buldun mu?', 
+                'Büyümeyi hissediyor musun?', 'Neler öğrendin?', 'Mutlu musun?'
+            ];
+            const topic = topics[Math.floor(Math.random() * topics.length)];
+            
+            // First bacteria speaks
+            setTimeout(() => {
+                const message1 = generateBacteriaResponse(bacteria1, topic, 'bacteria');
+                addChatMessage(message1, 'bacteria', bacteria1.name);
+                
+                // Second bacteria responds and learns from first bacteria
+                setTimeout(() => {
+                    const message2 = generateBacteriaResponse(bacteria2, message1, 'bacteria');
+                    addChatMessage(message2, 'bacteria', bacteria2.name);
+                    
+                    // Cross-learning: bacteria learn from each other
+                    bacteriaLearnFromEachOther(bacteria1, bacteria2, message1, message2);
+                    
+                }, 1000 + Math.random() * 2000);
+            }, 500);
+        }
+
+        // Bacteria learn from each other's vocabulary and behaviors
+        function bacteriaLearnFromEachOther(bacteria1, bacteria2, message1, message2) {
+            // Share vocabulary between bacteria
+            const vocab1 = Array.from(bacteria1.vocabulary);
+            const vocab2 = Array.from(bacteria2.vocabulary);
+            
+            // Bacteria1 learns some words from bacteria2
+            vocab2.forEach(word => {
+                if (Math.random() < 0.3 && bacteria1.consciousness_level > 1) { // 30% chance
+                    bacteria1.vocabulary.add(word);
+                    if (Math.random() < 0.5) {
+                        bacteria1.memory_bank.push(`${bacteria2.name}'den "${word}" kelimesini öğrendim`);
+                    }
+                }
+            });
+            
+            // Bacteria2 learns some words from bacteria1
+            vocab1.forEach(word => {
+                if (Math.random() < 0.3 && bacteria2.consciousness_level > 1) {
+                    bacteria2.vocabulary.add(word);
+                    if (Math.random() < 0.5) {
+                        bacteria2.memory_bank.push(`${bacteria1.name}'den "${word}" kelimesini öğrendim`);
+                    }
+                }
+            });
+            
+            // Behavior influence: social bacteria make others more social
+            if (bacteria1.personality_traits.sociability > 0.7) {
+                bacteria2.personality_traits.sociability = Math.min(1, bacteria2.personality_traits.sociability + 0.02);
+            }
+            if (bacteria2.personality_traits.sociability > 0.7) {
+                bacteria1.personality_traits.sociability = Math.min(1, bacteria1.personality_traits.sociability + 0.02);
+            }
+            
+            // Consciousness boost from social interaction
+            bacteria1.consciousness_level = Math.min(5, bacteria1.consciousness_level + 0.01);
+            bacteria2.consciousness_level = Math.min(5, bacteria2.consciousness_level + 0.01);
+            
+                         console.log(`🤝 ${bacteria1.name} and ${bacteria2.name} learned from each other`);
+         }
+
+         // Group learning session - all bacteria in group learn from each other
+         function groupLearningSession(bacteria) {
+             console.log(`👥 Group learning session with ${bacteria.length} bacteria`);
+             
+             // Collect all vocabulary from participating bacteria
+             const allVocabulary = new Set();
+             bacteria.forEach(b => {
+                 Array.from(b.vocabulary).forEach(word => allVocabulary.add(word));
+             });
+             
+             // Each bacteria learns from the collective vocabulary
+             bacteria.forEach((learner, i) => {
+                 let wordsLearned = 0;
+                 allVocabulary.forEach(word => {
+                     if (!learner.vocabulary.has(word) && Math.random() < 0.2) { // 20% chance to learn each word
+                         learner.vocabulary.add(word);
+                         wordsLearned++;
+                     }
+                 });
+                 
+                 if (wordsLearned > 0) {
+                     learner.memory_bank.push(`Grup sohbetinde ${wordsLearned} kelime öğrendim`);
+                     learner.consciousness_level = Math.min(5, learner.consciousness_level + 0.02);
+                 }
+                 
+                 // Social influence - become more social from group interaction
+                 learner.personality_traits.sociability = Math.min(1, learner.personality_traits.sociability + 0.01);
+             });
+         }
+
+        function addChatMessage(message, sender, bacteriaName = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'} mb-2`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = `chat-bubble p-2 rounded-lg ${sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-bacteria'}`;
+            
+            if (sender === 'bacteria' && bacteriaName) {
+                const nameSpan = document.createElement('div');
+                nameSpan.className = 'text-xs font-semibold mb-1 opacity-75';
+                nameSpan.textContent = bacteriaName;
+                bubbleDiv.appendChild(nameSpan);
+                
+                const messageSpan = document.createElement('div');
+                messageSpan.textContent = message;
+                bubbleDiv.appendChild(messageSpan);
+            } else {
+                bubbleDiv.textContent = message;
+            }
+            
+            messageDiv.appendChild(bubbleDiv);
+            chatMessagesDiv.appendChild(messageDiv);
+            chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+        }
+
+        function showChatLoading(show) {
+            chatLoadingIndicator.classList.toggle('hidden', !show);
+        }
+
+        // Simulation controls
+        function startSimulation() {
+            if (!simulationRunning) {
+                simulationRunning = true;
+                startSimulationBtn.textContent = 'Durdur';
+                nextStepBtn.disabled = true;
+                simulationTimer = setInterval(simulationStep, SIMULATION_STEP_INTERVAL);
+            } else {
+                pauseSimulation();
+            }
+        }
+
+        function pauseSimulation() {
+            simulationRunning = false;
+            startSimulationBtn.textContent = 'Devam Et';
+            nextStepBtn.disabled = false;
+            if (simulationTimer) {
+                clearInterval(simulationTimer);
+                simulationTimer = null;
+            }
+        }
+
+        function simulationStep() {
+            simulationDay++;
+            simulationTimeSpan.textContent = `Simülasyon Zamanı: ${simulationDay} gün`;
+            
+            bacteriaPopulation.forEach(bacteria => {
+                bacteria.updateDaily();
+            });
+            
+            renderBacteria();
+            if (selectedBacteria) {
+                updateBacteriaDetails(selectedBacteria);
+            }
+        }
+
+        function resetSimulation() {
+            pauseSimulation();
+            simulationDay = 0;
+            simulationTimeSpan.textContent = 'Simülasyon Zamanı: 0 gün';
+            bacteriaPopulation = [];
+            foodParticles = [];
+            selectedBacteria = null;
+            
+            startSimulationBtn.textContent = 'Simülasyonu Başlat';
+            nextStepBtn.disabled = false;
+            
+            bacteriaDetailsDiv.classList.add('hidden');
+            chatInfoDiv.textContent = 'Sohbet modunu seçin.';
+            chatMessagesDiv.innerHTML = '';
+            chatInput.disabled = true;
+            sendMessageBtn.disabled = true;
+            chatMode = 'individual';
+            updateChatModeButtons();
+            
+            initializeBacteria();
+        }
+
+        function addFood(x, y) {
+            const food = new FoodParticle(x, y);
+            foodParticles.push(food);
+            renderBacteria();
+        }
+
+        function initializeBacteria() {
+            bacteriaPopulation = [];
+            for (let i = 0; i < INITIAL_BACTERIA_COUNT; i++) {
+                bacteriaPopulation.push(new BacteriaEntity(i + 1));
+            }
+            renderBacteria();
+        }
+
+        function renderBacteria() {
+            simulationArea.innerHTML = '';
+            
+            // Render food particles
+            foodParticles.forEach(food => {
+                const foodElement = document.createElement('div');
+                foodElement.className = 'absolute rounded-full border border-green-400';
+                foodElement.style.width = `${food.size}px`;
+                foodElement.style.height = `${food.size}px`;
+                foodElement.style.backgroundColor = food.color;
+                foodElement.style.left = `${food.x - food.size/2}px`;
+                foodElement.style.top = `${food.y - food.size/2}px`;
+                foodElement.title = 'Yemek';
+                simulationArea.appendChild(foodElement);
+            });
+            
+            // Render bacteria
+            bacteriaPopulation.forEach(bacteria => {
+                const bacteriaElement = document.createElement('div');
+                bacteriaElement.className = 'bacteria absolute rounded-full border-2 border-white cursor-pointer';
+                bacteriaElement.style.width = `${Math.max(10, bacteria.biological_state.size * 8)}px`;
+                bacteriaElement.style.height = `${Math.max(10, bacteria.biological_state.size * 8)}px`;
+                bacteriaElement.style.backgroundColor = bacteria.color;
+                bacteriaElement.style.left = `${bacteria.x}px`;
+                bacteriaElement.style.top = `${bacteria.y}px`;
+                bacteriaElement.title = bacteria.name;
+                
+                bacteriaElement.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    selectBacteria(bacteria);
+                });
+                simulationArea.appendChild(bacteriaElement);
+            });
+        }
+
+        function selectBacteria(bacteria) {
+            selectedBacteria = bacteria;
+            updateBacteriaDetails(bacteria);
+            setupChat(bacteria);
+        }
+
+        function updateBacteriaDetails(bacteria) {
+            bacteriaIdSpan.textContent = bacteria.id;
+            bacteriaNameSpan.textContent = bacteria.name;
+            bacteriaSizeSpan.textContent = bacteria.biological_state.size.toFixed(2);
+            bacteriaAgeSpan.textContent = bacteria.biological_state.age;
+            bacteriaGrowthRateSpan.textContent = bacteria.biological_state.growth_rate.toFixed(2);
+            bacteriaConsciousnessSpan.textContent = `${bacteria.consciousness_level.toFixed(1)}/5`;
+            bacteriaOptimismSpan.textContent = bacteria.personality_traits.optimism.toFixed(2);
+            bacteriaSociabilitySpan.textContent = bacteria.personality_traits.sociability.toFixed(2);
+            bacteriaLanguageStageSpan.textContent = `${bacteria.language_stage} - ${vocabularyStages[bacteria.language_stage]?.name || 'Bilinmiyor'}`;
+            
+            const vocabArray = Array.from(bacteria.vocabulary);
+            const displayVocab = vocabArray.slice(0, MAX_VOCABULARY_DISPLAY);
+            const remainingCount = vocabArray.length - MAX_VOCABULARY_DISPLAY;
+            bacteriaVocabularySpan.textContent = displayVocab.join(', ') + (remainingCount > 0 ? ` (+${remainingCount} daha)` : '');
+            
+            bacteriaDetailsDiv.classList.remove('hidden');
+        }
+
+        function setupChat(bacteria) {
+            chatMode = 'individual';
+            selectedBacteria = bacteria;
+            chatInfoDiv.innerHTML = `<strong>${bacteria.name}</strong> ile sohbet ediyorsunuz.`;
+            chatMessagesDiv.innerHTML = '';
+            chatInput.disabled = false;
+            sendMessageBtn.disabled = false;
+            chatInput.placeholder = `${bacteria.name} ile konuş...`;
+            chatInput.focus();
+            updateChatModeButtons();
+            updateBuildInfo();
+            console.log(`🎯 Individual chat mode with ${bacteria.name}`);
+        }
+
+        function setupGroupChat() {
+            chatMode = 'group';
+            selectedBacteria = null;
+            chatInfoDiv.innerHTML = `<strong>Grup Sohbeti</strong> - Tüm bakterilerle konuşuyorsunuz.`;
+            chatMessagesDiv.innerHTML = '';
+            chatInput.disabled = false;
+            sendMessageBtn.disabled = false;
+            chatInput.placeholder = "Tüm bakterilerle konuş...";
+            chatInput.focus();
+            updateChatModeButtons();
+            updateBuildInfo();
+            console.log(`👥 Group chat mode activated with ${bacteriaPopulation.length} bacteria`);
+        }
+
+        function updateChatModeButtons() {
+            const individualBtn = document.getElementById('individualChatBtn');
+            const groupBtn = document.getElementById('groupChatBtn');
+            
+            if (chatMode === 'individual') {
+                individualBtn.className = 'bg-blue-700 text-white px-3 py-1 rounded text-sm';
+                groupBtn.className = 'bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm transition';
+            } else {
+                individualBtn.className = 'bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm transition';
+                groupBtn.className = 'bg-green-700 text-white px-3 py-1 rounded text-sm';
+            }
+        }
+
+        // Event listeners
+        startSimulationBtn.addEventListener('click', startSimulation);
+        nextStepBtn.addEventListener('click', simulationStep);
+        resetSimulationBtn.addEventListener('click', resetSimulation);
+
+        // Add food on click
+        simulationArea.addEventListener('click', (e) => {
+            const rect = simulationArea.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            addFood(x, y);
+        });
+
+        sendMessageBtn.addEventListener('click', () => {
+            const message = chatInput.value.trim();
+            if (message && selectedBacteria) {
+                sendMessageToBacteria(message);
+                chatInput.value = '';
+            }
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !chatInput.disabled) {
+                sendMessageBtn.click();
+            }
+        });
+
+        // Chat mode event listeners
+        document.getElementById('individualChatBtn').addEventListener('click', () => {
+            if (selectedBacteria) {
+                setupChat(selectedBacteria);
+            } else {
+                chatInfoDiv.textContent = 'Önce bir bakteri seçin.';
+                chatInput.disabled = true;
+                sendMessageBtn.disabled = true;
+            }
+        });
+
+        document.getElementById('groupChatBtn').addEventListener('click', () => {
+            setupGroupChat();
+        });
+
+        document.getElementById('startBacteriaConversationBtn').addEventListener('click', () => {
+            startBacteriaConversation();
+        });
+
+        // Auto bacteria conversation
+        setInterval(() => {
+            if (Math.random() < 0.3 && bacteriaPopulation.length >= 2) { // 30% chance every interval
+                startBacteriaConversation();
+            }
+        }, 8000); // Every 8 seconds
+
+        // Initialize ML System
+        async function initializeMLSystem() {
+            console.log('🧠 Initializing TensorFlow.js ML System...');
+            
+            try {
+                // Initialize tokenizer
+                initializeTokenizer();
+                
+                // Create models
+                console.log('🔧 Creating neural network models...');
+                wordEmbeddingModel = await createWordEmbeddingModel();
+                behaviorPredictionModel = await createBehaviorModel();
+                
+                isMLReady = true;
+                console.log('✅ ML System ready! TensorFlow.js version:', tf.version.tfjs);
+                updateBuildInfo();
+                
+            } catch (error) {
+                console.error('❌ ML System initialization failed:', error);
+                isMLReady = false;
+            }
+        }
+
+        // Initialize everything
+        async function initialize() {
+            console.log(`🚀 Starting NeoMag ${VERSION}`);
+            updateBuildInfo();
+            initializeBacteria();
+            await initializeMLSystem();
+            
+            // Show feature list
+            console.log('📋 Available Features:');
+            FEATURES.forEach((feature, i) => {
+                console.log(`   ${i+1}. ${feature}`);
+            });
+        }
+
+        // Start initialization
+        initialize();
+    </script>
+</body>
+</html> 

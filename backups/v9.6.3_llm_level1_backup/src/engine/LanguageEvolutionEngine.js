@@ -9,8 +9,6 @@ import { tabPFNAdapter } from './TabPFNAdapter.js';
 import { wordSuccessTracker } from './WordSuccessTracker.js';
 import { turkceDialogueGenerator } from './TurkceDialogueGenerator.js';
 import { EnhancedTabPFN } from './EnhancedTabPFN.js';
-import { tabPFGenAdapter } from './TabPFGenAdapter.js';
-import { tabpfnFineTuner } from './TabPFNFineTuner.js';
 import { topKSample, calculateNoveltyScore, calculateContextDrift, adjustStyleByMood } from '../utils/sampling.js';
 import { RUNTIME_CONFIG } from '../config/SystemConfig.js';
 import { bufferManager, WordTrackingBuffer, ContextHistoryBuffer } from '../utils/RingBuffer.js';
@@ -27,12 +25,6 @@ export class LanguageEvolutionEngine {
         // 🧠 Enhanced AI Systems
         this.enhancedTabPFN = new EnhancedTabPFN(wordSuccessTracker);
         this.conversationHistory = new Map(); // bacteriaId -> conversation history
-
-        // External adapters
-        this.tabPFGen = tabPFGenAdapter;
-        this.tabpfnFineTuner = tabpfnFineTuner;
-        this.tabpfnFineTuner.tabpfn = tabPFNAdapter;
-        this.tabpfnFineTuner.wordTracker = wordSuccessTracker;
         
         // 🎭 NEW: Advanced Diversity & Anti-Monotony Systems (Memory-Efficient)
         this.wordUsageCount = new Map(); // Global word usage tracking
@@ -65,9 +57,6 @@ export class LanguageEvolutionEngine {
             
             // 🚀 Enhanced TabPFN'i başlat
             await this.enhancedTabPFN.init();
-
-            // Synthetic data generator
-            await this.tabPFGen.init();
             
             this.initialized = true;
             if (RUNTIME_CONFIG.DEV.ENABLE_DETAILED_LOGGING) {
@@ -284,7 +273,7 @@ export class LanguageEvolutionEngine {
         let words = [];
 
         // 1. Çekirdek kelime seçimi (adjusted style ile)
-        const coreWord = await this._selectCoreWord(bacteria, context, adjustedStyle);
+        let coreWord = await this._selectCoreWord(bacteria, context, adjustedStyle);
         if (coreWord) {
             words.push(coreWord);
         }
@@ -890,16 +879,6 @@ export class LanguageEvolutionEngine {
         console.log('🔄 LanguageEvolutionEngine diversity system reset!');
     }
 
-    // Generate training dataset with TabPFGen
-    generateFineTuneData(size = 10, context = 'neutral') {
-        return this.tabPFGen.generateDataset(size, context);
-    }
-
-    // Apply fine-tuning to TabPFN
-    fineTuneTabPFN(dataset) {
-        this.tabpfnFineTuner.fineTune(dataset);
-    }
-
     // Sistem durumu - Enhanced AI included
     getStatus() {
         const diversityStats = this.getDiversityStats();
@@ -944,4 +923,4 @@ export class LanguageEvolutionEngine {
 }
 
 // Global instance
-export const languageEvolutionEngine = new LanguageEvolutionEngine();
+export const languageEvolutionEngine = new LanguageEvolutionEngine(); 

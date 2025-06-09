@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoMag v8.2.1 (v821) - Program Dokümantasyonu</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #1a1a1a; color: #e0e0e0; }
+        .header { background: #2d3748; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .section { background: #2a2a2a; padding: 15px; margin: 15px 0; border-radius: 5px; border-left: 4px solid #4299e1; }
+        .code-block { background: #1a202c; padding: 15px; border-radius: 5px; font-family: 'Courier New', monospace; overflow-x: auto; }
+        .feature { background: #2d5016; padding: 10px; margin: 8px 0; border-radius: 3px; }
+        .function { background: #4a1d1d; padding: 8px; margin: 5px 0; border-radius: 3px; }
+        h1, h2, h3 { color: #4fd1c7; }
+        .version { color: #fbb6ce; font-weight: bold; }
+        .tech-stack { color: #9ae6b4; }
+        .warning { background: #744210; padding: 10px; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🧬 NeoMag v8.2.1 (v821) - AI Bakteri Simülasyonu</h1>
+    <p class="version">Sürüm: v821 | Tarih: 2025-06-06 | Status: Stable</p>
+    <p class="tech-stack">Tech Stack: TensorFlow.js + Custom ML + Real-time Learning</p>
+</div>
+
+<div class="section">
+    <h2>📋 Program Genel Yapısı</h2>
+    <p>NeoMag v821, browser tabanlı yapay zeka destekli bakteri simülasyonudur. Gerçek makine öğrenmesi algoritmaları ile bakterilerin öğrenme, büyüme ve sosyal etkileşim süreçlerini simüle eder.</p>
+    
+    <h3>🏗️ Temel Mimari:</h3>
+    <ul>
+        <li><strong>Frontend:</strong> HTML5 + TailwindCSS + Vanilla JavaScript</li>
+        <li><strong>ML Engine:</strong> TensorFlow.js v4.15.0 (Browser Native)</li>
+        <li><strong>Learning System:</strong> Custom Rule-based + Neural Networks</li>
+        <li><strong>Communication:</strong> Stand-alone (No External APIs)</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>🧠 Core AI Sistemi</h2>
+    
+    <div class="feature">
+        <h3>1. Neural Network Models</h3>
+        <div class="code-block">
+wordEmbeddingModel: Sequential Model
+- Input: [50] (word features)
+- Hidden: [32] relu + dropout(0.2) + [16] relu  
+- Output: [8] softmax
+
+behaviorPredictionModel: Sequential Model
+- Input: [12] (bacteria features)
+- Hidden: [24] relu + dropout(0.1) + [12] relu
+- Output: [6] softmax (behavior classes)
+        </div>
+    </div>
+
+    <div class="feature">
+        <h3>2. Word Learning System</h3>
+        <ul>
+            <li><strong>Dynamic Tokenizer:</strong> Real-time kelime tokenizasyonu</li>
+            <li><strong>User Input Learning:</strong> Sohbetten yeni kelimeler çıkarma</li>
+            <li><strong>Word Generation:</strong> Mevcut kelimelerden yeni kombinasyonlar</li>
+            <li><strong>Cross-Bacteria Sharing:</strong> Bakteriler arası kelime paylaşımı</li>
+        </ul>
+    </div>
+
+    <div class="feature">
+        <h3>3. Behavior Prediction Engine</h3>
+        <p>12-feature vector ile bakteri davranışı tahmini:</p>
+        <div class="code-block">
+Features: [age, size, consciousness, optimism, sociability, 
+          vocabulary_size, memory_count, growth_rate, hunger, 
+          energy, social_interactions, recent_learning]
+
+Outputs: creative | social | learning | basic
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>🦠 Bakteri Sınıfı Yapısı</h2>
+    
+    <div class="function">
+        <h3>class BacteriaEntity</h3>
+        <div class="code-block">
+Properties:
+- biological_state: {size, age, growth_rate, division_potential}
+- personality_traits: {optimism, sociability}
+- consciousness_level: 0-5 arası bilinç seviyesi
+- language_stage: 0-5 arası dil gelişim aşaması
+- vocabulary: Set() - dinamik kelime haznesi
+- memory_bank: [] - öğrenme ve deneyim kayıtları
+- conversation_history: [] - sohbet geçmişi
+- position: {x, y, vx, vy} - hareket koordinatları
+
+Methods:
+- updateDaily(): Günlük büyüme ve gelişim
+- lookForFood(): Yemek arama algoritması
+- eatFood(): Beslenme ve büyüme mekanizması
+- move(): Fiziksel hareket simulasyonu
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>💬 Chat Sistemi</h2>
+    
+    <div class="feature">
+        <h3>3 Chat Modu:</h3>
+        <ul>
+            <li><strong>Individual Chat:</strong> Tek bakteriyle birebir sohbet</li>
+            <li><strong>Group Chat:</strong> Tüm bakterilerle aynı anda iletişim</li>
+            <li><strong>Bacteria Conversation:</strong> Bakterilerin kendi aralarında konuşması</li>
+        </ul>
+    </div>
+
+    <div class="function">
+        <h3>generateBacteriaResponse()</h3>
+        <p>ML-enhanced response generation:</p>
+        <div class="code-block">
+1. User input'tan kelime öğrenme (learnFromUserInput)
+2. Behavior prediction (predictBehavior) 
+3. Consciousness level'a göre template seçimi
+4. Behavioral mode'a göre response customization
+5. Yeni kelime üretme (generateNewWord)
+        </div>
+    </div>
+
+    <div class="function">
+        <h3>Cross-Bacteria Learning</h3>
+        <div class="code-block">
+bacteriaLearnFromEachOther():
+- Vocabulary sharing (30% chance per word)
+- Social influence on personality traits
+- Consciousness boost from interaction
+- Memory bank updates
+
+groupLearningSession():
+- Collective vocabulary pooling
+- 20% learning probability per word
+- Group social influence effects
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>🎮 Interaktif Özellikler</h2>
+    
+    <div class="feature">
+        <h3>1. Mouse Yemek Ekleme</h3>
+        <p>Simülasyon alanına tıklayarak yemek parçacıkları ekleme</p>
+        <div class="code-block">
+class FoodParticle:
+- size: 8px
+- nutrition: 0.5
+- color: #90EE90 (açık yeşil)
+        </div>
+    </div>
+
+    <div class="feature">
+        <h3>2. Real-time Simulation</h3>
+        <ul>
+            <li><strong>Auto-step:</strong> 3 saniye aralıklarla otomatik simülasyon</li>
+            <li><strong>Manual control:</strong> Adım adım manuel ilerleme</li>
+            <li><strong>Reset:</strong> Simülasyonu sıfırlama</li>
+        </ul>
+    </div>
+
+    <div class="feature">
+        <h3>3. Visual Components</h3>
+        <ul>
+            <li><strong>Bacteria Rendering:</strong> Boyut ve renk ile görsel feedback</li>
+            <li><strong>Food Particles:</strong> Yeşil yemek parçacıkları</li>
+            <li><strong>Chat Interface:</strong> Gerçek zamanlı mesajlaşma</li>
+            <li><strong>Details Panel:</strong> Seçili bakterinin detaylı bilgileri</li>
+        </ul>
+    </div>
+</div>
+
+<div class="section">
+    <h2>⚙️ Teknik Detaylar</h2>
+    
+    <div class="function">
+        <h3>Initialization Sequence</h3>
+        <div class="code-block">
+1. updateBuildInfo() - Version bilgilerini göster
+2. initializeBacteria() - 5 bakteri oluştur
+3. initializeMLSystem():
+   - initializeTokenizer() - Kelime tokenizer'ı başlat
+   - createWordEmbeddingModel() - Word embedding NN
+   - createBehaviorModel() - Behavior prediction NN
+   - isMLReady = true
+4. Feature list console'da göster
+        </div>
+    </div>
+
+    <div class="function">
+        <h3>Event Listeners</h3>
+        <ul>
+            <li><strong>simulationArea.click:</strong> Yemek ekleme</li>
+            <li><strong>bacteria.click:</strong> Bakteri seçme</li>
+            <li><strong>chat buttons:</strong> Chat modu değiştirme</li>
+            <li><strong>sendMessage:</strong> Mesaj gönderme</li>
+            <li><strong>auto-conversation:</strong> 8 saniyede bir otomatik konuşma</li>
+        </ul>
+    </div>
+</div>
+
+<div class="section">
+    <h2>📊 Performance Metrics</h2>
+    <ul>
+        <li><strong>Model Size:</strong> ~2-5MB (browser optimized)</li>
+        <li><strong>Inference Speed:</strong> Real-time (~50ms)</li>
+        <li><strong>Memory Usage:</strong> Dynamic vocabulary expansion</li>
+        <li><strong>Learning Rate:</strong> 30% word sharing, 60% user input learning</li>
+        <li><strong>Consciousness Growth:</strong> +0.01 social, +0.02 learning events</li>
+    </ul>
+</div>
+
+<div class="warning">
+    <h3>⚠️ Bilinen Sınırlamalar</h3>
+    <ul>
+        <li>Neural network'ler henüz tam training almamış (placeholder weights)</li>
+        <li>Word generation basit string kombinasyonları</li>
+        <li>Behavior prediction rule-based hybrid</li>
+        <li>Cross-browser TensorFlow.js uyumluluğu test edilmeli</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>🚀 Gelecek Roadmap</h2>
+    <ul>
+        <li><strong>v822-829:</strong> Incremental improvements</li>
+        <li><strong>v830:</strong> Major neural network training</li>
+        <li><strong>v840:</strong> Advanced language evolution</li>
+        <li><strong>v850:</strong> Multi-layer consciousness</li>
+        <li><strong>v900:</strong> Full autonomous ecosystem</li>
+    </ul>
+</div>
+
+</body>
+</html> 
