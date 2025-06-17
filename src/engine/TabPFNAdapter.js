@@ -1,4 +1,5 @@
 // TabPFN Adapter - Kelime Analizi ve Öneri Sistemi
+import { tabPFGenAdapter } from './TabPFGenAdapter.js';
 export class TabPFNAdapter {
     constructor() {
         this.isReady = false;
@@ -12,29 +13,37 @@ export class TabPFNAdapter {
     async init() {
         try {
             console.log('🔧 TabPFN Adapter başlatılıyor...');
-            
-            // TensorFlow.js modeli yüklemesi (mock olarak başlatıyoruz)
+
+            // TabPFGenAdapter ile veri üretilsin
+            await tabPFGenAdapter.init();
+
             if (typeof tf !== 'undefined') {
-                // Basit bir sequential model oluşturalım
+                // 5-bağlam tahmini için küçük bir model
                 this.model = tf.sequential({
                     layers: [
-                        tf.layers.dense({ inputShape: [10], units: 32, activation: 'relu' }),
-                        tf.layers.dense({ units: 16, activation: 'relu' }),
-                        tf.layers.dense({ units: 8, activation: 'softmax' })
+                        tf.layers.dense({ inputShape: [10], units: 16, activation: 'relu' }),
+                        tf.layers.dense({ units: 5, activation: 'softmax' })
                     ]
                 });
-                
+
                 this.model.compile({
                     optimizer: 'adam',
                     loss: 'categoricalCrossentropy',
                     metrics: ['accuracy']
                 });
+
+                const { xs, ys } = this._generateTrainingSet(200);
+                const xsTensor = tf.tensor2d(xs);
+                const ysTensor = tf.tensor2d(ys);
+                await this.model.fit(xsTensor, ysTensor, { epochs: 20, shuffle: true });
+                xsTensor.dispose();
+                ysTensor.dispose();
             }
-            
+
             this.isReady = true;
             this.initialized = true;
             console.log('✅ TabPFN Adapter hazır!');
-            
+
         } catch (error) {
             console.error('❌ TabPFN yüklenemedi:', error);
             this.isReady = false;
@@ -57,13 +66,34 @@ export class TabPFNAdapter {
                 return this.predictionCache.get(cacheKey);
             }
 
-            // Kelime önerisi üret
-            const suggestions = await this._generateWordSuggestions(bacteria, features);
-            
-            // Cache'e kaydet
-            this.predictionCache.set(cacheKey, suggestions);
-            
-            return suggestions;
+            let context = this._detectContext(bacteria);
+            let confidence = 0.5;
+
+            if (this.model) {
+                const input = tf.tensor2d([features]);
+                const output = this.model.predict(input);
+                const data = await output.data();
+                input.dispose();
+                output.dispose();
+
+                const idx = data.indexOf(Math.max(...data));
+                const labels = ['philosophical', 'social', 'creative', 'survival', 'neutral'];
+                context = labels[idx] || context;
+                confidence = Math.max(...data);
+            }
+
+            const suggestions = this._generateSuggestionsByContext(context, bacteria);
+
+            const result = {
+                suggested_next_words: suggestions,
+                confidence,
+                context,
+                reasoning: `Model-predicted context: ${context}`
+            };
+
+            this.predictionCache.set(cacheKey, result);
+
+            return result;
             
         } catch (error) {
             console.error('🔥 TabPFN analiz hatası:', error);
@@ -94,48 +124,55 @@ export class TabPFNAdapter {
         return features.map(f => Math.round(f * 10)).join('_');
     }
 
-    // Kelime önerileri üret
-    async _generateWordSuggestions(bacteria, features) {
-        // Basit kural tabanlı öneri sistemi (TabPFN yerine)
-        const vocabulary = Array.from(bacteria.vocabulary);
+    _generateTrainingSet(samples = 100) {
+        const contexts = ['philosophical', 'social', 'creative', 'survival', 'neutral'];
+        const xs = [];
+        const ys = [];
+        for (let i = 0; i < samples; i++) {
+            const features = [];
+            for (let j = 0; j < 10; j++) {
+                features.push(Math.random());
+            }
+            xs.push(features);
+            const idx = Math.floor(Math.random() * contexts.length);
+            const label = Array(contexts.length).fill(0);
+            label[idx] = 1;
+            ys.push(label);
+        }
+        return { xs, ys };
+    }
+
+    _generateSuggestionsByContext(context, bacteria) {
         const suggestions = [];
-        
-        // Bilinç seviyesine göre öneriler
-        if (bacteria.consciousness_level > 0.7) {
+        if (context === 'philosophical') {
             suggestions.push(...this._getPhilosophicalWords());
-        }
-        
-        // Sosyal seviyeye göre öneriler
-        if (bacteria.personality.sociability > 0.6) {
+        } else if (context === 'social') {
             suggestions.push(...this._getSocialWords());
-        }
-        
-        // Yaratıcılık seviyesine göre öneriler
-        if (bacteria.personality.creativity > 0.5) {
+        } else if (context === 'creative') {
             suggestions.push(...this._getCreativeWords());
+        } else if (context === 'survival') {
+            suggestions.push('yemek', 'barınak', 'kaç');
         }
-        
-        // Absurd öneriler (düşük ihtimalle)
-        if (Math.random() < 0.1) {
-            suggestions.push(...this._getAbsurdWords());
+
+        if (bacteria.vocabulary.size >= 2) {
+            suggestions.push(...this._generateCombinations(Array.from(bacteria.vocabulary)));
         }
-        
-        // Mevcut kelimelerle kombinasyonlar
-        if (vocabulary.length >= 2) {
-            suggestions.push(...this._generateCombinations(vocabulary));
-        }
-        
-        // Duplicate'ları kaldır ve max 5 öneri döndür
-        const uniqueSuggestions = [...new Set(suggestions)]
+
+        return [...new Set(suggestions)]
             .filter(word => !bacteria.vocabulary.has(word))
             .sort(() => Math.random() - 0.5)
             .slice(0, 5);
-            
+    }
+
+    // Kelime önerileri üret
+    async _generateWordSuggestions(bacteria, features) {
+        const context = this._detectContext(bacteria);
+        const words = this._generateSuggestionsByContext(context, bacteria);
         return {
-            suggested_next_words: uniqueSuggestions,
-            confidence: this._calculateConfidence(uniqueSuggestions.length),
-            context: this._detectContext(bacteria),
-            reasoning: this._generateReasoning(bacteria, uniqueSuggestions)
+            suggested_next_words: words,
+            confidence: this._calculateConfidence(words.length),
+            context,
+            reasoning: this._generateReasoning(bacteria, words)
         };
     }
 
