@@ -1,9 +1,12 @@
 // TabPFN Adapter - Kelime Analizi ve Öneri Sistemi
+import trainingDataJson from '../data/consciousness_training_data.json' assert { type: 'json' };
+
 export class TabPFNAdapter {
     constructor() {
         this.isReady = false;
         this.model = null;
         this.trainingData = [];
+        this.contextWordMap = new Map();
         this.predictionCache = new Map();
         this.contextMatrix = null;
         this.initialized = false;
@@ -12,7 +15,10 @@ export class TabPFNAdapter {
     async init() {
         try {
             console.log('🔧 TabPFN Adapter başlatılıyor...');
-            
+
+            // Training data yükle ve bağlam haritası oluştur
+            this._loadContextWordMap(trainingDataJson.training_data || []);
+
             // TensorFlow.js modeli yüklemesi (mock olarak başlatıyoruz)
             if (typeof tf !== 'undefined') {
                 // Basit bir sequential model oluşturalım
@@ -96,9 +102,20 @@ export class TabPFNAdapter {
 
     // Kelime önerileri üret
     async _generateWordSuggestions(bacteria, features) {
-        // Basit kural tabanlı öneri sistemi (TabPFN yerine)
+        // Eğitim verisine dayalı öneriler ve kural tabanlı sistem
         const vocabulary = Array.from(bacteria.vocabulary);
         const suggestions = [];
+
+        const context = this._detectContext(bacteria);
+        const trainingMap = this.contextWordMap.get(context);
+        if (trainingMap) {
+            const trainingWords = [...trainingMap.entries()]
+                .filter(([w]) => !bacteria.vocabulary.has(w))
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5)
+                .map(([w]) => w);
+            suggestions.push(...trainingWords);
+        }
         
         // Bilinç seviyesine göre öneriler
         if (bacteria.consciousness_level > 0.7) {
@@ -213,6 +230,26 @@ export class TabPFNAdapter {
         }
         
         return reasons.join(', ') || 'Genel kelime gelişimi';
+    }
+
+    _loadContextWordMap(data) {
+        this.contextWordMap.clear();
+        for (const item of data) {
+            const contexts = item.context || [];
+            const weights = item.word_weights || {};
+            for (const ctx of contexts) {
+                if (!this.contextWordMap.has(ctx)) {
+                    this.contextWordMap.set(ctx, new Map());
+                }
+                const wordMap = this.contextWordMap.get(ctx);
+                for (const [word, weight] of Object.entries(weights)) {
+                    const current = wordMap.get(word) || 0;
+                    if (weight > current) {
+                        wordMap.set(word, weight);
+                    }
+                }
+            }
+        }
     }
 
     // Cache temizle
