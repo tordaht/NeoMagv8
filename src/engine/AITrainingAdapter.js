@@ -637,4 +637,9 @@ class AITrainingAdapter {
     }
 }
 
-export default AITrainingAdapter; 
+export default AITrainingAdapter;
+
+// Expose globally for non-module loaders
+if (typeof window !== 'undefined') {
+    window.AITrainingAdapter = AITrainingAdapter;
+}
