@@ -1191,6 +1191,17 @@
         let behaviourLearningSystem = null;
         let tabpfnVocabularySystem = null;
 
+        // 🎭 JOKE SYSTEM CONFIGURATION
+        const JOKE_CONFIG = {
+            PREDEFINED_JOKE_CHANCE: 0.7,
+            JOKE_COOLDOWN: 15000,
+            JOKE_MORALE_BOOST: 0.1,
+            MAX_JOKE_DISTANCE: 100,
+            MIN_CONSCIOUSNESS_FOR_JOKES: 3,
+            JOKE_SUCCESS_THRESHOLD: 0.5
+        };
+        window.JOKE_CONFIG = JOKE_CONFIG;
+
         // 🎭 MATHEMATICAL COMEDY THEORY SYSTEM v8.6.1
         // Based on Incongruity Theory + Surprisal + Sigmoid Modeling
         const COMEDY_MATH_CONFIG = {
@@ -7822,18 +7833,28 @@ ${recentSummary}${errorSummary}
                 // 8. 🔤 Initialize Enhanced Morphological System (Phase 2.7)
                 setTimeout(async () => {
                     try {
-                        // Load scripts dynamically
-                        await loadScript('./src/engine/AITrainingAdapter.js');
-                        await loadScript('./src/engine/EnhancedMorphologicalGenerator.js');
-                        await loadScript('./src/engine/MorphologicalDialogueGenerator.js');
-                        await loadScript('./src/engine/PersistentLearningEngine.js');
-                        
-                        // Initialize Enhanced Morphological System
+                        // Dynamically import required modules
+                        const [
+                            { default: AITrainingAdapter },
+                            { default: EnhancedMorphologicalGenerator },
+                            { default: MorphologicalDialogueGenerator },
+                            { PersistentLearningEngine },
+                            { TabPFGenAdapter },
+                            { TabPFNFineTuner }
+                        ] = await Promise.all([
+                            import('./src/engine/AITrainingAdapter.js'),
+                            import('./src/engine/EnhancedMorphologicalGenerator.js'),
+                            import('./src/engine/MorphologicalDialogueGenerator.js'),
+                            import('./src/engine/PersistentLearningEngine.js'),
+                            import('./src/engine/TabPFGenAdapter.js'),
+                            import('./src/engine/TabPFNFineTuner.js')
+                        ]);
+
                         window.aiTrainingAdapter = new AITrainingAdapter();
                         window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
-                        
-                        // Initialize Persistent Learning Engine
-                        const { PersistentLearningEngine } = await import('./src/engine/PersistentLearningEngine.js');
+                        window.tabpfGen = new TabPFGenAdapter();
+                        await window.tabpfGen.init();
+                        window.tabpfnFineTuner = new TabPFNFineTuner();
                         window.persistentLearning = new PersistentLearningEngine();
                         
                         // Wait for training data to load
