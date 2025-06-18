@@ -1263,6 +1263,8 @@
             MIN_CONSCIOUSNESS_FOR_JOKES: 3,    // Minimum consciousness to tell jokes
             JOKE_SUCCESS_THRESHOLD: 0.5        // Minimum success rate for joke attempts
         };
+        // Expose for dynamically imported modules
+        window.JOKE_CONFIG = JOKE_CONFIG;
 
         // 🎭 MATHEMATICAL COMEDY THEORY SYSTEM v8.6.1
         // Based on Incongruity Theory + Surprisal + Sigmoid Modeling
@@ -8768,131 +8770,71 @@ Conscious bacteria: ${bacteriaList.filter(b => (b.consciousness || b.consciousne
                 setTimeout(async () => {
                     try {
                         console.log('🔤 Attempting to initialize Enhanced Morphological System...');
-                        
-                        // Check if external scripts exist before loading
-                        const scriptPaths = [
-                            './src/engine/AITrainingAdapter.js',
-                            './src/engine/EnhancedMorphologicalGenerator.js', 
-                            './src/engine/MorphologicalDialogueGenerator.js',
-                            './src/engine/PersistentLearningEngine.js',
-                            './src/engine/TabPFGenAdapter.js',
-                            './src/engine/TabPFNFineTuner.js'
-                        ];
-                        
-                        let scriptsLoaded = 0;
-                        
-                        // Try to load each script safely
-                        for (const scriptPath of scriptPaths) {
-                            try {
-                                if (typeof loadScript === 'function') {
-                                    await loadScript(scriptPath);
-                                    scriptsLoaded++;
-                                    console.log(`✅ Loaded: ${scriptPath}`);
-                                } else {
-                                    console.warn(`⚠️ loadScript function not available`);
-                                    break;
-                                }
-                            } catch (scriptError) {
-                                console.warn(`⚠️ Could not load ${scriptPath}:`, scriptError.message);
-                            }
-                        }
-                        
-                        if (scriptsLoaded === scriptPaths.length) {
-                            // Only initialize if all scripts loaded successfully
-                            if (typeof AITrainingAdapter !== 'undefined') {
-                                window.aiTrainingAdapter = new AITrainingAdapter();
-                                console.log('✅ AITrainingAdapter initialized');
-                            }
-                            
-                            if (typeof EnhancedMorphologicalGenerator !== 'undefined' && window.aiTrainingAdapter) {
-                                window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
-                                console.log('✅ EnhancedMorphologicalGenerator initialized');
-                            }
 
-                            if (typeof TabPFGenAdapter !== 'undefined') {
-                                window.tabpfGen = new TabPFGenAdapter();
-                                await window.tabpfGen.init();
-                            }
+                        // Dynamically import required modules
+                        const [
+                            { default: AITrainingAdapter },
+                            { default: EnhancedMorphologicalGenerator },
+                            { default: MorphologicalDialogueGenerator },
+                            { PersistentLearningEngine },
+                            { TabPFGenAdapter },
+                            { TabPFNFineTuner }
+                        ] = await Promise.all([
+                            import('./src/engine/AITrainingAdapter.js'),
+                            import('./src/engine/EnhancedMorphologicalGenerator.js'),
+                            import('./src/engine/MorphologicalDialogueGenerator.js'),
+                            import('./src/engine/PersistentLearningEngine.js'),
+                            import('./src/engine/TabPFGenAdapter.js'),
+                            import('./src/engine/TabPFNFineTuner.js')
+                        ]);
 
-                            if (typeof TabPFNFineTuner !== 'undefined') {
-                                window.tabpfnFineTuner = new TabPFNFineTuner();
-                            }
-                            
-                            // Try dynamic import for PersistentLearningEngine
-                            try {
-                                const { PersistentLearningEngine } = await import('./src/engine/PersistentLearningEngine.js');
-                                window.persistentLearning = new PersistentLearningEngine();
-                                console.log('✅ PersistentLearningEngine initialized');
-                            } catch (importError) {
-                                console.warn('⚠️ PersistentLearningEngine dynamic import failed:', importError.message);
-                                // Create a minimal fallback
-                                window.persistentLearning = {
-                                    isReady: true,
-                                    trackSpeech: (bacteria, message) => {
-                                        console.log(`📝 Speech tracked: ${bacteria.name}: ${message}`);
-                                    },
-                                    getLearningStats: () => ({
-                                        totalInteractions: 0,
-                                        vocabularySize: 0
-                                    }),
-                                    metrics: { totalInteractions: 0 }
-                                };
-                                console.log('✅ Fallback PersistentLearning created');
-                            }
-                            
-                            console.log('🔤 Enhanced Morphological System initialized successfully!');
-                        } else {
-                            console.warn('⚠️ Some morphological scripts failed to load, using basic fallbacks');
-                            
-                            // Create basic fallback systems
-                            window.persistentLearning = {
-                                isReady: true,
-                                trackSpeech: (bacteria, message) => {
-                                    console.log(`📝 [Fallback] Speech tracked: ${bacteria.name}: ${message}`);
-                                },
-                                getLearningStats: () => ({
-                                    totalInteractions: 0,
-                                    vocabularySize: 0
-                                }),
-                                metrics: { totalInteractions: 0 }
-                            };
-                            
-                            window.enhancedMorphGenerator = {
-                                getSystemStatus: () => ({ status: 'fallback', ready: true })
-                            };
-                            
-                            console.log('✅ Fallback morphological systems created');
-                        }
-                        
-                        // Mark system as ready regardless
-                        window.systemFullyReady = true;
-                        
-                        // Update UI
-                        const loadingIndicators = document.querySelectorAll('.loading-indicator');
-                        loadingIndicators.forEach(indicator => {
-                            indicator.style.display = 'none';
-                        });
-                        
-                        // Emit events
-                        appEvents.emit('morphological:system:ready');
-                        appEvents.emit('persistent:learning:ready');
-                        appEvents.emit('system:fully:ready');
-                        
-                        console.log('🎉 mnBac v9.6.2 FULLY LOADED - All systems operational!');
-                        
+                        // Initialize modules
+                        window.aiTrainingAdapter = new AITrainingAdapter();
+                        window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
+                        window.tabpfGen = new TabPFGenAdapter();
+                        await window.tabpfGen.init();
+                        window.tabpfnFineTuner = new TabPFNFineTuner();
+                        window.persistentLearning = new PersistentLearningEngine();
+
+                        console.log('🔤 Enhanced Morphological System initialized successfully!');
                     } catch (error) {
-                        console.error('❌ Enhanced Morphological System initialization failed:', error);
-                        
-                        // Create emergency fallbacks
+                        console.error('⚠️ Enhanced Morphological System initialization issue:', error);
+
+                        // Create basic fallback systems
                         window.persistentLearning = {
                             isReady: true,
-                            trackSpeech: () => {},
-                            getLearningStats: () => ({ totalInteractions: 0, vocabularySize: 0 }),
+                            trackSpeech: (bacteria, message) => {
+                                console.log(`📝 [Fallback] Speech tracked: ${bacteria.name}: ${message}`);
+                            },
+                            getLearningStats: () => ({
+                                totalInteractions: 0,
+                                vocabularySize: 0
+                            }),
                             metrics: { totalInteractions: 0 }
                         };
-                        window.systemFullyReady = true;
-                        console.log('🚨 Emergency fallback systems activated');
+
+                        window.enhancedMorphGenerator = {
+                            getSystemStatus: () => ({ status: 'fallback', ready: true })
+                        };
+
+                        console.log('✅ Fallback morphological systems created');
                     }
+
+                    // Mark system as ready regardless
+                    window.systemFullyReady = true;
+
+                    // Update UI
+                    const loadingIndicators = document.querySelectorAll('.loading-indicator');
+                    loadingIndicators.forEach(indicator => {
+                        indicator.style.display = 'none';
+                    });
+
+                    // Emit events
+                    appEvents.emit('morphological:system:ready');
+                    appEvents.emit('persistent:learning:ready');
+                    appEvents.emit('system:fully:ready');
+
+                    console.log('🎉 mnBac v9.6.2 FULLY LOADED - All systems operational!');
                 }, 5000); // Wait for all other systems to be ready
                 
                 console.log('🎉 Event-driven initialization complete!');
