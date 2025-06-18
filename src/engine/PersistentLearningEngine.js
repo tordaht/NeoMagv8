@@ -348,6 +348,21 @@ export class PersistentLearningEngine {
         // Bu implementation için basit bir değer döndürüyoruz
         return Math.min(1.0, this.metrics.totalInteractions / 100);
     }
+
+    /**
+     * Track bacteria speech for vocabulary statistics
+     */
+    async trackSpeech(bacteria, message) {
+        if (!this.isReady || !message) return;
+
+        try {
+            const words = this.extractWords(message);
+            await this.learnFromWords(words, true, 'speech');
+            this.metrics.totalInteractions++;
+        } catch (error) {
+            console.warn('⚠️ Failed to track speech:', error);
+        }
+    }
     
     /**
      * Metrikleri güncelle
