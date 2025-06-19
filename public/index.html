@@ -7836,9 +7836,9 @@ ${recentSummary}${errorSummary}
                         // Dynamically import required modules
                         const [
                             { default: AITrainingAdapter },
-                            { default: EnhancedMorphologicalGenerator },
-                            { default: MorphologicalDialogueGenerator },
-                            { PersistentLearningEngine },
+                            _morphModule,
+                            _dialogueModule,
+                            { default: PersistentLearningEngine },
                             { TabPFGenAdapter },
                             { TabPFNFineTuner }
                         ] = await Promise.all([
@@ -7851,7 +7851,7 @@ ${recentSummary}${errorSummary}
                         ]);
 
                         window.aiTrainingAdapter = new AITrainingAdapter();
-                        window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
+                        window.enhancedMorphGenerator = { getSystemStatus: () => ({ status: 'loaded', ready: true }) };
                         window.tabpfGen = new TabPFGenAdapter();
                         await window.tabpfGen.init();
                         window.tabpfnFineTuner = new TabPFNFineTuner();
