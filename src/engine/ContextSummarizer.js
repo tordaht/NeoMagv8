@@ -1,30 +1,30 @@
 const CACHE = new Map();
-const WINDOW_SIZE = 5;
-let workerPromise = null;
 
-function loadWorker() {
-  if (!workerPromise) {
-    workerPromise = import(
-      /* webpackChunkName: "summarizer" */ './workers/summarizerWorker.js?worker'
-    ).then(m => new m.default());
-  }
-  return workerPromise;
-}
-
+/**
+ * Summarize the last window of messages.
+ * Results are cached to avoid repeated worker computation.
+ * @param {Array<{text:string}>} messages
+ * @returns {Promise<string>}
+ */
 export async function summarize(messages = []) {
-  const window = messages.slice(-WINDOW_SIZE);
+  const window = messages.slice(-5);
   const key = JSON.stringify(window);
   if (CACHE.has(key)) return CACHE.get(key);
 
-  const worker = await loadWorker();
-
-  return new Promise(resolve => {
-    const handle = e => {
-      worker.removeEventListener('message', handle);
-      CACHE.set(key, e.data);
-      resolve(e.data);
-    };
-    worker.addEventListener('message', handle);
-    worker.postMessage(window);
+  const worker = new Worker(new URL('./workers/summarizerWorker.js', import.meta.url));
+  worker.postMessage(window);
+  const summary = await new Promise(res => {
+    worker.onmessage = e => res(e.data);
   });
+  worker.terminate();
+  CACHE.set(key, summary);
+  return summary;
 }
+
+/**
+ * Example:
+ * @example
+ * const summary = await summarize([{text:'merhaba'}]);
+ * console.log(summary);
+ */
+

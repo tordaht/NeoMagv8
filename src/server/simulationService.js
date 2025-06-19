@@ -1,45 +1,28 @@
-import os from 'node:os';
 import { EventEmitter } from 'node:events';
-import { Worker, isMainThread, parentPort, workerData } from 'node:worker_threads';
 import { SimulationManager } from '../engine/SimulationManager.js';
 
 /**
- * Background simulation running at ~60 FPS. When CPU usage exceeds 50% the
- * heavy tick computation is executed inside a Worker thread to keep the main
- * loop responsive.
+ * Node.js background simulation service.
+ * Running the simulation on the server ensures expensive ticks do not block
+ * the browser event loop while still allowing real-time updates through the
+ * {@link simulationEvents} emitter.
+ * @module simulationService
  */
 export const simulationEvents = new EventEmitter();
+
+/** @type {SimulationManager} */
 export let manager;
+let tickInterval;
+let talkInterval;
 
-// Worker thread behaviour
-if (!isMainThread) {
-  const bacteria = workerData.bacteria;
-  // simple heavy operation: increment ages
-  for (const b of bacteria) {
-    b.age += 0.016;
-  }
-  parentPort.postMessage(bacteria);
-} else {
-  /** Global simulation manager instance */
+/**
+ * Start the continuous background simulation.
+ * @returns {Promise<void>}
+ */
+export async function startBackground() {
   manager = new SimulationManager();
-  manager.start();
-
-  const FRAME_MS = 1000 / 60;
-  setInterval(() => {
-    const load = (os.loadavg()[0] / os.cpus().length) * 100;
-    if (load > 50) {
-      const worker = new Worker(new URL('./simulationService.js', import.meta.url), {
-        workerData: { bacteria: manager.bacteria }
-      });
-      worker.on('message', updated => { manager.bacteria = updated; });
-      worker.on('error', err => console.error('Worker error', err));
-    } else {
-      manager.tick();
-    }
-  }, FRAME_MS);
-
-  // communication every 4 seconds
-  setInterval(() => {
+  tickInterval = setInterval(() => manager.tick(), 1000 / 60);
+  talkInterval = setInterval(() => {
     const pair = manager.pickRandomPair();
     if (pair.length === 2) {
       const [a, b] = pair;
@@ -49,3 +32,17 @@ if (!isMainThread) {
     }
   }, 4000);
 }
+
+/** Stop the simulation loops */
+export function stopBackground() {
+  clearInterval(tickInterval);
+  clearInterval(talkInterval);
+}
+
+/**
+ * Example usage:
+ * @example
+ * import { startBackground } from './simulationService.js';
+ * startBackground();
+ */
+

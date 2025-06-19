@@ -1,6 +1,6 @@
-import { summarize } from '../src/engine/ContextSummarizer.js';
-import { CharacterProfile } from '../src/engine/CharacterProfile.js';
-import { generateAnswer } from '../src/engine/LanguageEngine.js';
+let summarize;
+let CharacterProfile;
+let generateAnswer;
 
 const chatHistory = [];
 
@@ -8,6 +8,18 @@ const chatInput = document.getElementById('chatInput');
 const sendBtn = document.getElementById('sendMessageBtn');
 const messagesDiv = document.getElementById('chatMessages');
 const indicator = document.getElementById('chatLoadingIndicator');
+
+function displayIndicator() {
+  indicator.classList.remove('hidden');
+}
+
+function hideIndicator() {
+  indicator.classList.add('hidden');
+}
+
+function displayBotReply(text) {
+  requestIdleCallback(() => addMessage('Bakteri', text, 'bacteria'));
+}
 
 function addMessage(sender, text, type) {
   setTimeout(() => {
@@ -27,14 +39,19 @@ async function onUserMessage() {
   addMessage('Sen', msg, 'user');
   chatHistory.push({ sender: 'user', text: msg });
 
-  indicator.classList.remove('hidden');
+  displayIndicator();
+  if (!summarize) {
+    ({ summarize } = await import(/* webpackChunkName:"summarizer" */ '../src/engine/ContextSummarizer.js'));
+    ({ default: CharacterProfile } = await import('../src/engine/CharacterProfile.js'));
+    ({ generateAnswer } = await import('../src/engine/LanguageEngine.js'));
+  }
   const summary = await summarize(chatHistory);
   const profile = new CharacterProfile('Bakteri-2', 'curious');
   const reply = await generateAnswer(msg, summary, profile);
-  indicator.classList.add('hidden');
+  hideIndicator();
 
   chatHistory.push({ sender: 'bacteria', text: reply });
-  addMessage('Bakteri', reply, 'bacteria');
+  displayBotReply(reply);
 }
 
 sendBtn?.addEventListener('click', onUserMessage);
