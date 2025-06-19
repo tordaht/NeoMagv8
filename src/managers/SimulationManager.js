@@ -5,10 +5,10 @@
  * Date: December 19, 2024
  */
 
-import { languageEvolutionEngine } from '@/engine/LanguageEvolutionEngine.js';
-import { tabPFNAdapter } from '@/engine/TabPFNAdapter.js';
-import { wordSuccessTracker } from '@/engine/WordSuccessTracker.js';
-import { getContextualWord, getSemanticFieldsStatus } from '@/utils/semanticFields.js';
+import { languageEvolutionEngine } from '@/engine/LanguageEvolutionEngine.ts';
+import { tabPFNAdapter } from '@/engine/TabPFNAdapter.ts';
+import { wordSuccessTracker } from '@/engine/WordSuccessTracker.ts';
+import { getContextualWord, getSemanticFieldsStatus } from '@/utils/semanticFields.ts';
 import { RUNTIME_CONFIG } from '../config/SystemConfig.js';
 
 export class SimulationManager {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // 🔄 Ring Buffer Utility - Prevents Memory Leaks in Tracking Systems
 // Replaces growing arrays with fixed-size circular buffers
 

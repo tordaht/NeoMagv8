@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * 🧬 Enhanced Persistent Learning Engine v1.0
  * İstemci-taraflı kalıcı öğrenme sistemi (IndexedDB + TensorFlow.js)

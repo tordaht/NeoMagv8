@@ -1,11 +1,13 @@
+// @ts-nocheck
 /**
  * Turkish Dialogue Generator
  * Gelişmiş Türkçe cümle üretimi: template sistem + morfoloji motoru
  */
 
-import { morphologyEngine } from '@/engine/MorphologyEngine.js';
-import { SEMANTIC_FIELDS } from '@/utils/semanticFields.js';
-import { wordSuccessTracker } from './WordSuccessTracker.js';
+import { morphologyEngine } from '@/engine/MorphologyEngine.ts';
+import { SEMANTIC_FIELDS } from '@/utils/semanticFields.ts';
+import { wordSuccessTracker } from './WordSuccessTracker.ts';
+import type { Bacteria } from '../types';
 
 export class TurkceDialogueGenerator {
     constructor() {
@@ -100,7 +102,7 @@ export class TurkceDialogueGenerator {
     /**
      * Bakteri kelime haznesini al
      */
-    getBacteriaVocabulary(bacteria, context) {
+    getBacteriaVocabulary(bacteria: Bacteria, context: string) {
         if (!bacteria || !bacteria.vocabulary) {
             return { subjects: [], verbs: [], objects: [], adverbs: [] };
         }
@@ -142,7 +144,7 @@ export class TurkceDialogueGenerator {
     /**
      * Template'deki slotları doldur
      */
-    fillTemplate(template, field, bacteria, weightedSelection) {
+    fillTemplate(template: string, field: string, bacteria: Bacteria, weightedSelection: boolean) {
         let sentence = template;
         const replacements = {};
         
@@ -239,7 +241,7 @@ export class TurkceDialogueGenerator {
     /**
      * Ana cümle üretim fonksiyonu
      */
-    generateSentence(bacteria, contextKey = 'creative', triggerInfo = null) {
+    generateSentence(bacteria: Bacteria, contextKey: string = 'creative', triggerInfo: any = null) {
         const field = this.semanticFields[contextKey] || this.semanticFields.creative;
 
         // Template seç
