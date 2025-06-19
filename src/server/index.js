@@ -16,7 +16,9 @@ app.use('/', api);
 
 const server = http.createServer(app);
 setupWebsocket(server);
-await startBackground();
+(async () => {
+  await startBackground();
+})();
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {

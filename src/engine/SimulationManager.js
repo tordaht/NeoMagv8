@@ -4,8 +4,17 @@
  * other. This manager is intentionally lightweight so it can run both in the
  * main thread and in a worker.
  */
+import { EventEmitter } from 'events';
+
 export class SimulationManager {
   constructor(count = 10) {
+    /**
+     * Emits internal simulation events like `newMessage`.
+     * @type {EventEmitter}
+     */
+    this.events = new EventEmitter();
+    this._bgLoop = null;
+    this._dialogueLoop = null;
     /** @type {Array<{id:string,name:string,age:number,vocabulary:Set<string>,memory:string[]}>} */
     this.bacteria = [];
     this.running = false;
@@ -87,6 +96,29 @@ export class SimulationManager {
       }))
     };
   }
+
+  /**
+   * Start continuous background loops for ticking and autonomous dialogues.
+   * Emits `newMessage` events whenever bacteria communicate.
+   */
+  startBackground() {
+    this._bgLoop = setInterval(() => this.tick(), 1000 / 60);
+    this._dialogueLoop = setInterval(() => {
+      const [a, b] = this.pickRandomPair();
+      if (!a || !b) return;
+      const msg = this.talk(a, b);
+      this.receive(b, msg, a);
+      this.events.emit('newMessage', { from: a.id, to: b.id, text: msg });
+    }, 4000);
+  }
+
+  /**
+   * Stop the background tick and dialogue intervals.
+   */
+  stopBackground() {
+    clearInterval(this._bgLoop);
+    clearInterval(this._dialogueLoop);
+  }
 }
 
-export default { SimulationManager };
+export default SimulationManager;
