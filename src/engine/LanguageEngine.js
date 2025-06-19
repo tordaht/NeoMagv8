@@ -12,6 +12,7 @@ const INTENT_CACHE = new Map();
  * @returns {Promise<string>}
  */
 export async function generateAnswer(userMsg, contextSummary, profile) {
+
   const cacheKey = userMsg.toLowerCase();
   let parsed = INTENT_CACHE.get(cacheKey);
   if (!parsed) {
@@ -34,6 +35,7 @@ export async function generateAnswer(userMsg, contextSummary, profile) {
     ? `Mesajlar\u0131n\u0131zdan \`${entityPart}\` bahsediliyor ve ozetle ${context}.`
     : `S\u00f6zleriniz \`${entityPart}\` ile ilgili.`;
   const sentence3 = profile.applyTone('Umar\u0131m yard\u0131mc\u0131 olabildim.');
+
 
   return `${sentence1} ${sentence2} ${sentence3}`;
 }

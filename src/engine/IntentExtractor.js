@@ -32,6 +32,7 @@ export function extractIntent(text = '') {
   }
   if (/bakteri/.test(lower)) entities.push('bakteri');
 
+
   return { intent, entities };
 }
 
