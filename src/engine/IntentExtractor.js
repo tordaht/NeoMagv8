@@ -1,11 +1,14 @@
 /**
  * Analyze a user message and extract intent and entities.
- * The logic relies on basic keyword mapping and regex patterns.
+ * Results are memoized to avoid repeated regex passes.
  * @param {string} text
  * @returns {{ intent: string, entities: string[] }}
  */
+const CACHE = new Map();
 export function extractIntent(text = '') {
   const lower = text.toLowerCase();
+  if (CACHE.has(lower)) return CACHE.get(lower);
+
 
   // Map keywords to high level intents
   const KEYWORD_INTENTS = {
@@ -32,7 +35,9 @@ export function extractIntent(text = '') {
   }
   if (/bakteri/.test(lower)) entities.push('bakteri');
 
+  const result = { intent, entities };
+  CACHE.set(lower, result);
+  return result;
 
-  return { intent, entities };
 }
 

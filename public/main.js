@@ -9,7 +9,8 @@ const sendBtn = document.getElementById('sendMessageBtn');
 const messagesDiv = document.getElementById('chatMessages');
 const indicator = document.getElementById('chatLoadingIndicator');
 
-function displayIndicator() {
+function displayIndicator(status) {
+  indicator.textContent = status || '';
   indicator.classList.remove('hidden');
 }
 
@@ -39,7 +40,7 @@ async function onUserMessage() {
   addMessage('Sen', msg, 'user');
   chatHistory.push({ sender: 'user', text: msg });
 
-  displayIndicator();
+  displayIndicator('thinking');
   if (!summarize) {
     ({ summarize } = await import(/* webpackChunkName:"summarizer" */ '../src/engine/ContextSummarizer.js'));
     ({ CharacterProfile } = await import('../src/engine/CharacterProfile.js'));
