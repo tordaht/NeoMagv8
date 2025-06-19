@@ -12,14 +12,8 @@ const INTENT_CACHE = new Map();
  * @returns {Promise<string>}
  */
 export async function generateAnswer(userMsg, contextSummary, profile) {
-
-  const cacheKey = userMsg.toLowerCase();
-  let parsed = INTENT_CACHE.get(cacheKey);
-  if (!parsed) {
-    parsed = extractIntent(userMsg);
-    INTENT_CACHE.set(cacheKey, parsed);
-  }
-  // allow passing either a precomputed summary string or the raw history
+  const context = contextSummary;
+    ? `Mesajlar\u0131n\u0131zdan \`${entityPart}\` bahsediliyor ve \u00f6zetle ${context}.`
   let context = '';
   if (Array.isArray(contextSummary)) {
     context = await summarize(contextSummary);
