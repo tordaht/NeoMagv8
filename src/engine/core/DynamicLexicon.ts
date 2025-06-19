@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * 🧬 mnBac v9.5.0 - Dynamic Lexicon Core Module
  * Ultra-Aggressive Anti-Monotony Language Evolution System

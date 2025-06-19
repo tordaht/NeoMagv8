@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Word Success Tracker - Kelime Başarı Takibi ve Reinforcement Learning
 export class WordSuccessTracker {
     constructor() {

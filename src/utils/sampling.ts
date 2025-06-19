@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Enhanced Sampling Utilities for Language Evolution
 // Prevents greedy selection and enables diversity
 

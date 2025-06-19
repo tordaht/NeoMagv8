@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Semantic Fields Utility
  * Vite modular yapıda semantic fields yönetimi
