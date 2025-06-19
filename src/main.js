@@ -15,10 +15,12 @@ import './styles/style.css';
 import { loadSemanticFields } from '@/utils/semanticFields.ts';
 import { simulationManager } from '@/managers/SimulationManager.js';
 import UserInteractionManager from '@/managers/UserInteractionManager.js';
+import SimulationWorker from './simulationWorker.js?worker';
 
 // Global state
 let isInitialized = false;
 let userInteractionManager = null;
+let simWorker = null;
 
 /**
  * Application bootstrap
@@ -45,7 +47,8 @@ async function bootstrap() {
         
         // 5. Tailwind CSS CDN ekle (geçici)
         injectTailwindCSS();
-        
+        initWorkerCanvas();
+
         isInitialized = true;
         console.log('🎉 NeoMag AI Bakteri Comedy Show hazır!');
         
@@ -66,21 +69,21 @@ function setupEventListeners() {
     const stopBtn = document.getElementById('stopBtn');
     
     startBtn?.addEventListener('click', () => {
-        if (isInitialized) {
-            simulationManager.start();
+        if (isInitialized && simWorker) {
+            simWorker.postMessage({ type: 'start' });
             updateDebugInfo('Simülasyon çalışıyor...');
         }
     });
     
     stopBtn?.addEventListener('click', () => {
-        simulationManager.stop();
+        simWorker?.postMessage({ type: 'stop' });
         updateDebugInfo('Simülasyon durduruldu');
     });
     
     // Speed slider
     const speedSlider = document.getElementById('speedSlider');
     speedSlider?.addEventListener('input', (e) => {
-        simulationManager.stepInterval = parseInt(e.target.value);
+        simWorker?.postMessage({ type: 'speed', value: parseInt(e.target.value) });
         updateDebugInfo(`Hız: ${e.target.value}ms`);
     });
     
@@ -176,6 +179,21 @@ function injectTailwindCSS() {
         document.head.appendChild(script);
         console.log('📦 Tailwind CSS CDN eklendi');
     }
+}
+
+// Worker setup for OffscreenCanvas simulation
+function initWorkerCanvas() {
+    const canvas = document.getElementById('simCanvas');
+    if (!canvas) return;
+    const offscreen = canvas.transferControlToOffscreen();
+    simWorker = new SimulationWorker();
+    simWorker.postMessage({ type: 'init', canvas: offscreen }, [offscreen]);
+    simWorker.onmessage = (e) => {
+        if (e.data.type === 'fps') {
+            const fpsDisplay = document.getElementById('canvasFpsDisplay');
+            if (fpsDisplay) fpsDisplay.textContent = e.data.fps.toFixed(1);
+        }
+    };
 }
 
 /**
