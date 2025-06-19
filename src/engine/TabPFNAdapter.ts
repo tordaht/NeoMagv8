@@ -2,10 +2,14 @@
 // TabPFN Adapter - Kelime Analizi ve Öneri Sistemi
 import trainingDataJson from '../data/consciousness_training_data.json' assert { type: 'json' };
 import * as tf from '@tensorflow/tfjs';
+import { ModelService } from '@/services/ModelService.ts';
 
 
 export class TabPFNAdapter {
-    constructor() {
+    private modelService: ModelService;
+
+    constructor(modelService: ModelService) {
+        this.modelService = modelService;
         this.isReady = false;
         this.model = null;
         this.trainingData = [];
@@ -39,7 +43,7 @@ export class TabPFNAdapter {
                 }
 
                 try {
-                    this.model = await tf.loadGraphModel('models/tabpfn/model.json');
+                    this.model = await this.modelService.loadModel();
                 } catch (modelErr) {
                     console.error('❌ GraphModel yüklenemedi:', modelErr);
                     this.model = null;
@@ -279,5 +283,6 @@ export class TabPFNAdapter {
     }
 }
 
-// Global instance
-export const tabPFNAdapter = new TabPFNAdapter(); 
+// Global instance with model service
+const tabPFNModelService = new ModelService('https://cdn.example.com/neomag', 'latest');
+export const tabPFNAdapter = new TabPFNAdapter(tabPFNModelService);
