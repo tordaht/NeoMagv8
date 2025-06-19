@@ -3,6 +3,7 @@
 import trainingDataJson from '../data/consciousness_training_data.json' assert { type: 'json' };
 import * as tf from '@tensorflow/tfjs';
 
+
 export class TabPFNAdapter {
     constructor() {
         this.isReady = false;
@@ -43,6 +44,7 @@ export class TabPFNAdapter {
                     console.error('❌ GraphModel yüklenemedi:', modelErr);
                     this.model = null;
                 }
+
             }
             
             this.isReady = true;
