@@ -1,9 +1,10 @@
 const CACHE = new Map();
 
 /**
- * Summarize the last window of messages.
- * Results are cached to avoid repeated worker computation.
- * @param {Array<{text:string}>} messages
+ * Summarize the last up to 5 messages.
+ * The function delegates heavy text work to a Web Worker and caches
+ * the result keyed by the JSON representation of the message window.
+ * @param {{ sender: string, text: string }[]} messages
  * @returns {Promise<string>}
  */
 export async function summarize(messages = []) {
@@ -20,11 +21,4 @@ export async function summarize(messages = []) {
   CACHE.set(key, summary);
   return summary;
 }
-
-/**
- * Example:
- * @example
- * const summary = await summarize([{text:'merhaba'}]);
- * console.log(summary);
- */
 

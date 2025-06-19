@@ -1,0 +1,115 @@
+# NeoMagv8 Project Manifest
+
+```
+- 📄 CLEANUP_REPORT.md — cleanup notes
+- 📄 Dockerfile — container configuration
+- 📁 GitHub_mnBac_Project — empty project folder
+- 📄 HATA_COZUMLERI.txt — troubleshooting tips in Turkish
+- 📁 PyEcoLib — placeholder for Python library
+- 📄 README.md — project overview
+- 📄 project_manifest.md — directory tree and file descriptions
+- 📄 SAKALAR.csv — joke dataset
+- 📁 analytics_data — logs and analytics
+  - `comprehensive_error_analysis.md` — deep error analysis
+  - `current_status_summary.md` — current project status
+  - `error_solutions_database.csv` — known solutions
+  - `legacy_hata_cozumleri_v1.txt` — legacy fixes v1
+  - `legacy_hata_cozumleri_v2.txt` — legacy fixes v2
+  - `logs.jsonl` — execution logs
+  - `new_error_template.csv` — template for error tracking
+  - `tabpfn_training_metadata.json` — TabPFN training meta
+  - `test_results.json` — test logs
+  - `version_tracking.json` — version metadata
+- 📁 backups — historical backups
+  - `mnBac_fixed_v821_backup.html` — v821 HTML snapshot
+  - 📁 v8.5.0_pre_test — early backup
+    - `BACKUP_INFO.md` — info for backup
+    - 📁 analytics_data — snapshot logs
+    - `mnBac_v8.5.0_pre_test.html` — full HTML backup
+  - 📁 v9.6.3_llm_level1_backup — LLM level 1
+    - `.github/workflows/deploy.yml` — CI config
+    - `.gitignore` — ignore rules
+    - `CLEANUP_REPORT.md` — cleanup log
+    - `HATA_COZUMLERI.txt` — fixes
+    - `README.md` — backup readme
+    - `SAKALAR.csv` — jokes copy
+    - 📁 analytics_data — logs
+    - `favicon.ico` — icon
+    - `index.html` — backup page
+    - `package.json` — backup package file
+    - 📁 public — backup public assets
+    - 📁 src — backup source
+  - 📁 v9.6.3_llm_level1_backup_20250607_152220 — dated copy
+- 📄 cleanupRepo.js — cleanup script
+- 📄 eslint.config.js — ESLint setup
+- 📄 favicon.ico — site icon
+- 📄 index.html — main HTML demo
+- 📁 mnBac_v9.7.1_Backup — empty backup folder
+- 📄 package-lock.json — npm lockfile
+- 📄 package.json — npm manifest
+- 📁 public — frontend static files
+  - `index.html` — browser UI
+  - `main.js` — entry script
+- 📁 src — project source code
+  - 📁 config — configuration files
+    - `SystemConfig.js` — core settings
+  - 📁 data — training datasets
+    - `consciousness_training_data.json` — AI training data
+    - `semantic_fields.json` — semantic field map
+  - 📁 engine — language and simulation logic
+    - `AITrainingAdapter.ts` — AI training helper
+    - `CharacterProfile.js` — personality tone injector
+    - `ContextSummarizer.js` — summarizes chat context
+    - `EnhancedMorphologicalGenerator.ts` — improved morphology gen
+    - `EnhancedTabPFN.ts` — TabPFN model wrapper
+    - `IntentExtractor.js` — extracts user intent
+    - `LanguageEngine.js` — builds bot replies
+    - `LanguageEvolutionEngine.ts` — evolution engine
+    - `MorphologicalDialogueGenerator.ts` — morphological sentences
+    - `MorphologyEngine.ts` — morphological processor
+    - `PersistentLearningEngine.ts` — long-term learning
+    - `SimulationManager.js` — minimal sim logic
+    - `TabPFGenAdapter.ts` — TabPF generator adapter
+    - `TabPFNAdapter.ts` — TabPFN adapter
+    - `TabPFNFineTuner.ts` — fine-tuner
+    - `TurkceDialogueGenerator.ts` — Turkish dialogue
+    - `WordSuccessTracker.ts` — word tracking helper
+    - 📁 core — dynamic lexicon modules
+      - `DynamicLexicon.ts` — lexical store
+    - `index.js` — engine bootstrap
+    - 📁 workers — web workers
+      - `summarizerWorker.js` — offloads summary logic
+  - `main.js` — browser bootstrap
+  - 📁 managers — high-level controllers
+    - `SimulationManager.js` — simulation orchestrator
+    - `UserInteractionManager.js` — handles UI events
+  - 📁 server — Express backend
+    - `api.js` — REST endpoints
+    - `index.js` — server entry
+    - `logger.js` — logging util
+    - `simulationService.js` — simulation API service
+    - `websocket.js` — websocket server
+  - 📁 services — service layer
+    - `ModelService.ts` — ML model operations
+  - `simulationWorker.js` — WebWorker for simulation
+  - 📁 styles — global styles
+    - `style.css` — basic styling
+  - `types.ts` — TypeScript types
+  - 📁 utils — utility modules
+    - `RingBuffer.js` — JS ring buffer
+    - `RingBuffer.ts` — TS ring buffer
+    - `sampling.ts` — sampling helpers
+    - `semanticFields.ts` — semantic data loader
+- 📁 tests — unit tests
+  - `RingBuffer.test.js` — buffer tests
+- `tsconfig.json` — TypeScript config
+- 📁 versions — archived HTML versions
+  - `mnBac-v821.html` — version 8.21
+  - `mnBac-v822.html` — version 8.22
+  - `mnBac-v824.html` — version 8.24
+  - `mnBac-v825.html` — version 8.25
+  - `mnBac-v826-final.html` — final 8.26
+  - `mnBac-v826.html` — version 8.26
+  - `mnBac-v830.html` — version 8.30
+- `vite.config.js` — Vite bundler config
+```
