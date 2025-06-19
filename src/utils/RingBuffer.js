@@ -4,6 +4,7 @@
 
 import { RUNTIME_CONFIG } from '../config/SystemConfig.js';
 
+
 export class RingBuffer {
     constructor(maxSize = 100) {
         this.maxSize = maxSize;
@@ -29,6 +30,7 @@ export class RingBuffer {
         }
 
         this.isFull = this.size >= this.maxSize;
+
         
         return this;
     }
