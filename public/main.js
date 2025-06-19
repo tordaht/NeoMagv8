@@ -42,7 +42,7 @@ async function onUserMessage() {
   displayIndicator();
   if (!summarize) {
     ({ summarize } = await import(/* webpackChunkName:"summarizer" */ '../src/engine/ContextSummarizer.js'));
-    ({ default: CharacterProfile } = await import('../src/engine/CharacterProfile.js'));
+    ({ CharacterProfile } = await import('../src/engine/CharacterProfile.js'));
     ({ generateAnswer } = await import('../src/engine/LanguageEngine.js'));
   }
   const summary = await summarize(chatHistory);

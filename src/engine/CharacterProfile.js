@@ -1,7 +1,6 @@
 /**
- * Character profile used to apply personality-driven tone to generated text.
- * Each tone has predefined phrases injected into answers to create lively
- * conversations.
+ * Adds personality tone to bot replies.
+ * Each tone has predefined phrases that are randomly injected.
  */
 const TONE_PHRASES = {
   curious: [
@@ -18,14 +17,13 @@ const TONE_PHRASES = {
   ]
 };
 
-export default class CharacterProfile {
+export class CharacterProfile {
   constructor(id, tone) {
     this.id = id;
     this.tone = tone;
   }
-
   /**
-   * Inject 1-2 phrases based on tone into the provided text.
+   * Inject 1–2 tone-specific phrases into text.
    * @param {string} text
    * @returns {string}
    */
@@ -40,11 +38,4 @@ export default class CharacterProfile {
     return result;
   }
 }
-
-/**
- * Example:
- * @example
- * const profile = new CharacterProfile('Bakteri-2', 'curious');
- * console.log(profile.applyTone('Merhaba dunya.'));
- */
 
