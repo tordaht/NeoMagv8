@@ -4,7 +4,6 @@ const CACHE = new Map();
  * Summarize the last up to 5 messages.
  * The function delegates heavy text work to a Web Worker and caches
  * the result keyed by the JSON representation of the message window.
-
  * @param {{ sender: string, text: string }[]} messages
  * @returns {Promise<string>}
  */

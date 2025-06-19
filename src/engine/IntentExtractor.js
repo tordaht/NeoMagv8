@@ -9,7 +9,6 @@ export function extractIntent(text = '') {
   const lower = text.toLowerCase();
   if (CACHE.has(lower)) return CACHE.get(lower);
 
-
   // Map keywords to high level intents
   const KEYWORD_INTENTS = {
     // selam/merhaba/hello/nasılsın -> greeting intent
@@ -38,6 +37,5 @@ export function extractIntent(text = '') {
   const result = { intent, entities };
   CACHE.set(lower, result);
   return result;
-
 }
 

@@ -6,7 +6,6 @@
  * curious     -> ["Hmm, ilginç!", "Merak ettim!"]
  * playful     -> ["Haha!", "Çok eğlenceli."]
  * scientific  -> ["Bilimsel olarak", "Araştırmalara göre"]
-
  */
 const TONE_PHRASES = {
   curious: [

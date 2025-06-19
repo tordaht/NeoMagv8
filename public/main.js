@@ -3,13 +3,14 @@ let CharacterProfile;
 let generateAnswer;
 
 const chatHistory = [];
+window.chatHistory = chatHistory;
 
 const chatInput = document.getElementById('chatInput');
 const sendBtn = document.getElementById('sendMessageBtn');
 const messagesDiv = document.getElementById('chatMessages');
 const indicator = document.getElementById('chatLoadingIndicator');
 
-function displayIndicator(status) {
+function showIndicator(status) {
   indicator.textContent = status || '';
   indicator.classList.remove('hidden');
 }
@@ -18,7 +19,7 @@ function hideIndicator() {
   indicator.classList.add('hidden');
 }
 
-function displayBotReply(text) {
+function renderBotReply(text) {
   requestIdleCallback(() => addMessage('Bakteri', text, 'bacteria'));
 }
 
@@ -40,7 +41,8 @@ async function onUserMessage() {
   addMessage('Sen', msg, 'user');
   chatHistory.push({ sender: 'user', text: msg });
 
-  displayIndicator('thinking');
+  showIndicator('thinking');
+
   if (!summarize) {
     ({ summarize } = await import(/* webpackChunkName:"summarizer" */ '../src/engine/ContextSummarizer.js'));
     ({ CharacterProfile } = await import('../src/engine/CharacterProfile.js'));
@@ -51,7 +53,7 @@ async function onUserMessage() {
   hideIndicator();
 
   chatHistory.push({ sender: 'bacteria', text: reply });
-  displayBotReply(reply);
+  renderBotReply(reply);
 }
 
 sendBtn?.addEventListener('click', onUserMessage);
@@ -70,5 +72,5 @@ export { summarize, CharacterProfile, generateAnswer };
 //   const summary = await summarize(chatHistory);
 //   const profile = new CharacterProfile('Bakteri-2', 'curious');
 //   const reply = await generateAnswer(userMsg, summary, profile);
-//   displayBotReply(reply);
+//   renderBotReply(reply);
 // }

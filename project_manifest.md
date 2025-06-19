@@ -7,6 +7,7 @@
 - 📄 HATA_COZUMLERI.txt — troubleshooting tips in Turkish
 - 📁 PyEcoLib — placeholder for Python library
 - 📄 README.md — project overview
+- 📄 project_manifest.md — directory tree and file descriptions
 - 📄 SAKALAR.csv — joke dataset
 - 📁 analytics_data — logs and analytics
   - `comprehensive_error_analysis.md` — deep error analysis
