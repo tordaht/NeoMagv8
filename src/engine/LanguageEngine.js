@@ -32,3 +32,4 @@ export async function generateAnswer(userMsg, contextSummary, profile) {
   return `${sentence1} ${sentence2} ${sentence3}`;
 }
 
+

@@ -14,6 +14,7 @@ self.onmessage = e => {
 
   const filler = new Set([
     'the','a','an','and','ve','ile','i\u00e7in','mi','m\u0131','mu','m\u00fc','bir','da','de'
+
   ]);
   const filtered = cleaned.filter(w => !filler.has(w));
   const summary = filtered.slice(0, 20).join(' ');
