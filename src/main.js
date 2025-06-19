@@ -10,6 +10,7 @@
 
 // Styles import
 import './styles/style.css';
+import * as tf from '@tensorflow/tfjs';
 
 // Core modules
 import { loadSemanticFields } from '@/utils/semanticFields.ts';
@@ -28,7 +29,11 @@ let simWorker = null;
 async function bootstrap() {
     try {
         console.log('🚀 NeoMag AI Bakteri Comedy Show başlatılıyor...');
-        
+
+        await tf.setBackend('webgl');
+        await tf.ready();
+        console.log(`✅ TensorFlow.js backend: ${tf.getBackend()}`);
+
         // 1. Semantic fields yükle
         await loadSemanticFields();
         console.log('✅ Semantic fields yüklendi');
