@@ -34,6 +34,7 @@ export async function generateAnswer(userMsg, _contextSummary, profile) {
   const sentence2 = context
     ? `Son konuşmalara göre \`${entityPart}\` geçiyor ve özetle ${context}.`
     : `Sözleriniz \`${entityPart}\` ile ilgili.`;
+
   const sentence3 = profile.applyTone('Umar\u0131m yard\u0131mc\u0131 olabildim.');
 
   return `${sentence1} ${sentence2} ${sentence3}`;
