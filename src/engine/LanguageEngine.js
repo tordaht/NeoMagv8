@@ -37,7 +37,10 @@ function extractIntent(text) {
 }
 
 export async function generateAnswer(userMsg, contextSummary, profile) {
-  const { intent, entities } = await extractIntent(userMsg);
+  const timeout = new Promise(res => setTimeout(() => res({ intent: 'statement', entities: [] }), 50));
+  const [{ intent, entities }] = await Promise.all([
+    Promise.race([extractIntent(userMsg), timeout])
+  ]);
 
   const acknowledge = intent === 'question'
     ? 'Sorunu anladım.'
