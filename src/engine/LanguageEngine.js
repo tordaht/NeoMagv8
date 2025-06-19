@@ -1,56 +1,90 @@
-const intentCache = new Map();
-let regexWorker = null;
+const extractionCache = new Map();
+const templateCache = new Map();
+let worker;
 
-function getRegexWorker() {
-  if (!regexWorker) {
-    const blob = new Blob([
-      `self.onmessage = e => {\n` +
-      `  const text = (e.data || '').toLowerCase();\n` +
-      `  const result = {};\n` +
-      `  result.intent = /\b(nas\u0131l|neden|what|why|when|how|\?)\b/.test(text) ? 'question' : 'statement';\n` +
-      `  const entities = [];\n` +
-      `  if (/bakteri/.test(text)) entities.push('bacteria');\n` +
-      `  if (/yemek|besin/.test(text)) entities.push('food');\n` +
-      `  result.entities = entities;\n` +
-      `  self.postMessage(result);\n` +
-      `};`
-    ], { type: 'application/javascript' });
-    regexWorker = new Worker(URL.createObjectURL(blob));
+function getWorker() {
+  if (!worker) {
+    worker = new Worker(new URL('./workers/summarizerWorker.js', import.meta.url));
   }
-  return regexWorker;
+  return worker;
 }
 
-function extractIntent(text) {
+function localRegex(text) {
+  const lower = text.toLowerCase();
+  const intent = /\b(nasıl|neden|what|why|when|how|\?)\b/.test(lower)
+    ? 'question'
+    : 'statement';
+  const entities = [];
+  if (/bakteri/.test(lower)) entities.push('bacteria');
+  if (/yemek|besin/.test(lower)) entities.push('food');
+  return { intent, entities };
+}
+
+async function regexExtract(text) {
   const key = text.toLowerCase();
-  if (intentCache.has(key)) return Promise.resolve(intentCache.get(key));
+  if (extractionCache.has(key)) return extractionCache.get(key);
 
-  return new Promise(resolve => {
-    const worker = getRegexWorker();
-    const handler = e => {
-      worker.removeEventListener('message', handler);
-      intentCache.set(key, e.data);
-      resolve(e.data);
-    };
-    worker.addEventListener('message', handler);
-    worker.postMessage(text);
-  });
+  const start = Date.now();
+  const result = localRegex(text);
+  const duration = Date.now() - start;
+
+  if (duration > 50) {
+    const w = getWorker();
+    const workerResult = await new Promise(res => {
+      const handler = e => {
+        w.removeEventListener('message', handler);
+        res(e.data);
+      };
+      w.addEventListener('message', handler);
+      w.postMessage({ type: 'regex', text });
+    });
+    extractionCache.set(key, workerResult);
+    return workerResult;
+  }
+
+  extractionCache.set(key, result);
+  return result;
 }
 
+function selectTemplate(intent) {
+  if (templateCache.has(intent)) return templateCache.get(intent);
+  const templates = {
+    question: ['Merak ettiğini anlıyorum.', 'Güzel bir soru!'],
+    statement: ['İlginç bir nokta.', 'Anladım.']
+  };
+  const arr = templates[intent] || templates.statement;
+  const chosen = arr[Math.floor(Math.random() * arr.length)];
+  templateCache.set(intent, chosen);
+  return chosen;
+}
+
+/**
+ * Generate a context aware answer.
+ * @param {string} userMsg
+ * @param {string} contextSummary
+ * @param {import('./CharacterProfile.js').default} profile
+ */
 export async function generateAnswer(userMsg, contextSummary, profile) {
-  const timeout = new Promise(res => setTimeout(() => res({ intent: 'statement', entities: [] }), 50));
-  const [{ intent, entities }] = await Promise.all([
-    Promise.race([extractIntent(userMsg), timeout])
+  const intentPromise = regexExtract(userMsg);
+  const templatePromise = intentPromise.then(r => selectTemplate(r.intent));
+  const [{ intent, entities }, template] = await Promise.all([
+    intentPromise,
+    templatePromise
   ]);
 
-  const acknowledge = intent === 'question'
-    ? 'Sorunu anladım.'
-    : 'Bahsettiğin konu ilgimi çekti.';
-
-  const fact = entities.includes('bacteria')
-    ? `Sohbet geçmişinde öne çıkanlar: ${contextSummary || 'henüz veri yok.'}`
-    : 'Bu konuda daha fazla detay paylaşabilirim.';
-
-  const toneSentence = profile.applyTone('Umarım bu bilgi işine yarar.');
-
-  return [acknowledge, fact, toneSentence].join(' ');
+  const first = template;
+  const second = contextSummary
+    ? `Geçmiş özet: ${contextSummary}.`
+    : 'Bu konuda daha fazla paylaşabilirsin.';
+  const combined = `${first} ${second}`;
+  return profile.applyTone(combined);
 }
+
+/**
+ * Example:
+ * @example
+ * const profile = new CharacterProfile('b1', 'playful');
+ * const reply = await generateAnswer('Nasılsın?', 'Özet', profile);
+ * console.log(reply);
+ */
+

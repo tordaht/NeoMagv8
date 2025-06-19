@@ -8,7 +8,7 @@ import express from 'express';
 import http from 'http';
 import api from './api.js';
 import { setupWebsocket } from './websocket.js';
-import { manager } from './simulationService.js';
+import { startBackground, stopBackground } from './simulationService.js';
 
 const app = express();
 app.use(express.json());
@@ -16,6 +16,7 @@ app.use('/', api);
 
 const server = http.createServer(app);
 setupWebsocket(server);
+await startBackground();
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
@@ -24,8 +25,9 @@ server.listen(PORT, () => {
 
 function shutdown() {
   console.log('Shutting down...');
-  manager.stop();
+  stopBackground();
   server.close(() => process.exit(0));
 }
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
+

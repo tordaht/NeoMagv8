@@ -1,28 +1,31 @@
-self.onmessage = (e) => {
+self.onmessage = e => {
+  if (e.data && e.data.type === 'regex') {
+    const text = (e.data.text || '').toLowerCase();
+    const intent = /\b(nasıl|neden|what|why|when|how|\?)\b/.test(text)
+      ? 'question'
+      : 'statement';
+    const entities = [];
+    if (/bakteri/.test(text)) entities.push('bacteria');
+    if (/yemek|besin/.test(text)) entities.push('food');
+    self.postMessage({ intent, entities });
+    return;
+  }
+
   const messages = e.data || [];
-  const summary = summarize(messages);
+  const joined = messages.map(m => m.text).join(' ');
+  const words = joined
+    .toLowerCase()
+    .replace(/[.,!?]/g, '')
+    .split(/\s+/)
+    .filter(Boolean);
+  const filler = new Set(['the','a','an','and','ve','ile','için','mi','mı','mu','mü','bir','da','de']);
+  const filtered = words.filter(w => !filler.has(w));
+  const summary = filtered.slice(0, 20).join(' ');
   self.postMessage(summary);
 };
 
-const stopWords = new Set([
-  'the','a','an','and','ve','ile','için','mi','mı','mu','mü','bir','da','de'
-]);
+/**
+ * @example
+ * // Used internally by ContextSummarizer
+ */
 
-function summarize(messages) {
-  const freq = Object.create(null);
-  for (const { text } of messages) {
-    const words = (text || '')
-      .toLowerCase()
-      .match(/\p{L}+/gu) || [];
-    for (const w of words) {
-      if (!stopWords.has(w)) freq[w] = (freq[w] || 0) + 1;
-    }
-  }
-  const keywords = Object.entries(freq)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
-    .map(([w]) => w);
-  return keywords.length
-    ? `Öne çıkan kelimeler: ${keywords.join(', ')}`
-    : '';
-}
