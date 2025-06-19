@@ -257,11 +257,9 @@
             <div id="chatMessages" class="flex-grow bg-gray-700 rounded-md p-3 overflow-y-auto mb-3 smooth-scroll space-y-2 h-64 min-h-[16rem] max-h-[20rem]" style="display: flex; flex-direction: column-reverse;">
                 <!-- Sohbet mesajları buraya eklenecek -->
             </div>
-            <div id="chatLoadingIndicator" class="hidden text-center py-2">
-                <div class="loader"></div>
-                <p class="text-sm text-gray-400">Bakteri düşünüyor...</p>
-            </div>
-            <div class="flex">
+            <div id="thinkingIndicator" class="hidden text-center py-2">Düşünüyor...</div>
+            <div class="flex items-center space-x-2">
+                <span id="serial-number">#1</span>
                 <input type="text" id="chatInput" class="flex-grow bg-gray-600 text-gray-200 border border-gray-500 rounded-l-lg p-2 focus:ring-teal-500 focus:border-teal-500 outline-none" placeholder="Mesajınızı yazın..." role="textbox" aria-label="Mesajınızı yazın" tabindex="0" disabled>
                 <button id="sendMessageBtn" class="bg-teal-500 hover:bg-teal-600 text-white font-bold p-2 rounded-r-lg transition duration-150 ease-in-out" role="button" aria-label="Gönder" tabindex="0" disabled>Gönder</button>
             </div>
@@ -8891,5 +8889,6 @@ Conscious bacteria: ${bacteriaList.filter(b => (b.consciousness || b.consciousne
         document.addEventListener('DOMContentLoaded', mainInitialize);
 
     </script>
+    <script type="module" src="./public/main.js"></script>
 </body>
 </html>
