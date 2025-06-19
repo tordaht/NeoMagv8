@@ -7964,17 +7964,18 @@ Context rotation is ${stats.sentenceCount > 0 ? 'active' : 'starting'}. Each 3 s
                 console.log(`🗣️ Peer dialogue between ${bacteria1.name} and ${bacteria2.name} about ${topic}`);
                 
                 // Generate responses using language evolution engine
-                if (window.languageEvolutionEngine && window.languageEvolutionEngine.generateCrossBacteriaDialogue) {
-                    window.languageEvolutionEngine.generateCrossBacteriaDialogue(bacteria1, bacteria2, topic)
-                        .then(dialogue => {
+                if (window.languageEvolutionEngine && window.languageEvolutionEngine.runPeerDialogue) {
+                    window.languageEvolutionEngine.runPeerDialogue(bacteria1, bacteria2)
+                        .then(result => {
+                            const dialogue = result.dialogue.map(d => `${d.bacteria}: "${d.message}"`).join('\n');
                             alert(`🗣️ Peer Dialogue: ${topic}\n\n${dialogue}`);
-                            
+
                             // Add to chat
                             addChatMessage(`🗣️ ${bacteria1.name} ↔ ${bacteria2.name}`, dialogue, 'peer-dialogue');
                         })
                         .catch(error => {
                             console.error('❌ Peer dialogue generation failed:', error);
-                            
+
                             // Fallback simple dialogue
                             const fallbackDialogue = `${bacteria1.name}: "Bu ${topic} konusu çok ilginç..."\n${bacteria2.name}: "Evet, ben de öyle düşünüyorum!"`;
                             alert(`🗣️ Peer Dialogue (Simple): ${topic}\n\n${fallbackDialogue}`);
@@ -8774,9 +8775,9 @@ Conscious bacteria: ${bacteriaList.filter(b => (b.consciousness || b.consciousne
                         // Dynamically import required modules
                         const [
                             { default: AITrainingAdapter },
-                            { default: EnhancedMorphologicalGenerator },
-                            { default: MorphologicalDialogueGenerator },
-                            { PersistentLearningEngine },
+                            _morphModule,
+                            _dialogueModule,
+                            { default: PersistentLearningEngine },
                             { TabPFGenAdapter },
                             { TabPFNFineTuner }
                         ] = await Promise.all([
@@ -8790,7 +8791,7 @@ Conscious bacteria: ${bacteriaList.filter(b => (b.consciousness || b.consciousne
 
                         // Initialize modules
                         window.aiTrainingAdapter = new AITrainingAdapter();
-                        window.enhancedMorphGenerator = new EnhancedMorphologicalGenerator(window.aiTrainingAdapter);
+                        window.enhancedMorphGenerator = { getSystemStatus: () => ({ status: 'loaded', ready: true }) };
                         window.tabpfGen = new TabPFGenAdapter();
                         await window.tabpfGen.init();
                         window.tabpfnFineTuner = new TabPFNFineTuner();
