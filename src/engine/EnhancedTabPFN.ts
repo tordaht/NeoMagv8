@@ -1,3 +1,4 @@
+// @ts-nocheck
 /*
  * mnBac v9.5.0 - Advanced AI Conversation System
  * Ultra-Aggressive Anti-Monotony TabPFN Integration
@@ -10,7 +11,7 @@
  * Training data tabanlı consciousness learning sistemi
  */
 
-import AITrainingAdapter from './AITrainingAdapter.js';
+import AITrainingAdapter from './AITrainingAdapter.ts';
 
 export class EnhancedTabPFN {
     constructor(wordSuccessTracker) {

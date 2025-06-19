@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * 🚀 Enhanced Morphological Dialogue Generator v2.7
  * 

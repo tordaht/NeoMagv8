@@ -12,7 +12,7 @@
 import './styles/style.css';
 
 // Core modules
-import { loadSemanticFields } from '@/utils/semanticFields.js';
+import { loadSemanticFields } from '@/utils/semanticFields.ts';
 import { simulationManager } from '@/managers/SimulationManager.js';
 import UserInteractionManager from '@/managers/UserInteractionManager.js';
 

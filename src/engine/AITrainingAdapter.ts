@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * 🧠 AI Training Adapter - Bakterinin Bilinç Eğitim Sistemi
  * 
@@ -5,7 +6,7 @@
  * Few-shot learning ve multilabel eğitim yaklaşımları
  */
 
-import { generateMorphSentence, generateMorphDialogue, addCase, LEXICON } from './MorphologicalDialogueGenerator.js';
+import { generateMorphSentence, generateMorphDialogue, addCase, LEXICON } from './MorphologicalDialogueGenerator.ts';
 
 class AITrainingAdapter {
     constructor() {

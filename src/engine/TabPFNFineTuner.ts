@@ -1,3 +1,4 @@
+// @ts-nocheck
 /*
  * TabPFNFineTuner - Lightweight fine-tuning helper for TabPFN models
  * Inspired by LennartPurucker/finetune_tabpfn_v2, adapted for browser usage.

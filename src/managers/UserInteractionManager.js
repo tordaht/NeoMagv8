@@ -5,9 +5,9 @@
  * Date: December 19, 2024
  */
 
-import { languageEvolutionEngine } from '@/engine/LanguageEvolutionEngine.js';
-import { getContextualWord } from '@/utils/semanticFields.js';
-import { turkceDialogueGenerator } from '@/engine/TurkceDialogueGenerator.js';
+import { languageEvolutionEngine } from '@/engine/LanguageEvolutionEngine.ts';
+import { getContextualWord } from '@/utils/semanticFields.ts';
+import { turkceDialogueGenerator } from '@/engine/TurkceDialogueGenerator.ts';
 import { RUNTIME_CONFIG } from '../config/SystemConfig.js';
 
 export default class UserInteractionManager {
