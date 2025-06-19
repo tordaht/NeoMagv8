@@ -42,12 +42,11 @@ async function onUserMessage() {
   displayIndicator();
   if (!summarize) {
     ({ summarize } = await import(/* webpackChunkName:"summarizer" */ '../src/engine/ContextSummarizer.js'));
-    ({ default: CharacterProfile } = await import('../src/engine/CharacterProfile.js'));
+    ({ CharacterProfile } = await import('../src/engine/CharacterProfile.js'));
     ({ generateAnswer } = await import('../src/engine/LanguageEngine.js'));
   }
-  const summary = await summarize(chatHistory);
   const profile = new CharacterProfile('Bakteri-2', 'curious');
-  const reply = await generateAnswer(msg, summary, profile);
+  const reply = await generateAnswer(msg, chatHistory, profile);
   hideIndicator();
 
   chatHistory.push({ sender: 'bacteria', text: reply });
