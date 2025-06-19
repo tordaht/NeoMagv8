@@ -1,6 +1,8 @@
 // @ts-nocheck
 // TabPFN Adapter - Kelime Analizi ve Öneri Sistemi
 import trainingDataJson from '../data/consciousness_training_data.json' assert { type: 'json' };
+import * as tf from '@tensorflow/tfjs';
+
 
 export class TabPFNAdapter {
     constructor() {
@@ -20,22 +22,29 @@ export class TabPFNAdapter {
             // Training data yükle ve bağlam haritası oluştur
             this._loadContextWordMap(trainingDataJson.training_data || []);
 
-            // TensorFlow.js modeli yüklemesi (mock olarak başlatıyoruz)
             if (typeof tf !== 'undefined') {
-                // Basit bir sequential model oluşturalım
-                this.model = tf.sequential({
-                    layers: [
-                        tf.layers.dense({ inputShape: [10], units: 32, activation: 'relu' }),
-                        tf.layers.dense({ units: 16, activation: 'relu' }),
-                        tf.layers.dense({ units: 8, activation: 'softmax' })
-                    ]
-                });
-                
-                this.model.compile({
-                    optimizer: 'adam',
-                    loss: 'categoricalCrossentropy',
-                    metrics: ['accuracy']
-                });
+                try {
+                    await tf.setBackend('webgl');
+                    await tf.ready();
+                } catch (err) {
+                    console.warn('⚠️ WebGL backend kullanılamıyor, wasm\u2019a geçiliyor');
+                    try {
+                        await tf.setBackend('wasm');
+                        await tf.ready();
+                    } catch (wasmErr) {
+                        console.error('❌ WASM backend de başarısız, CPU kullanılacak');
+                        await tf.setBackend('cpu');
+                        await tf.ready();
+                    }
+                }
+
+                try {
+                    this.model = await tf.loadGraphModel('models/tabpfn/model.json');
+                } catch (modelErr) {
+                    console.error('❌ GraphModel yüklenemedi:', modelErr);
+                    this.model = null;
+                }
+
             }
             
             this.isReady = true;
