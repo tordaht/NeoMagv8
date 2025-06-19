@@ -1,48 +1,42 @@
-import { EventEmitter } from 'node:events';
-import { SimulationManager } from '../engine/SimulationManager.js';
-
 /**
- * Node.js background simulation service.
- * Running the simulation on the server ensures expensive ticks do not block
- * the browser event loop while still allowing real-time updates through the
- * {@link simulationEvents} emitter.
  * @module simulationService
+ * @description
+ * Runs the bacterial simulation in the background at 60 FPS and emits autonomous dialogues.
  */
-export const simulationEvents = new EventEmitter();
 
-/** @type {SimulationManager} */
-export let manager;
-let tickInterval;
-let talkInterval;
+import { EventEmitter } from 'events';
+import SimulationManager from '../engine/SimulationManager.js';
+
+const simulationEvents = new EventEmitter();
 
 /**
- * Start the continuous background simulation.
- * @returns {Promise<void>}
+ * Starts the background simulation loop and autonomous dialogues.
+ * @returns {EventEmitter} An EventEmitter that emits 'tick' and 'dialogue' events.
  */
-export async function startBackground() {
-  manager = new SimulationManager();
-  tickInterval = setInterval(() => manager.tick(), 1000 / 60);
-  talkInterval = setInterval(() => {
-    const pair = manager.pickRandomPair();
-    if (pair.length === 2) {
-      const [a, b] = pair;
-      const msg = manager.talk(a, b);
-      manager.receive(b, msg, a);
-      simulationEvents.emit('newMessage', { from: a.id, to: b.id, text: msg });
-    }
+export function startBackgroundSimulation() {
+  const manager = new SimulationManager();
+
+  // 60 FPS simulation tick loop
+  const tickInterval = setInterval(() => {
+    manager.tick();
+    simulationEvents.emit('tick', manager.getState());
+  }, 1000 / 60);
+
+  // Every 4 seconds, have two random bacteria talk
+  const dialogueInterval = setInterval(() => {
+    const [a, b] = manager.pickRandomPair();
+    const msg = manager.talk(a, b);
+    manager.receive(b, msg, a);
+    simulationEvents.emit('dialogue', { from: a.id, to: b.id, message: msg });
   }, 4000);
+
+  // Provide a stop function for cleanup
+  simulationEvents.once('stop', () => {
+    clearInterval(tickInterval);
+    clearInterval(dialogueInterval);
+  });
+
+  return simulationEvents;
 }
 
-/** Stop the simulation loops */
-export function stopBackground() {
-  clearInterval(tickInterval);
-  clearInterval(talkInterval);
-}
-
-/**
- * Example usage:
- * @example
- * import { startBackground } from './simulationService.js';
- * startBackground();
- */
-
+export default simulationEvents;

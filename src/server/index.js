@@ -1,35 +1,40 @@
+#!/usr/bin/env node
 /**
- * Entry point of the server side architecture. The HTTP API exposes the current
- * state of the simulation while a websocket broadcasts bacteria-to-bacteria
- * communication. A lightweight simulation service continuously mutates the
- * environment in the background.
+ * @file index.js
+ * @description
+ * Boots the background simulation service and handles graceful shutdown.
  */
-import express from 'express';
+
 import http from 'http';
-import api from './api.js';
-import { setupWebsocket } from './websocket.js';
-import { startBackground, stopBackground } from './simulationService.js';
+import express from 'express';
+import simulationEvents, { startBackgroundSimulation } from './simulationService.js';
 
 const app = express();
-app.use(express.json());
-app.use('/', api);
-
 const server = http.createServer(app);
-setupWebsocket(server);
-(async () => {
-  await startBackground();
-})();
 
-const PORT = process.env.PORT || 3000;
+// Start the simulation in the background
+startBackgroundSimulation();
+simulationEvents.on('tick', state => console.log('tick', state.population.length));
+simulationEvents.on('dialogue', d => console.log('dialogue', d));
+
+// Optional: expose a health endpoint
+app.get('/health', (req, res) => res.send({ status: 'running' }));
+
+// Start HTTP server
+const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+  console.log(`Background simulation service listening on port ${PORT}`);
 });
 
+// Handle graceful shutdown
 function shutdown() {
-  console.log('Shutting down...');
-  stopBackground();
-  server.close(() => process.exit(0));
+  console.log('Shutting down simulation service...');
+  simulationEvents.emit('stop');
+  server.close(() => {
+    console.log('HTTP server closed. Exiting process.');
+    process.exit(0);
+  });
 }
+
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
-
