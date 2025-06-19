@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Turkish Morphology Engine
  * Türkçe morfoloji kuralları: ünlü uyumu, ünsüz benzeşmesi, ek üretimi

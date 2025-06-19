@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * 🧬 mnBac v9.5.0 - Ultra-Aggressive Anti-Monotony Language Evolution Engine
  * Production-Ready Maximum Diversity System
@@ -5,15 +6,16 @@
  */
 
 // Language Evolution Engine - Enterprise v4.0 - Modular & Memory-Efficient
-import { tabPFNAdapter } from './TabPFNAdapter.js';
-import { wordSuccessTracker } from './WordSuccessTracker.js';
-import { turkceDialogueGenerator } from './TurkceDialogueGenerator.js';
-import { EnhancedTabPFN } from './EnhancedTabPFN.js';
-import { tabPFGenAdapter } from './TabPFGenAdapter.js';
-import { tabpfnFineTuner } from './TabPFNFineTuner.js';
-import { topKSample, calculateNoveltyScore, calculateContextDrift, adjustStyleByMood } from '../utils/sampling.js';
+import { tabPFNAdapter } from './TabPFNAdapter.ts';
+import { wordSuccessTracker } from './WordSuccessTracker.ts';
+import { turkceDialogueGenerator } from './TurkceDialogueGenerator.ts';
+import { EnhancedTabPFN } from './EnhancedTabPFN.ts';
+import { tabPFGenAdapter } from './TabPFGenAdapter.ts';
+import { tabpfnFineTuner } from './TabPFNFineTuner.ts';
+import { topKSample, calculateNoveltyScore, calculateContextDrift, adjustStyleByMood } from '../utils/sampling.ts';
 import { RUNTIME_CONFIG } from '../config/SystemConfig.js';
-import { bufferManager, WordTrackingBuffer, ContextHistoryBuffer } from '../utils/RingBuffer.js';
+import { bufferManager, WordTrackingBuffer, ContextHistoryBuffer } from '../utils/RingBuffer.ts';
+import type { Bacteria } from '../types';
 
 export class LanguageEvolutionEngine {
     constructor() {
@@ -161,7 +163,7 @@ export class LanguageEvolutionEngine {
     }
 
     // Bakteri için dil stilini başlat - Enhanced v3.0
-    initializeLanguageStyle(bacteria) {
+    initializeLanguageStyle(bacteria: Bacteria) {
         if (this.personalityMap.has(bacteria.id)) return;
 
         const mood = bacteria.mood || 0.5;
@@ -248,7 +250,7 @@ export class LanguageEvolutionEngine {
     }
 
     // Ana yaratıcı ifade üretme metodu - Enhanced v3.0
-    async generateCreativeExpression(bacteria, context) {
+    async generateCreativeExpression(bacteria: Bacteria, context: string): Promise<string> {
         this.diversityMetrics.totalGenerations++;
         
         const style = this.personalityMap.get(bacteria.id);
@@ -630,7 +632,12 @@ export class LanguageEvolutionEngine {
     }
 
     // Dil stilini adapt et - Enhanced with Cross-Bacteria Learning
-    adaptLanguageStyle(bacteria, wasSuccessful, context, responseWords = []) {
+    adaptLanguageStyle(
+        bacteria: Bacteria,
+        wasSuccessful: boolean,
+        context: string,
+        responseWords: string[] = []
+    ) {
         const style = this.personalityMap.get(bacteria.id);
         if (!style) return;
 
@@ -708,7 +715,7 @@ export class LanguageEvolutionEngine {
     }
 
     // Bigram güncelle
-    updateBigrams(bacteria, words) {
+    updateBigrams(bacteria: Bacteria, words: string[]) {
         const bigrams = this.bacteriaBigrams.get(bacteria.id);
         if (!bigrams) return;
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 // TabPFN Adapter - Kelime Analizi ve Öneri Sistemi
 import trainingDataJson from '../data/consciousness_training_data.json' assert { type: 'json' };
 

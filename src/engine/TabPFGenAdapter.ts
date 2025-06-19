@@ -1,10 +1,11 @@
+// @ts-nocheck
 /*
  * TabPFGenAdapter - Synthetic data generator for TabPFN models
  * Mimics core functionality of sebhaan/TabPFGen for in-browser use.
  * Provides simple dataset generation based on the DynamicLexicon.
  */
 
-import { dynamicLexicon } from './core/DynamicLexicon.js';
+import { dynamicLexicon } from './core/DynamicLexicon.ts';
 
 export class TabPFGenAdapter {
     constructor() {
