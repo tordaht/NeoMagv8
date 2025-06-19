@@ -1,11 +1,12 @@
 // 🧪 Unit Tests for Ring Buffer System
 // Ensures memory-efficient tracking works correctly
 
-import { 
-    RingBuffer, 
-    WordTrackingBuffer, 
-    ContextHistoryBuffer, 
-    BufferManager 
+import { jest } from '@jest/globals';
+import {
+    RingBuffer,
+    WordTrackingBuffer,
+    ContextHistoryBuffer,
+    BufferManager
 } from '../src/utils/RingBuffer.js';
 
 // Mock console for clean tests

@@ -54,7 +54,6 @@ temp/
 .eslintcache
 
 # Package-lock (npm)
-package-lock.json
 
 # Yarn
 yarn.lock 
