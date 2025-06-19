@@ -2,6 +2,9 @@
 // 🔄 Ring Buffer Utility - Prevents Memory Leaks in Tracking Systems
 // Replaces growing arrays with fixed-size circular buffers
 
+import { RUNTIME_CONFIG } from '../config/SystemConfig.js';
+
+
 export class RingBuffer {
     constructor(maxSize = 100) {
         this.maxSize = maxSize;
@@ -15,18 +18,19 @@ export class RingBuffer {
     // Add item to buffer (overwrites oldest if full)
     push(item) {
         this.buffer[this.head] = item;
-        
+
         if (this.isFull) {
             this.tail = (this.tail + 1) % this.maxSize;
         }
-        
+
         this.head = (this.head + 1) % this.maxSize;
-        
+
         if (this.size < this.maxSize) {
             this.size++;
-        } else {
-            this.isFull = true;
         }
+
+        this.isFull = this.size >= this.maxSize;
+
         
         return this;
     }
