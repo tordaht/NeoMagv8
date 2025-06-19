@@ -383,7 +383,7 @@ export default class UserInteractionManager {
         if (!bacteria) return;
         
         const words = userMsg.toLowerCase()
-            .replace(/[^\w\s]/g, '')
+            .replace(/[^\wçğıöşüâîû\s]/g, '')
             .split(' ')
             .filter(word => word.length > 2);
         
