@@ -194,8 +194,15 @@
         </div>
     </header>
 
+    <!-- Quick Controls -->
+    <div class="bg-gray-800 p-2 flex justify-center" id="quickControls">
+        <button id="startSimulationBtn" data-action="start-simulation" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg text-lg font-bold" role="button" aria-label="Simülasyonu Başlat" tabindex="0">
+            ▶️ Simülasyonu Başlat
+        </button>
+    </div>
+
     <!-- Main Content -->
-    <main class="flex-grow container mx-auto p-2 sm:p-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <main class="flex-grow container mx-auto p-2 sm:p-4 max-w-[1200px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         
         <!-- Sol Panel Simülasyon ve Detaylar -->
         <div class="lg:col-span-2 bg-gray-800 p-4 rounded-lg shadow-xl flex flex-col">
@@ -241,9 +248,9 @@
             
             <!-- Chat Mode Selector -->
             <div class="mb-3 flex space-x-2">
-                <button id="individualChatBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition">Tekil Sohbet</button>
-                <button id="groupChatBtn" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition">Grup Sohbeti</button>
-                <button id="startBacteriaConversationBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-sm transition">Bakteriler Konuşsun</button>
+                <button id="individualChatBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition" role="button" aria-label="Tekil Sohbet" tabindex="0">Tekil Sohbet</button>
+                <button id="groupChatBtn" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition" role="button" aria-label="Grup Sohbeti" tabindex="0">Grup Sohbeti</button>
+                <button id="startBacteriaConversationBtn" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-sm transition" role="button" aria-label="Bakteriler Konuşsun" tabindex="0">Bakteriler Konuşsun</button>
             </div>
             
             <div id="chatInfo" class="mb-2 text-sm text-gray-400">Sohbet modunu seçin.</div>
@@ -255,8 +262,8 @@
                 <p class="text-sm text-gray-400">Bakteri düşünüyor...</p>
             </div>
             <div class="flex">
-                <input type="text" id="chatInput" class="flex-grow bg-gray-600 text-gray-200 border border-gray-500 rounded-l-lg p-2 focus:ring-teal-500 focus:border-teal-500 outline-none" placeholder="Mesajınızı yazın..." disabled>
-                <button id="sendMessageBtn" class="bg-teal-500 hover:bg-teal-600 text-white font-bold p-2 rounded-r-lg transition duration-150 ease-in-out" disabled>Gönder</button>
+                <input type="text" id="chatInput" class="flex-grow bg-gray-600 text-gray-200 border border-gray-500 rounded-l-lg p-2 focus:ring-teal-500 focus:border-teal-500 outline-none" placeholder="Mesajınızı yazın..." role="textbox" aria-label="Mesajınızı yazın" tabindex="0" disabled>
+                <button id="sendMessageBtn" class="bg-teal-500 hover:bg-teal-600 text-white font-bold p-2 rounded-r-lg transition duration-150 ease-in-out" role="button" aria-label="Gönder" tabindex="0" disabled>Gönder</button>
             </div>
         </div>
     </main>
@@ -269,68 +276,65 @@
     <!-- Controls -->
     <div class="bg-gray-800 p-4 rounded-lg mb-4">
         <div class="flex flex-wrap gap-2 mb-4">
-            <button id="startSimulationBtn" data-action="start-simulation" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg text-lg font-bold">
-                ▶️ Simülasyonu Başlat
-            </button>
-            <button data-action="pause-simulation" class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded">
+            <button data-action="pause-simulation" class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded" role="button" aria-label="Duraklat" tabindex="0">
                 ⏸️ Duraklat
             </button>
-            <button data-action="reset-simulation" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded">
+            <button data-action="reset-simulation" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded" role="button" aria-label="Sıfırla" tabindex="0">
                 🔄 Reset
             </button>
-            <button data-action="add-bacteria" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">
+            <button data-action="add-bacteria" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded" role="button" aria-label="Bakteri Ekle" tabindex="0">
                 ➕ Bakteri Ekle
             </button>
-            <button data-action="toggle-group-chat" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded">
+            <button data-action="toggle-group-chat" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded" role="button" aria-label="Grup Sohbet" tabindex="0">
                 💬 Grup Chat
             </button>
         </div>
         
         <!-- v825: Database Controls -->
         <div class="flex flex-wrap gap-2 mb-2">
-            <button data-action="export-csv" class="bg-cyan-600 hover:bg-cyan-700 px-3 py-1 rounded text-sm">
+            <button data-action="export-csv" class="bg-cyan-600 hover:bg-cyan-700 px-3 py-1 rounded text-sm" role="button" aria-label="CSV Export" tabindex="0">
                 📊 CSV Export
             </button>
-            <button data-action="export-json" class="bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded text-sm">
+            <button data-action="export-json" class="bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded text-sm" role="button" aria-label="JSON Export" tabindex="0">
                 📈 JSON Export
             </button>
-            <button data-action="save-all" class="bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded text-sm">
+            <button data-action="save-all" class="bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded text-sm" role="button" aria-label="Tümünü Kaydet" tabindex="0">
                 💾 Save All
             </button>
-            <button data-action="load-saved" class="bg-teal-600 hover:bg-teal-700 px-3 py-1 rounded text-sm">
+            <button data-action="load-saved" class="bg-teal-600 hover:bg-teal-700 px-3 py-1 rounded text-sm" role="button" aria-label="Kaydedileni Yükle" tabindex="0">
                 📖 Load Saved
             </button>
-            <button data-action="clear-db" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm">
+            <button data-action="clear-db" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm" role="button" aria-label="Veritabanını Temizle" tabindex="0">
                 🗑️ Clear DB
             </button>
-            <button data-action="show-db-stats" class="bg-gray-600 hover:bg-gray-700 px-3 py-1 rounded text-sm">
+            <button data-action="show-db-stats" class="bg-gray-600 hover:bg-gray-700 px-3 py-1 rounded text-sm" role="button" aria-label="DB İstatistikleri" tabindex="0">
                 📈 DB Stats
             </button>
-            <button data-action="show-learning-stats" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-sm">
+            <button data-action="show-learning-stats" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-sm" role="button" aria-label="AI Öğrenme" tabindex="0">
                 🧠 AI Learning
             </button>
-            <button data-action="clear-learning-db" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">
+            <button data-action="clear-learning-db" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm" role="button" aria-label="Öğrenme Verisini Temizle" tabindex="0">
                 🧬 Clear Learning
             </button>
-            <button data-action="show-diversity-stats" class="bg-teal-600 hover:bg-teal-700 px-3 py-1 rounded text-sm">
+            <button data-action="show-diversity-stats" class="bg-teal-600 hover:bg-teal-700 px-3 py-1 rounded text-sm" role="button" aria-label="Kelime Çeşitliliği" tabindex="0">
                 🎭 Word Diversity
             </button>
-            <button data-action="reset-diversity" class="bg-orange-600 hover:bg-orange-700 px-3 py-1 rounded text-sm">
+            <button data-action="reset-diversity" class="bg-orange-600 hover:bg-orange-700 px-3 py-1 rounded text-sm" role="button" aria-label="Çeşitliliği Sıfırla" tabindex="0">
                 🔄 Reset Diversity
             </button>
-            <button data-action="show-language-stats" class="bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded text-sm">
+            <button data-action="show-language-stats" class="bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded text-sm" role="button" aria-label="Dil İstatistikleri" tabindex="0">
                 🧠 Language Stats
             </button>
-            <button data-action="peer-dialogue" class="bg-pink-600 hover:bg-pink-700 px-3 py-1 rounded text-sm">
+            <button data-action="peer-dialogue" class="bg-pink-600 hover:bg-pink-700 px-3 py-1 rounded text-sm" role="button" aria-label="Eşli Diyalog" tabindex="0">
                 🗣️ Peer Dialogue
             </button>
-            <button data-action="debug-system" class="bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded text-sm">
+            <button data-action="debug-system" class="bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded text-sm" role="button" aria-label="Sistemi Hata Ayıkla" tabindex="0">
                 🔧 Debug System
             </button>
-            <button data-action="test-conversation" class="bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-sm">
+            <button data-action="test-conversation" class="bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-sm" role="button" aria-label="Sohbet Testi" tabindex="0">
                 🧪 Test Conversation
             </button>
-            <button data-action="force-auto-conversation" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">
+            <button data-action="force-auto-conversation" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm" role="button" aria-label="Otomatik Konuşma" tabindex="0">
                 🚀 FORCE Auto Talk
             </button>
         </div>
@@ -339,6 +343,8 @@
             🧾 Persistent Database: Auto-save every 30s | ♾️ Unlimited Consciousness | 📊 TabPFN-ready CSV | 🎨 Canvas Rendering
         </div>
     </div>
+
+    <div id="notificationArea" class="fixed top-4 right-4 space-y-2 z-50"></div>
 
     <script>
         // DOM Elements
@@ -361,6 +367,22 @@
         const chatInput = document.getElementById('chatInput');
         const sendMessageBtn = document.getElementById('sendMessageBtn');
         const chatLoadingIndicator = document.getElementById('chatLoadingIndicator');
+
+        // Notification helper
+        function showNotification(message, type = 'info') {
+            const colors = {
+                success: 'bg-green-600',
+                error: 'bg-red-600',
+                info: 'bg-blue-600'
+            };
+            const note = document.createElement('div');
+            note.className = `${colors[type] || colors.info} text-white px-4 py-2 rounded shadow`;
+            note.setAttribute('role', 'status');
+            note.setAttribute('aria-live', 'polite');
+            note.textContent = message;
+            document.getElementById('notificationArea').appendChild(note);
+            setTimeout(() => note.remove(), 3000);
+        }
 
         const startSimulationBtn = document.getElementById('startSimulationBtn');
         const nextStepBtn = document.getElementById('nextStepBtn');
@@ -6261,6 +6283,16 @@
             initializeEventListeners() {
                 // Use event delegation instead of individual onclick handlers
                 document.addEventListener('click', this.handleGlobalClick.bind(this));
+                document.addEventListener('keydown', (e) => {
+                    if (e.code === 'Space') {
+                        e.preventDefault();
+                        this.startSimulation();
+                    }
+                    if (e.code === 'Escape') {
+                        e.preventDefault();
+                        this.pauseSimulation();
+                    }
+                });
             }
 
             handleGlobalClick(event) {
@@ -6299,6 +6331,8 @@
                     if (this.startSimulationBtn) this.startSimulationBtn.textContent = 'Durdur';
                     if (this.nextStepBtn) this.nextStepBtn.disabled = true;
                     this.simulationManager.start();
+
+                    showNotification('Simülasyon başlatıldı', 'success');
                     
                     // 🤝 Start automatic bacteria conversations
                     startAutoBacteriaConversations();
@@ -6313,6 +6347,8 @@
                 if (this.startSimulationBtn) this.startSimulationBtn.textContent = 'Devam Et';
                 if (this.nextStepBtn) this.nextStepBtn.disabled = false;
                 this.simulationManager.pause();
+
+                showNotification('Simülasyon duraklatıldı', 'info');
                 
                 // 🤝 Stop automatic bacteria conversations
                 stopAutoBacteriaConversations();
@@ -6350,6 +6386,7 @@
                 openChatWindows.clear();
                 
                 initializeBacteria();
+                showNotification('Simülasyon sıfırlandı', 'info');
             }
         }
 
@@ -8708,6 +8745,8 @@ Conscious bacteria: ${bacteriaList.filter(b => (b.consciousness || b.consciousne
         // 🚀 MAIN INITIALIZATION - EVENT DRIVEN
         async function mainInitialize() {
             console.log('🚀 mnBac v9.6.2 - System Readiness & GitHub Pages Fix - Final Initialization Complete!');
+
+            showNotification('Sistem yükleniyor...', 'info');
             
             // 1. Setup event listeners first
             initializeEventListeners();
@@ -8836,6 +8875,7 @@ Conscious bacteria: ${bacteriaList.filter(b => (b.consciousness || b.consciousne
                     appEvents.emit('system:fully:ready');
 
                     console.log('🎉 mnBac v9.6.2 FULLY LOADED - All systems operational!');
+                    showNotification('Sistem hazır', 'success');
                 }, 5000); // Wait for all other systems to be ready
                 
                 console.log('🎉 Event-driven initialization complete!');
@@ -8843,6 +8883,7 @@ Conscious bacteria: ${bacteriaList.filter(b => (b.consciousness || b.consciousne
             } catch (error) {
                 console.error('❌ Initialization error:', error);
                 updateBuildInfo(); // Show error state
+                showNotification('Başlatma hatası', 'error');
             }
         }
 
