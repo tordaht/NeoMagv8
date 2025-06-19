@@ -17,8 +17,6 @@
     "dev": "npx serve . --live"
   },
   "jest": {
-    "preset": "default",
-    "extensionsToTreatAsEsm": [".js"],
     "globals": {
       "__DEV__": true
     },
@@ -39,6 +37,9 @@
     "testMatch": [
       "**/tests/**/*.test.js",
       "**/?(*.)+(spec|test).js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/backups/"
     ]
   },
   "eslintConfig": {
@@ -67,6 +68,10 @@
     "jest-environment-jsdom": "^29.0.0",
     "eslint": "^8.0.0",
     "serve": "^14.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
   },
   "engines": {
     "node": ">=16.0.0"
