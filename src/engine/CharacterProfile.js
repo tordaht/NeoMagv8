@@ -12,23 +12,8 @@ export class CharacterProfile {
    * Known tone phrases used when injecting personality.
    * @type {{ [key in 'curious'|'playful'|'scientific']: string[] }}
    */
-  static tonePhrases = {
-    curious: [
-      'Hmm, ilginç!',
-      'Merak ettim!',
-      'Nasıl oldu acaba?'
-    ],
-    playful: [
-      'Haha!',
-      'Şaka yapıyorum tabii.',
-      'Bu çok eğlenceli!'
-    ],
-    scientific: [
-      'Bilimsel olarak',
-      'Araştırmalara göre',
-      'Veriler gösteriyor ki'
-    ]
-  };
+  // `tonePhrases` is attached after the class definition to stay
+  // compatible with older ECMAScript versions used in lint rules.
 
   constructor(id, tone) {
     this.id = id;
@@ -54,4 +39,24 @@ export class CharacterProfile {
       : `${text} ${phrase}`;
   }
 }
+
+// Static tone phrase definitions attached outside the class so the file
+// remains compatible with ESLint's ES2021 parser settings.
+CharacterProfile.tonePhrases = {
+  curious: [
+    'Hmm, ilginç!',
+    'Merak ettim!',
+    'Nasıl oldu acaba?'
+  ],
+  playful: [
+    'Haha!',
+    'Şaka yapıyorum tabii.',
+    'Bu çok eğlenceli!'
+  ],
+  scientific: [
+    'Bilimsel olarak',
+    'Araştırmalara göre',
+    'Veriler gösteriyor ki'
+  ]
+};
 
