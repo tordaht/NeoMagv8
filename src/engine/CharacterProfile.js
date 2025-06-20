@@ -1,47 +1,57 @@
 /**
- * Adds personality tone to bot replies.
- * Each tone has predefined phrases that are randomly injected.
+ * CharacterProfile injects short tone phrases into replies.
  *
- * Tone phrase map:
- * curious     -> ["Hmm, ilginç!", "Merak ettim!"]
- * playful     -> ["Haha!", "Çok eğlenceli."]
- * scientific  -> ["Bilimsel olarak", "Araştırmalara göre"]
+ * Each tone is mapped to a set of phrases held in {@link CharacterProfile.tonePhrases}.
+ * The {@link CharacterProfile#applyTone} method randomly places one of these phrases
+ * at the beginning or end of the provided text. Such small variations help break
+ * monotonous responses and make the conversation feel more engaging.
  */
-const TONE_PHRASES = {
-  curious: [
-    'Hmm, ilginç!',
-    'Merak ettim!'
-  ],
-  playful: [
-    'Haha!',
-    'Çok eğlenceli.'
-  ],
-  scientific: [
-    'Bilimsel olarak',
-    'Araştırmalara göre'
-  ]
-};
 
 export class CharacterProfile {
+  /**
+   * Known tone phrases used when injecting personality.
+   * @type {{ [key in 'curious'|'playful'|'scientific']: string[] }}
+   */
+  static tonePhrases = {
+    curious: [
+      'Hmm, ilginç!',
+      'Merak ettim!',
+      'Nasıl oldu acaba?'
+    ],
+    playful: [
+      'Haha!',
+      'Şaka yapıyorum tabii.',
+      'Bu çok eğlenceli!'
+    ],
+    scientific: [
+      'Bilimsel olarak',
+      'Araştırmalara göre',
+      'Veriler gösteriyor ki'
+    ]
+  };
+
   constructor(id, tone) {
     this.id = id;
     this.tone = tone;
   }
+
   /**
-   * Inject 1–2 tone-specific phrases into text.
+   * Add a random phrase before or after the text based on the profile's tone.
+   *
+   * A single phrase is selected from {@link CharacterProfile.tonePhrases} and
+   * then either prepended or appended. This creates subtle variety that keeps
+   * replies feeling lively.
+   *
    * @param {string} text
    * @returns {string}
    */
   applyTone(text) {
-    const pool = TONE_PHRASES[this.tone] || [];
-    const count = 1 + Math.floor(Math.random() * 2);
-    let result = text;
-    for (let i = 0; i < count; i++) {
-      if (pool.length === 0) break;
-      const phrase = pool[Math.floor(Math.random() * pool.length)];
-      if (phrase) result += (result.endsWith('.') ? ' ' : '. ') + phrase;
-    }
-    return result;
+    const pool = CharacterProfile.tonePhrases[this.tone] || [];
+    if (!pool.length) return text;
+    const phrase = pool[Math.floor(Math.random() * pool.length)];
+    return Math.random() < 0.5
+      ? `${phrase} ${text}`
+      : `${text} ${phrase}`;
   }
 }
 
