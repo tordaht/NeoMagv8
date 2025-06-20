@@ -1,35 +1,39 @@
-import fs from 'node:fs';
-import path from 'node:path';
+/**
+ * @module logger
+ * @description Utility for persisting experiment analytics as JSON lines.
+ */
 
-const LOG_FILE = path.resolve('analytics_data/logs.jsonl');
-const buffer = [];
+import { promises as fs } from 'fs';
+import path from 'path';
+
+const LOG_DIR = path.resolve('analytics_data');
+const LOG_FILE = path.join(LOG_DIR, 'logs.jsonl');
 
 /**
- * Record an experiment entry. Data is buffered and written in batches every
- * second for better I/O performance.
- * @param {object} experiment Metadata for the simulation event
+ * Append a log entry to the analytics data file.
+ * Batching writes or adding advanced error handling could improve performance
+ * in production scenarios.
+ *
+ * @param {object} logEntry - Experiment data to record
+ * @returns {Promise<void>} Resolves when the entry is written
  */
-export function recordExperiment(experiment) {
-  buffer.push(JSON.stringify(experiment));
+export async function recordExperiment(logEntry) {
+  await fs.mkdir(LOG_DIR, { recursive: true });
+  await fs.appendFile(LOG_FILE, `${JSON.stringify(logEntry)}\n`);
 }
 
-// periodic flush
-setInterval(() => {
-  if (buffer.length === 0) return;
-  const data = buffer.join('\n') + '\n';
-  buffer.length = 0;
-  fs.promises.appendFile(LOG_FILE, data).catch(err => console.error('log write', err));
-}, 1000);
-
 /**
- * Retrieve all logs parsed as JSON.
- * @returns {Promise<Array<object>>}
+ * Retrieve every log entry from the analytics data file.
+ * Consider implementing batching for large files.
+ *
+ * @returns {Promise<object[]>} Parsed experiment log objects
  */
-export async function getLogs() {
+export async function getAllLogs() {
   try {
-    const txt = await fs.promises.readFile(LOG_FILE, 'utf8');
-    return txt.trim().split('\n').filter(Boolean).map(line => JSON.parse(line));
-  } catch {
+    const txt = await fs.readFile(LOG_FILE, 'utf8');
+    return txt.split('\n').filter(Boolean).map(line => JSON.parse(line));
+  } catch (err) {
+    // Production systems should handle errors or missing files more robustly
     return [];
   }
 }
