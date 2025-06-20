@@ -8,9 +8,11 @@ import http from 'http';
 import express from 'express';
 import simulationEvents, { startBackgroundSimulation } from './simulationService.js';
 import apiRouter from './api.js';
+import { attachWebsocket } from './websocket.js';
 
 const app = express();
 const server = http.createServer(app);
+attachWebsocket(server);
 
 // Start simulation
 startBackgroundSimulation();
