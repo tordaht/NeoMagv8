@@ -1,19 +1,28 @@
 /**
  * @module simulationService
- * @description Runs the bacterial simulation continuously at 60 FPS and emits autonomous dialogues.
+ * @description Runs the bacterial simulation continuously at 60 FPS and emits
+ * autonomous dialogues. Listens for `requestState` and responds with a `state`
+ * event containing the current simulation snapshot.
  */
 
 import { EventEmitter } from 'events';
 import SimulationManager from '../engine/SimulationManager.js';
 
 const simulationEvents = new EventEmitter();
+let manager = null;
 
 /**
  * Starts the background simulation loop and autonomous dialogues.
- * @returns {EventEmitter} Emits 'tick' (manager state) and 'dialogue' ({from, to, message}).
- */
+ * @returns {EventEmitter} Emits 'tick', 'dialogue' and responds to
+ * `requestState` with a `state` event.
+*/
 export function startBackgroundSimulation() {
-  const manager = new SimulationManager();
+  manager = new SimulationManager();
+
+  const handleRequestState = () => {
+    simulationEvents.emit('state', manager.getState());
+  };
+  simulationEvents.on('requestState', handleRequestState);
 
   // 60 FPS simulation tick loop
   const tickInterval = setInterval(() => {
@@ -33,6 +42,7 @@ export function startBackgroundSimulation() {
   simulationEvents.once('stop', () => {
     clearInterval(tickInterval);
     clearInterval(dialogueInterval);
+    simulationEvents.off('requestState', handleRequestState);
   });
 
   return simulationEvents;

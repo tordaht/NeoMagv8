@@ -7,6 +7,7 @@
 import http from 'http';
 import express from 'express';
 import simulationEvents, { startBackgroundSimulation } from './simulationService.js';
+import apiRouter from './api.js';
 
 const app = express();
 const server = http.createServer(app);
@@ -15,6 +16,7 @@ const server = http.createServer(app);
 startBackgroundSimulation();
 
 // Optional: expose a health endpoint
+app.use('/api', apiRouter);
 app.get('/health', (req, res) => res.json({ status: 'running' }));
 
 // Start HTTP server
