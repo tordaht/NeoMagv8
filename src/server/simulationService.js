@@ -1,7 +1,6 @@
 /**
  * @module simulationService
- * @description
- * Runs the bacterial simulation in the background at 60 FPS and emits autonomous dialogues.
+ * @description Runs the bacterial simulation continuously at 60 FPS and emits autonomous dialogues.
  */
 
 import { EventEmitter } from 'events';
@@ -11,7 +10,7 @@ const simulationEvents = new EventEmitter();
 
 /**
  * Starts the background simulation loop and autonomous dialogues.
- * @returns {EventEmitter} An EventEmitter that emits 'tick' and 'dialogue' events.
+ * @returns {EventEmitter} Emits 'tick' (manager state) and 'dialogue' ({from, to, message}).
  */
 export function startBackgroundSimulation() {
   const manager = new SimulationManager();
