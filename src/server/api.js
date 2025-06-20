@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { manager } from './simulationService.js';
-import { getLogs } from './logger.js';
+import { getAllLogs } from './logger.js';
 
 /** Express router exposing simulation API */
 const router = Router();
@@ -25,7 +25,7 @@ router.get('/state', (req, res) => {
  * GET /logs - return parsed experiment logs
  */
 router.get('/logs', async (req, res) => {
-  const logs = await getLogs();
+  const logs = await getAllLogs();
   res.json(logs);
 });
 
