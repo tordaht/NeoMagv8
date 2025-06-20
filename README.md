@@ -91,6 +91,9 @@ GitHub_mnBac_Project/
 - Metin kutusuna yazarak bakterilerle konuşabilirsiniz
 - Bakteriler TabPFN ile geliştirilmiş cevaplar verir
 - Kelimeler otomatik olarak bakteri kelime haznesine eklenir
+- Yanıt üretilirken "Düşünüyor..." göstergesi hemen belirir ve
+  DOM güncellemeleri `requestIdleCallback` ile boş zamanda yapılarak
+  algılanan gecikme azaltılır
 
 ### Simülasyon Mekanikleri
 - Bakteriler otomatik hareket eder
