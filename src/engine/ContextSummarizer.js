@@ -2,8 +2,11 @@ const CACHE = new Map();
 
 /**
  * Summarize the last up to 5 messages.
- * The function delegates heavy text work to a Web Worker and caches
- * the result keyed by the JSON representation of the message window.
+ * Heavy text parsing is delegated to a Web Worker so the main thread
+ * remains responsive. The UI budget for one turn is roughly 50 ms,
+ * therefore offloading the work keeps interactions smooth while still
+ * caching the result keyed by the JSON representation of the message window.
+ *
  * @param {{ sender: string, text: string }[]} messages
  * @returns {Promise<string>}
  */
