@@ -1,0 +1,6 @@
+{
+  "population": 100,
+  "energy_source": "glucose",
+  "communication_range": 5,
+  "steps": 10
+}
