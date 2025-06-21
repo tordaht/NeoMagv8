@@ -35,6 +35,13 @@ let manager = null;
 export function startBackgroundSimulation() {
   manager = new SimulationManager();
 
+  // Provide current state on demand
+  simulationEvents.on('requestState', () => {
+    if (manager) {
+      simulationEvents.emit('state', manager.getState());
+    }
+  });
+
   // 60 FPS simulation tick loop
   const tickInterval = setInterval(() => {
     manager.tick();
