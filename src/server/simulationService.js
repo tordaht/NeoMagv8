@@ -1,8 +1,8 @@
 /**
  * @module simulationService
- * @description Runs the bacterial simulation continuously at 60 FPS and emits
- * autonomous dialogues. Listens for `requestState` and responds with a `state`
- * event containing the current simulation snapshot.
+ * @description Background service that drives the simulation at 60 FPS and
+ * periodically triggers bacteria dialogue. Emits `tick` and `dialogue` events
+ * that other modules can subscribe to.
  */
 
 import { EventEmitter } from 'events';
@@ -12,17 +12,11 @@ const simulationEvents = new EventEmitter();
 let manager = null;
 
 /**
- * Starts the background simulation loop and autonomous dialogues.
- * @returns {EventEmitter} Emits 'tick', 'dialogue' and responds to
- * `requestState` with a `state` event.
-*/
+ * Start the background simulation loop and dialogue cycle.
+ * @returns {EventEmitter} Event emitter publishing `tick` and `dialogue` events.
+ */
 export function startBackgroundSimulation() {
   manager = new SimulationManager();
-
-  const handleRequestState = () => {
-    simulationEvents.emit('state', manager.getState());
-  };
-  simulationEvents.on('requestState', handleRequestState);
 
   // 60 FPS simulation tick loop
   const tickInterval = setInterval(() => {
@@ -33,6 +27,7 @@ export function startBackgroundSimulation() {
   // Every 4 seconds, have two random bacteria talk
   const dialogueInterval = setInterval(() => {
     const [a, b] = manager.pickRandomPair();
+    if (!a || !b) return;
     const msg = manager.talk(a, b);
     manager.receive(b, msg, a);
     simulationEvents.emit('dialogue', { from: a.id, to: b.id, message: msg });
@@ -42,7 +37,6 @@ export function startBackgroundSimulation() {
   simulationEvents.once('stop', () => {
     clearInterval(tickInterval);
     clearInterval(dialogueInterval);
-    simulationEvents.off('requestState', handleRequestState);
   });
 
   return simulationEvents;
