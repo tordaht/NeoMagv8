@@ -309,6 +309,32 @@ export class WordSuccessTracker {
         return totalAvg / this.contextStats.size;
     }
 
+    // Persist each bacterium's vocabulary to localStorage
+    saveBacteriaWords(bacteriaList) {
+        if (typeof localStorage === 'undefined') return;
+        try {
+            const data = {};
+            bacteriaList.forEach(b => {
+                data[b.id] = Array.from(b.vocabulary || []);
+            });
+            localStorage.setItem('mnBac_words', JSON.stringify(data));
+        } catch (err) {
+            console.error('Failed to save words', err);
+        }
+    }
+
+    // Load vocabulary map from localStorage
+    loadBacteriaWords() {
+        if (typeof localStorage === 'undefined') return {};
+        try {
+            const raw = localStorage.getItem('mnBac_words');
+            return raw ? JSON.parse(raw) : {};
+        } catch (err) {
+            console.error('Failed to load words', err);
+            return {};
+        }
+    }
+
     // Export data (debugging/analytics için)
     exportData() {
         return {
