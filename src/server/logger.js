@@ -6,34 +6,39 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-const LOG_DIR = path.resolve('analytics_data');
-const LOG_FILE = path.join(LOG_DIR, 'logs.jsonl');
+const logFile = path.resolve('analytics_data/logs.jsonl');
 
 /**
- * Append a log entry to the analytics data file.
- * Batching writes or adding advanced error handling could improve performance
- * in production scenarios.
+ * Record a single experiment event to the analytics log.
  *
- * @param {object} logEntry - Experiment data to record
- * @returns {Promise<void>} Resolves when the entry is written
+ * @param {object} entry - Arbitrary experiment data to persist
+ * @returns {Promise<void>} Resolves once the entry is appended
  */
-export async function recordExperiment(logEntry) {
-  await fs.mkdir(LOG_DIR, { recursive: true });
-  await fs.appendFile(LOG_FILE, `${JSON.stringify(logEntry)}\n`);
+export async function recordExperiment(entry) {
+  try {
+    await fs.mkdir(path.dirname(logFile), { recursive: true });
+    await fs.appendFile(logFile, `${JSON.stringify(entry)}\n`);
+  } catch (err) {
+    throw err;
+  }
 }
 
 /**
- * Retrieve every log entry from the analytics data file.
- * Consider implementing batching for large files.
+ * Retrieve all experiment analytics from the log file.
  *
- * @returns {Promise<object[]>} Parsed experiment log objects
+ * @returns {Promise<object[]>} Array of parsed log objects
  */
 export async function getAllLogs() {
   try {
-    const txt = await fs.readFile(LOG_FILE, 'utf8');
-    return txt.split('\n').filter(Boolean).map(line => JSON.parse(line));
+    const data = await fs.readFile(logFile, 'utf8');
+    return data
+      .split('\n')
+      .filter(Boolean)
+      .map(line => JSON.parse(line));
   } catch (err) {
-    // Production systems should handle errors or missing files more robustly
-    return [];
+    if (err.code === 'ENOENT') {
+      return [];
+    }
+    throw err;
   }
 }
