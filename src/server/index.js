@@ -1,11 +1,15 @@
 #!/usr/bin/env node
 /**
  * @file index.js
- * @description Express server that runs the background simulation and exposes a
- * simple health endpoint. Handles graceful shutdown on termination signals.
+ * @description
+ * Entry point for the Node.js service hosting the background simulation.
+ * Starts an Express HTTP server, exposes a basic health check and runs the
+ * simulation loop in the background. The process listens for termination
+ * signals in order to stop the simulation and close the server cleanly.
  */
 
 import express from 'express';
+import http from 'http';
 import simulationEvents, { startBackgroundSimulation } from './simulationService.js';
 
 const app = express();
@@ -13,8 +17,9 @@ app.get('/health', (req, res) => res.json({ status: 'running' }));
 
 startBackgroundSimulation();
 
-const PORT = process.env.PORT || 4000;
-const server = app.listen(PORT, () => {
+const PORT = 4000;
+const server = http.createServer(app);
+server.listen(PORT, () => {
   console.log(`Simulation service listening on port ${PORT}`);
 });
 
