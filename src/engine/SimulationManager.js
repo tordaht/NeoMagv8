@@ -7,7 +7,7 @@
 import { EventEmitter } from 'events';
 
 export class SimulationManager {
-  constructor(count = 10) {
+  constructor(count = 10, initialEnergy = 1) {
     /**
      * Emits internal simulation events like `newMessage`.
      * @type {EventEmitter}
@@ -17,12 +17,14 @@ export class SimulationManager {
     this._dialogueLoop = null;
     /** @type {Array<{id:string,name:string,age:number,vocabulary:Set<string>,memory:string[]}>} */
     this.bacteria = [];
+    this.initialEnergy = Math.max(initialEnergy, 0.6);
     this.running = false;
     for (let i = 0; i < count; i++) {
       this.bacteria.push({
         id: `b_${i}`,
         name: `Bac${i}`,
         age: 0,
+        energy: this.initialEnergy,
         vocabulary: new Set(["merhaba", "selam", "nasilsin"].slice(0, 2)),
         memory: []
       });
@@ -43,7 +45,9 @@ export class SimulationManager {
   tick() {
     this.bacteria.forEach(b => {
       b.age += 0.016; // roughly 60fps step
+      b.energy = Math.max(0, b.energy - 0.001);
     });
+    this.events.emit('tick', this.getState());
   }
 
   /**
@@ -92,6 +96,7 @@ export class SimulationManager {
         id: b.id,
         name: b.name,
         age: b.age,
+        energy: b.energy,
         vocabularySize: b.vocabulary.size
       }))
     };
@@ -102,6 +107,7 @@ export class SimulationManager {
    * Emits `newMessage` events whenever bacteria communicate.
    */
   startBackground() {
+    this.running = true;
     this._bgLoop = setInterval(() => this.tick(), 1000 / 60);
     this._dialogueLoop = setInterval(() => {
       const [a, b] = this.pickRandomPair();
@@ -109,6 +115,7 @@ export class SimulationManager {
       const msg = this.talk(a, b);
       this.receive(b, msg, a);
       this.events.emit('newMessage', { from: a.id, to: b.id, text: msg });
+      this.events.emit('dialogue', { from: a.id, to: b.id, text: msg });
     }, 4000);
   }
 
@@ -118,6 +125,7 @@ export class SimulationManager {
   stopBackground() {
     clearInterval(this._bgLoop);
     clearInterval(this._dialogueLoop);
+    this.running = false;
   }
 }
 
