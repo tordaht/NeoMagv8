@@ -27,7 +27,7 @@ jobs:
       - name: Run simulation container
         run: docker run --rm -v ${{ github.workspace }}/mlruns:/mlruns neo-sim
       - name: Upload MLflow logs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: mlruns
           path: mlruns
