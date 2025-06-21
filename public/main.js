@@ -177,23 +177,28 @@ sendBtn.addEventListener('click', async () => {
     indicator.style.display = 'inline-block';
   });
 
-  // 3. Context özetle
-  const summary = await summarize(chatHistory);
+  try {
+    // 3. Context özetle
+    const summary = await summarize(chatHistory);
 
-  // 4. Karakter profili oluştur
-  const profile = new CharacterProfile(selectedId, selectedTone);
+    // 4. Karakter profili oluştur
+    const profile = new CharacterProfile(selectedId, selectedTone);
 
-  // 5. Cevabı üret
-  const reply = await generateAnswer(userMsg, summary, profile);
+    // 5. Cevabı üret
+    const reply = await generateAnswer(userMsg, summary, profile);
 
-  // 6. UI: thinking kapat, cevap göster
-  idle(() => {
-    indicator.style.display = 'none';
-    renderBotReply(reply);
-  });
+    idle(() => {
+      renderBotReply(reply);
+    });
 
-  // 7. Sohbet geçmişine ekle
-  chatHistory.push({ sender: selectedId, text: reply });
+    // 6. Sohbet geçmişine ekle
+    chatHistory.push({ sender: selectedId, text: reply });
+  } finally {
+    // UI: thinking kapat
+    idle(() => {
+      indicator.style.display = 'none';
+    });
+  }
 
   chatInput.value = '';
 });
