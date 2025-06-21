@@ -12,6 +12,7 @@ import express from 'express';
 import http from 'http';
 import simulationEvents, { startBackgroundSimulation } from './simulationService.js';
 import apiRouter from './api.js';
+import { attachWebsocket } from './websocket.js';
 
 const app = express();
 
@@ -23,6 +24,7 @@ startBackgroundSimulation();
 
 const PORT = 4000;
 const server = http.createServer(app);
+attachWebsocket(server);
 server.listen(PORT, () => {
   console.log(`Simulation service listening on port ${PORT}`);
 });
