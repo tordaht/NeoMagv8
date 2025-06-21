@@ -31,6 +31,19 @@ if (startBtn && toolbar) {
   });
 }
 
+document.getElementById('deleteBacterium').addEventListener('click', () => {
+  const selectedId = getSelectedBacteriumId();
+  manager.removeBacterium(selectedId);
+  if (typeof renderCanvas === 'function') renderCanvas();
+  if (typeof updateCharts === 'function') updateCharts();
+});
+
+document.getElementById('cull10Percent').addEventListener('click', () => {
+  manager.cullPercentage(10);
+  if (typeof renderCanvas === 'function') renderCanvas();
+  if (typeof updateCharts === 'function') updateCharts();
+});
+
 // Load persisted vocabulary
 const savedWords = wordSuccessTracker.loadBacteriaWords();
 manager.bacteria.forEach(b => {
@@ -129,6 +142,10 @@ const serial = document.getElementById('serial-number');
 // Default persona
 let selectedId = 'Bakteri-2';
 let selectedTone = 'curious';
+
+function getSelectedBacteriumId() {
+  return selectedId;
+}
 
 function idle(cb) {
   if ('requestIdleCallback' in window) {

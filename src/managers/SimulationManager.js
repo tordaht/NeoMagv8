@@ -586,6 +586,26 @@ export class SimulationManager {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
+    /**
+     * Remove one bacterium by id.
+     * @param {string} id
+     */
+    removeBacterium(id) {
+        this.bacteriaPopulation = this.bacteriaPopulation.filter(b => b.id !== id);
+    }
+
+    /**
+     * Randomly remove a percentage of the population.
+     * @param {number} percent  // e.g. 10 for 10%
+     */
+    cullPercentage(percent) {
+        const countToCull = Math.floor(this.bacteriaPopulation.length * percent / 100);
+        for (let i = 0; i < countToCull; i++) {
+            const idx = Math.floor(Math.random() * this.bacteriaPopulation.length);
+            this.bacteriaPopulation.splice(idx, 1);
+        }
+    }
+
     // Simülasyonu başlat
     start() {
         if (!this.initialized) {
