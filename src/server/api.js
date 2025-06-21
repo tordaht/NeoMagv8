@@ -1,46 +1,39 @@
-import { Router } from 'express';
+import express from 'express';
 import simulationEvents from './simulationService.js';
 import { getAllLogs } from './logger.js';
 
 /**
- * Express router exposing simulation state and analytics logs.
- * `/state` responses are cached briefly for performance.
+ * Express router exposing simulation state and analytics logs via REST.
  * @module api
  */
-const router = Router();
-
-let cachedState = null;
-let cachedAt = 0;
+const router = express.Router();
 
 /**
  * GET /state - Retrieve the latest simulation state.
  * Emits a `requestState` event and waits for the corresponding `state` event.
- * Results are cached for 100ms to avoid unnecessary work.
  */
 router.get('/state', async (req, res, next) => {
   try {
-    const now = Date.now();
-    if (cachedState && now - cachedAt < 100) {
-      return res.json(cachedState);
-    }
-
     const state = await new Promise((resolve, reject) => {
+      /**
+       * Handler for the single `state` response.
+       * @param {object} s
+       */
+      const onState = s => resolve(s);
+
       const timer = setTimeout(() => {
         simulationEvents.off('state', onState);
-        reject(new Error('Timeout retrieving state'));
+        reject(new Error('State request timed out'));
       }, 2000);
 
-      function onState(s) {
+      simulationEvents.once('state', data => {
         clearTimeout(timer);
-        resolve(s);
-      }
+        onState(data);
+      });
 
-      simulationEvents.once('state', onState);
       simulationEvents.emit('requestState');
     });
 
-    cachedState = state;
-    cachedAt = now;
     res.json(state);
   } catch (err) {
     next(err);

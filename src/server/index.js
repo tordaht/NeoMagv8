@@ -11,8 +11,12 @@
 import express from 'express';
 import http from 'http';
 import simulationEvents, { startBackgroundSimulation } from './simulationService.js';
+import apiRouter from './api.js';
 
 const app = express();
+
+// Mount REST API
+app.use('/api', apiRouter);
 app.get('/health', (req, res) => res.json({ status: 'running' }));
 
 startBackgroundSimulation();
