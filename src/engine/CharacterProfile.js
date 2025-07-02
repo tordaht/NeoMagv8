@@ -7,15 +7,6 @@
  */
 
 export class CharacterProfile {
-  /**
-   * Mapping of available tones to example phrases.
-   * @type {{ [key in 'curious'|'playful'|'scientific']: string[] }}
-   */
-  static tonePhrases = {
-    curious: ['Hmm, ilginç!', 'Merak ettim doğrusu.'],
-    playful: ['Hoho, ne eğlenceli!', 'Buna bayıldım!'],
-    scientific: ['Veriler gösteriyor ki…', 'Bilimsel açıdan bakacak olursak…']
-  };
 
   /**
    * Create a character profile with a unique ID and speaking tone.
@@ -40,4 +31,11 @@ export class CharacterProfile {
     return `${phrase} ${text}`;
   }
 }
+
+// Initialize static property separately for wider syntax support
+CharacterProfile.tonePhrases = {
+  curious: ['Hmm, ilginç!', 'Merak ettim doğrusu.'],
+  playful: ['Hoho, ne eğlenceli!', 'Buna bayıldım!'],
+  scientific: ['Veriler gösteriyor ki…', 'Bilimsel açıdan bakacak olursak…']
+};
 
