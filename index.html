@@ -8846,13 +8846,19 @@ Conscious bacteria: ${bacteriaList.filter(b => (b.consciousness || b.consciousne
                         // Create basic fallback systems
                         window.persistentLearning = {
                             isReady: true,
+                            recordInteraction: (...args) => {
+                                console.log('📄 [Fallback] Interaction:', ...args);
+                            },
                             trackSpeech: (bacteria, message) => {
                                 console.log(`📝 [Fallback] Speech tracked: ${bacteria.name}: ${message}`);
                             },
+                            getWordSuccessRate: () => 0,
                             getLearningStats: () => ({
                                 totalInteractions: 0,
-                                vocabularySize: 0
+                                vocabularySize: 0,
+                                topWords: []
                             }),
+                            clearDatabase: async () => {},
                             metrics: { totalInteractions: 0 }
                         };
 
@@ -8894,6 +8900,9 @@ Conscious bacteria: ${bacteriaList.filter(b => (b.consciousness || b.consciousne
         document.addEventListener('DOMContentLoaded', mainInitialize);
 
     </script>
+    <footer class="text-center text-gray-500 text-xs mt-4">
+        Version: v9.6.2 GitHub Pages Fix - Updated 2025-07-02T23:07:34Z
+    </footer>
     <script type="module" src="./public/main.js"></script>
 </body>
 </html>
