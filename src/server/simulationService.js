@@ -52,9 +52,15 @@ export function startBackgroundSimulation() {
   const dialogueInterval = setInterval(() => {
     const [a, b] = manager.pickRandomPair();
     if (!a || !b) return;
-    const msg = manager.talk(a, b);
-    manager.receive(b, msg, a);
-    simulationEvents.emit('dialogue', { from: a.id, to: b.id, message: msg });
+    const interaction = manager.talk(a, b);
+    manager.receive(b, interaction, a);
+    simulationEvents.emit('dialogue', {
+      from: a.id,
+      to: b.id,
+      message: interaction.text,
+      intent: interaction.intent,
+      payload: interaction.payload
+    });
   }, 4000);
 
   // Provide a stop function for cleanup
