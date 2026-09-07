@@ -131,7 +131,7 @@ describe('grammar', () => {
         ],
         end: '?',
       },
-      { pick: omniscientPick, addresseeName: 'Mira' },
+      { pick: omniscientPick, addresseeName: 'Mira', topic: 'affect' },
     );
     expect(built?.text).toBe('Mira, yorgun musun?');
   });
@@ -146,7 +146,7 @@ describe('grammar', () => {
           { kind: 'fixed', text: 'var' },
         ],
       },
-      { pick: omniscientPick, addresseeName: null },
+      { pick: omniscientPick, addresseeName: null, topic: 'space' },
     );
     // Guards `Kuzeyde kuzey var.`
     const words = built!.text.replace(/[.!?]/g, '').split(' ');
@@ -157,7 +157,7 @@ describe('grammar', () => {
   it('fails rather than inventing a word it was not given', () => {
     const built = realizeFrame(
       { register: 0.2, parts: [{ kind: 'noun', field: 'need' }] },
-      { pick: () => null, addresseeName: null },
+      { pick: () => null, addresseeName: null, topic: 'need' },
     );
     expect(built).toBeNull();
   });
@@ -165,7 +165,7 @@ describe('grammar', () => {
   it('requires an addressee for vocative frames', () => {
     const built = realizeFrame(
       { register: 0.2, parts: [{ kind: 'name' }] },
-      { pick: omniscientPick, addresseeName: null },
+      { pick: omniscientPick, addresseeName: null, topic: 'space' },
     );
     expect(built).toBeNull();
   });

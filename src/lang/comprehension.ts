@@ -16,7 +16,7 @@ import type { Bacterium } from '../core/types.js';
 import type { Lexicon } from './lexicon.js';
 import type { Candidate } from './speaker.js';
 
-export const FEATURE_COUNT = 13;
+export const FEATURE_COUNT = 15;
 
 /** Energy at which a listener is fully attentive. */
 const COMFORTABLE_ENERGY = 1.2;
@@ -29,6 +29,13 @@ const PRAGMATIC_FLOOR = 0.15;
 
 /** Smoothing for the pairwise communication-success estimate. */
 const BOND_RATE = 0.15;
+
+/**
+ * Spreading activation applied to same-field words when an utterance lands.
+ * Small — roughly a thirtieth of a direct reinforcement — but applied far more
+ * often, which is what lets a vocabulary of thirty-plus words persist.
+ */
+const PRIMING = 0.006;
 
 export interface ChannelContext {
   bond: number;
@@ -134,6 +141,11 @@ export function observableFeatures(
   // The speaker's lifetime hit rate: a useful prior before it knows anything
   // specific about this listener.
   features[12] = speaker.vocabulary.successRate();
+  // How much the listener knows, as a coarse proxy. A cell's size tracks its
+  // vocabulary, so this is observable from outside; it is not the listener's
+  // strength on *these* words, which stays hidden.
+  features[13] = Math.min(1, listener.vocabulary.size() / 60);
+  features[14] = Math.min(1, speaker.vocabulary.size() / 60);
   return features;
 }
 
@@ -167,6 +179,17 @@ export function receive(
   for (const id of ids) {
     speaker.vocabulary.reinforce(id, understood);
     if (listener.vocabulary.knows(id)) listener.vocabulary.reinforce(id, understood);
+  }
+
+  // Spreading activation: talking about food keeps the rest of the food
+  // vocabulary alive on both sides of the exchange.
+  if (understood) {
+    for (const party of [speaker, listener]) {
+      for (const [id] of party.vocabulary.entries()) {
+        if (ids.includes(id)) continue;
+        if (lexicon.get(id)?.field === candidate.field) party.vocabulary.prime(id, PRIMING);
+      }
+    }
   }
 
   // Cross-situational learning: an unfamiliar word is inferable when the rest

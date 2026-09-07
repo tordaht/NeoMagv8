@@ -49,7 +49,7 @@
         </div>
         <div class="tile"><dt>Ortalama dağarcık</dt><dd id="t-vocab">—</dd></div>
         <div class="tile">
-          <dt>Model doğruluğu</dt>
+          <dt>Model (AUC)</dt>
           <dd id="t-model">—<span class="sub" id="t-model-sub"></span></dd>
         </div>
       </dl>
@@ -108,16 +108,16 @@
 
         <div class="panel chart-card">
           <figure>
-            <figcaption>Model doğruluğu</figcaption>
+            <figcaption>Model ayırt ediciliği (AUC)</figcaption>
             <p class="note">
-              Ayrılmış doğrulama kümesinde; kesikli çizgi çoğunluk sınıfı temel
-              çizgisidir. Modelin anlamlı olması için bunu geçmesi gerekir.
+              Ayrılmış doğrulama kümesinde: anlaşılan bir cümlenin anlaşılmayandan
+              yüksek puan alma olasılığı. Kesikli çizgi şans düzeyi (0.50).
             </p>
             <div class="chart-box"><canvas id="chart-model"></canvas></div>
           </figure>
           <div class="legend">
-            <span><i style="background: var(--series-1)"></i>Model</span>
-            <span><i style="background: var(--text-muted)"></i>Temel çizgi</span>
+            <span><i style="background: var(--series-1)"></i>Model AUC</span>
+            <span><i style="background: var(--text-muted)"></i>Şans (0.50)</span>
           </div>
         </div>
       </section>

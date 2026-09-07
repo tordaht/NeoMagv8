@@ -28,6 +28,7 @@ interface ArmResult {
   utterances: number;
   validationAccuracy: number;
   baselineAccuracy: number;
+  validationAuc: number;
 }
 
 /**
@@ -65,6 +66,7 @@ function runArm(seed: string, seconds: number, modelEnabled: boolean): ArmResult
     utterances: stats.utterances,
     validationAccuracy: stats.model.validationAccuracy,
     baselineAccuracy: stats.model.baselineAccuracy,
+    validationAuc: stats.model.validationAuc,
   };
 }
 
@@ -127,6 +129,7 @@ function main(): void {
     significantAt05: Math.abs(t) > 2.365,
     modelValidationAccuracy: mean(rows.map((r) => r.treatment.validationAccuracy)),
     modelBaselineAccuracy: mean(rows.map((r) => r.treatment.baselineAccuracy)),
+    modelAuc: mean(rows.map((r) => r.treatment.validationAuc)),
     rows,
   };
 
@@ -140,7 +143,8 @@ function main(): void {
   );
   console.info(
     `model held-out accuracy: ${(summary.modelValidationAccuracy * 100).toFixed(1)}% ` +
-      `vs majority baseline ${(summary.modelBaselineAccuracy * 100).toFixed(1)}%`,
+      `vs majority baseline ${(summary.modelBaselineAccuracy * 100).toFixed(1)}%  ` +
+      `AUC ${summary.modelAuc.toFixed(3)} (0.5 = chance)`,
   );
 
   if (out) {

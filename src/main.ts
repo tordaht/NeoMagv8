@@ -132,12 +132,12 @@ class App {
     this.charts.model = createTimeSeries({
       canvas: element<HTMLCanvasElement>('chart-model'),
       series: [
-        { label: 'Model', colorToken: '--series-1' },
-        { label: 'Temel çizgi', colorToken: '--text-muted', reference: true },
+        { label: 'AUC', colorToken: '--series-1' },
+        { label: 'Şans', colorToken: '--text-muted', reference: true },
       ],
-      min: 0,
-      max: 100,
-      format: (value) => `${value.toFixed(0)}%`,
+      min: 0.35,
+      max: 0.85,
+      format: (value) => value.toFixed(2),
     });
   }
 
@@ -175,13 +175,12 @@ class App {
     this.charts.population.push([stats.population], t);
     this.charts.comprehension.push([stats.comprehensionRate * 100], t);
     this.charts.vocabulary.push([stats.meanVocabulary], t);
-    // Skipped until the held-out set is populated; plotting before that showed
-    // a baseline of 100% against a model of 0%, which measures nothing.
+    // Skipped until the held-out set is populated. AUC rather than accuracy:
+    // the model's job is to rank a speaker's candidates, and on a near-balanced
+    // problem thresholded accuracy tracks the majority baseline too closely to
+    // show whether it is learning anything.
     if (stats.model.validationAccuracy > 0) {
-      this.charts.model.push(
-        [stats.model.validationAccuracy * 100, stats.model.baselineAccuracy * 100],
-        t,
-      );
+      this.charts.model.push([stats.model.validationAuc, 0.5], t);
     }
   }
 
@@ -276,10 +275,12 @@ class App {
 
     const model = stats.model;
     element('t-model').firstChild!.textContent = model.ready
-      ? `${(model.validationAccuracy * 100).toFixed(0)}%`
+      ? model.validationAuc.toFixed(3)
       : '—';
     element('t-model-sub').textContent = model.ready
-      ? ` temel çizgi ${(model.baselineAccuracy * 100).toFixed(0)}%`
+      ? ` AUC · doğruluk ${(model.validationAccuracy * 100).toFixed(0)}% / temel ${(
+          model.baselineAccuracy * 100
+        ).toFixed(0)}%`
       : ' henüz eğitilmedi';
 
     this.refreshStatus();

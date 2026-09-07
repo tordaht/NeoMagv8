@@ -36,11 +36,11 @@ export interface ModelOptions {
 
 export const DEFAULT_MODEL_OPTIONS: Omit<ModelOptions, 'inputSize'> = {
   seed: 'comprehension',
-  hiddenSize: 16,
+  hiddenSize: 24,
   learningRate: 0.015,
   replayCapacity: 3000,
   holdoutCapacity: 500,
-  trainEvery: 8,
+  trainEvery: 6,
   batchSize: 32,
   warmupSamples: 200,
 };
@@ -55,6 +55,17 @@ export interface ModelMetrics {
   validationAccuracy: number;
   /** Accuracy of always predicting the majority class — the honest baseline. */
   baselineAccuracy: number;
+  /**
+   * Area under the ROC curve on the held-out set: the probability that a
+   * randomly chosen understood utterance scores above a randomly chosen
+   * misunderstood one. 0.5 is chance.
+   *
+   * This is the metric that matters here. The model's job is to *rank* a
+   * speaker's candidate utterances, not to classify one at a 0.5 threshold, and
+   * on a near-balanced problem thresholded accuracy can sit a fraction above
+   * the majority baseline while the ranking is clearly informative.
+   */
+  validationAuc: number;
   positiveRate: number;
 }
 
@@ -78,6 +89,7 @@ export class ComprehensionModel {
   private trainAccuracy = 0;
   private validationLoss = 0;
   private validationAccuracy = 0;
+  private validationAuc = 0.5;
   private rngState = 0x2545f491;
 
   readonly history: MetricPoint[] = [];
@@ -152,6 +164,7 @@ export class ComprehensionModel {
       const validation = this.net.evaluate(this.holdout);
       this.validationLoss = validation.loss;
       this.validationAccuracy = validation.accuracy;
+      this.validationAuc = this.areaUnderRoc();
     }
 
     if (this.net.updates % 10 === 0) {
@@ -163,6 +176,37 @@ export class ComprehensionModel {
       });
       if (this.history.length > 400) this.history.shift();
     }
+  }
+
+  /**
+   * AUC by the rank-sum identity, with ties averaged. Cheap enough to run on
+   * every evaluation because the held-out set is capped at a few hundred rows.
+   */
+  private areaUnderRoc(): number {
+    const scored = this.holdout
+      .map((sample) => ({ score: this.net.predict(sample.input), target: sample.target }))
+      .sort((a, b) => a.score - b.score);
+
+    let positives = 0;
+    let negatives = 0;
+    let rankSum = 0;
+    for (let i = 0; i < scored.length; ) {
+      // Average the ranks across a run of equal scores.
+      let j = i;
+      while (j < scored.length && scored[j].score === scored[i].score) j++;
+      const averageRank = (i + 1 + j) / 2;
+      for (let k = i; k < j; k++) {
+        if (scored[k].target === 1) {
+          positives++;
+          rankSum += averageRank;
+        } else {
+          negatives++;
+        }
+      }
+      i = j;
+    }
+    if (positives === 0 || negatives === 0) return 0.5;
+    return (rankSum - (positives * (positives + 1)) / 2) / (positives * negatives);
   }
 
   /** Majority-class accuracy on the held-out set — what "no model" would score. */
@@ -184,6 +228,7 @@ export class ComprehensionModel {
       validationLoss: this.validationLoss,
       validationAccuracy: this.validationAccuracy,
       baselineAccuracy: this.baselineAccuracy(),
+      validationAuc: this.validationAuc,
       positiveRate: this.observed === 0 ? 0 : this.positives / this.observed,
     };
   }

@@ -33,9 +33,16 @@ import {
 } from './seed.js';
 import type { SpeechAct } from '../core/types.js';
 
+/**
+ * `'topic'` defers to the intent's chosen field, so widening what an act can be
+ * about widens which words the frames retrieve. A literal field pins the slot
+ * regardless of topic — used where the frame only makes sense one way.
+ */
+export type SlotField = Field | 'topic';
+
 export interface NounSlot {
   kind: 'noun';
-  field?: Field;
+  field?: SlotField;
   plural?: boolean;
   possessive?: Possessive;
   case?: Case;
@@ -45,7 +52,7 @@ export interface NounSlot {
 
 export interface VerbSlot {
   kind: 'verb';
-  field?: Field;
+  field?: SlotField;
   tense: Tense;
   person: Person;
   negative?: boolean;
@@ -63,7 +70,7 @@ export interface VerbSlot {
 
 export interface AdjSlot {
   kind: 'adj';
-  field?: Field;
+  field?: SlotField;
   /** Renders as a predicate with a personal ending: `yorgun` → `yorgunum`. */
   predicative?: Person;
   shared?: boolean;
@@ -71,7 +78,7 @@ export interface AdjSlot {
 
 export interface InterjSlot {
   kind: 'interj';
-  field?: Field;
+  field?: SlotField;
 }
 
 export interface PronounSlot {
@@ -145,6 +152,8 @@ export interface RealizeContext {
   /** Picks a content word, or null when the speaker knows nothing suitable. */
   pick(request: PickRequest): Lexeme | null;
   addresseeName: string | null;
+  /** The intent's topic, substituted wherever a slot asks for `'topic'`. */
+  topic: Field;
 }
 
 export interface BuiltClause {
@@ -193,14 +202,14 @@ export function realizeFrame(frame: Frame, ctx: RealizeContext): BuiltClause | n
   /** Requests a content word and records it, so no clause repeats a lexeme. */
   const take = (
     pos: 'noun' | 'verb' | 'adj' | 'interj',
-    field: Field | undefined,
+    slotField: SlotField | undefined,
     shared: boolean,
     valency?: Valency[],
     valence?: Valence[],
   ): Lexeme | null => {
     const lexeme = ctx.pick({
       pos,
-      field,
+      field: slotField === 'topic' ? ctx.topic : slotField,
       shared,
       valency,
       valence,
@@ -312,7 +321,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
       register: 0.3,
       parts: [
         { kind: 'name', comma: true },
-        { kind: 'adj', field: 'affect' },
+        { kind: 'adj', field: 'topic' },
         { kind: 'question', person: '2sg' },
       ],
       end: '?',
@@ -338,7 +347,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
       register: 0.15,
       parts: [
         { kind: 'pronoun', person: '1sg', case: 'dat' },
-        { kind: 'noun', field: 'need', shared: true },
+        { kind: 'noun', field: 'topic', shared: true },
         {
           kind: 'verb',
           field: 'social',
@@ -352,7 +361,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
     {
       register: 0.3,
       parts: [
-        { kind: 'noun', field: 'need', shared: true },
+        { kind: 'noun', field: 'topic', shared: true },
         {
           kind: 'verb',
           field: 'social',
@@ -365,7 +374,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
     {
       register: 0.35,
       parts: [
-        { kind: 'noun', field: 'need', shared: true },
+        { kind: 'noun', field: 'topic', shared: true },
         {
           kind: 'verb',
           field: 'space',
@@ -382,13 +391,13 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
   complain: [
     {
       register: 0.05,
-      parts: [{ kind: 'adj', field: 'body', predicative: '1sg' }],
+      parts: [{ kind: 'adj', field: 'topic', predicative: '1sg' }],
       end: '!',
     },
     {
       register: 0.15,
       parts: [
-        { kind: 'noun', field: 'need', possessive: '1sg' },
+        { kind: 'noun', field: 'topic', possessive: '1sg' },
         {
           kind: 'verb',
           field: 'need',
@@ -401,7 +410,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
     {
       register: 0.2,
       parts: [
-        { kind: 'noun', field: 'need' },
+        { kind: 'noun', field: 'topic' },
         { kind: 'fixed', text: 'yok' },
       ],
       end: '!',
@@ -409,7 +418,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
     {
       register: 0.25,
       parts: [
-        { kind: 'noun', field: 'need', case: 'acc' },
+        { kind: 'noun', field: 'topic', case: 'acc' },
         {
           kind: 'verb',
           field: 'space',
@@ -427,15 +436,15 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
       register: 0.35,
       parts: [
         { kind: 'noun', field: 'space', case: 'loc' },
-        { kind: 'noun', field: 'need' },
+        { kind: 'noun', field: 'topic' },
         { kind: 'fixed', text: 'var' },
       ],
     },
     {
       register: 0.4,
       parts: [
-        { kind: 'noun', field: 'environment' },
-        { kind: 'adj', field: 'environment' },
+        { kind: 'noun', field: 'topic' },
+        { kind: 'adj', field: 'topic' },
       ],
     },
     {
@@ -458,7 +467,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
       register: 0.3,
       parts: [
         { kind: 'pronoun', person: '2sg', case: 'dat' },
-        { kind: 'noun', field: 'need', shared: true },
+        { kind: 'noun', field: 'topic', shared: true },
         {
           kind: 'verb',
           field: 'social',
@@ -472,7 +481,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
     {
       register: 0.4,
       parts: [
-        { kind: 'noun', field: 'need', possessive: '1sg', case: 'acc' },
+        { kind: 'noun', field: 'topic', possessive: '1sg', case: 'acc' },
         {
           kind: 'verb',
           field: 'social',
@@ -487,12 +496,12 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
   ask: [
     {
       register: 0.5,
-      parts: [{ kind: 'noun' }, { kind: 'fixed', text: 'ne' }, { kind: 'fixed', text: 'demek' }],
+      parts: [{ kind: 'noun', field: 'topic' }, { kind: 'fixed', text: 'ne' }, { kind: 'fixed', text: 'demek' }],
       end: '?',
     },
     {
       register: 0.45,
-      parts: [{ kind: 'noun', field: 'need' }, { kind: 'fixed', text: 'nerede' }],
+      parts: [{ kind: 'noun', field: 'topic' }, { kind: 'fixed', text: 'nerede' }],
       end: '?',
     },
     {
@@ -516,7 +525,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
     {
       register: 0.2,
       parts: [
-        { kind: 'noun', field: 'environment' },
+        { kind: 'noun', field: 'topic' },
         {
           kind: 'verb',
           field: 'need',
@@ -530,7 +539,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
     {
       register: 0.25,
       parts: [
-        { kind: 'noun', field: 'environment', case: 'abl' },
+        { kind: 'noun', field: 'topic', case: 'abl' },
         {
           kind: 'verb',
           field: 'space',
@@ -546,7 +555,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
   reflect: [
     {
       register: 0.95,
-      parts: [{ kind: 'noun', field: 'existence' }, { kind: 'fixed', text: 'nedir' }],
+      parts: [{ kind: 'noun', field: 'topic' }, { kind: 'fixed', text: 'nedir' }],
       end: '?',
     },
     {
@@ -566,7 +575,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
     {
       register: 0.85,
       parts: [
-        { kind: 'noun', field: 'cognition', possessive: '3sg', case: 'acc' },
+        { kind: 'noun', field: 'topic', possessive: '3sg', case: 'acc' },
         {
           kind: 'verb',
           field: 'space',
@@ -579,7 +588,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
     {
       register: 1,
       parts: [
-        { kind: 'noun', field: 'existence' },
+        { kind: 'noun', field: 'topic' },
         { kind: 'fixed', text: 'bir' },
         { kind: 'noun', field: 'existence' },
         { kind: 'question', person: '3sg' },
@@ -593,7 +602,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
       register: 0.3,
       parts: [
         { kind: 'interj', field: 'affect' },
-        { kind: 'noun', field: 'body', possessive: '1sg' },
+        { kind: 'noun', field: 'topic', possessive: '1sg' },
         { kind: 'fixed', text: 'var' },
       ],
       end: '!',

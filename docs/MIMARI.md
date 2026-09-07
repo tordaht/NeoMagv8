@@ -93,7 +93,7 @@ Fiiller ayrıca `valence` (olumlu / nötr / olumsuz) taşır; iyi niyet bildiren
 
 ### Sözcük seçimi konuşanın kendi dağarcığından
 
-Seçim ağırlığı `güç² × güvenilirlik`. Yani:
+Seçim ağırlığı `güç^1.5 × güvenilirlik`. Yani:
 
 - iyi bilinen sözcükler baskın çıkar,
 - daha önce işe yaramış sözcükler tercih edilir,
@@ -104,6 +104,33 @@ Bu son madde dili "evrimleşen" yapan şeydir: söylenebilir olan, bilinenle
 sınırlıdır.
 
 ---
+
+## Dilin büzülmesini önleyen üçüncü mekanizma
+
+Yukarıdaki iki düzeltme dili ölmekten kurtardı ama küçülmesini durdurmadı:
+bir simüle saatte dağarcık 37'den 9'a iniyor, 35 kurucu sözcükten 8'i,
+63 türetimden 1'i kalıyordu.
+
+Nedeni yapısal. `V` sözcüklük bir dağarcıkta ve sabit bir sözcük-kullanım
+hızında, her sözcük `1/V` sıklıkla kullanılır; sönümleme ise sözcük başına
+sabittir. Dolayısıyla `V` büyüdükçe sönümleme kazanır ve dil her zaman en sık
+kullanılan çekirdeğine doğru büzülür.
+
+Üç şey bunu kırıyor:
+
+1. **Pekişmeye bağlı sönümleme** — iyi yerleşmiş bir sözcük neredeyse kalıcı,
+   yarım öğrenilmiş olan hızla siliniyor.
+2. **Daha yumuşak sözcük seçimi** — `güç²` yerine `güç^1.5`. Kare alma seçimi
+   kazanan-hepsini-alır yapıyordu: hep aynı birkaç sözcük seçiliyor, gerisi hiç
+   pekişmiyordu.
+3. **Anlamsal yayılım (priming)** — bir cümle anlaşıldığında aynı alandaki
+   diğer sözcükler de zayıfça güçleniyor. Bu, sözcük tutmayı ham sıklıktan
+   ayırır ve asıl belirleyici olan budur: dağarcık 9 → 46'ya çıkıyor,
+   türetimlerin yerleşeni 1 → 38'e.
+
+Ayrıca konu (`topic`) niyetin bir parçası oldu: her konuşma edimi tek bir
+anlamsal alana sabitlenmişti, bu yüzden sözlüğün büyük kısmı hiç çağrılmıyor ve
+sönümleniyordu.
 
 ## Dilin çökmesini önleyen iki ayar
 
@@ -136,9 +163,14 @@ Model, konuşanın **göremeyeceği** şeyleri girdi olarak almaz. Yer gerçeği
 (`groundTruthScore`) dinleyicinin dağarcığını okur; özellik vektörü okumaz.
 Dolayısıyla problem kısmi bilgilidir ve tavan düşüktür.
 
-Ölçülen: ayrılmış kümede %64.7 doğruluk, çoğunluk temel çizgisi %61.9.
-Küçük ama gerçek. Kolonideki etkisi eşleştirilmiş deneyde 2.53 puan
-(t = 3.92, n = 8).
+Ölçülen: ayrılmış kümede AUC 0.587, doğruluk %63.1, çoğunluk temel çizgisi
+%62.8. Kolonideki etkisi eşleştirilmiş deneyde 2.13 puan (t = 6.38, n = 8).
+
+Doğruluğun temel çizgiye bu kadar yakın olması metriğin yanlış seçilmesinden:
+problem neredeyse dengeli ve modelin görevi tek bir cümleyi 0.5 eşiğinde
+sınıflandırmak değil, konuşanın dört adayı arasından en iyisini seçmek. Sıralama
+kalitesini ölçen AUC şansın (0.50) belirgin üstünde, ve simülasyondaki etki
+sekiz tohumun sekizinde aynı yönde.
 
 Bu bilinçli bir tercih. Dinleyicinin dağarcığını girdiye koymak doğruluğu
 kolayca %85'e çıkarırdı ve hiçbir şey ölçmezdi.
@@ -170,10 +202,14 @@ Karşılığı:
 
 ## Bilinen sınırlar
 
-- **Uzamsal lehçeler zayıf.** İşitme yarıçapı ve sosyal çekim küme oluşturuyor
-  ama ayrık lehçeler için popülasyonun daha büyük ve daha az hareketli olması
-  gerekir. `cohesion` metriği ölçüyor; ayrık lehçe henüz güvenilir biçimde
-  ortaya çıkmıyor.
+- **Uzamsal lehçeler zayıf.** Bağ-ağırlıklı çekim küme içi/dışı örtüşme farkını
+  0.029'dan 0.044'e çıkardı, ama bu hâlâ küçük. İşitme yarıçapını 130'dan 90 ve
+  70'e düşürmek küme sayısını artırıyor, karşılığında dağarcığı 42'den 28 ve
+  21'e, anlaşılmayı %60'tan %55 ve %51'e indiriyor — kötü bir takas. Kısa mesafe
+  itme kuvveti denendi ve kaldırıldı: koloniyi eşit yayarak tüm grupları tek
+  bileşene bağlıyor ve ayrışmayı 0.002'ye düşürüyor. Ayrık lehçeler için
+  muhtemelen mekânsal besin yamaları gerekiyor; şu anki model iyi karışmış tek
+  bir havuz.
 - **Anlambilim sığ.** Sözcükler anlamsal alanlara aittir ama bileşimsel bir
   anlam temsili yok; "uygunsuz alan" kullanımı cezalandırılır, yanlış anlam
   modellenmez.

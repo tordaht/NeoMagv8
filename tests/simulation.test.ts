@@ -92,6 +92,35 @@ describe('simulation', () => {
     expect(stats.meanVocabulary).toBeGreaterThan(12);
   });
 
+  it('does not let the language contract over a long run', () => {
+    // A flat decay, an over-steep retrieval weight and a single fixed topic per
+    // speech act combined to shrink the colony's vocabulary from 37 words to 9
+    // over a simulated hour, with 8 of 35 founding words and 1 of 63 coinages
+    // surviving. Consolidation-scaled decay, a gentler retrieval exponent and
+    // semantic priming hold it steady instead.
+    const early = run(400, { world: { seed: 'contraction' } });
+    const earlyVocabulary = early.sim.stats().meanVocabulary;
+
+    const late = run(1800, { world: { seed: 'contraction' } });
+    const stats = late.sim.stats();
+
+    expect(earlyVocabulary).toBeGreaterThan(25);
+    // Allowed to drift, not to collapse.
+    expect(stats.meanVocabulary).toBeGreaterThan(earlyVocabulary * 0.7);
+    expect(stats.lexiconSize).toBeGreaterThan(late.sim.core.length * 2);
+
+    // Coinages must be able to establish themselves, not just be minted.
+    const population = late.sim.world.bacteria.length;
+    const holders = new Map<string, number>();
+    for (const agent of late.sim.world.bacteria) {
+      for (const id of agent.vocabulary.ids()) holders.set(id, (holders.get(id) ?? 0) + 1);
+    }
+    const established = [...holders.entries()].filter(
+      ([id, count]) => late.sim.lexicon.get(id)?.coined && count > population * 0.2,
+    );
+    expect(established.length).toBeGreaterThan(2);
+  });
+
   it('grows the lexicon by derivation', () => {
     const { sim, coined } = run(600, { world: { seed: 'innovation' } });
     expect(coined.length).toBeGreaterThan(3);
@@ -116,6 +145,10 @@ describe('simulation', () => {
     expect(metrics.positiveRate).toBeGreaterThan(0.25);
     expect(metrics.positiveRate).toBeLessThan(0.85);
     expect(metrics.validationAccuracy).toBeGreaterThan(0.5);
+    // Ranking quality is the metric that matters: the model chooses between a
+    // speaker's candidates rather than classifying one at a 0.5 threshold.
+    expect(metrics.validationAuc).toBeGreaterThan(0.53);
+    expect(metrics.validationAuc).toBeLessThanOrEqual(1);
   });
 
   it('does not claim the model is ready before it is', () => {

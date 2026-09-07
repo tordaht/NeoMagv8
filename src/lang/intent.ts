@@ -45,18 +45,31 @@ export function urgencyOf(agent: Bacterium): number {
   return Math.min(1, Math.max(0, 1 - agent.energy / COMFORTABLE_ENERGY));
 }
 
-/** Default topic field for each act, used when the frame does not pin one. */
-const ACT_FIELD: Record<SpeechAct, Field> = {
-  greet: 'social',
-  request: 'need',
-  complain: 'need',
-  inform: 'space',
-  offer: 'social',
-  ask: 'cognition',
-  warn: 'environment',
-  reflect: 'existence',
-  celebrate: 'body',
+/**
+ * Topics each act can be about.
+ *
+ * A single fixed field per act meant the frames only ever asked for words from
+ * a handful of semantic fields; everything else was never retrieved, never
+ * reinforced, and decayed out of the language. Over an hour the colony's
+ * vocabulary shrank from 37 words to 9. Letting the topic vary within an act
+ * exercises the whole lexicon, which is what keeps it alive.
+ *
+ * The first entry is the act's default and carries the most weight.
+ */
+const ACT_TOPICS: Record<SpeechAct, Field[]> = {
+  greet: ['social', 'affect', 'body'],
+  request: ['need', 'space', 'social'],
+  complain: ['need', 'body', 'affect', 'environment'],
+  inform: ['space', 'environment', 'need', 'social'],
+  offer: ['need', 'social', 'space'],
+  ask: ['cognition', 'need', 'space', 'existence'],
+  warn: ['environment', 'space', 'body'],
+  reflect: ['existence', 'cognition', 'affect'],
+  celebrate: ['body', 'affect', 'existence'],
 };
+
+/** Weights favouring an act's canonical topic while still visiting the others. */
+const TOPIC_WEIGHTS = [3, 1.6, 1, 0.7];
 
 /**
  * Scores every speech act against the agent's current situation and samples
@@ -107,9 +120,12 @@ export function chooseIntent(
     addressee = act === 'greet' && strangers.length > 0 ? strangers[0] : ctx.listeners[0];
   }
 
+  const topics = ACT_TOPICS[act];
+  const field = rng.weighted(topics, topics.map((_, index) => TOPIC_WEIGHTS[index] ?? 0.5));
+
   return {
     act,
-    field: ACT_FIELD[act],
+    field,
     urgency,
     addressee,
     addresseeName: addressee?.name ?? null,

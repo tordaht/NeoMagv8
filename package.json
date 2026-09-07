@@ -22,7 +22,8 @@
     "check": "npm run lint && npm run typecheck && npm run test && npm run smoke",
     "sample": "tsx tools/sample.ts",
     "balance": "tsx tools/balance.ts",
-    "experiment": "tsx tools/experiment.ts"
+    "experiment": "tsx tools/experiment.ts",
+    "evolution": "tsx tools/evolution.ts"
   },
   "dependencies": {
     "chart.js": "^4.5.1"

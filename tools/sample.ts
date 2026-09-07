@@ -69,6 +69,7 @@ function main(): void {
     `model: observed=${stats.model.observed} updates=${stats.model.updates} ` +
       `valAcc=${(stats.model.validationAccuracy * 100).toFixed(1)}% ` +
       `baseline=${(stats.model.baselineAccuracy * 100).toFixed(1)}% ` +
+      `auc=${stats.model.validationAuc.toFixed(3)} ` +
       `ready=${stats.model.ready}`,
   );
 }

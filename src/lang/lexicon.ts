@@ -190,10 +190,42 @@ export class Vocabulary {
     entry.strength += (target - entry.strength) * step;
   }
 
-  /** Passive forgetting; called on a slow cadence, not every tick. */
+  /**
+   * Weakly strengthens a word without using it — semantic priming.
+   *
+   * Without this, sustainable vocabulary is capped by raw speech frequency:
+   * with `V` words and a fixed rate of word-use events, each word is used
+   * `1/V` as often, so a larger vocabulary always decays faster than it is
+   * reinforced and the language contracts toward its highest-frequency core.
+   * Priming the field-mates of a word that was just understood decouples
+   * retention from per-word frequency — the psycholinguistically attested
+   * behaviour, and what lets a thirty-word vocabulary persist here.
+   */
+  prime(id: string, amount: number): void {
+    const entry = this.memory.get(id);
+    if (!entry) return;
+    entry.strength = Math.min(1, entry.strength + amount * (1 - entry.strength));
+  }
+
+  /**
+   * How much of the nominal decay a fully consolidated word still suffers.
+   * A flat subtraction made the language contract to about nine words: a
+   * typical word gained ~0.013 per use and lost ~0.015 over the same interval,
+   * a slow bleed that only the very highest-frequency words survived.
+   */
+  static readonly CONSOLIDATION = 0.75;
+
+  /**
+   * Passive forgetting, applied on a slow cadence rather than every tick.
+   *
+   * Decay scales down with how firmly the word is held, which is the standard
+   * consolidation effect: a well-established word is nearly permanent, a
+   * half-learned one fades quickly. That asymmetry is what lets a large stable
+   * vocabulary coexist with genuine turnover at the margin.
+   */
   decay(amount: number): void {
     for (const [id, entry] of this.memory) {
-      entry.strength -= amount;
+      entry.strength -= amount * (1 - Vocabulary.CONSOLIDATION * entry.strength);
       if (entry.strength < Vocabulary.FORGET_THRESHOLD) this.memory.delete(id);
     }
   }
@@ -217,8 +249,15 @@ export class Vocabulary {
     return uses === 0 ? 0 : successes / uses;
   }
 
-  /** Copies this vocabulary, halving strengths — used when a cell divides. */
-  inherit(at: number, retention = 0.75): Vocabulary {
+  /**
+   * Copies this vocabulary at reduced strength — used when a cell divides.
+   *
+   * With generations turning over every couple of simulated minutes, a harsh
+   * retention compounds: at 0.75 the colony lost a quarter of every word's
+   * strength ~20 times per run, which stripped the language down to its
+   * highest-frequency core.
+   */
+  inherit(at: number, retention = 0.85): Vocabulary {
     const child = new Vocabulary();
     for (const [id, entry] of this.memory) {
       const strength = entry.strength * retention;

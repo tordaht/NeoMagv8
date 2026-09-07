@@ -40,10 +40,12 @@ export interface Candidate {
 /**
  * Builds the lexeme chooser for one speaker.
  *
- * Words are weighted by `strength²` so a firmly held word dominates a
- * half-learned one, and — when the frame asks for a word that has to carry
- * meaning — by the speaker's own past success with it.
+ * Words are weighted by `strength^1.5` — enough that a firmly held word beats a
+ * half-learned one, but not so steep that retrieval becomes winner-take-all.
+ * At `strength²` the same handful of words was chosen every time, so nothing
+ * else was ever reinforced and the rest of the vocabulary decayed away.
  */
+const RETRIEVAL_EXPONENT = 1.5;
 function makePicker(agent: Bacterium, lexicon: Lexicon, rng: Rng) {
   const known: { lexeme: Lexeme; strength: number; reliability: number }[] = [];
   for (const [id, memory] of agent.vocabulary.entries()) {
@@ -72,7 +74,8 @@ function makePicker(agent: Bacterium, lexicon: Lexicon, rng: Rng) {
         if (matchField && request.field && lexeme.field !== request.field) continue;
         options.push(lexeme);
         weights.push(
-          entry.strength * entry.strength * (request.shared ? entry.reliability : 1),
+          Math.pow(entry.strength, RETRIEVAL_EXPONENT) *
+            (request.shared ? entry.reliability : 1),
         );
       }
       return { options, weights };
@@ -134,7 +137,7 @@ export function generateCandidates(
   agent: Bacterium,
   intent: Intent,
   deps: SpeakerDeps,
-  count = 3,
+  count = 4,
 ): Candidate[] {
   const { lexicon, rng } = deps;
   const pick = makePicker(agent, lexicon, rng);
@@ -156,6 +159,7 @@ export function generateCandidates(
     const clause = realizeFrame(frame, {
       pick,
       addresseeName: intent.addresseeName,
+      topic: intent.field,
     });
     if (!clause || seen.has(clause.text)) continue;
     seen.add(clause.text);

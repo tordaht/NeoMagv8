@@ -69,8 +69,10 @@ kendi sözcüklerine güveni, o dinleyiciyle geçmiş başarısı, mesafe, cüml
 morfolojik karmaşıklığı. Dinleyicinin dağarcığı girdilere dâhil değildir;
 olsaydı model hiçbir şey ölçmezdi.
 
-Her beşinci gözlem eğitime hiç girmeyen bir doğrulama kümesine ayrılır, ve
-metrikler her zaman çoğunluk sınıfı temel çizgisiyle birlikte raporlanır.
+Her beşinci gözlem eğitime hiç girmeyen bir doğrulama kümesine ayrılır. Ana
+metrik **AUC** — modelin işi bir cümleyi eşikte sınıflandırmak değil, konuşanın
+dört adayı arasında sıralama yapmak. Doğruluk da çoğunluk sınıfı temel
+çizgisiyle birlikte raporlanır.
 
 ---
 
@@ -90,17 +92,40 @@ extinctions=0/4  mean population=46.2  mean CV=0.128
 90 simüle dakika boyunca kayma yok. (Bu deponun önceki motoru popülasyonu
 ~5 simüle saniyede sıfıra düşürüyordu.)
 
+**Dilin evrimi** — `npm run evolution`
+
+Bir simüle saatte, tek tohum:
+
+```
+  450s  pop=45  vocab=38.7  lexicon=157 (+44)  comp=60.1%  cohesion=0.69
+ 3150s  pop=43  vocab=58.7  lexicon=261 (+148) comp=61.2%  cohesion=0.61
+
+founding core: 30/35 words still held by >20% of the colony
+coinages: 162 minted, 67 still known by anyone, 38 established (>20%)
+güçlen (96%), verme (94%), tatlaş (94%), sessizlik (89%), izsiz (85%), anlayış (68%)
+```
+
+Dağarcık büyür, kurucu çekirdeğin çoğu yaşar, türetilen kelimelerin bir kısmı
+yerleşir, kalanı unutulur. (İlk çalışan sürümde dağarcık 37'den 9'a düşüyor ve
+63 türetimden yalnızca 1'i hayatta kalıyordu — düz sönümleme, fazla dik
+sözcük seçimi ve edim başına tek konu yüzünden.)
+
 **Modelin etkisi** — `npm run experiment`
 
 Aynı dünya tohumu iki kolda da kullanılır ve model iki kolda da *eğitilir*;
 tek fark tahminlerinin cümle seçimine izin verilip verilmediğidir.
 
 ```
-control   comprehension: 58.78%
-treatment comprehension: 61.31%
-difference: 2.53 pp  (sd 1.82 pp, t=3.92, n=8) → significant at 0.05
-model held-out accuracy: 64.7% vs majority baseline 61.9%
+control   comprehension: 60.67%
+treatment comprehension: 62.80%
+difference: 2.13 pp  (sd 0.94 pp, t=6.38, n=8) → significant at 0.05
+model held-out accuracy: 63.1% vs majority baseline 62.8%  AUC 0.587 (0.5 = chance)
 ```
+
+Doğruluğun temel çizgiye yakın olması yanıltıcı değil, beklenen: problem
+neredeyse dengeli ve modelin işi 0.5 eşiğinde sınıflandırmak değil, konuşanın
+adayları arasında **sıralama** yapmak. Bunu ölçen metrik AUC (0.587) ve
+simülasyondaki etkisi tutarlı (8 tohumun 8'inde aynı yönde).
 
 **Konuşma örneği** — `npm run sample`
 
@@ -123,7 +148,7 @@ eşiğini aşan (komik) cümleleri işaretler.
 
 - **Lint** — gerçek kurallarla (`no-redeclare`, `no-undef`, `no-unused-vars` …).
 - **Typecheck** — `strict`, `noUnusedLocals`, `noUnusedParameters`.
-- **88 test** — morfoloji bilinen Türkçe formlara karşı, ağın gradyanları sayısal
+- **89 test** — morfoloji bilinen Türkçe formlara karşı, ağın gradyanları sayısal
   türeve karşı, ekolojinin 10.000+ tick boyunca sabit kalması, ve dilin sabit
   bir cümle listesine çökmediği.
 - **Tarayıcı duman testi** — üretim derlemesini gerçek Chromium'da açar; **tek bir
@@ -143,6 +168,7 @@ Kapsam: %95 satır, %88 dal (eşikler %75 / %70).
 | `npm run sample` | Başsız koşu + konuşma dökümü |
 | `npm run balance` | Ekolojik denge taraması |
 | `npm run experiment` | Eşleştirilmiş A/B deneyi (model açık/kapalı) |
+| `npm run evolution` | Uzun koşu: dağarcık, türetim, lehçe ve özellik sürüklenmesi |
 
 Duman testi yerelde önceden kurulu bir tarayıcı kullanabilir:
 `CHROMIUM_PATH=/path/to/chrome npm run smoke`.
