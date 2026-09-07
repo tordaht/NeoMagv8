@@ -267,12 +267,22 @@ describe('derivation', () => {
 
   it('reports the part of speech and stem flags of the coined word', () => {
     const hunger = deriveLexeme('aç', 'lIk');
-    expect(hunger).toEqual({ form: 'açlık', pos: 'noun', flags: { softens: true } });
+    expect(hunger).toEqual({
+      form: 'açlık',
+      pos: 'noun',
+      flags: { softens: true },
+      intransitive: false,
+    });
     // The coined stem must inflect correctly on its own terms: açlık → açlığım.
     expect(inflectNoun(hunger.form, { possessive: '1sg', ...hunger.flags })).toBe('açlığım');
 
     expect(deriveLexeme('enerji', 'sIz').pos).toBe('adj');
-    expect(deriveLexeme('bir', 'lAş').pos).toBe('verb');
+
+    // A denominal verb must be marked intransitive, or the grammar will hand
+    // it an accusative object.
+    const become = deriveLexeme('bir', 'lAş');
+    expect(become.pos).toBe('verb');
+    expect(become.intransitive).toBe(true);
   });
 });
 

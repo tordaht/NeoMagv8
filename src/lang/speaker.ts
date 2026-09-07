@@ -68,6 +68,7 @@ function makePicker(agent: Bacterium, lexicon: Lexicon, rng: Rng) {
         // that supplies an object yields an ungrammatical clause, not a quirky
         // one, so there is no relaxed pass for it.
         if (request.valency && !request.valency.includes(lexeme.valency)) continue;
+        if (request.valence && !request.valence.includes(lexeme.valence)) continue;
         if (matchField && request.field && lexeme.field !== request.field) continue;
         options.push(lexeme);
         weights.push(

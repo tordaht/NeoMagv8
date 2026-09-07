@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NeoMag — bakteriyel dil evrimi</title>
+    <meta
+      name="description"
+      content="Türkçe morfoloji üreten bakteri kolonisinde dil evrimi ve anlaşılabilirlik modeli."
+    />
+    <link rel="icon" href="./favicon.ico" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="masthead">
+        <h1>NeoMag</h1>
+        <p>
+          Bakteri kolonisinde Türkçe dil evrimi. Ne söyleyecekleri durumlarından,
+          nasıl söyleyecekleri bildikleri kelimelerden çıkar.
+        </p>
+        <span class="status" id="status" data-state="paused">başlatılmadı</span>
+        <div class="controls">
+          <button id="toggle" data-primary type="button">Başlat</button>
+          <select id="speed" aria-label="Hız">
+            <option value="0.5">0.5×</option>
+            <option value="1" selected>1×</option>
+            <option value="4">4×</option>
+            <option value="16">16×</option>
+          </select>
+          <input id="seed" value="neomag" aria-label="Tohum" />
+          <button id="reset" type="button">Yeniden kur</button>
+          <button id="theme" type="button" aria-label="Tema">◐</button>
+        </div>
+      </header>
+
+      <dl class="tiles" id="tiles">
+        <div class="tile"><dt>Popülasyon</dt><dd id="t-pop">—</dd></div>
+        <div class="tile">
+          <dt>Anlaşılma oranı</dt>
+          <dd id="t-comp">—</dd>
+        </div>
+        <div class="tile">
+          <dt>Dil bütünlüğü</dt>
+          <dd id="t-cohesion">—<span class="sub" id="t-cohesion-sub"></span></dd>
+        </div>
+        <div class="tile">
+          <dt>Sözlük</dt>
+          <dd id="t-lexicon">—<span class="sub" id="t-coined"></span></dd>
+        </div>
+        <div class="tile"><dt>Ortalama dağarcık</dt><dd id="t-vocab">—</dd></div>
+        <div class="tile">
+          <dt>Model doğruluğu</dt>
+          <dd id="t-model">—<span class="sub" id="t-model-sub"></span></dd>
+        </div>
+      </dl>
+
+      <section class="stage">
+        <div class="panel">
+          <h2>Koloni</h2>
+          <canvas id="colony" aria-label="Bakteri kolonisi"></canvas>
+          <p class="hint">
+            Bir bakteriye tıklayarak inceleyin. Halka rengi enerjiyi, kırmızı çember
+            açlığı, ince çizgiler birbirini anlayan çiftleri gösterir.
+          </p>
+        </div>
+
+        <div class="panel inspector">
+          <h2>İnceleme</h2>
+          <div id="inspector">
+            <p class="hint">Canvas üzerinde bir bakteri seçin.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="charts">
+        <div class="panel chart-card">
+          <figure>
+            <figcaption>Popülasyon</figcaption>
+            <p class="note">Besin yenilenmesi ve atık birikimiyle dengelenir.</p>
+            <div class="chart-box"><canvas id="chart-population"></canvas></div>
+          </figure>
+          <div class="legend">
+            <span><i style="background: var(--series-1)"></i>Canlı birey</span>
+          </div>
+        </div>
+
+        <div class="panel chart-card">
+          <figure>
+            <figcaption>Anlaşılma oranı</figcaption>
+            <p class="note">Bir cümlenin dinleyici tarafından anlaşılma yüzdesi.</p>
+            <div class="chart-box"><canvas id="chart-comprehension"></canvas></div>
+          </figure>
+          <div class="legend">
+            <span><i style="background: var(--series-2)"></i>Anlaşılan / duyan</span>
+          </div>
+        </div>
+
+        <div class="panel chart-card">
+          <figure>
+            <figcaption>Ortalama sözcük dağarcığı</figcaption>
+            <p class="note">Birey başına bilinen sözcük sayısı.</p>
+            <div class="chart-box"><canvas id="chart-vocabulary"></canvas></div>
+          </figure>
+          <div class="legend">
+            <span><i style="background: var(--series-3)"></i>Birey başına sözcük</span>
+          </div>
+        </div>
+
+        <div class="panel chart-card">
+          <figure>
+            <figcaption>Model doğruluğu</figcaption>
+            <p class="note">
+              Ayrılmış doğrulama kümesinde; kesikli çizgi çoğunluk sınıfı temel
+              çizgisidir. Modelin anlamlı olması için bunu geçmesi gerekir.
+            </p>
+            <div class="chart-box"><canvas id="chart-model"></canvas></div>
+          </figure>
+          <div class="legend">
+            <span><i style="background: var(--series-1)"></i>Model</span>
+            <span><i style="background: var(--text-muted)"></i>Temel çizgi</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="columns">
+        <div class="panel">
+          <h2>Konuşmalar</h2>
+          <div class="transcript" id="transcript"></div>
+          <div class="chat">
+            <input
+              id="chat-input"
+              placeholder="Seçili bakteriye bir şey söyleyin…"
+              aria-label="Mesaj"
+              disabled
+            />
+            <button id="chat-send" type="button" disabled>Gönder</button>
+          </div>
+          <p class="hint">
+            Bilmedikleri kelimeleri öğrenirler; öğrendikleri kelime sonraki
+            cümlelerinde kullanılabilir hale gelir.
+          </p>
+        </div>
+
+        <div class="panel">
+          <h2>Dil olayları</h2>
+          <div class="events" id="events"></div>
+          <p class="hint">
+            Yeni kelimeler türetim ekleriyle (-lIk, -CI, -lI, -sIz, -lAn, -lAş, -mA,
+            -Iş) üretilir; anlaşılmayanlar zamanla unutulur.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

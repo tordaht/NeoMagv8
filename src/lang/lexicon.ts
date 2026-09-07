@@ -10,7 +10,7 @@
  */
 
 import type { StemFlags } from './morphology.js';
-import type { Field, Pos, SeedEntry, Valency } from './seed.js';
+import type { Field, Pos, SeedEntry, Valence, Valency } from './seed.js';
 import { SEED_LEXEMES } from './seed.js';
 
 export interface Lexeme {
@@ -22,6 +22,8 @@ export interface Lexeme {
   flags: StemFlags;
   /** Argument structure; only meaningful for verbs. */
   valency: Valency;
+  /** Affective valence; only meaningful for verbs. */
+  valence: Valence;
   /** True for words coined during the run rather than present at seeding. */
   coined: boolean;
   /** Lexeme ids this word was derived from. */
@@ -66,6 +68,7 @@ export class Lexicon {
       gloss: entry.gloss,
       flags: entry.flags ?? {},
       valency: entry.valency ?? 'intransitive',
+      valence: entry.valence ?? 'neutral',
       coined: meta.coined,
       origin: meta.origin ?? [],
       bornAt: meta.bornAt,

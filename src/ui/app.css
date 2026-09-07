@@ -1,0 +1,433 @@
+@import './theme.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--plane);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+.app {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+/* ---------------------------------------------------------------- header -- */
+
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 4px;
+}
+
+.masthead h1 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.masthead p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  flex: 1 1 260px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.controls button,
+.controls select,
+.controls input {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.controls input {
+  cursor: text;
+  width: 9ch;
+}
+
+.controls button:hover,
+.controls select:hover {
+  border-color: var(--axis);
+}
+
+.controls button[data-primary] {
+  background: var(--series-1);
+  border-color: transparent;
+  color: #fff;
+  font-weight: 600;
+  min-width: 92px;
+}
+
+/* Honest readiness: this pill reports what is actually running, never a
+   pre-emptive "system ready". */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-1);
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.status::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+
+.status[data-state='running']::before {
+  background: var(--status-good);
+}
+
+.status[data-state='warming']::before {
+  background: var(--status-warning);
+}
+
+.status[data-state='paused']::before {
+  background: var(--text-muted);
+}
+
+/* ----------------------------------------------------------------- panels -- */
+
+.panel {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+
+.panel > h2 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--gap);
+  align-items: start;
+}
+
+#colony {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background: var(--plane);
+  cursor: crosshair;
+}
+
+.hint {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* ------------------------------------------------------------- stat tiles -- */
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.tile {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+
+.tile dt {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.tile dd {
+  margin: 2px 0 0;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.tile .sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+/* ----------------------------------------------------------------- charts -- */
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--gap);
+}
+
+.chart-card figure {
+  margin: 0;
+}
+
+.chart-card figcaption {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.chart-card .note {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 8px;
+}
+
+.chart-box {
+  position: relative;
+  height: 190px;
+}
+
+/* Direct labels carry series identity alongside the legend, so identity is
+   never colour-alone — required here because light-mode aqua is under 3:1. */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* -------------------------------------------------------------- inspector -- */
+
+.inspector dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 10px;
+  margin: 0 0 10px;
+  font-size: 13px;
+}
+
+.inspector dt {
+  color: var(--text-secondary);
+}
+
+.inspector dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.bars {
+  display: grid;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+
+.bar {
+  display: grid;
+  grid-template-columns: 76px 1fr 36px;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.bar .track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--grid);
+  overflow: hidden;
+}
+
+.bar .fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--series-1);
+}
+
+.bar .value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.word {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 12px;
+  background: var(--plane);
+}
+
+.word[data-coined='true'] {
+  border-color: var(--series-2);
+  color: var(--series-2);
+}
+
+/* ------------------------------------------------------------- transcript -- */
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: var(--gap);
+  align-items: start;
+}
+
+.transcript {
+  height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: baseline;
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+
+.line:nth-child(odd) {
+  background: var(--plane);
+}
+
+.line .who {
+  font-weight: 600;
+  color: var(--series-1);
+  cursor: pointer;
+}
+
+.line .who:hover {
+  text-decoration: underline;
+}
+
+.line .meta {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.line[data-comedy='true'] .said::after {
+  content: ' ✦';
+  color: var(--series-2);
+}
+
+.chat {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chat input {
+  flex: 1;
+  background: var(--plane);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.chat button {
+  background: var(--series-1);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.chat button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.events {
+  height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+
+.events b {
+  color: var(--series-2);
+  font-weight: 600;
+}
+
+@media (max-width: 980px) {
+  .stage,
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -21,6 +21,13 @@ export type Pos = 'noun' | 'verb' | 'adj' | 'adv' | 'interj';
 export type Valency = 'intransitive' | 'transitive' | 'dative' | 'ditransitive';
 
 /**
+ * Affective valence. Greeting and offering frames are grammatical with any
+ * verb, but `Seni unutuyorum.` is a poor greeting; slots that carry goodwill
+ * ask for non-negative verbs.
+ */
+export type Valence = 'positive' | 'neutral' | 'negative';
+
+/**
  * Semantic fields double as the topic space: an utterance is "about" a field,
  * and comprehension depends partly on whether speaker and listener share
  * vocabulary in it.
@@ -54,6 +61,8 @@ export interface SeedEntry {
   flags?: StemFlags;
   /** Required for verbs; ignored for everything else. */
   valency?: Valency;
+  /** Defaults to neutral. */
+  valence?: Valence;
 }
 
 /** Nouns, adjectives and adverbs. */
@@ -161,37 +170,37 @@ const VERBS: SeedEntry[] = [
   { form: 'bul', pos: 'verb', field: 'space', gloss: 'find' , valency: 'transitive' },
   { form: 'git', pos: 'verb', field: 'space', gloss: 'go', flags: { softens: true } , valency: 'dative' },
   { form: 'gel', pos: 'verb', field: 'space', gloss: 'come' , valency: 'dative' },
-  { form: 'kaç', pos: 'verb', field: 'space', gloss: 'flee' , valency: 'intransitive' },
+  { form: 'kaç', pos: 'verb', field: 'space', gloss: 'flee' , valency: 'intransitive', valence: 'negative' },
   { form: 'yaklaş', pos: 'verb', field: 'space', gloss: 'approach' , valency: 'dative' },
   { form: 'kal', pos: 'verb', field: 'space', gloss: 'stay' , valency: 'intransitive' },
   { form: 'dön', pos: 'verb', field: 'space', gloss: 'turn' , valency: 'dative' },
   { form: 'taşı', pos: 'verb', field: 'space', gloss: 'carry' , valency: 'transitive' },
   { form: 'gör', pos: 'verb', field: 'cognition', gloss: 'see' , valency: 'transitive' },
   { form: 'bil', pos: 'verb', field: 'cognition', gloss: 'know' , valency: 'transitive' },
-  { form: 'öğren', pos: 'verb', field: 'cognition', gloss: 'learn' , valency: 'transitive' },
-  { form: 'anla', pos: 'verb', field: 'cognition', gloss: 'understand' , valency: 'transitive' },
+  { form: 'öğren', pos: 'verb', field: 'cognition', gloss: 'learn' , valency: 'transitive', valence: 'positive' },
+  { form: 'anla', pos: 'verb', field: 'cognition', gloss: 'understand' , valency: 'transitive', valence: 'positive' },
   { form: 'düşün', pos: 'verb', field: 'cognition', gloss: 'think' , valency: 'intransitive' },
   { form: 'sor', pos: 'verb', field: 'cognition', gloss: 'ask' , valency: 'transitive' },
-  { form: 'unut', pos: 'verb', field: 'cognition', gloss: 'forget' , valency: 'transitive' },
+  { form: 'unut', pos: 'verb', field: 'cognition', gloss: 'forget' , valency: 'transitive', valence: 'negative' },
   { form: 'konuş', pos: 'verb', field: 'social', gloss: 'speak' , valency: 'intransitive' },
   { form: 'söyle', pos: 'verb', field: 'social', gloss: 'say' , valency: 'ditransitive' },
   { form: 'dinle', pos: 'verb', field: 'social', gloss: 'listen' , valency: 'transitive' },
-  { form: 'ver', pos: 'verb', field: 'social', gloss: 'give' , valency: 'ditransitive' },
+  { form: 'ver', pos: 'verb', field: 'social', gloss: 'give' , valency: 'ditransitive', valence: 'positive' },
   { form: 'al', pos: 'verb', field: 'social', gloss: 'take' , valency: 'transitive' },
-  { form: 'paylaş', pos: 'verb', field: 'social', gloss: 'share' , valency: 'ditransitive' },
+  { form: 'paylaş', pos: 'verb', field: 'social', gloss: 'share' , valency: 'ditransitive', valence: 'positive' },
   { form: 'topla', pos: 'verb', field: 'social', gloss: 'gather' , valency: 'transitive' },
   { form: 'bekle', pos: 'verb', field: 'social', gloss: 'wait' , valency: 'transitive' },
-  { form: 'büyü', pos: 'verb', field: 'body', gloss: 'grow' , valency: 'intransitive' },
+  { form: 'büyü', pos: 'verb', field: 'body', gloss: 'grow' , valency: 'intransitive', valence: 'positive' },
   { form: 'böl', pos: 'verb', field: 'body', gloss: 'divide' , valency: 'transitive' },
-  { form: 'yaşa', pos: 'verb', field: 'existence', gloss: 'live' , valency: 'intransitive' },
-  { form: 'öl', pos: 'verb', field: 'existence', gloss: 'die' , valency: 'intransitive' },
-  { form: 'kork', pos: 'verb', field: 'affect', gloss: 'fear' , valency: 'intransitive' },
-  { form: 'sev', pos: 'verb', field: 'affect', gloss: 'love' , valency: 'transitive' },
+  { form: 'yaşa', pos: 'verb', field: 'existence', gloss: 'live' , valency: 'intransitive', valence: 'positive' },
+  { form: 'öl', pos: 'verb', field: 'existence', gloss: 'die' , valency: 'intransitive', valence: 'negative' },
+  { form: 'kork', pos: 'verb', field: 'affect', gloss: 'fear' , valency: 'intransitive', valence: 'negative' },
+  { form: 'sev', pos: 'verb', field: 'affect', gloss: 'love' , valency: 'transitive', valence: 'positive' },
   { form: 'iste', pos: 'verb', field: 'affect', gloss: 'want' , valency: 'transitive' },
-  { form: 'üşü', pos: 'verb', field: 'environment', gloss: 'be cold' , valency: 'intransitive' },
-  { form: 'azal', pos: 'verb', field: 'need', gloss: 'diminish' , valency: 'intransitive' },
+  { form: 'üşü', pos: 'verb', field: 'environment', gloss: 'be cold' , valency: 'intransitive', valence: 'negative' },
+  { form: 'azal', pos: 'verb', field: 'need', gloss: 'diminish' , valency: 'intransitive', valence: 'negative' },
   { form: 'art', pos: 'verb', field: 'need', gloss: 'increase' , valency: 'intransitive' },
-  { form: 'bit', pos: 'verb', field: 'need', gloss: 'run out' , valency: 'intransitive' },
+  { form: 'bit', pos: 'verb', field: 'need', gloss: 'run out' , valency: 'intransitive', valence: 'negative' },
 ];
 
 export const SEED_LEXEMES: readonly SeedEntry[] = [...NOMINALS, ...VERBS];
@@ -207,6 +216,19 @@ export const PRONOUNS = {
   '3sg': { nom: 'o', acc: 'onu', dat: 'ona', gen: 'onun', loc: 'onda', abl: 'ondan' },
   '1pl': { nom: 'biz', acc: 'bizi', dat: 'bize', gen: 'bizim', loc: 'bizde', abl: 'bizden' },
 } as const;
+
+/**
+ * Closed-class items the grammar emits as `fixed` constituents, plus the
+ * commonest function words a player might type. These are not part of the open
+ * lexicon: they are not learned, not selected on, and never coined — so player
+ * input containing them does not silently inflate the lexicon.
+ */
+export const FUNCTION_WORDS: ReadonlySet<string> = new Set([
+  've', 'ile', 'ama', 'fakat', 'çünkü', 'ki', 'de', 'da', 'ya',
+  'ne', 'nedir', 'neden', 'nerede', 'nereye', 'nasıl', 'kim', 'hangi', 'kaç',
+  'mi', 'mı', 'mu', 'mü', 'demek', 'var', 'yok', 'bir', 'bu', 'şu',
+  'ben', 'sen', 'biz', 'siz', 'onlar', 'için', 'gibi', 'değil', 'evet', 'hayır',
+]);
 
 export type PronounPerson = keyof typeof PRONOUNS;
 export type PronounCase = keyof (typeof PRONOUNS)['1sg'];

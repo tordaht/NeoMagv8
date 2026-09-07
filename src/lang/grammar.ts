@@ -28,6 +28,7 @@ import {
   type Field,
   type PronounCase,
   type PronounPerson,
+  type Valence,
   type Valency,
 } from './seed.js';
 import type { SpeechAct } from '../core/types.js';
@@ -56,6 +57,8 @@ export interface VerbSlot {
    * `*Enerjimi korkalım`.
    */
   valency?: Valency[];
+  /** Affective valences acceptable here; omit to accept any. */
+  valence?: Valence[];
 }
 
 export interface AdjSlot {
@@ -124,6 +127,8 @@ export interface PickRequest {
   shared: boolean;
   /** Acceptable argument structures, for verb slots. */
   valency: Valency[] | undefined;
+  /** Acceptable affective valences, for verb slots. */
+  valence: Valence[] | undefined;
   /** Lexemes already used in this clause; repeating one reads as a glitch. */
   exclude: ReadonlySet<string>;
   /**
@@ -191,12 +196,14 @@ export function realizeFrame(frame: Frame, ctx: RealizeContext): BuiltClause | n
     field: Field | undefined,
     shared: boolean,
     valency?: Valency[],
+    valence?: Valence[],
   ): Lexeme | null => {
     const lexeme = ctx.pick({
       pos,
       field,
       shared,
       valency,
+      valence,
       exclude: used,
       allowFieldRelaxation: pos === 'noun' || pos === 'verb',
     });
@@ -269,7 +276,7 @@ export function realizeFrame(frame: Frame, ctx: RealizeContext): BuiltClause | n
       }
 
       case 'verb': {
-        const lexeme = take('verb', part.field, part.shared ?? false, part.valency);
+        const lexeme = take('verb', part.field, part.shared ?? false, part.valency, part.valence);
         if (!lexeme) return null;
         words.push(
           conjugate(lexeme.form, {
@@ -320,6 +327,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
           tense: 'present',
           person: '1sg',
           valency: ['transitive'],
+          valence: ['positive', 'neutral'],
         },
       ],
     },
@@ -457,6 +465,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
           tense: 'present',
           person: '1sg',
           valency: ['ditransitive'],
+          valence: ['positive', 'neutral'],
         },
       ],
     },
@@ -573,7 +582,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
         { kind: 'noun', field: 'existence' },
         { kind: 'fixed', text: 'bir' },
         { kind: 'noun', field: 'existence' },
-        { kind: 'fixed', text: 'mi' },
+        { kind: 'question', person: '3sg' },
       ],
       end: '?',
     },
@@ -598,6 +607,7 @@ export const FRAMES: Record<SpeechAct, Frame[]> = {
           tense: 'present',
           person: '1sg',
           valency: ['intransitive'],
+          valence: ['positive', 'neutral'],
         },
       ],
       end: '!',

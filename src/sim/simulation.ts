@@ -21,7 +21,7 @@ import {
 import { chooseIntent, urgencyOf, type Intent } from '../lang/intent.js';
 import { Lexicon, type Lexeme } from '../lang/lexicon.js';
 import { chooseCandidate, generateCandidates, type Candidate } from '../lang/speaker.js';
-import type { Field } from '../lang/seed.js';
+import { FUNCTION_WORDS, type Field } from '../lang/seed.js';
 import { ComprehensionModel, type ModelMetrics } from '../ml/model.js';
 
 export interface SimulationOptions {
@@ -272,7 +272,9 @@ export class Simulation {
     const tokens = text
       .toLocaleLowerCase('tr')
       .split(/[^\p{L}\p{N}]+/u)
-      .filter((token) => token.length > 1);
+      // Function words are closed class: they are not learnable content and
+      // must not be coined into the lexicon just because the player typed them.
+      .filter((token) => token.length > 1 && !FUNCTION_WORDS.has(token));
 
     const fields = new Map<Field, number>();
     for (const token of tokens) {
