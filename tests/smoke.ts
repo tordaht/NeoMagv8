@@ -126,22 +126,33 @@ async function main(): Promise<void> {
     check(/%$/.test(comprehension ?? ''), `comprehension is reported (${comprehension})`);
 
     console.info('\ninteraction:');
+    // Pause first: at 16x the agents move between the hit test and the click,
+    // which made this step flaky rather than informative.
+    await page.click('#toggle');
+    await page.waitForTimeout(200);
+    const pausedState = await page.getAttribute('#status', 'data-state');
+    check(pausedState === 'paused', `pausing stops the run (state "${pausedState}")`);
+
     const box = await page.locator('#colony').boundingBox();
     if (box) {
-      // Click across the canvas until something is selected.
-      for (const [fx, fy] of [
-        [0.5, 0.5],
-        [0.35, 0.4],
-        [0.65, 0.6],
-        [0.5, 0.3],
-        [0.2, 0.7],
-      ]) {
-        await page.mouse.click(box.x + box.width * fx, box.y + box.height * fy);
-        if (await page.locator('#inspector dl').count()) break;
+      // Sweep a grid until a bacterium is hit; with ~50 agents in the dish this
+      // lands well inside the first row or two.
+      outer: for (let row = 1; row <= 6; row++) {
+        for (let column = 1; column <= 8; column++) {
+          await page.mouse.click(
+            box.x + (box.width * column) / 9,
+            box.y + (box.height * row) / 7,
+          );
+          if (await page.locator('#inspector dl').count()) break outer;
+        }
       }
     }
     const inspected = await page.locator('#inspector dl').count();
     check(inspected > 0, 'clicking a bacterium opens the inspector');
+    if (inspected > 0) {
+      const words = await page.locator('#inspector .word').count();
+      check(words > 0, `the inspector shows the agent's idiolect (${words} words)`);
+    }
 
     if (inspected > 0) {
       await page.fill('#chat-input', 'fotosentez enerji verir');

@@ -1,214 +1,161 @@
-# 🧬 mnBac v9.6.2 - System Readiness & GitHub Pages Fix! 🎭
+# NeoMag
 
-## 🎯 **Proje Özeti**
+Bir bakteri kolonisinde **Türkçe dil evrimi** simülasyonu ve üzerine kurulu
+**anlaşılabilirlik modeli**.
 
-**mnBac v9.6.2** şu ana kadar geliştirilen en gelişmiş bakteriyel dil evrim simülasyonudur. Bu sistem, Türkçe morfojik işleme, AI tabanlı öğrenme, ultra-agresif monotonluk karşıtı algoritmalara ve **eksiksiz buton sistemi**ne sahiptir.
-
-### 🆕 **v9.6.2 Yenilikleri:**
-- ✅ **GitHub Pages initialization fix** - Artık tordaht.github.io'da düzgün çalışıyor
-- ✅ **System readiness checker** - Kullanıcıya detaylı yüklenme durumu gösterimi
-- ✅ **Progressive loading** - Sistemler aşama aşama başlatılıyor
-- ✅ **Better error messages** - "Please wait" yerine detaylı status bilgisi
-- ✅ **Runtime crash protection** - Speech bubble null errors çözüldü
-
-NeoMag, AI destekli bakteri comedy show simülasyonudur. Türkçe morfoloji motoru ve gelişmiş diyalog sistemi ile bakteriler anlamlı, komik ve bağlama uygun cümleler kurar. TabPFN teknolojisi ile desteklenen hibrit dil sistemi, bakterilerin gerçek zamanlı komedi performansları sergilemesini sağlar.
-
-## ✨ Özellikler
-
-### 🧠 TabPFN Enhanced Language Engine
-- **Semantic Fields**: Kelimeler anlamsal alanlara göre kategorize edilir
-- **Word Success Tracking**: Reinforcement learning ile kelime başarı takibi
-- **Creative Expression Generator**: Hibrit dil üretim sistemi
-- **Adaptive Language Styles**: Kişilik bazlı dil stili adaptasyonu
-
-### 🎭 Simülasyon Özellikleri
-- **Real-time Bacteria Simulation**: Gerçek zamanlı bakteri simülasyonu
-- **Interactive Canvas**: Tıklanabilir simülasyon alanı
-- **Dynamic Population**: Dinamik popülasyon yönetimi
-- **Performance Optimized**: 60 FPS hedefli optimizasyon
-
-### 💬 İletişim Sistemi
-- **Group Conversations**: Grup sohbetleri
-- **Context-Aware Responses**: Bağlama duyarlı cevaplar
-- **User Interaction**: Kullanıcı-bakteri etkileşimi
-- **Multi-layer Prediction**: Çok katmanlı tahmin sistemi
-
-## 🚀 Hızlı Başlangıç
-
-### GitHub Pages ile Çalıştırma
-
-1. Bu repository'yi fork edin
-2. Repository Settings → Pages bölümüne gidin
-3. Source olarak `main` branch'i seçin
-4. `https://[kullanıcıadınız].github.io/[repo-adı]/` adresinden erişin
-
-### Lokal Geliştirme
+Bakteriler sabit cümleler seçmez. Ne söyleyecekleri iç durumlarından (açlık,
+komşuluk, atık, merak) çıkar; nasıl söyleyecekleri bildikleri sözcüklerden ve
+Türkçe morfolojiden. Anlaşılan sözcük güçlenir ve yayılır, anlaşılmayan
+zayıflar ve unutulur — dil bu baskı altında değişir.
 
 ```bash
-# Repository'yi klonlayın
-git clone https://github.com/[kullanıcıadınız]/[repo-adı].git
-cd [repo-adı]
-
-# HTTP server başlatın (Python 3)
-python -m http.server 8000
-
-# Tarayıcıda açın
-open http://localhost:8000
+npm ci
+npm run dev          # http://localhost:3000
+npm run check        # lint + typecheck + testler + build + tarayıcı duman testi
 ```
-
-## 📁 Proje Yapısı
-
-```
-GitHub_mnBac_Project/
-├── index.html                 # Ana HTML dosyası
-├── README.md                  # Bu dosya
-├── src/
-│   ├── engine/
-│   │   ├── TabPFNAdapter.js           # TabPFN entegrasyonu
-│   │   ├── TabPFGenAdapter.js         # TabPFGen tabular veri üretimi
-│   │   ├── TabPFNFineTuner.js         # TabPFN ince ayar modülü
-│   │   ├── WordSuccessTracker.js      # Kelime başarı takibi
-│   │   └── LanguageEvolutionEngine.js # Dil evrimi motoru
-│   ├── managers/
-│   │   └── SimulationManager.js       # Simülasyon yöneticisi
-│   ├── data/
-│   │   └── semantic_fields.json      # Anlamsal kelime alanları
-│   └── utils/
-└── analytics_data/
-    ├── comprehensive_error_analysis.md
-    └── new_error_template.csv
-```
-
-## 🎮 Kullanım
-
-### Temel Kontroller
-- **▶️ Başlat**: Simülasyonu başlatır
-- **⏸️ Durdur**: Simülasyonu durdurur
-- **🧬 Bakteri Ekle**: Yeni bakteri ekler
-- **🍎 Canvas Tıklama**: Yemek ekler ve etkileşim başlatır
-
-### Chat Sistemi
-- Metin kutusuna yazarak bakterilerle konuşabilirsiniz
-- Bakteriler TabPFN ile geliştirilmiş cevaplar verir
-- Kelimeler otomatik olarak bakteri kelime haznesine eklenir
-- Yanıt üretilirken "Düşünüyor..." göstergesi hemen belirir ve
-  DOM güncellemeleri `requestIdleCallback` ile boş zamanda yapılarak
-  algılanan gecikme azaltılır
-
-### Simülasyon Mekanikleri
-- Bakteriler otomatik hareket eder
-- Enerji seviyeleri zamanla azalır
-- Grup sohbetleri otomatik tetiklenir
-- Kelime öğrenme sürekli devam eder
-
-## 🧠 TabPFN Teknolojisi
-
-### Semantic Fields
-Kelimeler 9 ana kategoride organize edilir:
-- **Biological**: Biyolojik terimler
-- **Emotional**: Duygusal ifadeler
-- **Social**: Sosyal etkileşim kelimeleri
-- **Scientific**: Bilimsel kavramlar
-- **Absurd**: Yaratıcı/absürt kombinasyonlar
-- **Creative**: Sanatsal ifadeler
-- **Neutral**: Genel kullanım kelimeleri
-- **Technical**: Teknik terimler
-- **Philosophical**: Felsefi kavramlar
-
-### Word Success Tracking
-- Her kelime kullanımı başarı/başarısızlık olarak kaydedilir
-- Reinforcement learning ile ağırlıklar güncellenir
-- Bağlam bazlı performans takibi
-- Temporal data analizi
-
-### Creative Expression Engine
-- TabPFN önerilerini önceliklendirir
-- Markov chain fallback sistemi
-- Absurd element injection
-- TabPFGen ile sentetik veri üretimi
-- TabPFN Fine Tuner ile model iyileştirmesi
-- Personality-based mutations
-- Context-aware generation
-
-## 📊 Performans Metrikleri
-
-- **FPS**: Gerçek zamanlı frame rate
-- **Bakteri Sayısı**: Aktif popülasyon
-- **Gün Sayısı**: Simülasyon zamanı
-- **Kelime İstatistikleri**: Öğrenilen kelime sayısı
-- **Başarı Oranları**: Context bazlı başarı metrikleri
-
-## 🔧 Teknik Detaylar
-
-### Bağımlılıklar
-- **TensorFlow.js**: Machine learning altyapısı
-- **Tailwind CSS**: UI framework
-- **ES6 Modules**: Modern JavaScript modül sistemi
-- **Canvas API**: 2D grafik rendering
-
-### Browser Uyumluluğu
-- Chrome 80+
-- Firefox 75+
-- Safari 13+
-- Edge 80+
-
-### Performans Optimizasyonları
-- Object pooling
-- Efficient rendering cycles
-- Memory management
-- Cache systems
-
-## 🐛 Hata Çözümleri
-
-### Yaygın Sorunlar
-
-1. **TabPFN Yüklenmiyor**
-   - TensorFlow.js CDN bağlantısını kontrol edin
-   - Console'da hata mesajlarını inceleyin
-
-2. **Bakteriler Konuşmuyor**
-   - Simülasyonun başlatıldığından emin olun
-   - Canvas'a tıklayarak etkileşim tetikleyin
-
-3. **Performance Sorunları**
-   - Bakteri sayısını azaltın
-   - Browser developer tools ile profiling yapın
-
-### Debug Modları
-```javascript
-// Console'da sistem durumunu kontrol edin
-console.log(simulationManager.getStatus());
-console.log(languageEvolutionEngine.getStatus());
-console.log(wordSuccessTracker.exportData());
-```
-
-## 🤝 Katkıda Bulunma
-
-1. Fork edin
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Commit edin (`git commit -m 'Add amazing feature'`)
-4. Push edin (`git push origin feature/amazing-feature`)
-5. Pull Request açın
-
-## 📝 Lisans
-
-Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakın.
-
-## 🙏 Teşekkürler
-
-- **TabPFN**: Tabular prediction teknolojisi
-- **TensorFlow.js**: Machine learning framework
-- **Tailwind CSS**: Utility-first CSS framework
-
-## 📞 İletişim
-
-- **GitHub Issues**: Bug raporları ve feature istekleri
-- **Discussions**: Genel sorular ve tartışmalar
 
 ---
 
-🧬 **mnBac v9.6.2** - System Readiness & GitHub Pages Fix! 🎭
+## Ne yapıyor
 
-*Geliştirici: mnBac Team*  
-*Versiyon: 9.6.2*  
-*Son Güncelleme: 19 Aralık 2024* 
+| Katman | Sorumluluk |
+|---|---|
+| `src/core` | Ekoloji, hareket, doğum/ölüm. Tohumlanmış RNG; aynı tohum → aynı koşu. |
+| `src/lang` | Türkçe fonoloji ve morfoloji, üretici gramer, niyet seçimi, leksikon evrimi. |
+| `src/ml` | Sıfırdan yazılmış MLP ve çevrimiçi anlaşılabilirlik modeli. |
+| `src/sim` | Üçünü birbirine bağlayan tek nokta. |
+| `src/ui` | Canvas, grafikler, denetçi, sohbet. |
+
+### Dil üretimi
+
+Dört katman, sırayla:
+
+1. **Niyet** — `src/lang/intent.ts`. Enerji, komşu sayısı, atık ve açık sorular
+   konuşma edimini belirler. Aç bir hücre şikâyet eder veya ister; tok ve
+   sosyal olan paylaşım önerir.
+2. **Sözdizim** — `src/lang/grammar.ts`. Çerçeveler *morfolojik özellik taşıyan
+   öğe dizileri*dir, delikli string değil. Fiil değerliği (geçişli / yönelmeli /
+   çift geçişli) zorunludur; nesne veren bir çerçeve geçişsiz fiil kabul etmez.
+3. **Morfoloji** — `src/lang/morphology.ts`. Ünlü uyumu, ünsüz benzeşmesi,
+   sözlüksel koşullu yumuşama ve ünlü düşmesi, altı zaman, soru eki, türetim.
+4. **Üslup** — kişilik yalnızca *hangi* çerçeve ve sözcüğün seçildiğini
+   etkiler. Rastgele ünlem ve emoji eklenmez.
+
+Yeni sözcükler gerçek türetim ekleriyle üretilir (`-lIk`, `-CI`, `-lI`, `-sIz`,
+`-lAn`, `-lAş`, `-mA`, `-Iş`), bu yüzden çekimlenebilirler:
+
+```
+aç    + -lIk → açlık   → açlığım
+paylaş + -mA → paylaşma
+düşün  + -Iş → düşünüş → düşünüşlük
+```
+
+### Mizah
+
+Rastgele absürt sözcük komik değildir. Burada mizah **beklenti ihlali** olarak
+modellenmiştir: bir cümlenin *registeri* (soyutluk düzeyi) ile konuşanın gerçek
+aciliyeti arasındaki fark. Açlıktan ölürken "Varlık nedir?" diye sormak
+uyumsuzdur; toksa sormak değildir. Ölçüt tek yönlüdür ve kalıtsal `humor`
+özelliği tarafından tetiklenir — yani ölçülebilir ve seçilime açıktır.
+
+### Model
+
+`src/ml/net.ts` elle yazılmış bir MLP: tohumlanmış başlatma, Adam, ikili
+çapraz entropi. Gradyanları testte sayısal türevle karşılaştırılır.
+
+`src/ml/model.ts` bunu bir cümlenin anlaşılıp anlaşılmayacağını tahmin etmek
+için kullanır. Girdiler **yalnızca konuşanın gözleyebileceği** özelliklerdir —
+kendi sözcüklerine güveni, o dinleyiciyle geçmiş başarısı, mesafe, cümlenin
+morfolojik karmaşıklığı. Dinleyicinin dağarcığı girdilere dâhil değildir;
+olsaydı model hiçbir şey ölçmezdi.
+
+Her beşinci gözlem eğitime hiç girmeyen bir doğrulama kümesine ayrılır, ve
+metrikler her zaman çoğunluk sınıfı temel çizgisiyle birlikte raporlanır.
+
+---
+
+## Ölçümler
+
+Sayılar iddia değil, `tools/` altındaki betiklerin çıktısıdır.
+
+**Ekolojik denge** — `npm run balance`
+
+```
+seed         peak  final  mean(late)  cv(late)  energy   nutr  waste
+balance-0      58     47        46.3     0.136    0.19   22.2    4.8
+...
+extinctions=0/4  mean population=46.2  mean CV=0.128
+```
+
+90 simüle dakika boyunca kayma yok. (Bu deponun önceki motoru popülasyonu
+~5 simüle saniyede sıfıra düşürüyordu.)
+
+**Modelin etkisi** — `npm run experiment`
+
+Aynı dünya tohumu iki kolda da kullanılır ve model iki kolda da *eğitilir*;
+tek fark tahminlerinin cümle seçimine izin verilip verilmediğidir.
+
+```
+control   comprehension: 58.78%
+treatment comprehension: 61.31%
+difference: 2.53 pp  (sd 1.82 pp, t=3.92, n=8) → significant at 0.05
+model held-out accuracy: 64.7% vs majority baseline 61.9%
+```
+
+**Konuşma örneği** — `npm run sample`
+
+```
+Sana enerji paylaşıyorum.        [offer/need] 3/4
+Gölge artıyor.                   [warn/environment] 1/4
+Güç nerede?                      [ask/need] 3/4
+Neden düşünüyoruz?               [reflect/cognition] 3/4
+Ölüm bir iz mi?                  [reflect/existence] 2/4 ✦
+```
+
+Sağdaki sayı: cümleyi anlayan dinleyici / duyan dinleyici. `✦` uyumsuzluk
+eşiğini aşan (komik) cümleleri işaretler.
+
+---
+
+## Doğrulama
+
+`npm run check` şunları çalıştırır:
+
+- **Lint** — gerçek kurallarla (`no-redeclare`, `no-undef`, `no-unused-vars` …).
+- **Typecheck** — `strict`, `noUnusedLocals`, `noUnusedParameters`.
+- **88 test** — morfoloji bilinen Türkçe formlara karşı, ağın gradyanları sayısal
+  türeve karşı, ekolojinin 10.000+ tick boyunca sabit kalması, ve dilin sabit
+  bir cümle listesine çökmediği.
+- **Tarayıcı duman testi** — üretim derlemesini gerçek Chromium'da açar; **tek bir
+  console hatası veya başarısız istek** testi düşürür.
+
+Kapsam: %95 satır, %88 dal (eşikler %75 / %70).
+
+---
+
+## Betikler
+
+| Komut | İş |
+|---|---|
+| `npm run dev` | Geliştirme sunucusu |
+| `npm run build` | `dist/` üretimi |
+| `npm run check` | Tüm doğrulama zinciri |
+| `npm run sample` | Başsız koşu + konuşma dökümü |
+| `npm run balance` | Ekolojik denge taraması |
+| `npm run experiment` | Eşleştirilmiş A/B deneyi (model açık/kapalı) |
+
+Duman testi yerelde önceden kurulu bir tarayıcı kullanabilir:
+`CHROMIUM_PATH=/path/to/chrome npm run smoke`.
+
+---
+
+## Depo geçmişi
+
+`legacy/` altında önceki sürümün tek dosyalık uygulaması (`index_v9.6.2.html`),
+eski notlar ve veri dosyaları arşivlenmiştir. Neden değiştirildiği ve hangi
+kararların alındığı `docs/DURUM_ANALIZI_VE_KARARLAR.md` içinde ölçümleriyle
+birlikte anlatılıyor; yeni mimarinin gerekçeleri `docs/MIMARI.md` içinde.
+
+## Lisans
+
+MIT.

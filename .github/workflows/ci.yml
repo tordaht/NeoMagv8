@@ -5,31 +5,56 @@ on:
   pull_request:
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: 'npm'
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-          cache: 'pip'
-      - run: pip install -r requirements.txt
+          node-version: 20
+          cache: npm
+
       - run: npm ci
+
+      # Lint runs with rules that can actually fail. The previous config had an
+      # empty rule set, so `npm run lint` passed on undefined identifiers and
+      # duplicate declarations alike.
       - run: npm run lint
-      - run: npm test
-      - run: pytest -q
-      - name: Build simulation Docker image
-        run: docker build -f Dockerfile.sim -t neo-sim .
-      - name: Run simulation container
-        run: docker run --rm -v ${{ github.workspace }}/mlruns:/mlruns neo-sim
-      - name: Upload MLflow logs
+      - run: npm run typecheck
+
+      # Unit and regression tests, including the ecology stability invariant and
+      # the "utterances are not a fixed list" check.
+      - run: npm run test
+
+      - run: npm run build
+
+      # Drives the built page in a real browser and fails on a single console
+      # error or failed request.
+      - run: npx playwright install --with-deps chromium
+      - run: npx tsx tests/smoke.ts
+
+      - name: Upload smoke screenshot
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: mlruns
-          path: mlruns
-      - name: MLflow UI Info
-        run: echo "Download the 'mlruns' artifact and run 'mlflow ui --backend-store-uri mlruns' to view experiment results."
+          name: smoke-screenshot
+          path: dist/smoke.png
+          if-no-files-found: ignore
+
+  experiment:
+    # The paired A/B run that reports whether the comprehension model actually
+    # helps. Kept off pull requests because it is minutes, not seconds.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx tsx tools/experiment.ts --seeds 6 --seconds 600 --out experiment.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: experiment-results
+          path: experiment.json

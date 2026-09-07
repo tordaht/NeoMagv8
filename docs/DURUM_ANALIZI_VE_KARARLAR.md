@@ -454,3 +454,38 @@ daha iyidir — ve projenin "hedefinden ne kadar uzak" olduğunu gösteren asıl
 kapatır.
 
 Öncesi/sonrası aynı soruyla ölçülmelidir: `"Merhaba, bugün nasılsın?"`
+
+---
+
+## 8. Sonek: kararların uygulanması
+
+Bu belge bir teşhis kaydıdır; yukarıdaki bulgular tespit edildikleri andaki
+`main` (c25e1d3) için geçerlidir. Kararlar sonrasında uygulandı.
+
+| Karar | Durum | Nerede |
+|---|---|---|
+| K0 hedef: dil evrimi + ML vitrini | uygulandı | `README.md` |
+| K1 `index.html`'i dondur, çekirdek `src/` | uygulandı | `legacy/index_v9.6.2.html`, `src/` |
+| K2 kanama durdurma | konusuz kaldı — ilgili kod silindi | — |
+| K3 deterministik, dengeli çekirdek | uygulandı | `src/core/`, `tools/balance.ts` |
+| K4 üretici dil katmanı | uygulandı | `src/lang/` |
+| K5 TabPFN iddiası | ad ve modüller kaldırıldı, yerine gerçek MLP | `src/ml/` |
+| K6 sessiz hata yutma yasağı | uygulandı | `docs/MIMARI.md` § Sessiz hata yutma |
+| K7 CI'yı doğrulayan hale getir | uygulandı | `.github/workflows/ci.yml`, `tests/` |
+| K8 bilimsel katman | Python hattı silindi, yerine eşleştirilmiş deney | `tools/experiment.ts` |
+| K9 depo hijyeni | uygulandı | `legacy/`, tek Pages workflow |
+
+Bölüm 3'teki bulguların her biri için artık onu yakalayan bir test var:
+
+| Bulgu | Testi |
+|---|---|
+| B1 dil motoru ölü kod | `tests/simulation.test.ts` — "actually reaches the language layer" |
+| B2 gölgelenen fonksiyonlar | `eslint no-redeclare` + `no-func-assign`, tüm kaynak üzerinde |
+| B3 modüller 404 | `tests/smoke.ts` — tek başarısız istekte düşer |
+| B4 `public/main.js` çalışmıyor | `tests/smoke.ts` — tek console hatasında düşer |
+| B5 popülasyon çöküyor | `tests/world.test.ts` — "reaches an equilibrium instead of collapsing" |
+| B6 deney kolları özdeş | `tools/experiment.ts` — eşleştirilmiş t testi |
+| B7 sahte TabPFN | `tests/net.test.ts` — gradyanlar sayısal türevle doğrulanır |
+| B8 rastgele string kesme | `tests/simulation.test.ts` — "grows the lexicon by derivation" |
+| B9 kör CI | `npm run check`: lint + typecheck + 88 test + build + duman testi |
+| B10 üç ayrı gerçeklik | tek bileşim noktası; `docs/MIMARI.md` § Tek çağrı zinciri |
